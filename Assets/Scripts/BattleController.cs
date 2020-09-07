@@ -16,6 +16,9 @@ public class BattleController : MonoBehaviour
     private bool movingToEnemy;
     public bool finalAttack;
     public bool returnStartPos;
+    public bool attackAction;
+    public bool goodAttack;
+    public bool badAttack;
     private int swordAttack;
     private int shurikenAttack;
     private int selectedEnemy;
@@ -34,6 +37,9 @@ public class BattleController : MonoBehaviour
         attackingEnemy = false;
         movingToEnemy = false;
         finalAttack = false;
+        attackAction = false;
+        goodAttack = false;
+        badAttack = false;
     }
 
     private void Update()
@@ -95,6 +101,7 @@ public class BattleController : MonoBehaviour
             { 
                 if(selectedEnemy == 1)
                 {
+                    enemy1.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
                     startPos = player.transform.position.x;
                     movePos = enemy1.transform.position.x - 1.1f;
                     attackingEnemy = false;
@@ -103,16 +110,43 @@ public class BattleController : MonoBehaviour
             }
             else if (shurikenAttack == 1)
             {
-                player.GetComponent<Animator>().SetBool("isSpinning", true);
+                if(selectedEnemy == 1)
+                {
+                    player.GetComponent<PlayerTeamScript>().shurikenObjective = enemy1.transform.position;
+                    player.GetComponent<Animator>().SetBool("isSpinning", true);
+                    attackingEnemy = false;
+                    finalAttack = true;
+                }                
             }
         }
         else if (finalAttack)
         {
-            player.GetComponent<Animator>().SetBool("isAttacking", true);
+            if(swordAttack == 1)
+            {
+                if (!attackAction && Input.GetKeyDown(KeyCode.X)) badAttack = true;
+                if (attackAction)
+                {
+                    enemy1.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", true);
+                    if (Input.GetKeyDown(KeyCode.X) && !badAttack)
+                    {
+                        goodAttack = true;
+                    }
+                }
+                else
+                {
+                    enemy1.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
+                }
+                player.GetComponent<Animator>().SetBool("isAttacking", true);
+            }
+            else if (shurikenAttack == 1)
+            {
+
+            }
         }
         
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
+            player.GetChild(0).transform.GetChild(1).GetComponent<Animator>().SetBool("Active", false);
             player.GetComponent<Animator>().SetBool("isAttacking", false);
             player.GetComponent<Animator>().SetBool("isSpinning", false);
             player.transform.position = new Vector3(-5, -1, -2);
@@ -147,6 +181,8 @@ public class BattleController : MonoBehaviour
         {
             if(player.transform.position.x > startPos)
             {
+                enemy1.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
+                enemy1.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
                 player.transform.position = new Vector3(player.transform.position.x - 0.15f, player.transform.position.y, player.transform.position.z);
                 player.GetComponent<Animator>().SetFloat("Speed", 0.5f);
             }
