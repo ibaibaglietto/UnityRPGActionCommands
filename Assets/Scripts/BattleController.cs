@@ -19,11 +19,13 @@ public class BattleController : MonoBehaviour
     public bool attackAction;
     public bool goodAttack;
     public bool badAttack;
+    private bool endThrow;
     private int swordAttack;
     private int shurikenAttack;
-    private int selectedEnemy;
+    private Transform selectedEnemy;
     private float movePos;
     private float startPos;
+    public bool shurikenHit;
     //The action the player is selecting. 0-> Sword, 1-> Shuriken, 2-> Items, 3-> Special, 4-> Other
     public int selectingAction; 
 
@@ -40,6 +42,8 @@ public class BattleController : MonoBehaviour
         attackAction = false;
         goodAttack = false;
         badAttack = false;
+        endThrow = false;
+        shurikenHit = false;
     }
 
     private void Update()
@@ -90,7 +94,7 @@ public class BattleController : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.Space))
             {
                 enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                selectedEnemy = 1;
+                selectedEnemy = enemy1;
                 selectingEnemy = false;
                 attackingEnemy = true;
             }
@@ -99,24 +103,18 @@ public class BattleController : MonoBehaviour
         {
             if (swordAttack == 1)
             { 
-                if(selectedEnemy == 1)
-                {
-                    enemy1.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
-                    startPos = player.transform.position.x;
-                    movePos = enemy1.transform.position.x - 1.1f;
-                    attackingEnemy = false;
-                    movingToEnemy = true;
-                }
+                selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
+                startPos = player.transform.position.x;
+                movePos = enemy1.transform.position.x - 1.1f;
+                attackingEnemy = false;
+                movingToEnemy = true;
             }
             else if (shurikenAttack == 1)
             {
-                if(selectedEnemy == 1)
-                {
-                    player.GetComponent<PlayerTeamScript>().shurikenObjective = enemy1.transform.position;
-                    player.GetComponent<Animator>().SetBool("isSpinning", true);
-                    attackingEnemy = false;
-                    finalAttack = true;
-                }                
+                player.GetComponent<PlayerTeamScript>().shurikenObjective = selectedEnemy.transform.position;
+                player.GetComponent<Animator>().SetBool("isSpinning", true);
+                attackingEnemy = false;
+                finalAttack = true;
             }
         }
         else if (finalAttack)
@@ -140,7 +138,31 @@ public class BattleController : MonoBehaviour
             }
             else if (shurikenAttack == 1)
             {
-
+                if (Input.GetKeyDown(KeyCode.X))
+                {
+                    player.GetChild(0).transform.GetChild(1).GetComponent<Animator>().SetBool("Active", false);
+                    player.GetComponent<Animator>().SetBool("isSpinning", false);
+                    if (attackAction)
+                    {
+                        player.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
+                    }
+                    else
+                    {
+                        player.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                    }
+                    finalAttack = false;
+                    endThrow = true;
+                }
+            }
+        }
+        else if (endThrow)
+        {
+            if (shurikenHit)
+            {
+                endThrow = false;
+                playerChoosingAction = true;
+                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+                shurikenHit = false;
             }
         }
         
@@ -211,9 +233,15 @@ public class BattleController : MonoBehaviour
         {
             enemy1 = Instantiate(banditBattle, new Vector3(4.5f, -0.64f, -2.0f), Quaternion.identity);
         }
-        
-
-
     }
 
+    public Transform getSelectedEnemy()
+    {
+        return selectedEnemy;
+    }
+
+    public void DealDamage(Transform objective, int damage)
+    {
+        objective.transform.GetChild(0).transform.GetChild(2).GetComponent<EnemyLifeControllerScript>().setHealth(objective.transform.GetChild(0).transform.GetChild(2).GetComponent<EnemyLifeControllerScript>().getHealth() - damage);
+    }
 }

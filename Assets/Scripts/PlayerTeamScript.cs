@@ -12,7 +12,7 @@ public class PlayerTeamScript : MonoBehaviour
 
     private GameObject battleController;
 
-
+    private int shurikenDamage;
 
     private bool lastAttack;
     // Start is called before the first frame update
@@ -53,7 +53,8 @@ public class PlayerTeamScript : MonoBehaviour
             Vector3 scale = transform.localScale;
             scale.x *= -1;
             transform.localScale = scale;
-        }        
+        }
+        battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().getSelectedEnemy(), 1);
     }
 
     
@@ -61,11 +62,21 @@ public class PlayerTeamScript : MonoBehaviour
     {
         shuriken = Instantiate(shurikenPrefab, gameObject.transform.position, Quaternion.identity);
         shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
+        shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage);
     }
-
+    
     public void shurikenActionActivate()
     {
         gameObject.transform.GetChild(0).transform.GetChild(1).GetComponent<Animator>().SetBool("Active", true);
+    }
+    public void endShurikenThrow()
+    {
+        battleController.GetComponent<BattleController>().shurikenHit = true;
+    }
+
+    public void SetShurikenDamage(int damage)
+    {
+        shurikenDamage = damage;
     }
 
 }
