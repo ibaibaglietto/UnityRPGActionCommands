@@ -11,18 +11,18 @@ public class EnemyTeamScript : MonoBehaviour
     private bool movingToEnemy;
     private bool returnStartPos;
     private int defended;
-    private bool hasDefended;
     private GameObject battleController;
-    private GameObject playerLife;
+    private int enemyNumber;
+    private bool alive;
+    private bool attacking;
 
     // Start is called before the first frame update
     void Start()
     {
         battleController = GameObject.Find("BattleController");
-        playerLife = GameObject.Find("PlayerLifeBckImage");
         movingToEnemy = false;
         returnStartPos = false;
-        hasDefended = false;
+        alive = true;
     }
 
     // Update is called once per frame
@@ -39,6 +39,7 @@ public class EnemyTeamScript : MonoBehaviour
                 }
                 else
                 {
+                    attacking = true;
                     GetComponent<Animator>().SetFloat("Speed", 0.0f);
                     movingToEnemy = false;
                     GetComponent<Animator>().SetBool("IsAttacking", true);
@@ -59,7 +60,11 @@ public class EnemyTeamScript : MonoBehaviour
                     GetComponent<Animator>().SetFloat("Speed", 0.0f);
                     returnStartPos = false;
                     transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
-                    battleController.GetComponent<BattleController>().EndEnemyTurn();
+                    if (enemyNumber < battleController.GetComponent<BattleController>().GetNumberOfEnemies())
+                    {
+                        battleController.GetComponent<BattleController>().NextEnemy(enemyNumber);
+                    }
+                    else battleController.GetComponent<BattleController>().EndEnemyTurn();
                 }
             }
         }        
@@ -89,34 +94,50 @@ public class EnemyTeamScript : MonoBehaviour
 
     public void IsDefended(bool defense)
     {
-        if (!hasDefended)
+        attacking = false;
+        if (defense)
         {
-            if (defense)
-            {
-                hasDefended = true;
-                defended = 1;
-                attackObjective.GetComponent<Animator>().SetBool("isDefending", true);
-            }
-            else
-            {
-                hasDefended = true;
-                defended = 0;
-            }
-        }        
+            defended = 1;
+            attackObjective.GetComponent<Animator>().SetBool("isDefending", true);
+        }
+        else
+        {
+            defended = 0;
+        }  
     }
 
     public void endMeleeAttack()
     {
-        hasDefended = false;
-        playerLife.GetComponent<PlayerLifeScript>().DealDamage(2-defended);
+        attacking = false;
+        attackObjective.GetComponent<PlayerTeamScript>().DealDamage(2-defended);
         if(defended == 0) attackObjective.GetComponent<Animator>().SetTrigger("takeDamage");    
         else attackObjective.GetComponent<Animator>().SetBool("isDefending", false);
+        defended = 0;
         gameObject.GetComponent<Animator>().SetBool("IsAttacking", false);
         movingToEnemy = false;
         returnStartPos = true;
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+    }
+
+    public void SetNumber(int number)
+    {
+        enemyNumber = number;
+    }
+    public void EnemyDied()
+    {
+        alive = false;
+    }
+
+    public bool isAlive()
+    {
+        return alive;
+    }
+
+    public bool isAttacking()
+    {
+        return attacking;
     }
 
 }

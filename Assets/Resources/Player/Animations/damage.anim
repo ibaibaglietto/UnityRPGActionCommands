@@ -21,9 +21,9 @@ AnimationClip:
   - curve:
     - time: 0
       value: {fileID: 370836429328893637, guid: 76a42536e144e3244b9eeec1b78a4fcf, type: 3}
-    - time: 0.33333334
+    - time: 0.2
       value: {fileID: 4671811295830470272, guid: 76a42536e144e3244b9eeec1b78a4fcf, type: 3}
-    - time: 0.53333336
+    - time: 0.46666667
       value: {fileID: 948163715620176575, guid: 76a42536e144e3244b9eeec1b78a4fcf, type: 3}
     - time: 1
       value: {fileID: 948163715620176575, guid: 76a42536e144e3244b9eeec1b78a4fcf, type: 3}
@@ -74,4 +74,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0
+    functionName: DamageAnimation
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

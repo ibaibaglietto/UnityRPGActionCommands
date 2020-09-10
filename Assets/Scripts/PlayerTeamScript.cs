@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerTeamScript : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerTeamScript : MonoBehaviour
     private Transform shuriken;
     public Vector3 shurikenObjective;
     private GameObject battleController;
+    private GameObject playerLife;
     private int shurikenDamage;
     private bool lastAttack;
     public int playerTeamType; //0-> Player
@@ -21,6 +23,7 @@ public class PlayerTeamScript : MonoBehaviour
     void Awake()
     {
         battleController = GameObject.Find("BattleController");
+        playerLife = GameObject.Find("PlayerLifeBckImage");
         lastAttack = false;
         movingToEnemy = false;
         returnStartPos = false;
@@ -89,7 +92,6 @@ public class PlayerTeamScript : MonoBehaviour
                 {
                     GetComponent<PlayerTeamScript>().shurikenObjective = attackObjective.position;
                     GetComponent<Animator>().SetBool("isSpinning", true);
-                    battleController.GetComponent<BattleController>().finalAttack = true;
                 }
             }
         }
@@ -134,6 +136,7 @@ public class PlayerTeamScript : MonoBehaviour
     public void shurikenActionActivate()
     {
         gameObject.transform.GetChild(0).transform.GetChild(1).GetComponent<Animator>().SetBool("Active", true);
+        battleController.GetComponent<BattleController>().finalAttack = true;
     }
     public void endShurikenThrow()
     {
@@ -143,6 +146,17 @@ public class PlayerTeamScript : MonoBehaviour
     public void SetShurikenDamage(int damage)
     {
         shurikenDamage = damage;
+    }
+
+    public void DamageAnimation()
+    {
+        transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetTrigger("Damaged");
+    }
+
+    public void DealDamage(int Damage)
+    {
+        transform.GetChild(0).transform.GetChild(2).transform.GetChild(0).GetComponent<Text>().text = Damage.ToString();
+        playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
     }
 
 }

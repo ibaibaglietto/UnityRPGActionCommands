@@ -29,4 +29,7 @@ public class EnemyLifeControllerScript : MonoBehaviour
         lifeFill.fillAmount = (float)currentHealth / (float)maxHealth;
         lifeNumb.text = currentHealth.ToString();
     }
+
+    
+
 }
