@@ -1170,6 +1170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerBattle: {fileID: 5352649904852120479, guid: 2c851f67d46ba8748aae653b60bcbf5f, type: 3}
   banditBattle: {fileID: 3877302658384341422, guid: 5d8eb0b2f1de23c46ba3ea7b614f4dd8, type: 3}
+  damageUI: {fileID: 2003888347808236252, guid: ba485e94df23bb6459b7ed70110d5086, type: 3}
   finalAttack: 0
   returnStartPos: 0
   attackAction: 0

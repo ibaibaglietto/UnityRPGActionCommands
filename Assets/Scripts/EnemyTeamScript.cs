@@ -4,32 +4,49 @@ using UnityEngine;
 
 public class EnemyTeamScript : MonoBehaviour
 {
-    public int enemyType; //0-> Bandit
+    //The enemy type. 0-> Bandit
+    public int enemyType; 
+    //The objective of the attack
     private Transform attackObjective;
+    //The starting position
     private float startPos;
+    //The movement position
     private float movePos;
+    //A boolean to check if the player is moving to the enemy
     private bool movingToEnemy;
+    //A boolean to check if the player is returning to the start position
     private bool returnStartPos;
+    //An int to check if the player has defended
     private int defended;
+    //The battle controller
     private GameObject battleController;
+    //The number of the enemy
     private int enemyNumber;
+    //A bool to check if the player is alive
     private bool alive;
+    //A bool to check if the player is attacking
     private bool attacking;
+    //A bool to check if the player is idle
+    private bool idle;
 
-    // Start is called before the first frame update
+
     void Start()
     {
+        //We find the battle controller and initialize the variables
         battleController = GameObject.Find("BattleController");
         movingToEnemy = false;
         returnStartPos = false;
         alive = true;
+        idle = true;
     }
 
-    // Update is called once per frame
+
     void FixedUpdate()
     {
+        //If the enemy is a bandit
         if(enemyType == 0)
         {
+            //We move the enemy to the move position if it has to move towards it
             if (movingToEnemy)
             {
                 if (transform.position.x > movePos)
@@ -45,6 +62,7 @@ public class EnemyTeamScript : MonoBehaviour
                     GetComponent<Animator>().SetBool("IsAttacking", true);
                 }
             }
+            //We move the enemy to the start position after it attacks
             else if (returnStartPos)
             {
                 if (transform.position.x < startPos)
@@ -70,20 +88,24 @@ public class EnemyTeamScript : MonoBehaviour
         }        
     }
 
+    //Function to start the defense zone
     public void StartDefenseZone()
     {
         battleController.GetComponent<BattleController>().StartDefenseZone();
     }
 
+    //Function to end the defense zone
     public void EndDefenseZone()
     {
         battleController.GetComponent<BattleController>().EndDefenseZone();
     }
 
+    //Function to attack an objective
     public void Attack(Transform objective)
     {
         attackObjective = objective;
         transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
+        //If the enemy is a bandit we make it move towards the player
         if(enemyType == 0)
         {
             startPos = transform.position.x;
@@ -92,6 +114,7 @@ public class EnemyTeamScript : MonoBehaviour
         }
     }
 
+    //A function to save if the player has defended or not
     public void IsDefended(bool defense)
     {
         attacking = false;
@@ -106,7 +129,8 @@ public class EnemyTeamScript : MonoBehaviour
         }  
     }
 
-    public void endMeleeAttack()
+    //A function to end the melee attack and start moving back to the start position
+    public void EndMeleeAttack()
     {
         attacking = false;
         attackObjective.GetComponent<PlayerTeamScript>().DealDamage(2-defended);
@@ -121,21 +145,45 @@ public class EnemyTeamScript : MonoBehaviour
         transform.localScale = scale;
     }
 
+    //A function to put the idle boolean false
+    public void ReceiveDamage()
+    {
+        idle = false;
+    }
+
+    //A function to put the idle boolean true
+    public void BeIdle()
+    {
+        idle = true;
+    }
+
+    //A function to check if the enemy is idle
+    public bool IsIdle()
+    {
+        return idle;
+    }
+
+    //A function to set the enemy number
     public void SetNumber(int number)
     {
         enemyNumber = number;
     }
+
+    //A function to save that an enemy is dead
     public void EnemyDied()
     {
+        idle = true;
         alive = false;
     }
 
-    public bool isAlive()
+    //A function to check if the enemy is alive
+    public bool IsAlive()
     {
         return alive;
     }
 
-    public bool isAttacking()
+    //A function to check if the enemy is attacking
+    public bool IsAttacking()
     {
         return attacking;
     }

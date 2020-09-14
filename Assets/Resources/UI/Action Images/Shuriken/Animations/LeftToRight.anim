@@ -136,14 +136,14 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.23333333
-    functionName: startShurikenAction
+    functionName: StartShurikenAction
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.45
-    functionName: endShurikenAction
+    functionName: EndShurikenAction
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

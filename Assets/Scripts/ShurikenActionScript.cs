@@ -4,23 +4,24 @@ using UnityEngine;
 
 public class ShurikenActionScript : MonoBehaviour
 {
-
+    //The battle controller
     private GameObject battleController;
-    private Transform player;
 
-    // Start is called before the first frame update
+
     void Start()
     {
+        //We find the battle controller
         battleController = GameObject.Find("BattleController");
-        player = transform.parent.parent;
     }
 
-    public void startShurikenAction()
+    //A function to start the shuriken action
+    public void StartShurikenAction()
     {
         battleController.GetComponent<BattleController>().attackAction = true;
     }
 
-    public void endShurikenAction()
+    //A function to end the shuriken action
+    public void EndShurikenAction()
     {
         battleController.GetComponent<BattleController>().attackAction = false;
     }

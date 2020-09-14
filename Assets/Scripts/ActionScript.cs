@@ -4,20 +4,15 @@ using UnityEngine;
 
 public class ActionScript : MonoBehaviour
 {
+    //The battle controller
     private GameObject battleController;
-    // Start is called before the first frame update
+
     void Awake()
     {
         battleController = GameObject.Find("BattleController");
     }
 
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    //FUnction to save the action we are selecting at the moment
     void SelectAction(int action)
     {
         battleController.GetComponent<BattleController>().selectingAction = action;
