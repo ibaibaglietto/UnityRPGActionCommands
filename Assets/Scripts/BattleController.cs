@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,10 @@ public class BattleController : MonoBehaviour
     [SerializeField] private Transform banditBattle;
     //The prefabs of the damage UI
     [SerializeField] private Transform damageUI;
-
+    //The actions instructions
+    private GameObject actionInstructions;
+    //The enemy name
+    private GameObject enemyName;
     //The player, companions and enemies
     private Transform player;
     private Transform enemy1;
@@ -52,6 +56,9 @@ public class BattleController : MonoBehaviour
 
     private void Start()
     {
+        //Find the gameobjects
+        actionInstructions = GameObject.Find("ActionInstructions");
+        enemyName = GameObject.Find("EnemyName");
         //Initialize variables
         enemyNumber = 0;
         SpawnCharacter(0);
@@ -68,6 +75,8 @@ public class BattleController : MonoBehaviour
         badAttack = false;
         shurikenHit = false;
         defenseZone = false;
+        actionInstructions.SetActive(false);
+        enemyName.SetActive(false);
     }
 
     private void Update()
@@ -94,6 +103,11 @@ public class BattleController : MonoBehaviour
                     //if nothing is unlocked
                     if (true)
                     {
+                        enemyName.SetActive(true);
+                        actionInstructions.SetActive(true);
+                        actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
+                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
+                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy.";
                         player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                         attackType = 0;
                         selectingEnemy = true;
@@ -106,13 +120,18 @@ public class BattleController : MonoBehaviour
                     //if nothing is unlocked
                     if (true)
                     {
+                        enemyName.SetActive(true);
+                        actionInstructions.SetActive(true);
+                        actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
+                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
+                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when <sprite=360> lights up.";
                         player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                         attackType = 1;
                         selectingEnemy = true;
                         SelectFirstEnemy();
                     }
                 }
-            }
+            } 
             //When we attack we enter the selcting enemy fase
             else if (selectingEnemy)
             {
@@ -125,12 +144,19 @@ public class BattleController : MonoBehaviour
                         {
                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                            if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
+                            {
+                                enemyName.transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                            }
                         }
                         if (Input.GetKeyDown(KeyCode.Space))
                         {
                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                             selectedEnemy = enemy1;
                             selectingEnemy = false;
+                            enemyName.SetActive(false);
+                            actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
+                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
                             player.GetComponent<PlayerTeamScript>().Attack(attackType, 0, enemy1);
                         }
                     }
@@ -140,12 +166,19 @@ public class BattleController : MonoBehaviour
                         {
                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                            if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0)
+                            {
+                                enemyName.transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                            }
                         }
                         if (Input.GetKeyDown(KeyCode.Space))
                         {
                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                             selectedEnemy = enemy2;
                             selectingEnemy = false;
+                            enemyName.SetActive(false);
+                            actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
+                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
                             player.GetComponent<PlayerTeamScript>().Attack(attackType, 0, enemy2);
                         }
                     }
@@ -156,6 +189,8 @@ public class BattleController : MonoBehaviour
                     enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                     selectedEnemy = enemy1;
                     selectingEnemy = false;
+                    enemyName.SetActive(false);
+                    actionInstructions.SetActive(false);
                     player.GetComponent<PlayerTeamScript>().Attack(attackType, 0, enemy1);
                 }
             }
@@ -269,6 +304,8 @@ public class BattleController : MonoBehaviour
         //Press Q to return to start fase
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            enemyName.SetActive(false);
+            actionInstructions.SetActive(false);
             player.GetChild(0).transform.GetChild(1).GetComponent<Animator>().SetBool("Active", false);
             player.GetComponent<Animator>().SetBool("isAttacking", false);
             player.GetComponent<Animator>().SetBool("isSpinning", false);
@@ -280,11 +317,6 @@ public class BattleController : MonoBehaviour
             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
         }
-    }
-
-    private void FixedUpdate()
-    {
-                
     }
 
     //Function to spawn the characters. 0 -> Player, 1-> companion, 2-> Enemy1, 3-> Enemy2, 4-> Enemy3, 5-> Enemy4
@@ -383,10 +415,24 @@ public class BattleController : MonoBehaviour
         if (enemy1.GetComponent<EnemyTeamScript>().IsAlive())
         {
             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+            if(enemy1.GetComponent<EnemyTeamScript>().enemyType == 0)
+            {
+                enemyName.transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+            }
         }
         else if(enemyNumber > 1 && enemy2.GetComponent<EnemyTeamScript>().IsAlive())
         {
             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+            if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
+            {
+                enemyName.transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+            }
         }
+    }
+
+    //Function to deactivate the action command instructions
+    public void DeactivateActionInstructions()
+    {
+        actionInstructions.SetActive(false);
     }
 }

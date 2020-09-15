@@ -130,6 +130,7 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to end the melee attack
     public void EndMeleeAttack()
     {
+        battleController.GetComponent<BattleController>().DeactivateActionInstructions();
         //If it was the first attack and the player has done correctly the action command the player attacks again
         if(battleController.GetComponent<BattleController>().goodAttack == true && lastAttack == false)
         {
@@ -157,6 +158,7 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to throw a shuriken
     public void ThrowShuriken()
     {
+        battleController.GetComponent<BattleController>().DeactivateActionInstructions();
         shuriken = Instantiate(shurikenPrefab, gameObject.transform.position, Quaternion.identity);
         shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
         shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage);
