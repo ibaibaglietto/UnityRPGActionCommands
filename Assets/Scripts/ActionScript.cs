@@ -12,9 +12,17 @@ public class ActionScript : MonoBehaviour
         battleController = GameObject.Find("BattleController");
     }
 
-    //FUnction to save the action we are selecting at the moment
+    //Function to save the action we are selecting at the moment
     void SelectAction(int action)
     {
         battleController.GetComponent<BattleController>().selectingAction = action;
+        gameObject.GetComponent<Animator>().SetInteger("Selected",action);
     }
+
+    void SelectedMenuPos(int pos)
+    {
+        battleController.GetComponent<BattleController>().SetMenuSelectionPos(pos);
+    }
+
+
 }
