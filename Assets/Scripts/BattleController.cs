@@ -25,6 +25,12 @@ public class BattleController : MonoBehaviour
     private Transform player;
     private Transform enemy1;
     private Transform enemy2;
+    //The sword styles that are active
+    private int[] swordStyles;
+    //The shuriken styles that are active
+    private int[] shurikenStyles;
+    //The style we are using at the moment
+    private int usingStyle;
     //The damage Image
     private Transform damageImage;
     //Number of enemies the player is facing
@@ -88,6 +94,8 @@ public class BattleController : MonoBehaviour
         badAttack = false;
         shurikenHit = false;
         defenseZone = false;
+        swordStyles = new int[6];
+        shurikenStyles = new int[6];
         actionInstructions.SetActive(false);
         enemyName.SetActive(false);
     }
@@ -181,8 +189,10 @@ public class BattleController : MonoBehaviour
                         {
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
                         }
-                        if(Input.GetKeyDown(KeyCode.Space) && menuSelectionPos == 0)
+                        if (Input.GetKeyDown(KeyCode.Space))
                         {
+                            if (menuSelectionPos == 0) usingStyle = 0;
+                            else if (menuSelectionPos == 1) usingStyle = swordStyles[0];
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                             playerChoosingAction = false;
                             enemyName.SetActive(true);
@@ -206,8 +216,10 @@ public class BattleController : MonoBehaviour
                         {
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
                         }
-                        if (Input.GetKeyDown(KeyCode.Space) && menuSelectionPos == 0)
+                        if (Input.GetKeyDown(KeyCode.Space))
                         {
+                            if (menuSelectionPos == 0) usingStyle = 0;
+                            else if (menuSelectionPos == 1) usingStyle = shurikenStyles[0];
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                             playerChoosingAction = false;
                             enemyName.SetActive(true);
@@ -275,7 +287,7 @@ public class BattleController : MonoBehaviour
                             enemyName.SetActive(false);
                             actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
                             actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
-                            player.GetComponent<PlayerTeamScript>().Attack(attackType, 0, enemy1);
+                            player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, enemy1);
                         }
                     }
                     else if (enemy2.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
@@ -297,7 +309,7 @@ public class BattleController : MonoBehaviour
                             enemyName.SetActive(false);
                             actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
                             actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
-                            player.GetComponent<PlayerTeamScript>().Attack(attackType, 0, enemy2);
+                            player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, enemy2);
                         }
                     }
                 }
@@ -309,7 +321,7 @@ public class BattleController : MonoBehaviour
                     selectingEnemy = false;
                     enemyName.SetActive(false);
                     actionInstructions.SetActive(false);
-                    player.GetComponent<PlayerTeamScript>().Attack(attackType, 0, enemy1);
+                    player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, enemy1);
                 }
             }
             //The fase where the player deals the attack
@@ -318,21 +330,29 @@ public class BattleController : MonoBehaviour
                 //If it is a melee attack
                 if (attackType == 0)
                 {
-                    //We check if the player presses the button when it is asked to be pressed
-                    if (!attackAction && Input.GetKeyDown(KeyCode.X)) badAttack = true;
-                    if (attackAction)
+                    if (usingStyle == 0)
                     {
-                        selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", true);
-                        if (Input.GetKeyDown(KeyCode.X) && !badAttack)
+                        //We check if the player presses the button when it is asked to be pressed
+                        if (!attackAction && Input.GetKeyDown(KeyCode.X)) badAttack = true;
+                        if (attackAction)
                         {
-                            goodAttack = true;
+                            selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", true);
+                            if (Input.GetKeyDown(KeyCode.X) && !badAttack)
+                            {
+                                goodAttack = true;
+                            }
                         }
+                        else
+                        {
+                            selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
+                        }
+                        player.GetComponent<Animator>().SetBool("isAttacking", true);
                     }
-                    else
+                    else if (usingStyle == 1)
                     {
-                        selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
+                        if (Input.GetKeyDown(KeyCode.X)) player.GetComponent<Animator>().SetTrigger("goodChargeMelee");
+                        else if (Input.GetKeyDown(KeyCode.Z)) player.GetComponent<Animator>().SetTrigger("badChargeMelee");
                     }
-                    player.GetComponent<Animator>().SetBool("isAttacking", true);
                 }
                 //If it is a shuriken attack
                 else if (attackType == 1)
@@ -559,6 +579,7 @@ public class BattleController : MonoBehaviour
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
                 if(PlayerPrefs.GetInt("Light Sword") == 1)
                 {
+                    swordStyles[0] = 1;
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = lightSword;
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Light sword";
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "2 LP";
@@ -607,6 +628,7 @@ public class BattleController : MonoBehaviour
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
                 if (PlayerPrefs.GetInt("Light Shuriken") == 1)
                 {
+                    shurikenStyles[0] = 1;
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = lightShuriken;
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Light shuriken";
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "2 LP";

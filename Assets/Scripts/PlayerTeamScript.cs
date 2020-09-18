@@ -14,6 +14,8 @@ public class PlayerTeamScript : MonoBehaviour
     private Transform shuriken;
     //The damage image
     private Transform damageImage;
+    //The attack style
+    private int attackStyle;
     //The objective of the shuriken
     public Vector3 shurikenObjective;
     //The battle controller
@@ -62,6 +64,7 @@ public class PlayerTeamScript : MonoBehaviour
             {
                 GetComponent<Animator>().SetFloat("Speed", 0.0f);
                 movingToEnemy = false;
+                if (attackStyle == 1) gameObject.GetComponent<Animator>().SetTrigger("chargeLightMelee");
                 battleController.GetComponent<BattleController>().finalAttack = true;
             }
         }
@@ -91,8 +94,9 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to attack the enemy.type: 0-> melee, 1-> ranged. style: style of melee or ranged attack
     public void Attack(int type, int style, Transform objective)
     {
+        attackStyle = style;
         //If the one attacking is the player
-        if(playerTeamType == 0)
+        if (playerTeamType == 0)
         {
             //We save the objective
             attackObjective = objective;
@@ -103,6 +107,12 @@ public class PlayerTeamScript : MonoBehaviour
                 if(style == 0)
                 {
                     attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
+                    startPos = transform.position.x;
+                    movePos = attackObjective.position.x - 1.1f;
+                    movingToEnemy = true;
+                }
+                else if(style == 1)
+                {
                     startPos = transform.position.x;
                     movePos = attackObjective.position.x - 1.1f;
                     movingToEnemy = true;
@@ -153,6 +163,16 @@ public class PlayerTeamScript : MonoBehaviour
             transform.localScale = scale;
             battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, true);
         }        
+    }
+
+    //Function to en the light melee attack
+    public void EndLightMeleeAttack(int damage)
+    {
+        returnStartPos = true;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
+        battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), damage, true);
     }
 
     //A function to throw a shuriken
