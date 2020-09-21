@@ -38,4 +38,10 @@ public class PlayerLifeScript : MonoBehaviour
         currentHealth -= health;
         currentHealthText.text = currentHealth.ToString();
     }
+    //A function to heal the player
+    public void Heal(int health)
+    {
+        currentHealth += health;
+        currentHealthText.text = currentHealth.ToString();
+    }
 }
