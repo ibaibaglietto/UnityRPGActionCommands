@@ -1534,14 +1534,19 @@ MonoBehaviour:
   damageUI: {fileID: 2003888347808236252, guid: ba485e94df23bb6459b7ed70110d5086, type: 3}
   normalSword: {fileID: 21300000, guid: 016fa064988a4ad409e0708b60a94625, type: 3}
   lightSword: {fileID: 21300000, guid: c8c7a5f5e1930be4dae588b05dab6a64, type: 3}
+  multiStrikeSword: {fileID: 21300000, guid: 80e3e3e4ba7bcd243bb76e0a20742180, type: 3}
   normalShuriken: {fileID: 21300000, guid: 0cbdcf9fee2c6424eb43fbfddeadc5a9, type: 3}
   lightShuriken: {fileID: 21300000, guid: 660f7129ecc45104498cd20245066e9f, type: 3}
+  fireShuriken: {fileID: 21300000, guid: 96aae68d6dc460e4fa61e37de41b2bdb, type: 3}
+  emptyIcon: {fileID: 21300000, guid: 49ec9d57c1dfacf4ea9ba8553fa36077, type: 3}
+  fillIcon: {fileID: 21300000, guid: 7dc1d3a778ee7224aa43def702a6b4d2, type: 3}
   finalAttack: 0
   attackAction: 0
   attackFinished: 0
   goodAttack: 0
   badAttack: 0
   shurikenHit: 0
+  shurikenTime: 0
   selectingAction: 0
 --- !u!4 &980658071
 Transform:

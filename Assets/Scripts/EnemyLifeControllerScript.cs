@@ -31,9 +31,12 @@ public class EnemyLifeControllerScript : MonoBehaviour
     //A function to deal damage to the enemy
     public void DealDamage(int health)
     {
-        currentHealth -= health;
-        lifeFill.fillAmount = (float)currentHealth / (float)maxHealth;
-        lifeNumb.text = currentHealth.ToString();
+        if (currentHealth > 0)
+        {
+            currentHealth -= health;
+            lifeFill.fillAmount = (float)currentHealth / (float)maxHealth;
+            lifeNumb.text = currentHealth.ToString();
+        }
     }
 
     

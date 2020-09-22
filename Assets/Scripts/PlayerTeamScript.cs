@@ -9,6 +9,8 @@ public class PlayerTeamScript : MonoBehaviour
     [SerializeField] private Transform shurikenPrefab;
     //The prefab of the light shuriken
     [SerializeField] private Transform lightShurikenPrefab;
+    //The prefab of the fire shuriken
+    [SerializeField] private Transform fireShurikenPrefab;
     //The prefab of the damage UI
     [SerializeField] private Transform damageUI;
 
@@ -42,16 +44,19 @@ public class PlayerTeamScript : MonoBehaviour
     private bool returnStartPos;
     //The objective of the attack
     private Transform attackObjective;
+    //The attack speed
+    private float attackSpeed;
 
     void Awake()
     {
-        //We find the gameobjects and initialize some booleans
+        //We find the gameobjects and initialize some variables
         lightPointsUI = GameObject.Find("LightBckImage");
         battleController = GameObject.Find("BattleController");
         playerLife = GameObject.Find("PlayerLifeBckImage");
         lastAttack = false;
         movingToEnemy = false;
         returnStartPos = false;
+        attackSpeed = 1.0f;
     }
 
 
@@ -82,7 +87,7 @@ public class PlayerTeamScript : MonoBehaviour
         {
             if (transform.position.x > startPos)
             {
-                if(attackStyle == 0)
+                if(attackStyle == 0 || attackStyle == 2)
                 {
                     attackObjective.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
                     attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
@@ -130,6 +135,14 @@ public class PlayerTeamScript : MonoBehaviour
                     movePos = attackObjective.position.x - 1.1f;
                     movingToEnemy = true;
                 }
+                else if(style == 2)
+                {
+                    attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
+                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(3);
+                    startPos = transform.position.x;
+                    movePos = attackObjective.position.x - 1.1f;
+                    movingToEnemy = true;
+                }
             }
             //The shuriken attack
             if(type == 1)
@@ -142,6 +155,15 @@ public class PlayerTeamScript : MonoBehaviour
                 }
                 else if(style == 1)
                 {
+                    transform.GetChild(2).GetComponent<Light>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(2);
+                    GetComponent<PlayerTeamScript>().shurikenObjective = attackObjective.position;
+                    GetComponent<Animator>().SetBool("isSpinning", true);
+                }
+                else if(style == 2)
+                {
+                    transform.GetChild(2).GetComponent<Light>().color = new Vector4(0.8862745f, 0.345098f, 0.1333333f, 1.0f); 
+                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(3);
                     GetComponent<PlayerTeamScript>().shurikenObjective = attackObjective.position;
                     GetComponent<Animator>().SetBool("isSpinning", true);
                 }
@@ -160,27 +182,58 @@ public class PlayerTeamScript : MonoBehaviour
     {
         battleController.GetComponent<BattleController>().DeactivateActionInstructions();
         //If it was the first attack and the player has done correctly the action command the player attacks again
-        if(battleController.GetComponent<BattleController>().goodAttack == true && lastAttack == false)
+        if(attackStyle == 0)
         {
-            lastAttack = true;
-            battleController.GetComponent<BattleController>().attackAction = false;
-            battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, false);
+            if (battleController.GetComponent<BattleController>().goodAttack == true && lastAttack == false)
+            {
+                lastAttack = true;
+                battleController.GetComponent<BattleController>().attackAction = false;
+                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, false);
+            }
+            //else we end the attack and the player goes to the starting position
+            else
+            {
+                lastAttack = false;
+                battleController.GetComponent<BattleController>().badAttack = false;
+                battleController.GetComponent<BattleController>().goodAttack = false;
+                battleController.GetComponent<BattleController>().attackAction = false;
+                gameObject.GetComponent<Animator>().SetBool("isAttacking", false);
+                battleController.GetComponent<BattleController>().finalAttack = false;
+                returnStartPos = true;
+                Vector3 scale = transform.localScale;
+                scale.x *= -1;
+                transform.localScale = scale;
+                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, true);
+            }
         }
-        //else we end the attack and the player goes to the starting position
-        else
+        else if (attackStyle == 2)
         {
-            lastAttack = false;
-            battleController.GetComponent<BattleController>().badAttack = false;
-            battleController.GetComponent<BattleController>().goodAttack = false;
-            battleController.GetComponent<BattleController>().attackAction = false;
-            gameObject.GetComponent<Animator>().SetBool("isAttacking", false);
-            battleController.GetComponent<BattleController>().finalAttack = false;
-            returnStartPos = true;
-            Vector3 scale = transform.localScale;
-            scale.x *= -1;
-            transform.localScale = scale;
-            battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, true);
-        }        
+            if (battleController.GetComponent<BattleController>().goodAttack == true)
+            {
+                if (attackSpeed < 1.80f) attackSpeed += 0.20f;
+                gameObject.GetComponent<Animator>().SetFloat("attackSpeed", attackSpeed);
+                battleController.GetComponent<BattleController>().goodAttack = false;
+                battleController.GetComponent<BattleController>().attackAction = false;
+                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, false);
+            }
+            //else we end the attack and the player goes to the starting position
+            else
+            {
+                attackSpeed = 1.0f;
+                gameObject.GetComponent<Animator>().SetFloat("attackSpeed", attackSpeed);
+                battleController.GetComponent<BattleController>().badAttack = false;
+                battleController.GetComponent<BattleController>().goodAttack = false;
+                battleController.GetComponent<BattleController>().attackAction = false;
+                gameObject.GetComponent<Animator>().SetBool("isAttacking", false);
+                battleController.GetComponent<BattleController>().finalAttack = false;
+                returnStartPos = true;
+                Vector3 scale = transform.localScale;
+                scale.x *= -1;
+                transform.localScale = scale;
+                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, true);
+            }
+        }
+               
     }
 
     //Function to en the light melee attack
@@ -205,8 +258,17 @@ public class PlayerTeamScript : MonoBehaviour
         }
         else if (attackStyle == 1)
         {
+            transform.GetChild(2).GetComponent<Light>().intensity = 0.0f;
             battleController.GetComponent<BattleController>().DeactivateActionInstructions();
             shuriken = Instantiate(lightShurikenPrefab, gameObject.transform.position, Quaternion.identity);
+            shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
+            shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage);
+        }
+        else if (attackStyle == 2)
+        {
+            transform.GetChild(2).GetComponent<Light>().intensity = 0.0f;
+            battleController.GetComponent<BattleController>().DeactivateActionInstructions();
+            shuriken = Instantiate(fireShurikenPrefab, gameObject.transform.position, Quaternion.identity);
             shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
             shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage);
         }
@@ -223,7 +285,13 @@ public class PlayerTeamScript : MonoBehaviour
         else if (attackStyle == 1)
         {
             battleController.GetComponent<BattleController>().shurikenTime = Time.fixedTime;
-            gameObject.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("Active", true);
+            gameObject.transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(true);
+            battleController.GetComponent<BattleController>().finalAttack = true;
+        }
+        else if (attackStyle == 2)
+        {
+            battleController.GetComponent<BattleController>().shurikenTime = Time.fixedTime;
+            gameObject.transform.GetChild(0).transform.GetChild(4).gameObject.SetActive(true);
             battleController.GetComponent<BattleController>().finalAttack = true;
         }
 
