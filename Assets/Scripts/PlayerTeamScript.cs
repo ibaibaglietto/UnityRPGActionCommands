@@ -150,21 +150,21 @@ public class PlayerTeamScript : MonoBehaviour
                 //To do the normal attack we save the objective and the player starts spinning
                 if(style == 0)
                 {
-                    GetComponent<PlayerTeamScript>().shurikenObjective = attackObjective.position;
+                    shurikenObjective = attackObjective.position;
                     GetComponent<Animator>().SetBool("isSpinning", true);
                 }
                 else if(style == 1)
                 {
                     transform.GetChild(2).GetComponent<Light>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                     lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(2);
-                    GetComponent<PlayerTeamScript>().shurikenObjective = attackObjective.position;
+                    shurikenObjective = attackObjective.position;
                     GetComponent<Animator>().SetBool("isSpinning", true);
                 }
                 else if(style == 2)
                 {
                     transform.GetChild(2).GetComponent<Light>().color = new Vector4(0.8862745f, 0.345098f, 0.1333333f, 1.0f); 
                     lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(3);
-                    GetComponent<PlayerTeamScript>().shurikenObjective = attackObjective.position;
+                    shurikenObjective = new Vector3(12.0f, attackObjective.position.y, attackObjective.position.z);
                     GetComponent<Animator>().SetBool("isSpinning", true);
                 }
             }
@@ -269,8 +269,10 @@ public class PlayerTeamScript : MonoBehaviour
             transform.GetChild(2).GetComponent<Light>().intensity = 0.0f;
             battleController.GetComponent<BattleController>().DeactivateActionInstructions();
             shuriken = Instantiate(fireShurikenPrefab, gameObject.transform.position, Quaternion.identity);
+            shuriken.GetComponent<ShurikenScript>().SetFireObjectives(battleController.GetComponent<BattleController>().GetGroundEnemies());
             shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
             shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage);
+            shuriken.GetComponent<ShurikenScript>().OnFireShuriken(true);
         }
     }
     

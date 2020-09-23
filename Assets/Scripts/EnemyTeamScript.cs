@@ -28,7 +28,8 @@ public class EnemyTeamScript : MonoBehaviour
     private bool attacking;
     //A bool to check if the player is idle
     private bool idle;
-
+    //A bool to know if the enemy is on the ground
+    private bool grounded;
 
     void Start()
     {
@@ -38,6 +39,7 @@ public class EnemyTeamScript : MonoBehaviour
         returnStartPos = false;
         alive = true;
         idle = true;
+        if (enemyType == 0) grounded = true;
     }
 
 
@@ -86,6 +88,11 @@ public class EnemyTeamScript : MonoBehaviour
                 }
             }
         }        
+    }
+    //Function to know if the enemy is on the ground
+    public bool IsGrounded()
+    {
+        return grounded;
     }
 
     //Function to start the defense zone

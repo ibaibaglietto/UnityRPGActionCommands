@@ -6,15 +6,23 @@ public class ShurikenScript : MonoBehaviour
 {
     //The objective of the shuriken
     private Vector3 objective;
+    //The objectives of the fire shuriken
+    private Transform[] fireObjectives;
     //The battle controller
     private GameObject battleController;
     //The damage of the shuriken
     private int shurikenDamage;
+    //A boolean to know if the shuriken is a fire shuriken
+    private bool fire;
+    //An int to know the number of enemies hit
+    private int hit;
 
     private void Start()
     {
         //We find the battle controller
         battleController = GameObject.Find("BattleController");
+        //We initialize the hit int
+        hit = 0;
     }
 
     void FixedUpdate()
@@ -24,9 +32,16 @@ public class ShurikenScript : MonoBehaviour
         //When the shuriken arrives it deals damage and self destroys
         else
         {
-            battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), shurikenDamage,true);
+            if (!fire) battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), shurikenDamage, true);
             Destroy(gameObject);
         }
+        if (fire && fireObjectives.Length > hit && gameObject.transform.position.x > (fireObjectives[hit].transform.position.x - 0.15f) && gameObject.transform.position.x <= (fireObjectives[hit].transform.position.x + 0.15f))
+        {
+            battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetGroundEnemies()[hit], shurikenDamage, true);
+            hit += 1;
+        }
+        
+        
     }
 
     //A function to set the objective
@@ -34,10 +49,21 @@ public class ShurikenScript : MonoBehaviour
     {
         objective = obj;
     }
+    //A function to set the objectives of the fire shuriken
+    public void SetFireObjectives(Transform[] objs)
+    {
+        fireObjectives = objs;
+    }
 
     //A function to set the shuriken damage
     public void SetShurikenDamage(int damage)
     {
         shurikenDamage = damage;
+    }
+
+    //Function to set the shuriken on fire
+    public void OnFireShuriken(bool onFire)
+    {
+        fire = onFire;
     }
 }
