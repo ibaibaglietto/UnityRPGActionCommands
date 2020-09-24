@@ -319,4 +319,15 @@ public class PlayerTeamScript : MonoBehaviour
         playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
     }
 
+    //A function to heal
+    public void Heal(int points)
+    {
+        playerLife.GetComponent<PlayerLifeScript>().Heal(points);
+    }
+
+    //A function to increase the light points
+    public void IncreaseLight(int points) 
+    {
+        lightPointsUI.GetComponent<LightPointsScript>().IncreaseLight(points);
+    }
 }

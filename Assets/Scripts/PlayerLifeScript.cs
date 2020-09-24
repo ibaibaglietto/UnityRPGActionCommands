@@ -42,6 +42,7 @@ public class PlayerLifeScript : MonoBehaviour
     public void Heal(int health)
     {
         currentHealth += health;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
         currentHealthText.text = currentHealth.ToString();
     }
 }

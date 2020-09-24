@@ -43,6 +43,7 @@ public class LightPointsScript : MonoBehaviour
     public void IncreaseLight(int light)
     {
         currentLight += light;
+        if (currentLight > maxLight) currentLight = maxLight;
         currentLightText.text = currentLight.ToString();
     }
 

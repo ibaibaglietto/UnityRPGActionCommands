@@ -1880,6 +1880,8 @@ MonoBehaviour:
   normalShuriken: {fileID: 21300000, guid: 0cbdcf9fee2c6424eb43fbfddeadc5a9, type: 3}
   lightShuriken: {fileID: 21300000, guid: 660f7129ecc45104498cd20245066e9f, type: 3}
   fireShuriken: {fileID: 21300000, guid: 96aae68d6dc460e4fa61e37de41b2bdb, type: 3}
+  apple: {fileID: 21300000, guid: ac557a4efb78d694db0c3a777f381a86, type: 3}
+  lightPotion: {fileID: 21300000, guid: 034e73f5171fd16498937cec15feb9aa, type: 3}
   emptyIcon: {fileID: 21300000, guid: 49ec9d57c1dfacf4ea9ba8553fa36077, type: 3}
   fillIcon: {fileID: 21300000, guid: 7dc1d3a778ee7224aa43def702a6b4d2, type: 3}
   finalAttack: 0
