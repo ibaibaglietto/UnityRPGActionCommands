@@ -11,15 +11,19 @@ public class PlayerTeamScript : MonoBehaviour
     [SerializeField] private Transform lightShurikenPrefab;
     //The prefab of the fire shuriken
     [SerializeField] private Transform fireShurikenPrefab;
-    //The prefab of the damage UI
+    //The prefab of the damage, heart and light UI
     [SerializeField] private Transform damageUI;
+    [SerializeField] private Transform heartUI;
+    [SerializeField] private Transform lightUI;
 
     //The life points UI
     private GameObject lightPointsUI;
     //The shuriken
     private Transform shuriken;
-    //The damage image
+    //The damage, heart and light images
     private Transform damageImage;
+    private Transform heartImage;
+    private Transform lightImage;
     //The attack style
     private int attackStyle;
     //The objective of the shuriken
@@ -322,12 +326,16 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to heal
     public void Heal(int points)
     {
+        heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 0.25f, transform.position.y + 1.25f, 0), Quaternion.identity, transform.GetChild(0));
+        heartImage.GetChild(0).GetComponent<Text>().text = points.ToString();
         playerLife.GetComponent<PlayerLifeScript>().Heal(points);
     }
 
     //A function to increase the light points
     public void IncreaseLight(int points) 
     {
+        lightImage = Instantiate(lightUI, new Vector3(transform.position.x + 0.25f, transform.position.y + 1.25f, 0), Quaternion.identity, transform.GetChild(0));
+        lightImage.GetChild(0).GetComponent<Text>().text = points.ToString();
         lightPointsUI.GetComponent<LightPointsScript>().IncreaseLight(points);
     }
 }

@@ -1882,6 +1882,9 @@ MonoBehaviour:
   fireShuriken: {fileID: 21300000, guid: 96aae68d6dc460e4fa61e37de41b2bdb, type: 3}
   apple: {fileID: 21300000, guid: ac557a4efb78d694db0c3a777f381a86, type: 3}
   lightPotion: {fileID: 21300000, guid: 034e73f5171fd16498937cec15feb9aa, type: 3}
+  partnerChange: {fileID: 21300000, guid: 7bf4c87ed9e69ae42b41f7d63a1d0f52, type: 3}
+  defend: {fileID: 21300000, guid: 7c4672c9ab6f01f49a8e3bd5a39481fb, type: 3}
+  run: {fileID: 21300000, guid: 4d00e75942f577b4391e746d109c1c75, type: 3}
   emptyIcon: {fileID: 21300000, guid: 49ec9d57c1dfacf4ea9ba8553fa36077, type: 3}
   fillIcon: {fileID: 21300000, guid: 7dc1d3a778ee7224aa43def702a6b4d2, type: 3}
   finalAttack: 0
