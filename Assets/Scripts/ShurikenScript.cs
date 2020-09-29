@@ -32,11 +32,19 @@ public class ShurikenScript : MonoBehaviour
         //When the shuriken arrives it deals damage and self destroys
         else
         {
-            if (!fire) battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), shurikenDamage, true);
+            if (!fire)
+            {
+                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), shurikenDamage, true);
+                if (shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.1f);
+                else if (shurikenDamage == 2) battleController.GetComponent<BattleController>().FillSouls(0.3f);
+                else battleController.GetComponent<BattleController>().FillSouls(0.4f);
+            }
             Destroy(gameObject);
         }
         if (fire && fireObjectives.Length > hit && gameObject.transform.position.x > (fireObjectives[hit].transform.position.x - 0.15f) && gameObject.transform.position.x <= (fireObjectives[hit].transform.position.x + 0.15f))
         {
+            if(shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.075f);
+            else battleController.GetComponent<BattleController>().FillSouls(0.15f);
             battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetGroundEnemies()[hit], shurikenDamage, true);
             hit += 1;
         }

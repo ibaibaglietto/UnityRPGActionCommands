@@ -37,6 +37,13 @@ public class BattleController : MonoBehaviour
     private Transform player;
     private Transform enemy1;
     private Transform enemy2;
+    //The souls
+    private GameObject soul1;
+    private GameObject soul2;
+    private GameObject soul3;
+    private GameObject soul4;
+    private GameObject soul5;
+    private GameObject soul6;
     //The menu options that can be used
     private bool[] menuCanUse;
     //The sword styles that are active
@@ -95,10 +102,14 @@ public class BattleController : MonoBehaviour
     public float shurikenTime;
     //A bool to know if the player is trying to flee
     private bool fleeing;
+    //A bool to know if the player has fled
+    private bool fled;
     //A float to know the time the player started fleeing
     private float fleeTime;
     //Boolean to know if the flee bar is moving right or left
     private bool fleeRight;
+    //Integer to know the defense of the player
+    private int defense;
     //The action the player is selecting. 0-> Sword, 1-> Shuriken, 2-> Items, 3-> Special, 4-> Other
     public int selectingAction; 
 
@@ -115,6 +126,12 @@ public class BattleController : MonoBehaviour
         lightPointsUI = GameObject.Find("LightBckImage");
         actionInstructions = GameObject.Find("ActionInstructions");
         enemyName = GameObject.Find("EnemyNames");
+        soul1 = GameObject.Find("Soul1Fill");
+        soul2 = GameObject.Find("Soul2Fill");
+        soul3 = GameObject.Find("Soul3Fill");
+        soul4 = GameObject.Find("Soul4Fill");
+        soul5 = GameObject.Find("Soul5Fill");
+        soul6 = GameObject.Find("Soul6Fill");
         //Initialize variables
         enemyNumber = 0;
         SpawnCharacter(0);
@@ -136,8 +153,10 @@ public class BattleController : MonoBehaviour
         defenseZone = false;
         canSelect = false;
         fleeing = false;
+        fled = false;
         swordStyles = new int[6];
         shurikenStyles = new int[6];
+        defense = 0;
         scroll = 0;
         menuCanUse = new bool[6];
         actionInstructions.SetActive(false);
@@ -157,6 +176,7 @@ public class BattleController : MonoBehaviour
             //The fase when the player chooses what action to do
             if (playerChoosingAction)
             {
+                defense = 0;
                 if (!player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().GetBool("MenuOpened"))
                 {
                     //We use left and right arrows to move in the action menu
@@ -356,12 +376,24 @@ public class BattleController : MonoBehaviour
                         }
                         if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
                         {
-                            if (menuSelectionPos == 2) 
+                            if(menuSelectionPos == 1)
+                            {
+                                defense = 1;
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                actionInstructions.SetActive(false);
+                                EndPlayerTurn();
+                            }
+                            else if (menuSelectionPos == 2) 
                             {                                
                                 player.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.position = new Vector3( (player.GetChild(0).transform.GetChild(6).transform.position.x - 1.930875f) + Random.Range(0.0f, 100.0f) * 0.0386175f, player.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.position.y, player.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.position.z);
                                 fleeRight = Random.Range(0.0f, 100.0f) > 50.0f;
-                                Debug.Log(player.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.position.x - player.GetChild(0).transform.GetChild(6).transform.position.x);
-                                Debug.Log(fleeRight);
+                                player.GetComponent<Animator>().SetFloat("Speed", 0.5f);
+                                player.GetComponent<Animator>().SetFloat("attackSpeed", 2.0f);
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> repeatedly to fill the bar.";
                                 fleeTime = Time.fixedTime;
                                 playerChoosingAction = false;
                                 Vector3 scale = player.transform.localScale;
@@ -408,7 +440,6 @@ public class BattleController : MonoBehaviour
                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
                     enemyName.SetActive(false);
                     player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                     selectingPlayer = false;
@@ -673,7 +704,7 @@ public class BattleController : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.X))
                 {
-                    player.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.02f;
+                    if(player.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f) player.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.02f;
                 }
             }
         }
@@ -804,7 +835,7 @@ public class BattleController : MonoBehaviour
         {
             if ((Time.fixedTime - fleeTime) < 10.0f)
             {
-                player.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().fillAmount -= 0.001f;                
+                if (player.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f) player.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().fillAmount -= 0.001f;                
                 if (fleeRight)
                 {
                     if ((player.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.position.x - player.GetChild(0).transform.GetChild(6).transform.position.x) < 1.930f)
@@ -824,9 +855,30 @@ public class BattleController : MonoBehaviour
             }
             else
             {
-                Debug.Log((player.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.position.x - (player.GetChild(0).transform.GetChild(6).transform.position.x - 1.930875f))/3.86175f);
-                Debug.Log(player.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().fillAmount);
+                actionInstructions.SetActive(false);
+                player.GetChild(0).transform.GetChild(6).gameObject.SetActive(false);
+                if (player.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().fillAmount > ((player.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.position.x - (player.GetChild(0).transform.GetChild(6).transform.position.x - 1.930875f)) / 3.86175f))
+                {
+                    fleeing = false;
+                    fled = true;
+                }
+                else
+                {
+                    player.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
+                    player.GetComponent<Animator>().SetFloat("Speed", 0.0f);
+                    player.GetComponent<Animator>().SetFloat("attackSpeed", 1.0f);
+                    Vector3 scale = player.transform.localScale;
+                    scale.x *= -1;
+                    player.transform.localScale = scale;
+                    fleeing = false;
+                    EndPlayerTurn();
+                }
             }
+        }
+        else if (fled)
+        {
+            if(player.transform.position.x > -10.0f) player.transform.position = new Vector3(player.transform.position.x - 0.2f, player.transform.position.y, player.transform.position.z);
+            //else EndBattle();
         }
     }
 
@@ -908,6 +960,12 @@ public class BattleController : MonoBehaviour
         {
             objective.GetComponent<Animator>().SetTrigger("TakeDamage");
         }
+    }
+
+    //Function to get the defense of the player
+    public int GetDefense()
+    {
+        return defense;
     }
 
     //A function to end players turn
@@ -1070,6 +1128,64 @@ public class BattleController : MonoBehaviour
         {
             if (i < 19) items[i] = items[i + 1];
             else items[i] = 0;
+        }
+    }
+
+    //Function to fill the souls
+    public void FillSouls(float soul)
+    {
+        if(soul1.GetComponent<Image>().fillAmount != 1.0f)
+        {
+            if ((soul1.GetComponent<Image>().fillAmount + soul) > 1.0f)
+            {
+                soul2.GetComponent<Image>().fillAmount = (soul1.GetComponent<Image>().fillAmount + soul) - 1.0f;
+                soul1.GetComponent<Image>().fillAmount = 1.0f;
+            }
+            else soul1.GetComponent<Image>().fillAmount += soul;
+        }
+        else if (soul2.GetComponent<Image>().fillAmount != 1.0f)
+        {
+            if ((soul2.GetComponent<Image>().fillAmount + soul) > 1.0f)
+            {
+                soul3.GetComponent<Image>().fillAmount = (soul2.GetComponent<Image>().fillAmount + soul) - 1.0f;
+                soul2.GetComponent<Image>().fillAmount = 1.0f;
+            }
+            else soul2.GetComponent<Image>().fillAmount += soul;
+        }
+        else if (soul3.GetComponent<Image>().fillAmount != 1.0f)
+        {
+            if ((soul3.GetComponent<Image>().fillAmount + soul) > 1.0f)
+            {
+                soul4.GetComponent<Image>().fillAmount = (soul3.GetComponent<Image>().fillAmount + soul) - 1.0f;
+                soul3.GetComponent<Image>().fillAmount = 1.0f;
+            }
+            else soul3.GetComponent<Image>().fillAmount += soul;
+        }
+        else if (soul4.GetComponent<Image>().fillAmount != 1.0f)
+        {
+            if ((soul4.GetComponent<Image>().fillAmount + soul) > 1.0f)
+            {
+                soul5.GetComponent<Image>().fillAmount = (soul4.GetComponent<Image>().fillAmount + soul) - 1.0f;
+                soul4.GetComponent<Image>().fillAmount = 1.0f;
+            }
+            else soul4.GetComponent<Image>().fillAmount += soul;
+        }
+        else if (soul5.GetComponent<Image>().fillAmount != 1.0f)
+        {
+            if ((soul5.GetComponent<Image>().fillAmount + soul) > 1.0f)
+            {
+                soul6.GetComponent<Image>().fillAmount = (soul5.GetComponent<Image>().fillAmount + soul) - 1.0f;
+                soul5.GetComponent<Image>().fillAmount = 1.0f;
+            }
+            else soul5.GetComponent<Image>().fillAmount += soul;
+        }
+        else if (soul6.GetComponent<Image>().fillAmount != 1.0f)
+        {
+            if ((soul6.GetComponent<Image>().fillAmount + soul) > 1.0f)
+            {
+                soul6.GetComponent<Image>().fillAmount = 1.0f;
+            }
+            else soul6.GetComponent<Image>().fillAmount += soul;
         }
     }
 
@@ -1386,7 +1502,7 @@ public class BattleController : MonoBehaviour
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = partnerChange;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Change partner";
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
-            menuCanUse[0] = true;
+            menuCanUse[0] = false;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = defend;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Defend";
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "";

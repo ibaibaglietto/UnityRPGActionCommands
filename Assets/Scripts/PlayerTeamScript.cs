@@ -190,6 +190,7 @@ public class PlayerTeamScript : MonoBehaviour
         {
             if (battleController.GetComponent<BattleController>().goodAttack == true && lastAttack == false)
             {
+                battleController.GetComponent<BattleController>().FillSouls(0.15f);
                 lastAttack = true;
                 battleController.GetComponent<BattleController>().attackAction = false;
                 battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, false);
@@ -198,6 +199,7 @@ public class PlayerTeamScript : MonoBehaviour
             else
             {
                 lastAttack = false;
+                battleController.GetComponent<BattleController>().FillSouls(0.15f);
                 battleController.GetComponent<BattleController>().badAttack = false;
                 battleController.GetComponent<BattleController>().goodAttack = false;
                 battleController.GetComponent<BattleController>().attackAction = false;
@@ -214,6 +216,7 @@ public class PlayerTeamScript : MonoBehaviour
         {
             if (battleController.GetComponent<BattleController>().goodAttack == true)
             {
+                battleController.GetComponent<BattleController>().FillSouls(0.1f);
                 if (attackSpeed < 1.80f) attackSpeed += 0.20f;
                 gameObject.GetComponent<Animator>().SetFloat("attackSpeed", attackSpeed);
                 battleController.GetComponent<BattleController>().goodAttack = false;
@@ -223,6 +226,7 @@ public class PlayerTeamScript : MonoBehaviour
             //else we end the attack and the player goes to the starting position
             else
             {
+                battleController.GetComponent<BattleController>().FillSouls(0.1f);
                 attackSpeed = 1.0f;
                 gameObject.GetComponent<Animator>().SetFloat("attackSpeed", attackSpeed);
                 battleController.GetComponent<BattleController>().badAttack = false;
@@ -243,6 +247,7 @@ public class PlayerTeamScript : MonoBehaviour
     //Function to en the light melee attack
     public void EndLightMeleeAttack(int damage)
     {
+        battleController.GetComponent<BattleController>().FillSouls(0.4f);
         returnStartPos = true;
         Vector3 scale = transform.localScale;
         scale.x *= -1;
@@ -318,6 +323,8 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to deal damage
     public void DealDamage(int Damage)
     {
+        Damage -= battleController.GetComponent<BattleController>().GetDefense();
+        if (Damage < 0) Damage = 0;
         damageImage = Instantiate(damageUI, new Vector3(transform.position.x + 0.25f, transform.position.y + 1.25f, 0), Quaternion.identity, transform.GetChild(0));
         damageImage.GetChild(0).GetComponent<Text>().text = Damage.ToString();
         playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
