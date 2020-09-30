@@ -185,7 +185,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -2124,7 +2124,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -2260,6 +2260,12 @@ MonoBehaviour:
   fireShuriken: {fileID: 21300000, guid: 96aae68d6dc460e4fa61e37de41b2bdb, type: 3}
   apple: {fileID: 21300000, guid: ac557a4efb78d694db0c3a777f381a86, type: 3}
   lightPotion: {fileID: 21300000, guid: 034e73f5171fd16498937cec15feb9aa, type: 3}
+  music: {fileID: 21300000, guid: b0db6193d4a5f774ea6e0d3ab0d466d1, type: 3}
+  regeneration: {fileID: 21300000, guid: 87f9cd89cccec6d42933f1f061f8f31d, type: 3}
+  thunder: {fileID: 21300000, guid: ee17751eb365a524a9ed4306c32018e5, type: 3}
+  lifesteal: {fileID: 21300000, guid: d028e28794b532440a1fb4844e9ff8d2, type: 3}
+  ghost: {fileID: 21300000, guid: 04897dcd12754454aab6149274eb908e, type: 3}
+  lightUp: {fileID: 21300000, guid: c3cde9558af2168439c32ae8bdb98255, type: 3}
   partnerChange: {fileID: 21300000, guid: 7bf4c87ed9e69ae42b41f7d63a1d0f52, type: 3}
   defend: {fileID: 21300000, guid: 7c4672c9ab6f01f49a8e3bd5a39481fb, type: 3}
   run: {fileID: 21300000, guid: 4d00e75942f577b4391e746d109c1c75, type: 3}
@@ -2576,7 +2582,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -2797,7 +2803,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7735849, g: 0.6422785, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.9935299, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2809,7 +2815,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -3535,7 +3541,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -3610,7 +3616,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
