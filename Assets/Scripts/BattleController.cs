@@ -21,6 +21,12 @@ public class BattleController : MonoBehaviour
     [SerializeField] private Sprite fireShuriken;
     [SerializeField] private Sprite apple;
     [SerializeField] private Sprite lightPotion;
+    [SerializeField] private Sprite music;
+    [SerializeField] private Sprite regeneration;
+    [SerializeField] private Sprite thunder;
+    [SerializeField] private Sprite lifesteal;
+    [SerializeField] private Sprite ghost;
+    [SerializeField] private Sprite lightUp;
     [SerializeField] private Sprite partnerChange;
     [SerializeField] private Sprite defend;
     [SerializeField] private Sprite run;
@@ -122,6 +128,7 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("Light Shuriken", 1);
         PlayerPrefs.SetInt("Fire Shuriken", 1);
         PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
+        PlayerPrefs.SetInt("Souls", 6);
         //Find the gameobjects
         lightPointsUI = GameObject.Find("LightBckImage");
         actionInstructions = GameObject.Find("ActionInstructions");
@@ -133,6 +140,60 @@ public class BattleController : MonoBehaviour
         soul5 = GameObject.Find("Soul5Fill");
         soul6 = GameObject.Find("Soul6Fill");
         //Initialize variables
+        if(PlayerPrefs.GetInt("Souls") == 1)
+        {
+            soul1.transform.parent.gameObject.SetActive(true);
+            soul2.transform.parent.gameObject.SetActive(false);
+            soul3.transform.parent.gameObject.SetActive(false);
+            soul4.transform.parent.gameObject.SetActive(false);
+            soul5.transform.parent.gameObject.SetActive(false);
+            soul6.transform.parent.gameObject.SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("Souls") == 2)
+        {
+            soul1.transform.parent.gameObject.SetActive(true);
+            soul2.transform.parent.gameObject.SetActive(true);
+            soul3.transform.parent.gameObject.SetActive(false);
+            soul4.transform.parent.gameObject.SetActive(false);
+            soul5.transform.parent.gameObject.SetActive(false);
+            soul6.transform.parent.gameObject.SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("Souls") == 3)
+        {
+            soul1.transform.parent.gameObject.SetActive(true);
+            soul2.transform.parent.gameObject.SetActive(true);
+            soul3.transform.parent.gameObject.SetActive(true);
+            soul4.transform.parent.gameObject.SetActive(false);
+            soul5.transform.parent.gameObject.SetActive(false);
+            soul6.transform.parent.gameObject.SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("Souls") == 4)
+        {
+            soul1.transform.parent.gameObject.SetActive(true);
+            soul2.transform.parent.gameObject.SetActive(true);
+            soul3.transform.parent.gameObject.SetActive(true);
+            soul4.transform.parent.gameObject.SetActive(true);
+            soul5.transform.parent.gameObject.SetActive(false);
+            soul6.transform.parent.gameObject.SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("Souls") == 5)
+        {
+            soul1.transform.parent.gameObject.SetActive(true);
+            soul2.transform.parent.gameObject.SetActive(true);
+            soul3.transform.parent.gameObject.SetActive(true);
+            soul4.transform.parent.gameObject.SetActive(true);
+            soul5.transform.parent.gameObject.SetActive(true);
+            soul6.transform.parent.gameObject.SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("Souls") == 6)
+        {
+            soul1.transform.parent.gameObject.SetActive(true);
+            soul2.transform.parent.gameObject.SetActive(true);
+            soul3.transform.parent.gameObject.SetActive(true);
+            soul4.transform.parent.gameObject.SetActive(true);
+            soul5.transform.parent.gameObject.SetActive(true);
+            soul6.transform.parent.gameObject.SetActive(true);
+        }
         enemyNumber = 0;
         SpawnCharacter(0);
         SpawnCharacter(2);
@@ -243,6 +304,8 @@ public class BattleController : MonoBehaviour
                     }
                     else if (selectingAction == 3 && Input.GetKeyDown(KeyCode.Space))
                     {
+                        CreateMenu();
+                        actionInstructions.SetActive(true);
                         player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                     }
                     else if (selectingAction == 4 && Input.GetKeyDown(KeyCode.Space))
@@ -359,7 +422,20 @@ public class BattleController : MonoBehaviour
                     }
                     else if (selectingAction == 3)
                     {
-
+                        if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Play some soul music to sleep the enemies. That was a silly joke, sorry.";
+                        else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Regenerate some of your HP and LP.";
+                        else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Throw a thunder to the enemies.";
+                        else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gain lifesteal, healing yourself damaging the enemy.";
+                        else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Dodge every attack for one or more enemy phases.";
+                        else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Power up for one attack. Stackable.";
+                        if ((menuSelectionPos < (PlayerPrefs.GetInt("Souls") - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
+                        {
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                        }
+                        else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                        {
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                        }
                     }
                     else if (selectingAction == 4)
                     {
@@ -1138,7 +1214,7 @@ public class BattleController : MonoBehaviour
         {
             if ((soul1.GetComponent<Image>().fillAmount + soul) > 1.0f)
             {
-                soul2.GetComponent<Image>().fillAmount = (soul1.GetComponent<Image>().fillAmount + soul) - 1.0f;
+                if (PlayerPrefs.GetInt("Souls") > 1) soul2.GetComponent<Image>().fillAmount = (soul1.GetComponent<Image>().fillAmount + soul) - 1.0f;
                 soul1.GetComponent<Image>().fillAmount = 1.0f;
             }
             else soul1.GetComponent<Image>().fillAmount += soul;
@@ -1147,7 +1223,7 @@ public class BattleController : MonoBehaviour
         {
             if ((soul2.GetComponent<Image>().fillAmount + soul) > 1.0f)
             {
-                soul3.GetComponent<Image>().fillAmount = (soul2.GetComponent<Image>().fillAmount + soul) - 1.0f;
+                if (PlayerPrefs.GetInt("Souls") > 2) soul3.GetComponent<Image>().fillAmount = (soul2.GetComponent<Image>().fillAmount + soul) - 1.0f;
                 soul2.GetComponent<Image>().fillAmount = 1.0f;
             }
             else soul2.GetComponent<Image>().fillAmount += soul;
@@ -1156,7 +1232,7 @@ public class BattleController : MonoBehaviour
         {
             if ((soul3.GetComponent<Image>().fillAmount + soul) > 1.0f)
             {
-                soul4.GetComponent<Image>().fillAmount = (soul3.GetComponent<Image>().fillAmount + soul) - 1.0f;
+                if (PlayerPrefs.GetInt("Souls") > 3) soul4.GetComponent<Image>().fillAmount = (soul3.GetComponent<Image>().fillAmount + soul) - 1.0f;
                 soul3.GetComponent<Image>().fillAmount = 1.0f;
             }
             else soul3.GetComponent<Image>().fillAmount += soul;
@@ -1165,7 +1241,7 @@ public class BattleController : MonoBehaviour
         {
             if ((soul4.GetComponent<Image>().fillAmount + soul) > 1.0f)
             {
-                soul5.GetComponent<Image>().fillAmount = (soul4.GetComponent<Image>().fillAmount + soul) - 1.0f;
+                if (PlayerPrefs.GetInt("Souls") > 4) soul5.GetComponent<Image>().fillAmount = (soul4.GetComponent<Image>().fillAmount + soul) - 1.0f;
                 soul4.GetComponent<Image>().fillAmount = 1.0f;
             }
             else soul4.GetComponent<Image>().fillAmount += soul;
@@ -1174,7 +1250,7 @@ public class BattleController : MonoBehaviour
         {
             if ((soul5.GetComponent<Image>().fillAmount + soul) > 1.0f)
             {
-                soul6.GetComponent<Image>().fillAmount = (soul5.GetComponent<Image>().fillAmount + soul) - 1.0f;
+                if (PlayerPrefs.GetInt("Souls") > 5) soul6.GetComponent<Image>().fillAmount = (soul5.GetComponent<Image>().fillAmount + soul) - 1.0f;
                 soul5.GetComponent<Image>().fillAmount = 1.0f;
             }
             else soul5.GetComponent<Image>().fillAmount += soul;
@@ -1195,13 +1271,17 @@ public class BattleController : MonoBehaviour
         int number;
         if(selectingAction == 0)
         {
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = normalSword;
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Normal sword";
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
+            menuCanUse[0] = true;
             number = PlayerPrefs.GetInt("Sword Styles");
             if (number == 1)
             {
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = normalSword;
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Normal sword";
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
-                menuCanUse[0] = true;
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
                 if(PlayerPrefs.GetInt("Light Sword") == 1)
                 {
                     swordStyles[0] = 1;
@@ -1247,6 +1327,11 @@ public class BattleController : MonoBehaviour
             }
             else if (number == 2)
             {
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = normalSword;
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Normal sword";
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
@@ -1295,6 +1380,8 @@ public class BattleController : MonoBehaviour
             }
             else if (number == 3)
             {
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(false);
@@ -1302,6 +1389,8 @@ public class BattleController : MonoBehaviour
             }
             else if (number == 4)
             {
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(true);
@@ -1309,6 +1398,8 @@ public class BattleController : MonoBehaviour
             }
             else if (number == 5)
             {
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(true);
@@ -1317,13 +1408,17 @@ public class BattleController : MonoBehaviour
         }
         else if (selectingAction == 1)
         {
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = normalShuriken;
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Normal shuriken";
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
+            menuCanUse[0] = true;
             number = PlayerPrefs.GetInt("Shuriken Styles");
             if (number == 1)
             {
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = normalShuriken;
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Normal shuriken";
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
-                menuCanUse[0] = true;
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
                 if (PlayerPrefs.GetInt("Light Shuriken") == 1)
                 {
                     shurikenStyles[0] = 1;
@@ -1369,6 +1464,11 @@ public class BattleController : MonoBehaviour
             }
             else if (number == 2)
             {
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = normalShuriken;
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Normal shuriken";
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
@@ -1417,6 +1517,8 @@ public class BattleController : MonoBehaviour
             }
             else if (number == 3)
             {
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(false);
@@ -1424,6 +1526,8 @@ public class BattleController : MonoBehaviour
             }
             else if (number == 4)
             {
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(true);
@@ -1431,6 +1535,8 @@ public class BattleController : MonoBehaviour
             }
             else if (number == 5)
             {
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(true);
@@ -1439,6 +1545,8 @@ public class BattleController : MonoBehaviour
         }
         else if (selectingAction == 2)
         {
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
             if (scroll > 0) player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 1.0f);
             else player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
             if ((scroll + 6) == itemSize()) player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
@@ -1495,18 +1603,99 @@ public class BattleController : MonoBehaviour
         }
         else if (selectingAction == 3)
         {
-
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            if (PlayerPrefs.GetInt("Souls") > 0)
+            {
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = music;
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Soul music";
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "? SP";
+                menuCanUse[0] = true;
+                if (PlayerPrefs.GetInt("Souls") > 1)
+                {
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = regeneration;
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Regeneration";
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "? SP";
+                    menuCanUse[1] = true;
+                    if (PlayerPrefs.GetInt("Souls") > 2)
+                    {
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().sprite = thunder;
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = "Thunder";
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "? SP";
+                        menuCanUse[2] = true;
+                        if (PlayerPrefs.GetInt("Souls") > 3)
+                        {
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(true);
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = lifesteal;
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).transform.GetChild(1).GetComponent<Text>().text = "Lifesteal";
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).transform.GetChild(2).GetComponent<Text>().text = "? SP";
+                            menuCanUse[3] = true;
+                            if (PlayerPrefs.GetInt("Souls") > 4)
+                            {
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(true);
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).transform.GetChild(0).GetComponent<Image>().sprite = ghost;
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).transform.GetChild(1).GetComponent<Text>().text = "Ghost";
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).transform.GetChild(2).GetComponent<Text>().text = "? SP";
+                                menuCanUse[4] = true;
+                                if (PlayerPrefs.GetInt("Souls") > 5)
+                                {
+                                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).gameObject.SetActive(true);
+                                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).transform.GetChild(0).GetComponent<Image>().sprite = lightUp;
+                                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).transform.GetChild(1).GetComponent<Text>().text = "Light up";
+                                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).transform.GetChild(2).GetComponent<Text>().text = "? SP";
+                                    menuCanUse[5] = true;
+                                }
+                                else player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).gameObject.SetActive(false);
+                            }
+                            else
+                            {
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(false);
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).gameObject.SetActive(false);
+                            }
+                        }
+                        else
+                        {
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(false);
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(false);
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).gameObject.SetActive(false);
+                        }
+                    }
+                    else
+                    {
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(false);
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(false);
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(false);
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).gameObject.SetActive(false);
+                    }
+                }
+                else
+                {
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(false);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(false);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(false);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(false);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).gameObject.SetActive(false);
+                }
+            }           
         }
         else if(selectingAction == 4)
         {
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = partnerChange;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Change partner";
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
             menuCanUse[0] = false;
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = defend;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Defend";
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "";
             menuCanUse[1] = true;
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().sprite = run;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = "Flee";
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "";
