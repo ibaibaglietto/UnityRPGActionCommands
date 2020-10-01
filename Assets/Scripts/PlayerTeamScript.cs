@@ -46,6 +46,12 @@ public class PlayerTeamScript : MonoBehaviour
     private bool movingToEnemy;
     //A bool to check if the player is returning to the start position
     private bool returnStartPos;
+    //Boolean to check if we are on the state where the soul light goes up
+    private bool soulLightUp;
+    //The soul music action gameobject
+    private GameObject soulMusicAction;
+    //The soul light gameobject
+    private GameObject soulLight;
     //The objective of the attack
     private Transform attackObjective;
     //The attack speed
@@ -57,9 +63,13 @@ public class PlayerTeamScript : MonoBehaviour
         lightPointsUI = GameObject.Find("LightBckImage");
         battleController = GameObject.Find("BattleController");
         playerLife = GameObject.Find("PlayerLifeBckImage");
+        soulLight = transform.GetChild(3).gameObject;
+        soulMusicAction = GameObject.Find("SoulMusicAction");
+        soulMusicAction.SetActive(false);
         lastAttack = false;
         movingToEnemy = false;
         returnStartPos = false;
+        soulLightUp = false;
         attackSpeed = 1.0f;
     }
 
@@ -109,6 +119,17 @@ public class PlayerTeamScript : MonoBehaviour
                 returnStartPos = false;
                 battleController.GetComponent<BattleController>().EndPlayerTurn();
             }
+        }
+        //Soul light going up
+        if (soulLightUp && soulLight.transform.position.y < 75.0f)
+        {
+            soulLight.transform.position = new Vector3(soulLight.transform.position.x, soulLight.transform.position.y + 0.5f, soulLight.transform.position.z);
+        }
+        else if(soulLightUp && soulLight.transform.position.y >= 75.0f)
+        {
+            soulMusicAction.SetActive(true);
+            soulLightUp = false;
+            battleController.GetComponent<BattleController>().StartSoulAttack();
         }
     }
 
@@ -170,6 +191,17 @@ public class PlayerTeamScript : MonoBehaviour
                     lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(3);
                     shurikenObjective = new Vector3(12.0f, attackObjective.position.y, attackObjective.position.z);
                     GetComponent<Animator>().SetBool("isSpinning", true);
+                }
+            }
+            //Soul attack
+            if(type == 2)
+            {
+                //Soul music attack
+                if(style == 0)
+                {
+                    GetComponent<Animator>().SetBool("soulAttack", true);
+                    soulLight.GetComponent<Light>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    soulLightUp = true;
                 }
             }
         }

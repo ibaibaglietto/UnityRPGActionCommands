@@ -456,7 +456,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.20338441, y: 0}
   m_AnchorMax: {x: 0.4711922, y: 1}
-  m_AnchoredPosition: {x: 0.29901123, y: -0.000047683716}
+  m_AnchoredPosition: {x: 0.2990036, y: -0.000047683716}
   m_SizeDelta: {x: -0.21715546, y: -0.00002670288}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &149325935
@@ -2124,7 +2124,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -2271,6 +2271,11 @@ MonoBehaviour:
   run: {fileID: 21300000, guid: 4d00e75942f577b4391e746d109c1c75, type: 3}
   emptyIcon: {fileID: 21300000, guid: 49ec9d57c1dfacf4ea9ba8553fa36077, type: 3}
   fillIcon: {fileID: 21300000, guid: 7dc1d3a778ee7224aa43def702a6b4d2, type: 3}
+  keyPrefab: {fileID: 2518599955892874953, guid: ae0952f6406224e45b9603fc3526ec43, type: 3}
+  upArrowSprite: {fileID: -2165602621528565262, guid: bd6dfd2e3e1f29a49b451520d85962fc, type: 3}
+  leftArrowSprite: {fileID: 8746342764438225453, guid: bd6dfd2e3e1f29a49b451520d85962fc, type: 3}
+  rightArrowSprite: {fileID: -8585493491078291697, guid: bd6dfd2e3e1f29a49b451520d85962fc, type: 3}
+  downArrowSprite: {fileID: -3798998906436529524, guid: bd6dfd2e3e1f29a49b451520d85962fc, type: 3}
   finalAttack: 0
   attackAction: 0
   attackFinished: 0
@@ -2582,7 +2587,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -2815,7 +2820,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -3541,7 +3546,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -3616,7 +3621,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
