@@ -129,7 +129,7 @@ public class PlayerTeamScript : MonoBehaviour
         {
             soulMusicAction.SetActive(true);
             soulLightUp = false;
-            battleController.GetComponent<BattleController>().StartSoulAttack();
+            battleController.GetComponent<BattleController>().StartSoulAttack(1);
         }
     }
 
