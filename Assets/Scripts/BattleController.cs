@@ -53,6 +53,8 @@ public class BattleController : MonoBehaviour
     private Transform key5Cover;
     private Transform key6;
     private Transform key6Cover;
+    private Transform key7;
+    private Transform key7Cover;
     //The key inputs. 0-> up, 1-> left, 2-> right, 3-> down
     private int key1Input;
     private int key2Input;
@@ -60,6 +62,7 @@ public class BattleController : MonoBehaviour
     private int key4Input;
     private int key5Input;
     private int key6Input;
+    private int key7Input;
     //The life points UI
     private GameObject lightPointsUI;
     //The actions instructions
@@ -820,9 +823,10 @@ public class BattleController : MonoBehaviour
                     {
                         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                     }
-                    else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && key1Cover.gameObject.activeSelf)
+                    if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key1Cover.gameObject.activeSelf)
                     {
-                        key1Cover.gameObject.SetActive(false);
+                        key1Cover.GetComponent<Image>().color = new Vector4(key1Cover.GetComponent<Image>().color.r, key1Cover.GetComponent<Image>().color.g, key1Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f)) key1Cover.gameObject.SetActive(false);
                     }
                     else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
                     {
@@ -875,9 +879,10 @@ public class BattleController : MonoBehaviour
                     {
                         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                     }
-                    else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && key2Cover.gameObject.activeSelf)
+                    if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key2Cover.gameObject.activeSelf)
                     {
-                        key2Cover.gameObject.SetActive(false);
+                        key2Cover.GetComponent<Image>().color = new Vector4(key2Cover.GetComponent<Image>().color.r, key2Cover.GetComponent<Image>().color.g, key2Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f)) key2Cover.gameObject.SetActive(false);
                     }
                     else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
                     {
@@ -930,9 +935,10 @@ public class BattleController : MonoBehaviour
                     {
                         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                     }
-                    else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && key3Cover.gameObject.activeSelf)
+                    if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key3Cover.gameObject.activeSelf)
                     {
-                        key3Cover.gameObject.SetActive(false);
+                        key3Cover.GetComponent<Image>().color = new Vector4(key3Cover.GetComponent<Image>().color.r, key3Cover.GetComponent<Image>().color.g, key3Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f)) key3Cover.gameObject.SetActive(false);
                     }
                     else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
                     {
@@ -985,9 +991,10 @@ public class BattleController : MonoBehaviour
                     {
                         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                     }
-                    else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && key4Cover.gameObject.activeSelf)
+                    if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key4Cover.gameObject.activeSelf)
                     {
-                        key4Cover.gameObject.SetActive(false);
+                        key4Cover.GetComponent<Image>().color = new Vector4(key4Cover.GetComponent<Image>().color.r, key4Cover.GetComponent<Image>().color.g, key4Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f)) key4Cover.gameObject.SetActive(false);
                     }
                     else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
                     {
@@ -1038,9 +1045,10 @@ public class BattleController : MonoBehaviour
                         {
                             if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                         }
-                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && key5Cover.gameObject.activeSelf)
+                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key5Cover.gameObject.activeSelf)
                         {
-                            key5Cover.gameObject.SetActive(false);
+                            key5Cover.GetComponent<Image>().color = new Vector4(key5Cover.GetComponent<Image>().color.r, key5Cover.GetComponent<Image>().color.g, key5Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f)) key5Cover.gameObject.SetActive(false);
                         }
                         else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
                         {
@@ -1087,7 +1095,159 @@ public class BattleController : MonoBehaviour
                         }
                         if (soulMusic > 2)
                         {
-
+                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                            {
+                                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                            }
+                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key6Cover.gameObject.activeSelf)
+                            {
+                                key6Cover.GetComponent<Image>().color = new Vector4(key6Cover.GetComponent<Image>().color.r, key6Cover.GetComponent<Image>().color.g, key6Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                                if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f)) key6Cover.gameObject.SetActive(false);
+                            }
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
+                            {
+                                if (key6Input == 0)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.UpArrow))
+                                    {
+                                        key6.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key6Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                else if (key6Input == 1)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.LeftArrow))
+                                    {
+                                        key6.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key6Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                else if (key6Input == 2)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.RightArrow))
+                                    {
+                                        key6.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key6Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                else if (key6Input == 3)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.DownArrow))
+                                    {
+                                        key6.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key6Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow)) failMusic = true;
+                                }
+                                else if (key6Input == 4)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                            }
+                            if (soulMusic > 3)
+                            {
+                                if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                                {
+                                    if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key7Cover.gameObject.activeSelf)
+                                {
+                                    key7Cover.GetComponent<Image>().color = new Vector4(key7Cover.GetComponent<Image>().color.r, key7Cover.GetComponent<Image>().color.g, key7Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                                    if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f)) key7Cover.gameObject.SetActive(false);
+                                }
+                                else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
+                                {
+                                    if (key7Input == 0)
+                                    {
+                                        if (Input.GetKeyDown(KeyCode.UpArrow))
+                                        {
+                                            key7.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                            key7Input = 4;
+                                        }
+                                        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                    }
+                                    else if (key7Input == 1)
+                                    {
+                                        if (Input.GetKeyDown(KeyCode.LeftArrow))
+                                        {
+                                            key7.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                            key7Input = 4;
+                                        }
+                                        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                    }
+                                    else if (key7Input == 2)
+                                    {
+                                        if (Input.GetKeyDown(KeyCode.RightArrow))
+                                        {
+                                            key7.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                            key7Input = 4;
+                                        }
+                                        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                    }
+                                    else if (key7Input == 3)
+                                    {
+                                        if (Input.GetKeyDown(KeyCode.DownArrow))
+                                        {
+                                            key7.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                            key7Input = 4;
+                                        }
+                                        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow)) failMusic = true;
+                                    }
+                                    else if (key7Input == 4)
+                                    {
+                                        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                    }
+                                }
+                                else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f)
+                                {
+                                    if (key7Input != 4) failMusic = true;
+                                    if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
+                                {
+                                    Destroy(key1.gameObject);
+                                    Destroy(key2.gameObject);
+                                    Destroy(key3.gameObject);
+                                    Destroy(key4.gameObject);
+                                    Destroy(key5.gameObject);
+                                    Destroy(key6.gameObject);
+                                    Destroy(key7.gameObject);
+                                    Destroy(key1Cover.gameObject);
+                                    Destroy(key2Cover.gameObject);
+                                    Destroy(key3Cover.gameObject);
+                                    Destroy(key4Cover.gameObject);
+                                    Destroy(key5Cover.gameObject);
+                                    Destroy(key6Cover.gameObject);
+                                    Destroy(key7Cover.gameObject);
+                                    soulMusic += 1;
+                                    StartSoulAttack(soulMusic);
+                                }
+                            }
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f)
+                            {
+                                if (key6Input != 4) failMusic = true;
+                                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                            }
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
+                            {
+                                Destroy(key1.gameObject);
+                                Destroy(key2.gameObject);
+                                Destroy(key3.gameObject);
+                                Destroy(key4.gameObject);
+                                Destroy(key5.gameObject);
+                                Destroy(key6.gameObject);
+                                Destroy(key1Cover.gameObject);
+                                Destroy(key2Cover.gameObject);
+                                Destroy(key3Cover.gameObject);
+                                Destroy(key4Cover.gameObject);
+                                Destroy(key5Cover.gameObject);
+                                Destroy(key6Cover.gameObject);
+                                soulMusic += 1;
+                                StartSoulAttack(soulMusic);
+                            }
                         }
                         else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f)
                         {
@@ -1275,7 +1435,7 @@ public class BattleController : MonoBehaviour
         {
             if (soulMusic > 0 && !failMusic)
             {
-                player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.001f*soulMusic;
+                player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.0005f + 0.0005f *soulMusic;
             }
         }
         
@@ -1497,8 +1657,10 @@ public class BattleController : MonoBehaviour
     //Function to start a soul attack
     public void StartSoulAttack(int lvl)
     {
+        int actualLvl = lvl;
+        if (actualLvl > 4) actualLvl = 4;
         player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
-        float key1pos = Random.Range(-5.0f, -5.0f + (10.0f/(lvl+3)));
+        float key1pos = Random.Range(-4.75f, -4.75f + (10.0f/(actualLvl + 3)));
         key1 = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
         key1.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key1pos, 0.0f, 0.0f);
         key1Input = Random.Range(0, 4);
@@ -1509,7 +1671,7 @@ public class BattleController : MonoBehaviour
         key1.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         key1Cover = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
         key1Cover.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key1pos, 0.0f, 0.0f);
-        float key2pos = Random.Range(key1pos + 1.0f, -5.0f + (10.0f / (lvl + 3)) * 2);
+        float key2pos = Random.Range(key1pos + 1.0f, -5.0f + (10.0f / (actualLvl + 3)) * 2);
         key2 = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
         key2.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key2pos, 0.0f, 0.0f);
         key2Input = Random.Range(0, 4);
@@ -1520,7 +1682,7 @@ public class BattleController : MonoBehaviour
         key2.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         key2Cover = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
         key2Cover.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key2pos, 0.0f, 0.0f);
-        float key3pos = Random.Range(key2pos + 1.0f, -5.0f + (10.0f / (lvl + 3)) * 3);
+        float key3pos = Random.Range(key2pos + 1.0f, -5.0f + (10.0f / (actualLvl + 3)) * 3);
         key3 = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
         key3.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key3pos, 0.0f, 0.0f);
         key3Input = Random.Range(0, 4);
@@ -1531,7 +1693,7 @@ public class BattleController : MonoBehaviour
         key3.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         key3Cover = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
         key3Cover.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key3pos, 0.0f, 0.0f);
-        float key4pos = Random.Range(key3pos + 1.0f, -5.0f + (10.0f / (lvl + 3)) * 4);
+        float key4pos = Random.Range(key3pos + 1.0f, -5.0f + (10.0f / (actualLvl + 3)) * 4);
         key4 = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
         key4.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key4pos, 0.0f, 0.0f);
         key4Input = Random.Range(0, 4);
@@ -1542,9 +1704,9 @@ public class BattleController : MonoBehaviour
         key4.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         key4Cover = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
         key4Cover.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key4pos, 0.0f, 0.0f);
-        if (lvl > 1)
+        if (actualLvl > 1)
         {
-            float key5pos = Random.Range(key4pos + 1.0f, -5.0f + (10.0f / (lvl + 3)) * 5);
+            float key5pos = Random.Range(key4pos + 1.0f, -5.0f + (10.0f / (actualLvl + 3)) * 5);
             key5 = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
             key5.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key5pos, 0.0f, 0.0f);
             key5Input = Random.Range(0, 4);
@@ -1555,10 +1717,38 @@ public class BattleController : MonoBehaviour
             key5.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
             key5Cover = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
             key5Cover.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key5pos, 0.0f, 0.0f);
+            if (actualLvl > 2)
+            {
+                float key6pos = Random.Range(key5pos + 1.0f, -5.0f + (10.0f / (actualLvl + 3)) * 6);
+                key6 = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
+                key6.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key6pos, 0.0f, 0.0f);
+                key6Input = Random.Range(0, 4);
+                if (key6Input == 0) key6.GetComponent<Image>().sprite = upArrowSprite;
+                if (key6Input == 1) key6.GetComponent<Image>().sprite = leftArrowSprite;
+                if (key6Input == 2) key6.GetComponent<Image>().sprite = rightArrowSprite;
+                if (key6Input == 3) key6.GetComponent<Image>().sprite = downArrowSprite;
+                key6.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                key6Cover = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
+                key6Cover.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key6pos, 0.0f, 0.0f);
+                if (actualLvl > 3)
+                {
+                    float key7pos = Random.Range(key6pos + 1.0f, -5.0f + (10.0f / (actualLvl + 3)) * 7);
+                    key7 = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
+                    key7.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key7pos, 0.0f, 0.0f);
+                    key7Input = Random.Range(0, 4);
+                    if (key7Input == 0) key7.GetComponent<Image>().sprite = upArrowSprite;
+                    if (key7Input == 1) key7.GetComponent<Image>().sprite = leftArrowSprite;
+                    if (key7Input == 2) key7.GetComponent<Image>().sprite = rightArrowSprite;
+                    if (key7Input == 3) key7.GetComponent<Image>().sprite = downArrowSprite;
+                    key7.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    key7Cover = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
+                    key7Cover.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key7pos, 0.0f, 0.0f);
+                }
+            }            
         }
-        
-        finalAttack = true;
+
         soulMusic = lvl;
+        finalAttack = true;
     }
 
     //A function to select the first available enemy
