@@ -48,6 +48,8 @@ public class PlayerTeamScript : MonoBehaviour
     private bool returnStartPos;
     //Boolean to check if we are on the state where the soul light goes up
     private bool soulLightUp;
+    //Boolean to check if we are on the state where the soul light goes down
+    private bool soulLightDown;
     //The soul music action gameobject
     private GameObject soulMusicAction;
     //The soul light gameobject
@@ -56,6 +58,8 @@ public class PlayerTeamScript : MonoBehaviour
     private Transform attackObjective;
     //The attack speed
     private float attackSpeed;
+    //int to know the end lvl of the soul attack
+    private int soulLvl;
 
     void Awake()
     {
@@ -131,6 +135,24 @@ public class PlayerTeamScript : MonoBehaviour
             soulLightUp = false;
             battleController.GetComponent<BattleController>().StartSoulAttack(1);
         }
+        if (soulLightDown && soulLight.transform.position.y > -2.0f)
+        {
+            soulLight.transform.position = new Vector3(soulLight.transform.position.x, soulLight.transform.position.y - 0.5f, soulLight.transform.position.z);
+        }
+        else if(soulLightDown && soulLight.transform.position.y <= -2.0f)
+        {
+            GetComponent<Animator>().SetBool("soulAttack", false);
+            soulLightDown = false;
+            battleController.GetComponent<BattleController>().EndSoulAttack(soulLvl);
+        }
+    }
+
+    //A function to end the soul attack
+    public void EndSoulAttack(int lvl)
+    {
+        soulMusicAction.SetActive(false);
+        soulLightDown = true;
+        soulLvl = lvl;
     }
 
     //A function to attack the enemy.type: 0-> melee, 1-> ranged. style: style of melee or ranged attack

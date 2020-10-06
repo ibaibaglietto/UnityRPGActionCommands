@@ -1291,7 +1291,37 @@ public class BattleController : MonoBehaviour
                 }                
                 else if (failMusic)
                 {
-                    Debug.Log("eres un poco tonto");
+                    actionInstructions.SetActive(false);
+                    failMusic = false;
+                    if (soulMusic >= 1)
+                    {
+                        Destroy(key1.gameObject);
+                        Destroy(key2.gameObject);
+                        Destroy(key3.gameObject);
+                        Destroy(key4.gameObject);
+                        Destroy(key1Cover.gameObject);
+                        Destroy(key2Cover.gameObject);
+                        Destroy(key3Cover.gameObject);
+                        Destroy(key4Cover.gameObject);
+                    }
+                    if(soulMusic>=2)
+                    {
+                        Destroy(key5.gameObject);
+                        Destroy(key5Cover.gameObject);
+                    }
+                    if (soulMusic >= 3)
+                    {
+                        Destroy(key6.gameObject);
+                        Destroy(key6Cover.gameObject);
+                    }
+                    if (soulMusic >= 4)
+                    {
+                        Destroy(key7.gameObject);
+                        Destroy(key7Cover.gameObject);
+                    }
+                    player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
+                    player.GetComponent<PlayerTeamScript>().EndSoulAttack(soulMusic);
+                    soulMusic = 0;
                 }
             }
             //We end the players turn when the player ends the shuriken animation
@@ -1749,6 +1779,18 @@ public class BattleController : MonoBehaviour
 
         soulMusic = lvl;
         finalAttack = true;
+    }
+
+    public void EndSoulAttack(int lvl)
+    {
+        Transform[] enemies = GetAllEnemies();
+        for(int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i].GetComponent<EnemyTeamScript>().SetAsleepTime(lvl);
+        }
+        soulMusic = 0;
+        finalAttack = false;
+        EndPlayerTurn();
     }
 
     //A function to select the first available enemy

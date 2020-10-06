@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyTeamScript : MonoBehaviour
 {
@@ -30,11 +31,26 @@ public class EnemyTeamScript : MonoBehaviour
     private bool idle;
     //A bool to know if the enemy is on the ground
     private bool grounded;
+    //An int to see for how much rounds is the enemy asleep
+    private int asleep;
+    //The gameobject of the asleep UI
+    private GameObject buffDebuffUI;
+    //An int to see the number of buffs or debuffs
+    private int buffDebuffNumb;
+    //The position of the slep debuff
+    private int sleepPos;
+    //The sprite of the sleepUI
+    [SerializeField] private Sprite sleepSprite;
 
     void Start()
     {
         //We find the battle controller and initialize the variables
         battleController = GameObject.Find("BattleController");
+        buffDebuffUI = transform.GetChild(0).Find("BuffsDebuffs").gameObject;
+        buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
+        buffDebuffUI.transform.GetChild(1).gameObject.SetActive(false);
+        buffDebuffUI.transform.GetChild(2).gameObject.SetActive(false);
+        buffDebuffUI.transform.GetChild(3).gameObject.SetActive(false);
         movingToEnemy = false;
         returnStartPos = false;
         alive = true;
@@ -107,17 +123,149 @@ public class EnemyTeamScript : MonoBehaviour
         battleController.GetComponent<BattleController>().EndDefenseZone();
     }
 
+    //Function to set the amount of time the enemie will be asleep
+    public void SetAsleepTime(int lvl)
+    {
+        int duration = 0;
+        float rand;
+        if(enemyType == 0)
+        {
+            duration = Mathf.FloorToInt((lvl-1) / 2.0f);
+            rand = ((lvl-1) / 2.0f) - Mathf.FloorToInt((lvl - 1) / 2.0f);
+            if (rand >= Random.Range(0.0f, 1.0f)) duration += 1;
+        }
+        if(duration > 0) SetBuffDebuff(0, duration);
+    }
+
+    //A function to put a buff or a debuff in the UI. buffDeb = 0 -> Sleep
+    public void SetBuffDebuff(int buffDeb, int duration)
+    {
+        if(buffDeb == 0)
+        {
+            if(asleep == 0)
+            {
+                GetComponent<Animator>().SetBool("IsAsleep", true);
+                sleepPos = 3 - buffDebuffNumb;
+                asleep = duration;
+                buffDebuffUI.transform.GetChild(sleepPos).gameObject.SetActive(true);
+                buffDebuffUI.transform.GetChild(sleepPos).GetChild(0).GetComponent<Image>().sprite = sleepSprite;
+                buffDebuffUI.transform.GetChild(sleepPos).GetChild(1).GetComponent<Text>().text = asleep.ToString();
+                buffDebuffNumb += 1;
+            }
+            else
+            {
+                asleep += duration;
+                buffDebuffUI.transform.GetChild(sleepPos).GetChild(1).GetComponent<Text>().text = asleep.ToString();
+            }
+        }
+    }
+
+    private void EndBuffDebuff(int pos)
+    {
+        if(pos == 0)
+        {
+            buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
+            buffDebuffNumb -= 1;
+        }
+        else if(pos == 1)
+        {
+            if(buffDebuffNumb > 3)
+            {
+                buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
+                //Change the number of the debuff!!!!!!!!!!!!!!!!!!!
+            }
+            else buffDebuffUI.transform.GetChild(1).gameObject.SetActive(false);
+            buffDebuffNumb -= 1;
+        }
+        else if (pos == 2)
+        {
+            if (buffDebuffNumb > 3)
+            {
+                buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
+                //Change the number of the debuff!!!!!!!!!!!!!!!!!!!
+            }
+            else if(buffDebuffNumb > 2)
+            {
+                buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(1).gameObject.SetActive(false);
+                //Change the number of the debuff!!!!!!!!!!!!!!!!!!!
+            }
+            else buffDebuffUI.transform.GetChild(2).gameObject.SetActive(false);
+            buffDebuffNumb -= 1;
+        }
+        else if (pos == 3)
+        {
+            if (buffDebuffNumb > 3)
+            {
+                buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
+                //Change the number of the debuff!!!!!!!!!!!!!!!!!!!
+            }
+            else if (buffDebuffNumb > 2)
+            {
+                buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(1).gameObject.SetActive(false);
+                //Change the number of the debuff!!!!!!!!!!!!!!!!!!!
+            }
+            else if (buffDebuffNumb > 1)
+            {
+                buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(2).gameObject.SetActive(false);
+                //Change the number of the debuff!!!!!!!!!!!!!!!!!!!
+            }
+            else buffDebuffUI.transform.GetChild(3).gameObject.SetActive(false);
+            buffDebuffNumb -= 1;
+        }
+    }
+
     //Function to attack an objective
     public void Attack(Transform objective)
     {
-        attackObjective = objective;
-        transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
-        //If the enemy is a bandit we make it move towards the player
-        if(enemyType == 0)
+        if (asleep == 0)
         {
-            startPos = transform.position.x;
-            movePos = attackObjective.position.x + 1.1f;
-            movingToEnemy = true;
+            attackObjective = objective;
+            transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
+            //If the enemy is a bandit we make it move towards the player
+            if (enemyType == 0)
+            {
+                startPos = transform.position.x;
+                movePos = attackObjective.position.x + 1.1f;
+                movingToEnemy = true;
+            }
+        }
+        else
+        {            
+            asleep -= 1;
+            if (asleep == 0)
+            {
+                EndBuffDebuff(sleepPos);
+                GetComponent<Animator>().SetBool("IsAsleep", false);
+            }
+            else
+            {
+                buffDebuffUI.transform.GetChild(sleepPos).GetChild(1).GetComponent<Text>().text = asleep.ToString();
+            }
+            if (enemyNumber < battleController.GetComponent<BattleController>().GetNumberOfEnemies())
+            {
+                battleController.GetComponent<BattleController>().NextEnemy(enemyNumber);
+            }
+            else battleController.GetComponent<BattleController>().EndEnemyTurn();
         }
     }
 
@@ -156,6 +304,12 @@ public class EnemyTeamScript : MonoBehaviour
     public void ReceiveDamage()
     {
         idle = false;
+        if (asleep > 0)
+        {
+            GetComponent<Animator>().SetBool("IsAsleep", false);
+            asleep = 0;
+            EndBuffDebuff(sleepPos);
+        }
     }
 
     //A function to put the idle boolean true
