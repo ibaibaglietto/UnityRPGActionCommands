@@ -131,9 +131,16 @@ public class PlayerTeamScript : MonoBehaviour
         }
         else if(soulLightUp && soulLight.transform.position.y >= 75.0f)
         {
-            soulMusicAction.SetActive(true);
-            soulLightUp = false;
-            battleController.GetComponent<BattleController>().StartSoulAttack(1);
+            if(attackStyle == 0)
+            {
+                soulMusicAction.SetActive(true);
+                soulLightUp = false;
+                battleController.GetComponent<BattleController>().StartSoulMusicAttack(1);
+            }
+            else if(attackStyle == 1)
+            {
+                soulLightUp = false;
+            }
         }
         if (soulLightDown && soulLight.transform.position.y > -2.0f)
         {
@@ -221,8 +228,16 @@ public class PlayerTeamScript : MonoBehaviour
                 //Soul music attack
                 if(style == 0)
                 {
+                    battleController.GetComponent<BattleController>().SpendSouls(1);
                     GetComponent<Animator>().SetBool("soulAttack", true);
                     soulLight.GetComponent<Light>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    soulLightUp = true;
+                }
+                else if(style == 1)
+                {
+                    battleController.GetComponent<BattleController>().SpendSouls(2);
+                    GetComponent<Animator>().SetBool("soulAttack", true);
+                    soulLight.GetComponent<Light>().color = new Vector4(0.0f, 0.7264151f, 0.09315347f, 1.0f);
                     soulLightUp = true;
                 }
             }
