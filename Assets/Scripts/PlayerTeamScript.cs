@@ -16,6 +16,8 @@ public class PlayerTeamScript : MonoBehaviour
     [SerializeField] private Transform heartUI;
     [SerializeField] private Transform lightUI;
 
+    //The canvas
+    private GameObject canvas;
     //The life points UI
     private GameObject lightPointsUI;
     //The shuriken
@@ -69,6 +71,7 @@ public class PlayerTeamScript : MonoBehaviour
         playerLife = GameObject.Find("PlayerLifeBckImage");
         soulLight = transform.GetChild(3).gameObject;
         soulMusicAction = GameObject.Find("SoulMusicAction");
+        canvas = GameObject.Find("Canvas");
         soulMusicAction.SetActive(false);
         lastAttack = false;
         movingToEnemy = false;
@@ -140,6 +143,7 @@ public class PlayerTeamScript : MonoBehaviour
             else if(attackStyle == 1)
             {
                 soulLightUp = false;
+                battleController.GetComponent<BattleController>().StartRegenerationAttack();
             }
         }
         if (soulLightDown && soulLight.transform.position.y > -2.0f)
@@ -165,6 +169,7 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to attack the enemy.type: 0-> melee, 1-> ranged. style: style of melee or ranged attack
     public void Attack(int type, int style, Transform objective)
     {
+        canvas.GetComponent<Animator>().SetBool("Hide", true);
         attackStyle = style;
         //If the one attacking is the player
         if (playerTeamType == 0)

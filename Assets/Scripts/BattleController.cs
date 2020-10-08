@@ -12,6 +12,8 @@ public class BattleController : MonoBehaviour
     [SerializeField] private Transform banditBattle;
     //The prefabs of the damage UI, heart and light
     [SerializeField] private Transform damageUI;
+    //The canvas
+    private GameObject canvas;
     //The icons of every action of the menu
     [SerializeField] private Sprite normalSword;
     [SerializeField] private Sprite lightSword;
@@ -136,8 +138,25 @@ public class BattleController : MonoBehaviour
     private int soulMusic;
     //A boolean to know if the soul music is filling or not
     private bool soulMusicFilling;
+    //A boolean to know if the player is doing que soul regen action
+    private bool soulRegen;
+    //Int to know where is moving the green flame. 0-> no movement, 1-> up, 2-> left, 3-> right, 4-> down
+    private int soulRegenMov;
     //A boolean to check if the player has failed the music action
     private bool failMusic;
+    //The rings
+    [SerializeField] private Transform redRingBck;
+    [SerializeField] private Transform redRingFront;
+    [SerializeField] private Transform yellowRingBck;
+    [SerializeField] private Transform yellowRingFront;
+    //The transform arrays where we are going to save the rings
+    private Transform[] redRing1;
+    private Transform[] yellowRing1;
+    //The green soul
+    [SerializeField] private Transform greenSoulPrefab;
+    private Transform greenSoul;
+    //The regeneration action UI
+    private GameObject regenerationAction;
     //A boolean to save if the shuriken hits the enemy
     public bool shurikenHit;
     //A float to know the time we have spent spinning
@@ -175,6 +194,7 @@ public class BattleController : MonoBehaviour
         soul4 = GameObject.Find("Soul4Fill");
         soul5 = GameObject.Find("Soul5Fill");
         soul6 = GameObject.Find("Soul6Fill");
+        canvas = GameObject.Find("Canvas");
         //Initialize variables
         if (PlayerPrefs.GetInt("Souls") == 1)
         {
@@ -230,6 +250,8 @@ public class BattleController : MonoBehaviour
             soul5.transform.parent.gameObject.SetActive(true);
             soul6.transform.parent.gameObject.SetActive(true);
         }
+        redRing1 = new Transform[2];
+        yellowRing1 = new Transform[2];
         enemyNumber = 0;
         SpawnCharacter(0);
         SpawnCharacter(2);
@@ -258,6 +280,8 @@ public class BattleController : MonoBehaviour
         soulMusic = 0;
         soulMusicFilling = true;
         failMusic = false;
+        soulRegen = false;
+        soulRegenMov = 0;
         menuCanUse = new bool[6];
         actionInstructions.SetActive(false);
         enemyName.SetActive(false);
@@ -486,10 +510,13 @@ public class BattleController : MonoBehaviour
                             else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pass through the circles to gain LP and FP.";
                             else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=214> and <sprite=246> repeatedly until <sprite=360> lights up.";
                             attackType = 2;
-                            selectingEnemy = true;
                             enemyName.SetActive(true);
-                            if (menuSelectionPos == 0) SelectAllEnemies();
-                            else if(menuSelectionPos == 1)
+                            if (menuSelectionPos == 0)
+                            {
+                                selectingEnemy = true;
+                                SelectAllEnemies();
+                            }
+                            else if (menuSelectionPos == 1)
                             {
                                 player.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
@@ -1384,6 +1411,14 @@ public class BattleController : MonoBehaviour
                     player.GetComponent<PlayerTeamScript>().EndSoulAttack(soulMusic);
                     soulMusic = 0;
                 }
+                else if (soulRegen)
+                {
+                    soulRegenMov = 0;
+                    if (Input.GetKey(KeyCode.UpArrow)) soulRegenMov = 1; 
+                    if (Input.GetKey(KeyCode.LeftArrow)) soulRegenMov = 2;
+                    if (Input.GetKey(KeyCode.RightArrow)) soulRegenMov = 3;
+                    if (Input.GetKey(KeyCode.DownArrow)) soulRegenMov = 4;
+                }
             }
             //We end the players turn when the player ends the shuriken animation
             else if (shurikenHit)
@@ -1529,6 +1564,14 @@ public class BattleController : MonoBehaviour
                 if(soulMusicFilling)player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.0005f + 0.0005f *soulMusic;
                 else player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount -= 0.015f;
             }
+            if (soulRegen)
+            {
+                if (soulRegenMov == 1) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x, greenSoul.GetComponent<RectTransform>().anchoredPosition.y + 0.05f);
+                if (soulRegenMov == 2) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x - 0.05f, greenSoul.GetComponent<RectTransform>().anchoredPosition.y);
+                if (soulRegenMov == 3) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x + 0.05f, greenSoul.GetComponent<RectTransform>().anchoredPosition.y);
+                if (soulRegenMov == 4) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x, greenSoul.GetComponent<RectTransform>().anchoredPosition.y - 0.05f);
+                
+            }
         }
         
         if (fleeing)
@@ -1588,6 +1631,7 @@ public class BattleController : MonoBehaviour
         if (battlePos == 0)
         {
             player = Instantiate(playerBattle, new Vector3(-5, -1, -2.0f), Quaternion.identity);
+            regenerationAction = player.GetChild(0).GetChild(8).gameObject;
         }
         else if (battlePos == 2)
         {
@@ -1705,6 +1749,7 @@ public class BattleController : MonoBehaviour
     //A function to end players turn
     public void EndPlayerTurn()
     {
+        canvas.GetComponent<Animator>().SetBool("Hide", false);
         playerChoosingAction = true;
         playerTeamTurn = false;
         enemyTeamTurn = true;
@@ -1853,6 +1898,22 @@ public class BattleController : MonoBehaviour
         soulMusic = 0;
         finalAttack = false;
         EndPlayerTurn();
+    }
+
+    public void StartRegenerationAttack()
+    {
+        redRing1[0] = Instantiate(redRingBck, regenerationAction.transform);
+        redRing1[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(0.0f, 0.0f);
+        yellowRing1[0] = Instantiate(yellowRingBck, regenerationAction.transform);
+        yellowRing1[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(-5.45f, 0.0f);
+        greenSoul = Instantiate(greenSoulPrefab, regenerationAction.transform);
+        greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(0.0f, 0.0f);
+        redRing1[1] = Instantiate(redRingFront, regenerationAction.transform);
+        redRing1[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(redRing1[0].GetComponent<RectTransform>().anchoredPosition.x, redRing1[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
+        yellowRing1[1] = Instantiate(yellowRingFront, regenerationAction.transform);
+        yellowRing1[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(yellowRing1[0].GetComponent<RectTransform>().anchoredPosition.x, yellowRing1[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
+        finalAttack = true;
+        soulRegen = true;
     }
 
     //A function to select the first available enemy
