@@ -140,8 +140,11 @@ public class BattleController : MonoBehaviour
     private bool soulMusicFilling;
     //A boolean to know if the player is doing que soul regen action
     private bool soulRegen;
-    //Int to know where is moving the green flame. 0-> no movement, 1-> up, 2-> left, 3-> right, 4-> down
-    private int soulRegenMov;
+    //Booleans to know where the green flame is moving
+    private bool soulRegenMovUp;
+    private bool soulRegenMovLeft;
+    private bool soulRegenMovRight;
+    private bool soulRegenMovDown;
     //A boolean to check if the player has failed the music action
     private bool failMusic;
     //The rings
@@ -152,6 +155,12 @@ public class BattleController : MonoBehaviour
     //The transform arrays where we are going to save the rings
     private Transform[] redRing1;
     private Transform[] yellowRing1;
+    private Transform[] redRing2;
+    private Transform[] yellowRing2;
+    private Transform[] redRing3;
+    private Transform[] yellowRing3;
+    private Transform[] redRing4;
+    private Transform[] yellowRing4;
     //The green soul
     [SerializeField] private Transform greenSoulPrefab;
     private Transform greenSoul;
@@ -252,6 +261,12 @@ public class BattleController : MonoBehaviour
         }
         redRing1 = new Transform[2];
         yellowRing1 = new Transform[2];
+        redRing2 = new Transform[2];
+        yellowRing2 = new Transform[2];
+        redRing3 = new Transform[2];
+        yellowRing3 = new Transform[2];
+        redRing4 = new Transform[2];
+        yellowRing4 = new Transform[2];
         enemyNumber = 0;
         SpawnCharacter(0);
         SpawnCharacter(2);
@@ -281,7 +296,10 @@ public class BattleController : MonoBehaviour
         soulMusicFilling = true;
         failMusic = false;
         soulRegen = false;
-        soulRegenMov = 0;
+        soulRegenMovUp = false;
+        soulRegenMovLeft = false;
+        soulRegenMovRight = false;
+        soulRegenMovDown = false;
         menuCanUse = new bool[6];
         actionInstructions.SetActive(false);
         enemyName.SetActive(false);
@@ -1413,11 +1431,14 @@ public class BattleController : MonoBehaviour
                 }
                 else if (soulRegen)
                 {
-                    soulRegenMov = 0;
-                    if (Input.GetKey(KeyCode.UpArrow)) soulRegenMov = 1; 
-                    if (Input.GetKey(KeyCode.LeftArrow)) soulRegenMov = 2;
-                    if (Input.GetKey(KeyCode.RightArrow)) soulRegenMov = 3;
-                    if (Input.GetKey(KeyCode.DownArrow)) soulRegenMov = 4;
+                    if (Input.GetKey(KeyCode.UpArrow)) soulRegenMovUp = true; 
+                    if (Input.GetKey(KeyCode.LeftArrow)) soulRegenMovLeft = true;
+                    if (Input.GetKey(KeyCode.RightArrow)) soulRegenMovRight = true;
+                    if (Input.GetKey(KeyCode.DownArrow)) soulRegenMovDown = true;
+                    if (Input.GetKeyUp(KeyCode.UpArrow)) soulRegenMovUp = false;
+                    if (Input.GetKeyUp(KeyCode.LeftArrow)) soulRegenMovLeft = false;
+                    if (Input.GetKeyUp(KeyCode.RightArrow)) soulRegenMovRight = false;
+                    if (Input.GetKeyUp(KeyCode.DownArrow)) soulRegenMovDown = false;
                 }
             }
             //We end the players turn when the player ends the shuriken animation
@@ -1566,11 +1587,27 @@ public class BattleController : MonoBehaviour
             }
             if (soulRegen)
             {
-                if (soulRegenMov == 1) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x, greenSoul.GetComponent<RectTransform>().anchoredPosition.y + 0.05f);
-                if (soulRegenMov == 2) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x - 0.05f, greenSoul.GetComponent<RectTransform>().anchoredPosition.y);
-                if (soulRegenMov == 3) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x + 0.05f, greenSoul.GetComponent<RectTransform>().anchoredPosition.y);
-                if (soulRegenMov == 4) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x, greenSoul.GetComponent<RectTransform>().anchoredPosition.y - 0.05f);
+                if (soulRegenMovUp && greenSoul.GetComponent<RectTransform>().anchoredPosition.y < 2.0f) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x, greenSoul.GetComponent<RectTransform>().anchoredPosition.y + 0.075f);
+                if (soulRegenMovLeft && greenSoul.GetComponent<RectTransform>().anchoredPosition.x > -5.45f) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x - 0.075f, greenSoul.GetComponent<RectTransform>().anchoredPosition.y);
+                if (soulRegenMovRight && greenSoul.GetComponent<RectTransform>().anchoredPosition.x < 5.45f) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x + 0.075f, greenSoul.GetComponent<RectTransform>().anchoredPosition.y);
+                if (soulRegenMovDown && greenSoul.GetComponent<RectTransform>().anchoredPosition.y > -2.3f) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x, greenSoul.GetComponent<RectTransform>().anchoredPosition.y - 0.075f);
                 
+                redRing1[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(redRing1[0].GetComponent<RectTransform>().anchoredPosition.x, redRing1[0].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                redRing1[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(redRing1[1].GetComponent<RectTransform>().anchoredPosition.x, redRing1[1].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                yellowRing1[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(yellowRing1[0].GetComponent<RectTransform>().anchoredPosition.x, yellowRing1[0].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                yellowRing1[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(yellowRing1[1].GetComponent<RectTransform>().anchoredPosition.x, yellowRing1[1].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                redRing2[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(redRing2[0].GetComponent<RectTransform>().anchoredPosition.x, redRing2[0].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                redRing2[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(redRing2[1].GetComponent<RectTransform>().anchoredPosition.x, redRing2[1].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                yellowRing2[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(yellowRing2[0].GetComponent<RectTransform>().anchoredPosition.x, yellowRing2[0].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                yellowRing2[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(yellowRing2[1].GetComponent<RectTransform>().anchoredPosition.x, yellowRing2[1].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                redRing3[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(redRing3[0].GetComponent<RectTransform>().anchoredPosition.x, redRing3[0].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                redRing3[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(redRing3[1].GetComponent<RectTransform>().anchoredPosition.x, redRing3[1].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                yellowRing3[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(yellowRing3[0].GetComponent<RectTransform>().anchoredPosition.x, yellowRing3[0].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                yellowRing3[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(yellowRing3[1].GetComponent<RectTransform>().anchoredPosition.x, yellowRing3[1].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                redRing4[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(redRing4[0].GetComponent<RectTransform>().anchoredPosition.x, redRing4[0].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                redRing4[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(redRing4[1].GetComponent<RectTransform>().anchoredPosition.x, redRing4[1].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                yellowRing4[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(yellowRing4[0].GetComponent<RectTransform>().anchoredPosition.x, yellowRing4[0].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
+                yellowRing4[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(yellowRing4[1].GetComponent<RectTransform>().anchoredPosition.x, yellowRing4[1].GetComponent<RectTransform>().anchoredPosition.y + 0.03f);
             }
         }
         
@@ -1902,16 +1939,62 @@ public class BattleController : MonoBehaviour
 
     public void StartRegenerationAttack()
     {
+        float randx = Random.Range(-5.0f,5.0f);
         redRing1[0] = Instantiate(redRingBck, regenerationAction.transform);
-        redRing1[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(0.0f, 0.0f);
+        redRing1[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -5.0f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx-3.0f, randx+3.0f);
         yellowRing1[0] = Instantiate(yellowRingBck, regenerationAction.transform);
-        yellowRing1[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(-5.45f, 0.0f);
+        yellowRing1[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -6.0f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        redRing2[0] = Instantiate(redRingBck, regenerationAction.transform);
+        redRing2[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -7.0f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        yellowRing2[0] = Instantiate(yellowRingBck, regenerationAction.transform);
+        yellowRing2[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -8.0f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        redRing3[0] = Instantiate(redRingBck, regenerationAction.transform);
+        redRing3[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -9.0f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        yellowRing3[0] = Instantiate(yellowRingBck, regenerationAction.transform);
+        yellowRing3[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -10.0f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        redRing4[0] = Instantiate(redRingBck, regenerationAction.transform);
+        redRing4[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -11.0f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        yellowRing4[0] = Instantiate(yellowRingBck, regenerationAction.transform);
+        yellowRing4[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -12.0f);
         greenSoul = Instantiate(greenSoulPrefab, regenerationAction.transform);
         greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(0.0f, 0.0f);
         redRing1[1] = Instantiate(redRingFront, regenerationAction.transform);
         redRing1[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(redRing1[0].GetComponent<RectTransform>().anchoredPosition.x, redRing1[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
         yellowRing1[1] = Instantiate(yellowRingFront, regenerationAction.transform);
         yellowRing1[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(yellowRing1[0].GetComponent<RectTransform>().anchoredPosition.x, yellowRing1[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
+        redRing2[1] = Instantiate(redRingFront, regenerationAction.transform);
+        redRing2[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(redRing2[0].GetComponent<RectTransform>().anchoredPosition.x, redRing2[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
+        yellowRing2[1] = Instantiate(yellowRingFront, regenerationAction.transform);
+        yellowRing2[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(yellowRing2[0].GetComponent<RectTransform>().anchoredPosition.x, yellowRing2[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
+        redRing3[1] = Instantiate(redRingFront, regenerationAction.transform);
+        redRing3[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(redRing3[0].GetComponent<RectTransform>().anchoredPosition.x, redRing3[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
+        yellowRing3[1] = Instantiate(yellowRingFront, regenerationAction.transform);
+        yellowRing3[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(yellowRing3[0].GetComponent<RectTransform>().anchoredPosition.x, yellowRing3[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
+        redRing4[1] = Instantiate(redRingFront, regenerationAction.transform);
+        redRing4[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(redRing4[0].GetComponent<RectTransform>().anchoredPosition.x, redRing4[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
+        yellowRing4[1] = Instantiate(yellowRingFront, regenerationAction.transform);
+        yellowRing4[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(yellowRing4[0].GetComponent<RectTransform>().anchoredPosition.x, yellowRing4[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
         finalAttack = true;
         soulRegen = true;
     }
