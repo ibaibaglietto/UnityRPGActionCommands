@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class GreenSoulScript : MonoBehaviour
 {
-    private GameObject player;
-    // Start is called before the first frame update
+    private GameObject battleController;
+
     void Start()
     {
-        player = transform.parent.parent.parent.gameObject;
+        battleController = GameObject.Find("BattleController");
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "RedRing" && !other.GetComponent<RingScript>().isCrossed())
+        if (other.GetComponent<RingScript>().GetColor() && !other.GetComponent<RingScript>().IsCrossed())
         {
             other.GetComponent<RingScript>().Cross();
-            Debug.Log("rojo");
+            battleController.GetComponent<BattleController>().IncreaseRegenerationHeal();
         }
-        if (other.tag == "YellowRing" && !other.GetComponent<RingScript>().isCrossed())
+        if (!other.GetComponent<RingScript>().GetColor() && !other.GetComponent<RingScript>().IsCrossed())
         {
             other.GetComponent<RingScript>().Cross();
-            Debug.Log("amarillo");
+            battleController.GetComponent<BattleController>().IncreaseRegenerationLight();
         }
     }
 

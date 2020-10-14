@@ -154,7 +154,9 @@ public class PlayerTeamScript : MonoBehaviour
         {
             GetComponent<Animator>().SetBool("soulAttack", false);
             soulLightDown = false;
-            battleController.GetComponent<BattleController>().EndSoulAttack(soulLvl);
+
+            if (attackStyle == 0) battleController.GetComponent<BattleController>().EndSoulAttack(soulLvl);
+            else if (attackStyle == 1) battleController.GetComponent<BattleController>().EndSoulRegenerationAttack();
         }
     }
 
@@ -164,6 +166,11 @@ public class PlayerTeamScript : MonoBehaviour
         soulMusicAction.SetActive(false);
         soulLightDown = true;
         soulLvl = lvl;
+    }
+    //A function to end the regeneration attack
+    public void EndRegenerationAttack()
+    {
+        soulLightDown = true;
     }
 
     //A function to attack the enemy.type: 0-> melee, 1-> ranged. style: style of melee or ranged attack
@@ -399,23 +406,25 @@ public class PlayerTeamScript : MonoBehaviour
     {
         Damage -= battleController.GetComponent<BattleController>().GetDefense();
         if (Damage < 0) Damage = 0;
-        damageImage = Instantiate(damageUI, new Vector3(transform.position.x + 0.25f, transform.position.y + 1.25f, 0), Quaternion.identity, transform.GetChild(0));
+        damageImage = Instantiate(damageUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         damageImage.GetChild(0).GetComponent<Text>().text = Damage.ToString();
         playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
     }
 
     //A function to heal
-    public void Heal(int points)
+    public void Heal(int points, bool regen)
     {
-        heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 0.25f, transform.position.y + 1.25f, 0), Quaternion.identity, transform.GetChild(0));
+        if(regen) heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 1.5f, transform.position.y + 0.8f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
+        else heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         heartImage.GetChild(0).GetComponent<Text>().text = points.ToString();
         playerLife.GetComponent<PlayerLifeScript>().Heal(points);
     }
 
     //A function to increase the light points
-    public void IncreaseLight(int points) 
+    public void IncreaseLight(int points, bool regen) 
     {
-        lightImage = Instantiate(lightUI, new Vector3(transform.position.x + 0.25f, transform.position.y + 1.25f, 0), Quaternion.identity, transform.GetChild(0));
+        if(regen) lightImage = Instantiate(lightUI, new Vector3(transform.position.x + 0.0f, transform.position.y + 2.3f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
+        else lightImage = Instantiate(lightUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         lightImage.GetChild(0).GetComponent<Text>().text = points.ToString();
         lightPointsUI.GetComponent<LightPointsScript>().IncreaseLight(points);
     }

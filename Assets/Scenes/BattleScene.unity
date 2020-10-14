@@ -2282,9 +2282,8 @@ MonoBehaviour:
   goodAttack: 0
   badAttack: 0
   redRingBck: {fileID: 5512405814632567914, guid: 43e0cccffd0b6704b9485be25c141592, type: 3}
-  redRingFront: {fileID: 4684471782783210313, guid: 567d923729a69df449892acc2ed18e78, type: 3}
   yellowRingBck: {fileID: 6139494468161291230, guid: f9ba065e1d176914e8484d1ebb9dc17f, type: 3}
-  yellowRingFront: {fileID: 3614233865647512840, guid: 1024cf6cd9d5db943933639bbc1aea8b, type: 3}
+  RingFront: {fileID: 3614233865647512840, guid: 1024cf6cd9d5db943933639bbc1aea8b, type: 3}
   greenSoulPrefab: {fileID: 2599399444733153737, guid: 886e21509c4910c4dba9409afaba4119, type: 3}
   shurikenHit: 0
   shurikenTime: 0
