@@ -26,8 +26,11 @@ public class RingScript : MonoBehaviour
     private Transform prevRing;
     //The X position of the previous ring
     private float prevX;
+    //The number of times the ring has respawned
+    private int respawnNumb;
     void Start()
     {
+        respawnNumb = 0;
         battleController = GameObject.Find("BattleController");
         crossed = false;
     }
@@ -38,9 +41,9 @@ public class RingScript : MonoBehaviour
             if (crossed)
             {
                 prevX = prevRing.GetComponent<RectTransform>().anchoredPosition.x;
-                if (prevX < -2.0f) prevX = -2.0f;
-                else if (prevX > 2.0f) prevX = 2.0f;
-                newX = Random.Range(prevX - 3.0f, prevX + 3.0f);
+                if (prevX < (-2.0f + 0.25f * respawnNumb)) prevX = -2.0f;
+                else if (prevX > (2.0f - 0.25f * respawnNumb)) prevX = 2.0f;
+                newX = Random.Range(prevX - (3.0f + 0.25f * respawnNumb), prevX + (3.0f + 0.25f * respawnNumb));
                 if (Random.Range(0.0f, 1.0f) < 0.5f)
                 {
                     isRed = true;
@@ -53,6 +56,7 @@ public class RingScript : MonoBehaviour
                     topRing.GetComponent<Image>().sprite = yellowRingTop;
                     GetComponent<Image>().sprite = yellowRingFront;
                 }
+                if (respawnNumb < 8) respawnNumb += 1;
                 topRing.GetComponent<RectTransform>().anchoredPosition = new Vector2(newX, -5.0f);
                 GetComponent<RectTransform>().anchoredPosition = new Vector2(newX, -5.0f + 0.009f);
                 crossed = false;

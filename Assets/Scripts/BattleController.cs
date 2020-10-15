@@ -152,6 +152,10 @@ public class BattleController : MonoBehaviour
     private bool soulRegenMovLeft;
     private bool soulRegenMovRight;
     private bool soulRegenMovDown;
+    //A boolean to know if the player is in the lightning action
+    private bool soulLightning;
+    //A boolean to know if the yellow soul si moving right
+    private bool yellowSoulRight;
     //A boolean to check if the player has failed the music action
     private bool failMusic;
     //The rings
@@ -170,8 +174,15 @@ public class BattleController : MonoBehaviour
     //The green soul
     [SerializeField] private Transform greenSoulPrefab;
     private Transform greenSoul;
+    //The yellow soul
+    [SerializeField] private Transform yellowSoulPrefab;
+    private Transform yellowSoul;
+    //The lightning
+    [SerializeField] private Transform lightningPrefab;
     //The regeneration action UI
     private GameObject regenerationAction;
+    //The lightning action UI
+    private GameObject lightningAction;
     //A boolean to save if the shuriken hits the enemy
     public bool shurikenHit;
     //A float to know the time we have spent spinning
@@ -310,6 +321,8 @@ public class BattleController : MonoBehaviour
         soulRegenGreenSpeed = 0.075f;
         soulRegenHeal = 0;
         soulRegenLight = 0;
+        soulLightning = false;
+        yellowSoulRight = true;
         menuCanUse = new bool[6];
         actionInstructions.SetActive(false);
         enemyName.SetActive(false);
@@ -536,7 +549,7 @@ public class BattleController : MonoBehaviour
                             actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
                             if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> when they appear.";
                             else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pass through the circles to gain LP and FP.";
-                            else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=214> and <sprite=246> repeatedly until <sprite=360> lights up.";
+                            else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> When the yellow soul is over the enemy. You'll continue until you skip one enemy.";
                             attackType = 2;
                             enemyName.SetActive(true);
                             if (menuSelectionPos == 0)
@@ -553,6 +566,11 @@ public class BattleController : MonoBehaviour
                                 enemyName.transform.GetChild(3).gameObject.SetActive(false);
                                 enemyName.transform.GetChild(4).gameObject.SetActive(false);
                                 selectingPlayer = true;
+                            }
+                            else if (menuSelectionPos == 2)
+                            {
+                                selectingEnemy = true;
+                                SelectAllEnemies();
                             }
                         }
                     }
@@ -1447,6 +1465,10 @@ public class BattleController : MonoBehaviour
                     if (Input.GetKeyUp(KeyCode.RightArrow)) soulRegenMovRight = false;
                     if (Input.GetKeyUp(KeyCode.DownArrow)) soulRegenMovDown = false;
                 }
+                else if (soulLightning)
+                {
+                    if (Input.GetKeyDown(KeyCode.X)) Instantiate(lightningPrefab, new Vector3(yellowSoul.position.x, 1.5f, enemy1.position.z), Quaternion.identity);
+                }
             }
             //We end the players turn when the player ends the shuriken animation
             else if (shurikenHit)
@@ -1617,6 +1639,13 @@ public class BattleController : MonoBehaviour
                 ring8[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring8[0].GetComponent<RectTransform>().anchoredPosition.x, ring8[0].GetComponent<RectTransform>().anchoredPosition.y + soulRegenRingSpeed);
                 ring8[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring8[1].GetComponent<RectTransform>().anchoredPosition.x, ring8[1].GetComponent<RectTransform>().anchoredPosition.y + soulRegenRingSpeed);
             }
+            if (soulLightning)
+            {
+                if (yellowSoul.position.x < 7.0f && yellowSoulRight) yellowSoul.position = new Vector3(yellowSoul.position.x + 0.05f, yellowSoul.position.y, yellowSoul.position.z);
+                else if (yellowSoul.position.x >= 7.0f && yellowSoulRight) yellowSoulRight = false;
+                else if (yellowSoul.position.x > player.position.x && !yellowSoulRight) yellowSoul.position = new Vector3(yellowSoul.position.x - 0.05f, yellowSoul.position.y, yellowSoul.position.z);
+                else EndLightningAttack();
+            }
         }
         
         if (fleeing)
@@ -1677,6 +1706,7 @@ public class BattleController : MonoBehaviour
         {
             player = Instantiate(playerBattle, new Vector3(-5, -1, -2.0f), Quaternion.identity);
             regenerationAction = player.GetChild(0).GetChild(8).gameObject;
+            lightningAction = player.GetChild(0).GetChild(9).gameObject;
         }
         else if (battlePos == 2)
         {
@@ -1803,6 +1833,12 @@ public class BattleController : MonoBehaviour
     //Functions to end the regeneration attack
     public void EndRegenerationAttack()
     {
+        soulRegenMovUp = false;
+        soulRegenMovLeft = false;
+        soulRegenMovRight = false;
+        soulRegenMovDown = false;
+        soulRegenRingSpeed = 0.03f;
+        soulRegenGreenSpeed = 0.075f;
         player.GetComponent<PlayerTeamScript>().Heal(soulRegenHeal, true);
         player.GetComponent<PlayerTeamScript>().IncreaseLight(soulRegenLight, true);
         soulRegenHeal = 0;
@@ -1834,6 +1870,23 @@ public class BattleController : MonoBehaviour
         finalAttack = false;
         EndPlayerTurn();
     }
+
+    //Functions to end the lightning attack
+    public void EndLightningAttack()
+    {
+        yellowSoulRight = true;
+        actionInstructions.SetActive(false);
+        soulLightning = false;
+        Destroy(yellowSoul.gameObject);
+        player.GetComponent<PlayerTeamScript>().EndLightningAttack();
+    }
+
+    public void EndSoulLightningAttack()
+    {
+        finalAttack = false;
+        EndPlayerTurn();
+    }
+
     //A function to end players turn
     public void EndPlayerTurn()
     {
@@ -1989,6 +2042,7 @@ public class BattleController : MonoBehaviour
         EndPlayerTurn();
     }
     
+    //Function to start the regeneration attack
     public void StartRegenerationAttack()
     {
         float randx = Random.Range(-5.0f,5.0f);
@@ -2098,6 +2152,14 @@ public class BattleController : MonoBehaviour
         finalAttack = true;
         soulRegen = true;
     }
+    //A function to start the lightning attack
+    public void StartLightningAttack()
+    {
+        yellowSoul = Instantiate(yellowSoulPrefab, lightningAction.transform);
+        yellowSoul.position = new Vector3(player.position.x, 3.5f, player.position.z);
+        finalAttack = true;
+        soulLightning = true;
+    }
 
     //A function to select the first available enemy
     private void SelectFirstEnemy()
@@ -2167,7 +2229,7 @@ public class BattleController : MonoBehaviour
         }
         canSelect = false;
     }
-    //A function
+    
 
     //Function to deactivate the action command instructions
     public void DeactivateActionInstructions()
