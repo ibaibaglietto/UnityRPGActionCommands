@@ -150,6 +150,11 @@ public class PlayerTeamScript : MonoBehaviour
                 soulLightUp = false;
                 battleController.GetComponent<BattleController>().StartLightningAttack();
             }
+            else if(attackStyle == 3)
+            {
+                soulLightUp = false;
+                battleController.GetComponent<BattleController>().StartLifestealAttack();
+            }
         }
         if (soulLightDown && soulLight.transform.position.y > -2.0f)
         {
@@ -159,10 +164,10 @@ public class PlayerTeamScript : MonoBehaviour
         {
             GetComponent<Animator>().SetBool("soulAttack", false);
             soulLightDown = false;
-
             if (attackStyle == 0) battleController.GetComponent<BattleController>().EndSoulAttack(soulLvl);
             else if (attackStyle == 1) battleController.GetComponent<BattleController>().EndSoulRegenerationAttack();
             else if(attackStyle == 2) battleController.GetComponent<BattleController>().EndSoulLightningAttack();
+            else if(attackStyle == 3) battleController.GetComponent<BattleController>().EndSoulLifestealAttack();
         }
     }
 
@@ -180,6 +185,12 @@ public class PlayerTeamScript : MonoBehaviour
     }
     //A function to end the lightning attack
     public void EndLightningAttack()
+    {
+        soulLightDown = true;
+    }
+
+    //A function to end the lifesteal attack
+    public void EndLifestealAttack()
     {
         soulLightDown = true;
     }
@@ -265,9 +276,16 @@ public class PlayerTeamScript : MonoBehaviour
                 }
                 else if(style == 2)
                 {
-                    battleController.GetComponent<BattleController>().SpendSouls(2);
+                    battleController.GetComponent<BattleController>().SpendSouls(3);
                     GetComponent<Animator>().SetBool("soulAttack", true);
                     soulLight.GetComponent<Light>().color = new Vector4(1.0f, 0.9935299f, 0.0f, 1.0f);
+                    soulLightUp = true;
+                }
+                else if (style == 3)
+                {
+                    battleController.GetComponent<BattleController>().SpendSouls(3);
+                    GetComponent<Animator>().SetBool("soulAttack", true);
+                    soulLight.GetComponent<Light>().color = new Vector4(0.6320754f, 0.0f, 0.0f, 1.0f);
                     soulLightUp = true;
                 }
             }

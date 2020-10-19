@@ -900,6 +900,41 @@ RectTransform:
   m_AnchoredPosition: {x: 324.94, y: -82.977}
   m_SizeDelta: {x: 354.5238, y: 179.9538}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2193250584314620556
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9206835823024957016}
+  m_Layer: 5
+  m_Name: SoulLifestealAction
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &9206835823024957016
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193250584314620556}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5352649904977346207}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2397508010390514230
 GameObject:
   m_ObjectHideFlags: 0
@@ -3280,6 +3315,7 @@ RectTransform:
   - {fileID: 8514322518062948180}
   - {fileID: 3137886004452113042}
   - {fileID: 8458586893738326742}
+  - {fileID: 9206835823024957016}
   m_Father: {fileID: 5352649904852120479}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

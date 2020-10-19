@@ -9,6 +9,7 @@ TagManager:
   - RedRing
   - YellowRing
   - enemy
+  - redSoul
   layers:
   - Default
   - TransparentFX

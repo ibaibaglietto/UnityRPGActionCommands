@@ -2286,6 +2286,8 @@ MonoBehaviour:
   RingFront: {fileID: 3614233865647512840, guid: 1024cf6cd9d5db943933639bbc1aea8b, type: 3}
   greenSoulPrefab: {fileID: 2599399444733153737, guid: 886e21509c4910c4dba9409afaba4119, type: 3}
   yellowSoulPrefab: {fileID: 9157415009590503383, guid: b1b2ad2d3dcbdaf4c8dfb6e63374d554, type: 3}
+  redSoulPrefab: {fileID: 2523110753081961990, guid: f91ab860201989745b70544d328366f9, type: 3}
+  jarPrefab: {fileID: 8304496445762513258, guid: c7a7b4a8b3498e64e9e2181ec7d6d63f, type: 3}
   lightningPrefab: {fileID: 4467010302461368411, guid: a694f6eec8ef2b149ae0e0352a2dcd70, type: 3}
   shurikenHit: 0
   shurikenTime: 0
@@ -3647,7 +3649,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

@@ -177,12 +177,36 @@ public class BattleController : MonoBehaviour
     //The yellow soul
     [SerializeField] private Transform yellowSoulPrefab;
     private Transform yellowSoul;
+    //A boolean to know if the player is doing the lifesteal action
+    private bool soulLifesteal;
+    //The red soul
+    [SerializeField] private Transform redSoulPrefab;
+    private Transform redSoul1;
+    private Transform redSoul2;
+    private Transform redSoul3;
+    private Transform redSoul4;
+    private Transform redSoul5;
+    private Transform redSoul6;
+    private Transform redSoul7;
+    private Transform redSoul8;
+    private Transform redSoul9;
+    private Transform redSoul10;
+    //The jar of the lifesteal action
+    [SerializeField] private Transform jarPrefab;
+    private Transform jar;
+    //Booleans to know where the jar is moving
+    private bool jarMovUp;
+    private bool jarMovLeft;
+    private bool jarMovRight;
+    private bool jarMovDown;
     //The lightning
     [SerializeField] private Transform lightningPrefab;
     //The regeneration action UI
     private GameObject regenerationAction;
     //The lightning action UI
     private GameObject lightningAction;
+    //The lifesteal action UI
+    private GameObject lifestealAction;
     //A boolean to save if the shuriken hits the enemy
     public bool shurikenHit;
     //A float to know the time we have spent spinning
@@ -317,6 +341,11 @@ public class BattleController : MonoBehaviour
         soulRegenMovLeft = false;
         soulRegenMovRight = false;
         soulRegenMovDown = false;
+        soulLifesteal = false;
+        jarMovUp = false;
+        jarMovLeft = false;
+        jarMovRight = false;
+        jarMovDown = false;
         soulRegenRingSpeed = 0.03f;
         soulRegenGreenSpeed = 0.075f;
         soulRegenHeal = 0;
@@ -549,7 +578,8 @@ public class BattleController : MonoBehaviour
                             actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
                             if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> when they appear.";
                             else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pass through the circles to gain LP and FP.";
-                            else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> When the yellow soul is over the enemy. You'll continue until you skip one enemy.";
+                            else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the yellow soul is over the enemy to deal damage. You have until the soul returns to deal damage.";
+                            else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Cosa de espada."; ;
                             attackType = 2;
                             enemyName.SetActive(true);
                             if (menuSelectionPos == 0)
@@ -571,6 +601,16 @@ public class BattleController : MonoBehaviour
                             {
                                 selectingEnemy = true;
                                 SelectAllEnemies();
+                            }
+                            else if (menuSelectionPos == 3)
+                            {
+                                player.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
+                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
+                                enemyName.transform.GetChild(1).gameObject.SetActive(false);
+                                enemyName.transform.GetChild(2).gameObject.SetActive(false);
+                                enemyName.transform.GetChild(3).gameObject.SetActive(false);
+                                enemyName.transform.GetChild(4).gameObject.SetActive(false);
+                                selectingPlayer = true;
                             }
                         }
                     }
@@ -1469,6 +1509,17 @@ public class BattleController : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.X)) Instantiate(lightningPrefab, new Vector3(yellowSoul.position.x, 1.5f, enemy1.position.z), Quaternion.identity);
                 }
+                else if (soulLifesteal)
+                {
+                    if (Input.GetKey(KeyCode.UpArrow)) jarMovUp = true;
+                    if (Input.GetKey(KeyCode.LeftArrow)) jarMovLeft = true;
+                    if (Input.GetKey(KeyCode.RightArrow)) jarMovRight = true;
+                    if (Input.GetKey(KeyCode.DownArrow)) jarMovDown = true;
+                    if (Input.GetKeyUp(KeyCode.UpArrow)) jarMovUp = false;
+                    if (Input.GetKeyUp(KeyCode.LeftArrow)) jarMovLeft = false;
+                    if (Input.GetKeyUp(KeyCode.RightArrow)) jarMovRight = false;
+                    if (Input.GetKeyUp(KeyCode.DownArrow)) jarMovDown = false;
+                }
             }
             //We end the players turn when the player ends the shuriken animation
             else if (shurikenHit)
@@ -1646,6 +1697,24 @@ public class BattleController : MonoBehaviour
                 else if (yellowSoul.position.x > player.position.x && !yellowSoulRight) yellowSoul.position = new Vector3(yellowSoul.position.x - 0.05f, yellowSoul.position.y, yellowSoul.position.z);
                 else EndLightningAttack();
             }
+            if (soulLifesteal)
+            {
+                if (jarMovUp && jar.GetComponent<RectTransform>().anchoredPosition.y < 2.0f) jar.GetComponent<RectTransform>().anchoredPosition = new Vector2(jar.GetComponent<RectTransform>().anchoredPosition.x, jar.GetComponent<RectTransform>().anchoredPosition.y + 0.09f);
+                if (jarMovLeft && jar.GetComponent<RectTransform>().anchoredPosition.x > -5.45f) jar.GetComponent<RectTransform>().anchoredPosition = new Vector2(jar.GetComponent<RectTransform>().anchoredPosition.x - 0.09f, jar.GetComponent<RectTransform>().anchoredPosition.y);
+                if (jarMovRight && jar.GetComponent<RectTransform>().anchoredPosition.x < 5.45f) jar.GetComponent<RectTransform>().anchoredPosition = new Vector2(jar.GetComponent<RectTransform>().anchoredPosition.x + 0.09f, jar.GetComponent<RectTransform>().anchoredPosition.y);
+                if (jarMovDown && jar.GetComponent<RectTransform>().anchoredPosition.y > -2.15f) jar.GetComponent<RectTransform>().anchoredPosition = new Vector2(jar.GetComponent<RectTransform>().anchoredPosition.x, jar.GetComponent<RectTransform>().anchoredPosition.y - 0.09f);
+                if(redSoul1 != null) redSoul1.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul1.GetComponent<RectTransform>().anchoredPosition.x, redSoul1.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
+                if(redSoul2 != null) redSoul2.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul2.GetComponent<RectTransform>().anchoredPosition.x, redSoul2.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
+                if(redSoul3 != null) redSoul3.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul3.GetComponent<RectTransform>().anchoredPosition.x, redSoul3.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
+                if(redSoul4 != null) redSoul4.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul4.GetComponent<RectTransform>().anchoredPosition.x, redSoul4.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
+                if(redSoul5 != null) redSoul5.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul5.GetComponent<RectTransform>().anchoredPosition.x, redSoul5.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
+                if(redSoul6 != null) redSoul6.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul6.GetComponent<RectTransform>().anchoredPosition.x, redSoul6.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
+                if(redSoul7 != null) redSoul7.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul7.GetComponent<RectTransform>().anchoredPosition.x, redSoul7.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
+                if(redSoul8 != null) redSoul8.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul8.GetComponent<RectTransform>().anchoredPosition.x, redSoul8.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
+                if(redSoul9 != null) redSoul9.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul9.GetComponent<RectTransform>().anchoredPosition.x, redSoul9.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
+                if(redSoul10 != null) redSoul10.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul10.GetComponent<RectTransform>().anchoredPosition.x, redSoul10.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
+                if (redSoul1 == null && redSoul2 == null && redSoul2 == null && redSoul3 == null && redSoul4 == null && redSoul5 == null && redSoul6 == null && redSoul7 == null && redSoul8 == null && redSoul9 == null && redSoul10 == null) EndLifestealAttack();
+            }
         }
         
         if (fleeing)
@@ -1707,6 +1776,7 @@ public class BattleController : MonoBehaviour
             player = Instantiate(playerBattle, new Vector3(-5, -1, -2.0f), Quaternion.identity);
             regenerationAction = player.GetChild(0).GetChild(8).gameObject;
             lightningAction = player.GetChild(0).GetChild(9).gameObject;
+            lifestealAction = player.GetChild(0).GetChild(10).gameObject;
         }
         else if (battlePos == 2)
         {
@@ -2160,7 +2230,76 @@ public class BattleController : MonoBehaviour
         finalAttack = true;
         soulLightning = true;
     }
+    //A function to start the lifesteal attack
+    public void StartLifestealAttack()
+    {
+        float randx = Random.Range(-5.0f, 5.0f);
+        redSoul1 = Instantiate(redSoulPrefab, lifestealAction.transform);
+        redSoul1.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 3.0f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        redSoul2 = Instantiate(redSoulPrefab, lifestealAction.transform);
+        redSoul2.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 4.1f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        redSoul3 = Instantiate(redSoulPrefab, lifestealAction.transform);
+        redSoul3.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 5.2f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        redSoul4 = Instantiate(redSoulPrefab, lifestealAction.transform);
+        redSoul4.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 6.3f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        redSoul5 = Instantiate(redSoulPrefab, lifestealAction.transform);
+        redSoul5.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 7.4f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        redSoul6 = Instantiate(redSoulPrefab, lifestealAction.transform);
+        redSoul6.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 8.5f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        redSoul7 = Instantiate(redSoulPrefab, lifestealAction.transform);
+        redSoul7.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 9.6f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        redSoul8 = Instantiate(redSoulPrefab, lifestealAction.transform);
+        redSoul8.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 10.7f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        redSoul9 = Instantiate(redSoulPrefab, lifestealAction.transform);
+        redSoul9.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 11.8f);
+        if (randx < -2.0f) randx = -2.0f;
+        else if (randx > 2.0f) randx = 2.0f;
+        randx = Random.Range(randx - 3.0f, randx + 3.0f);
+        redSoul10 = Instantiate(redSoulPrefab, lifestealAction.transform);
+        redSoul10.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 12.9f);
+        jar = Instantiate(jarPrefab, lifestealAction.transform);
+        finalAttack = true;
+        soulLifesteal = true;
+    }
 
+    //Functions to end the lifsteal attack
+    public void EndLifestealAttack()
+    {
+        soulLifesteal = false;
+        actionInstructions.SetActive(false);
+        Destroy(jar.gameObject);
+        player.GetComponent<PlayerTeamScript>().EndLifestealAttack();
+    }
+
+    public void EndSoulLifestealAttack()
+    {
+        finalAttack = false;
+        EndPlayerTurn();
+    }
     //A function to select the first available enemy
     private void SelectFirstEnemy()
     {
@@ -2823,8 +2962,8 @@ public class BattleController : MonoBehaviour
                         player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
                         player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().sprite = thunder;
                         player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = "Thunder";
-                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "2 SP";
-                        if (CanUseSoulPoints(2))
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "3 SP";
+                        if (CanUseSoulPoints(3))
                         {
                             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
