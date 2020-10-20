@@ -62,6 +62,22 @@ public class PlayerTeamScript : MonoBehaviour
     private float attackSpeed;
     //int to know the end lvl of the soul attack
     private int soulLvl;
+    //An int to see for how many rounds is the player asleep
+    private int asleep;
+    //The gameobject of the buffDebuff UI
+    private GameObject buffDebuffUI;
+    //An int to see fow how many rounds has lifesteal the player
+    private int lifesteal;
+    //The position of the lifesteal debuff
+    private int lifestealPos;
+    //An int to see the number of buffs or debuffs
+    private int buffDebuffNumb;
+    //The position of the slep debuff
+    private int sleepPos;
+    //The sprite of the sleepUI
+    [SerializeField] private Sprite sleepSprite;
+    //The sprite of the lifestealUI
+    [SerializeField] private Sprite lifestealSprite;
 
     void Awake()
     {
@@ -72,11 +88,18 @@ public class PlayerTeamScript : MonoBehaviour
         soulLight = transform.GetChild(3).gameObject;
         soulMusicAction = GameObject.Find("SoulMusicAction");
         canvas = GameObject.Find("Canvas");
+        buffDebuffUI = transform.GetChild(0).Find("BuffsDebuffs").gameObject;
+        buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
+        buffDebuffUI.transform.GetChild(1).gameObject.SetActive(false);
+        buffDebuffUI.transform.GetChild(2).gameObject.SetActive(false);
+        buffDebuffUI.transform.GetChild(3).gameObject.SetActive(false);
         soulMusicAction.SetActive(false);
         lastAttack = false;
         movingToEnemy = false;
         returnStartPos = false;
         soulLightUp = false;
+        asleep = 0;
+        lifesteal = 0;
         attackSpeed = 1.0f;
     }
 
@@ -122,6 +145,9 @@ public class PlayerTeamScript : MonoBehaviour
                 Vector3 scale = transform.localScale;
                 scale.x *= -1;
                 transform.localScale = scale;
+                scale = transform.GetChild(0).transform.localScale;
+                scale.x *= -1;
+                transform.GetChild(0).transform.localScale = scale;
                 GetComponent<Animator>().SetFloat("Speed", 0.0f);
                 returnStartPos = false;
                 battleController.GetComponent<BattleController>().EndPlayerTurn();
@@ -154,6 +180,11 @@ public class PlayerTeamScript : MonoBehaviour
             {
                 soulLightUp = false;
                 battleController.GetComponent<BattleController>().StartLifestealAttack();
+            }
+            else if (attackStyle == 4)
+            {
+                soulLightUp = false;
+                battleController.GetComponent<BattleController>().StartDisappearAttack();
             }
         }
         if (soulLightDown && soulLight.transform.position.y > -2.0f)
@@ -193,6 +224,166 @@ public class PlayerTeamScript : MonoBehaviour
     public void EndLifestealAttack()
     {
         soulLightDown = true;
+    }
+
+    //Function to set the amount of time the player will be asleep
+    public void SetAsleepTime(int lvl)
+    {
+        int duration;
+        float rand;
+        duration = Mathf.FloorToInt((lvl - 1) / 2.0f);
+        rand = ((lvl - 1) / 2.0f) - Mathf.FloorToInt((lvl - 1) / 2.0f);
+        if (rand >= Random.Range(0.0f, 1.0f)) duration += 1;
+        if (duration > 0) SetBuffDebuff(0, duration);
+    }
+    //Function to set the amount of time the player will have lifesteal
+    public void SetLifestealTime(int lvl)
+    {
+        int duration = 0;
+        if (lvl < 4) duration = 1;
+        else if (lvl < 7) duration = 2;
+        else if (lvl < 10) duration = 3;
+        else if (lvl == 10) duration = 4;
+        SetBuffDebuff(1, duration);
+    }
+    //Function to see if the player has lifesteal
+    public bool HasLifesteal()
+    {
+        return lifesteal > 0;
+    }
+    //A function to put a buff or a debuff in the UI. buffDeb = 0 -> Sleep, buffDeb = 1 -> lifesteal
+    public void SetBuffDebuff(int buffDeb, int duration)
+    {
+        if (buffDeb == 0)
+        {
+            if (asleep == 0)
+            {
+                //GetComponent<Animator>().SetBool("IsAsleep", true);
+                sleepPos = 3 - buffDebuffNumb;
+                asleep = duration;
+                buffDebuffUI.transform.GetChild(sleepPos).gameObject.SetActive(true);
+                buffDebuffUI.transform.GetChild(sleepPos).GetChild(0).GetComponent<Image>().sprite = sleepSprite;
+                buffDebuffUI.transform.GetChild(sleepPos).GetChild(1).GetComponent<Text>().text = asleep.ToString();
+                buffDebuffNumb += 1;
+            }
+            else
+            {
+                asleep += duration;
+                buffDebuffUI.transform.GetChild(sleepPos).GetChild(1).GetComponent<Text>().text = asleep.ToString();
+            }
+        }
+        else if(buffDeb == 1)
+        {
+            if(lifesteal == 0)
+            {
+                lifestealPos = 3 - buffDebuffNumb;
+                lifesteal = duration;
+                buffDebuffUI.transform.GetChild(lifestealPos).gameObject.SetActive(true);
+                buffDebuffUI.transform.GetChild(lifestealPos).GetChild(0).GetComponent<Image>().sprite = lifestealSprite;
+                buffDebuffUI.transform.GetChild(lifestealPos).GetChild(1).GetComponent<Text>().text = lifesteal.ToString();
+                buffDebuffNumb += 1;
+            }
+            else
+            {
+                lifesteal += duration;
+                buffDebuffUI.transform.GetChild(lifestealPos).GetChild(1).GetComponent<Text>().text = lifesteal.ToString();
+            }
+        }
+    }
+    public void RestBuffDebuff()
+    {
+        if (asleep != 0)
+        {
+            asleep -= 1;
+            buffDebuffUI.transform.GetChild(sleepPos).GetChild(1).GetComponent<Text>().text = asleep.ToString();
+            if (asleep == 0) EndBuffDebuff(sleepPos);
+        }
+        if(lifesteal != 0)
+        {
+            lifesteal -= 1;
+            buffDebuffUI.transform.GetChild(lifestealPos).GetChild(1).GetComponent<Text>().text = lifesteal.ToString();
+            if (lifesteal == 0) EndBuffDebuff(lifestealPos);
+        }
+    }
+    
+    private void EndBuffDebuff(int pos)
+    {
+        if (pos == 0)
+        {
+            buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
+            buffDebuffNumb -= 1;
+        }
+        else if (pos == 1)
+        {
+            if (buffDebuffNumb > 3)
+            {
+                buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
+                if (sleepPos == 0) sleepPos = 1;
+                if (lifestealPos == 0) lifestealPos = 1;
+            }
+            else buffDebuffUI.transform.GetChild(1).gameObject.SetActive(false);
+            buffDebuffNumb -= 1;
+        }
+        else if (pos == 2)
+        {
+            if (buffDebuffNumb > 3)
+            {
+                buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
+                if (sleepPos <= 1) sleepPos += 1;
+                if (lifestealPos <= 1) lifestealPos += 1;
+            }
+            else if (buffDebuffNumb > 2)
+            {
+                buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(1).gameObject.SetActive(false);
+                if (sleepPos <= 1) sleepPos += 1;
+                if (lifestealPos <= 1) lifestealPos = 1;
+            }
+            else buffDebuffUI.transform.GetChild(2).gameObject.SetActive(false);
+            buffDebuffNumb -= 1;
+        }
+        else if (pos == 3)
+        {
+            if (buffDebuffNumb > 3)
+            {
+                buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
+                if (sleepPos <= 2) sleepPos += 1;
+                if (lifestealPos <= 2) lifestealPos += 1;
+            }
+            else if (buffDebuffNumb > 2)
+            {
+                buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(1).gameObject.SetActive(false);
+                if (sleepPos <= 2) sleepPos += 1;
+                if (lifestealPos <= 2) lifestealPos += 1;
+            }
+            else if (buffDebuffNumb > 1)
+            {
+                buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().sprite = buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().sprite;
+                buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().text = buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().text;
+                buffDebuffUI.transform.GetChild(2).gameObject.SetActive(false);
+                if (sleepPos <= 2) sleepPos += 1;
+                if (lifestealPos <= 2) lifestealPos += 1;
+            }
+            else buffDebuffUI.transform.GetChild(3).gameObject.SetActive(false);
+            buffDebuffNumb -= 1;
+        }
     }
 
     //A function to attack the enemy.type: 0-> melee, 1-> ranged. style: style of melee or ranged attack
@@ -288,6 +479,13 @@ public class PlayerTeamScript : MonoBehaviour
                     soulLight.GetComponent<Light>().color = new Vector4(0.6320754f, 0.0f, 0.0f, 1.0f);
                     soulLightUp = true;
                 }
+                else if (style == 4)
+                {
+                    battleController.GetComponent<BattleController>().SpendSouls(3);
+                    GetComponent<Animator>().SetBool("soulAttack", true);
+                    soulLight.GetComponent<Light>().color = new Vector4(0.0f, 0.1461225f, 0.7264151f, 1.0f);
+                    soulLightUp = true;
+                }
             }
         }
     }
@@ -326,6 +524,9 @@ public class PlayerTeamScript : MonoBehaviour
                 Vector3 scale = transform.localScale;
                 scale.x *= -1;
                 transform.localScale = scale;
+                scale = transform.GetChild(0).transform.localScale;
+                scale.x *= -1;
+                transform.GetChild(0).transform.localScale = scale;
                 battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, true);
             }
         }
@@ -355,6 +556,9 @@ public class PlayerTeamScript : MonoBehaviour
                 Vector3 scale = transform.localScale;
                 scale.x *= -1;
                 transform.localScale = scale;
+                scale = transform.GetChild(0).transform.localScale;
+                scale.x *= -1;
+                transform.GetChild(0).transform.localScale = scale;
                 battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, true);
             }
         }
@@ -369,6 +573,9 @@ public class PlayerTeamScript : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+        scale = transform.GetChild(0).transform.localScale;
+        scale.x *= -1;
+        transform.GetChild(0).transform.localScale = scale;
         battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), damage, true);
     }
 
@@ -448,10 +655,14 @@ public class PlayerTeamScript : MonoBehaviour
     }
 
     //A function to heal
-    public void Heal(int points, bool regen)
+    public void Heal(int points, bool regen, bool right)
     {
-        if(regen) heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 1.5f, transform.position.y + 0.8f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
-        else heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
+        if (right)
+        {
+            if (regen) heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 1.5f, transform.position.y + 0.8f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
+            else heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
+        }
+        else heartImage = Instantiate(heartUI, new Vector3(transform.position.x - 1.5f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         heartImage.GetChild(0).GetComponent<Text>().text = points.ToString();
         playerLife.GetComponent<PlayerLifeScript>().Heal(points);
     }

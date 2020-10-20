@@ -55,6 +55,7 @@ public class EnemyTeamScript : MonoBehaviour
         returnStartPos = false;
         alive = true;
         idle = true;
+        asleep = 0;
         if (enemyType == 0) grounded = true;
     }
 

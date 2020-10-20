@@ -7,13 +7,16 @@ public class JarScript : MonoBehaviour
 {
     //The actual fill
     private float fill;
-    // Start is called before the first frame update
+    //The battle controller
+    private GameObject battleController;
+
     void Start()
     {
+        battleController = GameObject.Find("BattleController");
         fill = 0.0f;
     }
 
-    // Update is called once per frame
+
     void FixedUpdate()
     {
         if (transform.GetChild(2).GetComponent<Image>().fillAmount < fill) transform.GetChild(2).GetComponent<Image>().fillAmount += 0.004f;
@@ -23,6 +26,7 @@ public class JarScript : MonoBehaviour
     {
         if (other.tag == "redSoul")
         {
+            battleController.GetComponent<BattleController>().GatherRedSoul();
             fill += 0.1f;
             Destroy(other.gameObject);
         }

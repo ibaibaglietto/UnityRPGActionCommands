@@ -179,6 +179,8 @@ public class BattleController : MonoBehaviour
     private Transform yellowSoul;
     //A boolean to know if the player is doing the lifesteal action
     private bool soulLifesteal;
+    //The number of red souls gathered
+    private int soulLifestealNumb;
     //The red soul
     [SerializeField] private Transform redSoulPrefab;
     private Transform redSoul1;
@@ -191,6 +193,14 @@ public class BattleController : MonoBehaviour
     private Transform redSoul8;
     private Transform redSoul9;
     private Transform redSoul10;
+    //The blue soul
+    [SerializeField] private Transform blueSoulPrefab;
+    private Transform blueSoul;
+    //Booleans to know where the blue soul is moving
+    private bool blueSoulMovUp;
+    private bool blueSoulMovLeft;
+    private bool blueSoulMovRight;
+    private bool blueSoulMovDown;
     //The jar of the lifesteal action
     [SerializeField] private Transform jarPrefab;
     private Transform jar;
@@ -207,6 +217,8 @@ public class BattleController : MonoBehaviour
     private GameObject lightningAction;
     //The lifesteal action UI
     private GameObject lifestealAction;
+    //The disappear action UI
+    private GameObject disappearAction;
     //A boolean to save if the shuriken hits the enemy
     public bool shurikenHit;
     //A float to know the time we have spent spinning
@@ -342,6 +354,7 @@ public class BattleController : MonoBehaviour
         soulRegenMovRight = false;
         soulRegenMovDown = false;
         soulLifesteal = false;
+        soulLifestealNumb = 0;
         jarMovUp = false;
         jarMovLeft = false;
         jarMovRight = false;
@@ -577,32 +590,18 @@ public class BattleController : MonoBehaviour
                             actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
                             actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
                             if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> when they appear.";
-                            else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pass through the circles to gain LP and FP.";
+                            else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pass through the circles using <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to gain LP and FP.";
                             else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the yellow soul is over the enemy to deal damage. You have until the soul returns to deal damage.";
-                            else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Cosa de espada."; ;
+                            else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gather as many red souls as you can using <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move."; 
+                            else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Cosa de desaparecer."; 
                             attackType = 2;
                             enemyName.SetActive(true);
-                            if (menuSelectionPos == 0)
+                            if (menuSelectionPos == 0 || menuSelectionPos == 2)
                             {
                                 selectingEnemy = true;
                                 SelectAllEnemies();
                             }
-                            else if (menuSelectionPos == 1)
-                            {
-                                player.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
-                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
-                                enemyName.transform.GetChild(1).gameObject.SetActive(false);
-                                enemyName.transform.GetChild(2).gameObject.SetActive(false);
-                                enemyName.transform.GetChild(3).gameObject.SetActive(false);
-                                enemyName.transform.GetChild(4).gameObject.SetActive(false);
-                                selectingPlayer = true;
-                            }
-                            else if (menuSelectionPos == 2)
-                            {
-                                selectingEnemy = true;
-                                SelectAllEnemies();
-                            }
-                            else if (menuSelectionPos == 3)
+                            else if (menuSelectionPos == 1 || menuSelectionPos == 3 || menuSelectionPos == 4)
                             {
                                 player.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
@@ -685,7 +684,7 @@ public class BattleController : MonoBehaviour
                     player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                     if (selectingAction == 2)
                     {
-                        if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5,false);
+                        if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5,false,true);
                         else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5,false);
                         DeleteItem(menuSelectionPos + scroll);
                         scroll = 0;
@@ -1777,6 +1776,7 @@ public class BattleController : MonoBehaviour
             regenerationAction = player.GetChild(0).GetChild(8).gameObject;
             lightningAction = player.GetChild(0).GetChild(9).gameObject;
             lifestealAction = player.GetChild(0).GetChild(10).gameObject;
+            disappearAction = player.GetChild(0).GetChild(11).gameObject;
         }
         else if (battlePos == 2)
         {
@@ -1867,6 +1867,7 @@ public class BattleController : MonoBehaviour
     //Function to deal damage to an enemy, giving the enemy, the amount of damage and a boolean that says if it is the last attack
     public void DealDamage(Transform objective, int damage, bool last)
     {
+        if(playerTeamTurn && player.GetComponent<PlayerTeamScript>().HasLifesteal()) player.GetComponent<PlayerTeamScript>().Heal(damage, false,false);
         //We instantiate the damage UI and save the damage amount
         damageImage = Instantiate(damageUI, new Vector3(objective.transform.position.x -0.25f, objective.transform.position.y + 1.0f, 0), Quaternion.identity, objective.transform.GetChild(0));
         damageImage.GetChild(0).GetComponent<Text>().text = damage.ToString();
@@ -1909,8 +1910,8 @@ public class BattleController : MonoBehaviour
         soulRegenMovDown = false;
         soulRegenRingSpeed = 0.03f;
         soulRegenGreenSpeed = 0.075f;
-        player.GetComponent<PlayerTeamScript>().Heal(soulRegenHeal, true);
-        player.GetComponent<PlayerTeamScript>().IncreaseLight(soulRegenLight, true);
+        player.GetComponent<PlayerTeamScript>().Heal(soulRegenHeal/2, true,true);
+        player.GetComponent<PlayerTeamScript>().IncreaseLight(soulRegenLight/2, true);
         soulRegenHeal = 0;
         soulRegenLight = 0;
         actionInstructions.SetActive(false);
@@ -1960,6 +1961,7 @@ public class BattleController : MonoBehaviour
     //A function to end players turn
     public void EndPlayerTurn()
     {
+        player.GetComponent<PlayerTeamScript>().RestBuffDebuff();
         canvas.GetComponent<Animator>().SetBool("Hide", false);
         playerChoosingAction = true;
         playerTeamTurn = false;
@@ -2285,10 +2287,17 @@ public class BattleController : MonoBehaviour
         finalAttack = true;
         soulLifesteal = true;
     }
+    //A function to sum 1 to soulLifestealNumb
+    public void GatherRedSoul()
+    {
+        soulLifestealNumb += 1;
+    }
 
     //Functions to end the lifsteal attack
     public void EndLifestealAttack()
     {
+        player.GetComponent<PlayerTeamScript>().SetLifestealTime(soulLifestealNumb);
+        soulLifestealNumb = 0;
         soulLifesteal = false;
         actionInstructions.SetActive(false);
         Destroy(jar.gameObject);
@@ -2299,6 +2308,11 @@ public class BattleController : MonoBehaviour
     {
         finalAttack = false;
         EndPlayerTurn();
+    }
+    //A function to start the disappear attack
+    public void StartDisappearAttack()
+    {
+        blueSoul = Instantiate(blueSoulPrefab, disappearAction.transform);
     }
     //A function to select the first available enemy
     private void SelectFirstEnemy()
@@ -3076,11 +3090,15 @@ public class BattleController : MonoBehaviour
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = defend;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Defend";
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "";
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
             menuCanUse[1] = true;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().sprite = run;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = "Flee";
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "";
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
             menuCanUse[2] = true;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(false);
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(false);
