@@ -66,10 +66,14 @@ public class PlayerTeamScript : MonoBehaviour
     private int asleep;
     //The gameobject of the buffDebuff UI
     private GameObject buffDebuffUI;
-    //An int to see fow how many rounds has lifesteal the player
+    //An int to see for how many rounds has lifesteal the player
     private int lifesteal;
-    //The position of the lifesteal debuff
+    //The position of the lifesteal buff
     private int lifestealPos;
+    //An int to see for how many rounds has invisibility the player
+    private int disappear;
+    //The position of the invisibility buff
+    private int disappearPos;
     //An int to see the number of buffs or debuffs
     private int buffDebuffNumb;
     //The position of the slep debuff
@@ -78,6 +82,8 @@ public class PlayerTeamScript : MonoBehaviour
     [SerializeField] private Sprite sleepSprite;
     //The sprite of the lifestealUI
     [SerializeField] private Sprite lifestealSprite;
+    //The sprite of the disappearUI
+    [SerializeField] private Sprite disappearSprite;
 
     void Awake()
     {
@@ -197,8 +203,9 @@ public class PlayerTeamScript : MonoBehaviour
             soulLightDown = false;
             if (attackStyle == 0) battleController.GetComponent<BattleController>().EndSoulAttack(soulLvl);
             else if (attackStyle == 1) battleController.GetComponent<BattleController>().EndSoulRegenerationAttack();
-            else if(attackStyle == 2) battleController.GetComponent<BattleController>().EndSoulLightningAttack();
-            else if(attackStyle == 3) battleController.GetComponent<BattleController>().EndSoulLifestealAttack();
+            else if (attackStyle == 2) battleController.GetComponent<BattleController>().EndSoulLightningAttack();
+            else if (attackStyle == 3) battleController.GetComponent<BattleController>().EndSoulLifestealAttack();
+            else if (attackStyle == 4) battleController.GetComponent<BattleController>().EndSoulDisappearAttack();
         }
     }
 
@@ -222,6 +229,11 @@ public class PlayerTeamScript : MonoBehaviour
 
     //A function to end the lifesteal attack
     public void EndLifestealAttack()
+    {
+        soulLightDown = true;
+    }
+    //A function to end the disappear attack
+    public void EndDisappearAttack()
     {
         soulLightDown = true;
     }
@@ -251,7 +263,22 @@ public class PlayerTeamScript : MonoBehaviour
     {
         return lifesteal > 0;
     }
-    //A function to put a buff or a debuff in the UI. buffDeb = 0 -> Sleep, buffDeb = 1 -> lifesteal
+    //Function to set the amount of time the player will be invisible
+    public void SetDisappearTime(float alpha)
+    {
+        GetComponent<SpriteRenderer>().color = new Color(GetComponent<SpriteRenderer>().color.r, GetComponent<SpriteRenderer>().color.g, GetComponent<SpriteRenderer>().color.b, 0.5f);
+        int duration;
+        if (alpha > 0.5f) duration = 1;
+        else if (alpha > 0.05f) duration = 2;
+        else duration = 3;
+        SetBuffDebuff(2, duration);
+    }
+    //Function to see if the player is visible
+    public bool IsInvisible()
+    {
+        return disappear > 0;
+    }
+    //A function to put a buff or a debuff in the UI. buffDeb = 0 -> Sleep, buffDeb = 1 -> lifesteal, buffDeb = 2 -> invisible
     public void SetBuffDebuff(int buffDeb, int duration)
     {
         if (buffDeb == 0)
@@ -289,6 +316,18 @@ public class PlayerTeamScript : MonoBehaviour
                 buffDebuffUI.transform.GetChild(lifestealPos).GetChild(1).GetComponent<Text>().text = lifesteal.ToString();
             }
         }
+        else if(buffDeb == 2)
+        {
+            if(disappear == 0)
+            {
+                disappearPos = 3 - buffDebuffNumb;
+                disappear = duration;
+                buffDebuffUI.transform.GetChild(disappearPos).gameObject.SetActive(true);
+                buffDebuffUI.transform.GetChild(disappearPos).GetChild(0).GetComponent<Image>().sprite = disappearSprite;
+                buffDebuffUI.transform.GetChild(disappearPos).GetChild(1).GetComponent<Text>().text = disappear.ToString();
+                buffDebuffNumb += 1;
+            }
+        }
     }
     public void RestBuffDebuff()
     {
@@ -303,6 +342,16 @@ public class PlayerTeamScript : MonoBehaviour
             lifesteal -= 1;
             buffDebuffUI.transform.GetChild(lifestealPos).GetChild(1).GetComponent<Text>().text = lifesteal.ToString();
             if (lifesteal == 0) EndBuffDebuff(lifestealPos);
+        }
+        if(disappear != 0)
+        {
+            disappear -= 1;
+            buffDebuffUI.transform.GetChild(disappearPos).GetChild(1).GetComponent<Text>().text = disappear.ToString();
+            if (disappear == 0)
+            {
+                GetComponent<SpriteRenderer>().color = new Color(GetComponent<SpriteRenderer>().color.r, GetComponent<SpriteRenderer>().color.g, GetComponent<SpriteRenderer>().color.b, 1.0f);
+                EndBuffDebuff(disappearPos);
+            }
         }
     }
     
@@ -322,6 +371,7 @@ public class PlayerTeamScript : MonoBehaviour
                 buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
                 if (sleepPos == 0) sleepPos = 1;
                 if (lifestealPos == 0) lifestealPos = 1;
+                if (disappearPos == 0) disappearPos = 1;
             }
             else buffDebuffUI.transform.GetChild(1).gameObject.SetActive(false);
             buffDebuffNumb -= 1;
@@ -337,6 +387,7 @@ public class PlayerTeamScript : MonoBehaviour
                 buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
                 if (sleepPos <= 1) sleepPos += 1;
                 if (lifestealPos <= 1) lifestealPos += 1;
+                if (disappearPos <= 1) disappearPos += 1;
             }
             else if (buffDebuffNumb > 2)
             {
@@ -345,6 +396,7 @@ public class PlayerTeamScript : MonoBehaviour
                 buffDebuffUI.transform.GetChild(1).gameObject.SetActive(false);
                 if (sleepPos <= 1) sleepPos += 1;
                 if (lifestealPos <= 1) lifestealPos = 1;
+                if (disappearPos <= 1) disappearPos += 1;
             }
             else buffDebuffUI.transform.GetChild(2).gameObject.SetActive(false);
             buffDebuffNumb -= 1;
@@ -362,6 +414,7 @@ public class PlayerTeamScript : MonoBehaviour
                 buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
                 if (sleepPos <= 2) sleepPos += 1;
                 if (lifestealPos <= 2) lifestealPos += 1;
+                if (disappearPos <= 2) disappearPos += 1;
             }
             else if (buffDebuffNumb > 2)
             {
@@ -372,6 +425,7 @@ public class PlayerTeamScript : MonoBehaviour
                 buffDebuffUI.transform.GetChild(1).gameObject.SetActive(false);
                 if (sleepPos <= 2) sleepPos += 1;
                 if (lifestealPos <= 2) lifestealPos += 1;
+                if (disappearPos <= 2) disappearPos += 1;
             }
             else if (buffDebuffNumb > 1)
             {
@@ -380,6 +434,7 @@ public class PlayerTeamScript : MonoBehaviour
                 buffDebuffUI.transform.GetChild(2).gameObject.SetActive(false);
                 if (sleepPos <= 2) sleepPos += 1;
                 if (lifestealPos <= 2) lifestealPos += 1;
+                if (disappearPos <= 2) disappearPos += 1;
             }
             else buffDebuffUI.transform.GetChild(3).gameObject.SetActive(false);
             buffDebuffNumb -= 1;
@@ -647,11 +702,14 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to deal damage
     public void DealDamage(int Damage)
     {
-        Damage -= battleController.GetComponent<BattleController>().GetDefense();
-        if (Damage < 0) Damage = 0;
-        damageImage = Instantiate(damageUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
-        damageImage.GetChild(0).GetComponent<Text>().text = Damage.ToString();
-        playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
+        if(disappear == 0)
+        {
+            Damage -= battleController.GetComponent<BattleController>().GetDefense();
+            if (Damage < 0) Damage = 0;
+            damageImage = Instantiate(damageUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
+            damageImage.GetChild(0).GetComponent<Text>().text = Damage.ToString();
+            playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
+        }        
     }
 
     //A function to heal

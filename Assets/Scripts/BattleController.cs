@@ -193,14 +193,6 @@ public class BattleController : MonoBehaviour
     private Transform redSoul8;
     private Transform redSoul9;
     private Transform redSoul10;
-    //The blue soul
-    [SerializeField] private Transform blueSoulPrefab;
-    private Transform blueSoul;
-    //Booleans to know where the blue soul is moving
-    private bool blueSoulMovUp;
-    private bool blueSoulMovLeft;
-    private bool blueSoulMovRight;
-    private bool blueSoulMovDown;
     //The jar of the lifesteal action
     [SerializeField] private Transform jarPrefab;
     private Transform jar;
@@ -209,6 +201,23 @@ public class BattleController : MonoBehaviour
     private bool jarMovLeft;
     private bool jarMovRight;
     private bool jarMovDown;
+    //A boolean to know if the player is doing the disappear action
+    private bool soulDisappear;
+    //The blue soul
+    [SerializeField] private Transform blueSoulPrefab;
+    private Transform blueSoul;
+    //Booleans to know where the blue soul is moving
+    private bool blueSoulMovUp;
+    private bool blueSoulMovLeft;
+    private bool blueSoulMovRight;
+    private bool blueSoulMovDown;
+    //The walls of the disappear action
+    [SerializeField] private Transform wallPrefab;
+    private Transform wall1;
+    private Transform wall2;
+    private Transform wall3;
+    private Transform wall4;
+    private Transform wall5;
     //The lightning
     [SerializeField] private Transform lightningPrefab;
     //The regeneration action UI
@@ -359,6 +368,11 @@ public class BattleController : MonoBehaviour
         jarMovLeft = false;
         jarMovRight = false;
         jarMovDown = false;
+        soulDisappear = false;
+        blueSoulMovUp = false;
+        blueSoulMovLeft = false;
+        blueSoulMovRight = false;
+        blueSoulMovDown = false;
         soulRegenRingSpeed = 0.03f;
         soulRegenGreenSpeed = 0.075f;
         soulRegenHeal = 0;
@@ -1519,6 +1533,17 @@ public class BattleController : MonoBehaviour
                     if (Input.GetKeyUp(KeyCode.RightArrow)) jarMovRight = false;
                     if (Input.GetKeyUp(KeyCode.DownArrow)) jarMovDown = false;
                 }
+                else if (soulDisappear)
+                {
+                    if (Input.GetKey(KeyCode.UpArrow)) blueSoulMovUp = true;
+                    if (Input.GetKey(KeyCode.LeftArrow)) blueSoulMovLeft = true;
+                    if (Input.GetKey(KeyCode.RightArrow)) blueSoulMovRight = true;
+                    if (Input.GetKey(KeyCode.DownArrow)) blueSoulMovDown = true;
+                    if (Input.GetKeyUp(KeyCode.UpArrow)) blueSoulMovUp = false;
+                    if (Input.GetKeyUp(KeyCode.LeftArrow)) blueSoulMovLeft = false;
+                    if (Input.GetKeyUp(KeyCode.RightArrow)) blueSoulMovRight = false;
+                    if (Input.GetKeyUp(KeyCode.DownArrow)) blueSoulMovDown = false;
+                }
             }
             //We end the players turn when the player ends the shuriken animation
             else if (shurikenHit)
@@ -1713,6 +1738,20 @@ public class BattleController : MonoBehaviour
                 if(redSoul9 != null) redSoul9.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul9.GetComponent<RectTransform>().anchoredPosition.x, redSoul9.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
                 if(redSoul10 != null) redSoul10.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul10.GetComponent<RectTransform>().anchoredPosition.x, redSoul10.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
                 if (redSoul1 == null && redSoul2 == null && redSoul2 == null && redSoul3 == null && redSoul4 == null && redSoul5 == null && redSoul6 == null && redSoul7 == null && redSoul8 == null && redSoul9 == null && redSoul10 == null) EndLifestealAttack();
+            }
+            if (soulDisappear)
+            {                
+                if (blueSoulMovUp && blueSoul.GetComponent<RectTransform>().anchoredPosition.y < 2.0f) blueSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(blueSoul.GetComponent<RectTransform>().anchoredPosition.x, blueSoul.GetComponent<RectTransform>().anchoredPosition.y + 0.075f);
+                if (blueSoulMovLeft && blueSoul.GetComponent<RectTransform>().anchoredPosition.x > -5.45f) blueSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(blueSoul.GetComponent<RectTransform>().anchoredPosition.x - 0.075f, blueSoul.GetComponent<RectTransform>().anchoredPosition.y);
+                if (blueSoulMovRight && blueSoul.GetComponent<RectTransform>().anchoredPosition.x < 5.45f) blueSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(blueSoul.GetComponent<RectTransform>().anchoredPosition.x + 0.075f, blueSoul.GetComponent<RectTransform>().anchoredPosition.y);
+                if (blueSoulMovDown && blueSoul.GetComponent<RectTransform>().anchoredPosition.y > -2.3f) blueSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(blueSoul.GetComponent<RectTransform>().anchoredPosition.x, blueSoul.GetComponent<RectTransform>().anchoredPosition.y - 0.075f);
+                wall1.GetComponent<RectTransform>().anchoredPosition = new Vector2(wall1.GetComponent<RectTransform>().anchoredPosition.x - 0.045f, wall1.GetComponent<RectTransform>().anchoredPosition.y);
+                wall2.GetComponent<RectTransform>().anchoredPosition = new Vector2(wall2.GetComponent<RectTransform>().anchoredPosition.x - 0.045f, wall2.GetComponent<RectTransform>().anchoredPosition.y);
+                wall3.GetComponent<RectTransform>().anchoredPosition = new Vector2(wall3.GetComponent<RectTransform>().anchoredPosition.x - 0.045f, wall3.GetComponent<RectTransform>().anchoredPosition.y);
+                wall4.GetComponent<RectTransform>().anchoredPosition = new Vector2(wall4.GetComponent<RectTransform>().anchoredPosition.x - 0.045f, wall4.GetComponent<RectTransform>().anchoredPosition.y);
+                wall5.GetComponent<RectTransform>().anchoredPosition = new Vector2(wall5.GetComponent<RectTransform>().anchoredPosition.x - 0.045f, wall5.GetComponent<RectTransform>().anchoredPosition.y);
+                if (blueSoul.GetComponent<Image>().color.a > 0.05) blueSoul.GetComponent<Image>().color = new Color(blueSoul.GetComponent<Image>().color.r, blueSoul.GetComponent<Image>().color.g, blueSoul.GetComponent<Image>().color.b, blueSoul.GetComponent<Image>().color.a - 0.0006f);
+                else EndDisappearAttack();
             }
         }
         
@@ -1953,6 +1992,25 @@ public class BattleController : MonoBehaviour
     }
 
     public void EndSoulLightningAttack()
+    {
+        finalAttack = false;
+        EndPlayerTurn();
+    }
+    //Functions to end the disappear attack
+    public void EndDisappearAttack()
+    {
+        player.GetComponent<PlayerTeamScript>().SetDisappearTime(blueSoul.GetComponent<Image>().color.a);
+        actionInstructions.SetActive(false);
+        soulDisappear = false;
+        Destroy(blueSoul.gameObject);
+        Destroy(wall1.gameObject);
+        Destroy(wall2.gameObject);
+        Destroy(wall3.gameObject);
+        Destroy(wall4.gameObject);
+        Destroy(wall5.gameObject);
+        player.GetComponent<PlayerTeamScript>().EndDisappearAttack();
+    }
+    public void EndSoulDisappearAttack()
     {
         finalAttack = false;
         EndPlayerTurn();
@@ -2313,6 +2371,28 @@ public class BattleController : MonoBehaviour
     public void StartDisappearAttack()
     {
         blueSoul = Instantiate(blueSoulPrefab, disappearAction.transform);
+        float randy = Random.Range(-1.5f, 1.5f);
+        wall1 = Instantiate(wallPrefab, disappearAction.transform);
+        wall1.GetComponent<RectTransform>().anchoredPosition = new Vector2(6.5f, randy);
+        randy = Random.Range(-1.5f, 1.5f);
+        wall2 = Instantiate(wallPrefab, disappearAction.transform);
+        wall2.GetComponent<RectTransform>().anchoredPosition = new Vector2(9.5f, randy);
+        wall2.GetComponent<WallScript>().SetPreviousWall(wall1);
+        randy = Random.Range(-1.5f, 1.5f);
+        wall3 = Instantiate(wallPrefab, disappearAction.transform);
+        wall3.GetComponent<RectTransform>().anchoredPosition = new Vector2(12.5f, randy);
+        wall3.GetComponent<WallScript>().SetPreviousWall(wall2);
+        randy = Random.Range(-1.5f, 1.5f);
+        wall4 = Instantiate(wallPrefab, disappearAction.transform);
+        wall4.GetComponent<RectTransform>().anchoredPosition = new Vector2(15.5f, randy);
+        wall4.GetComponent<WallScript>().SetPreviousWall(wall3);
+        randy = Random.Range(-1.5f, 1.5f);
+        wall5 = Instantiate(wallPrefab, disappearAction.transform);
+        wall5.GetComponent<RectTransform>().anchoredPosition = new Vector2(18.5f, randy);
+        wall5.GetComponent<WallScript>().SetPreviousWall(wall4);
+        wall1.GetComponent<WallScript>().SetPreviousWall(wall5);
+        finalAttack = true;
+        soulDisappear = true;
     }
     //A function to select the first available enemy
     private void SelectFirstEnemy()

@@ -277,7 +277,7 @@ public class EnemyTeamScript : MonoBehaviour
         if (defense)
         {
             defended = 1;
-            attackObjective.GetComponent<Animator>().SetBool("isDefending", true);
+            if (!attackObjective.GetComponent<PlayerTeamScript>().IsInvisible()) attackObjective.GetComponent<Animator>().SetBool("isDefending", true);
         }
         else
         {
@@ -290,8 +290,11 @@ public class EnemyTeamScript : MonoBehaviour
     {
         attacking = false;
         attackObjective.GetComponent<PlayerTeamScript>().DealDamage(2-defended);
-        if(defended == 0) attackObjective.GetComponent<Animator>().SetTrigger("takeDamage");    
-        else attackObjective.GetComponent<Animator>().SetBool("isDefending", false);
+        if (!attackObjective.GetComponent<PlayerTeamScript>().IsInvisible())
+        {
+            if (defended == 0) attackObjective.GetComponent<Animator>().SetTrigger("takeDamage");
+            else attackObjective.GetComponent<Animator>().SetBool("isDefending", false);
+        }        
         defended = 0;
         gameObject.GetComponent<Animator>().SetBool("IsAttacking", false);
         movingToEnemy = false;
