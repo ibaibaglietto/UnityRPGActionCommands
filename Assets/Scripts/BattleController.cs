@@ -218,6 +218,19 @@ public class BattleController : MonoBehaviour
     private Transform wall3;
     private Transform wall4;
     private Transform wall5;
+    //A boolean to know if the player is doing the light up attack
+    private bool soulLightUp;
+    //The magenta soul
+    [SerializeField] private Transform magentaSoulPrefab;
+    private Transform magentaSoul;
+    //Booleans to know where the magenta soul is moving
+    private bool magentaSoulMovUp;
+    private bool magentaSoulMovLeft;
+    private bool magentaSoulMovRight;
+    private bool magentaSoulMovDown;
+    //The fog of the light up action
+    [SerializeField] private Transform fogPrefab;
+    private Transform fog;
     //The lightning
     [SerializeField] private Transform lightningPrefab;
     //The regeneration action UI
@@ -228,6 +241,8 @@ public class BattleController : MonoBehaviour
     private GameObject lifestealAction;
     //The disappear action UI
     private GameObject disappearAction;
+    //The light up action UI
+    private GameObject lightUpAction;
     //A boolean to save if the shuriken hits the enemy
     public bool shurikenHit;
     //A float to know the time we have spent spinning
@@ -373,6 +388,11 @@ public class BattleController : MonoBehaviour
         blueSoulMovLeft = false;
         blueSoulMovRight = false;
         blueSoulMovDown = false;
+        soulLightUp = false;
+        magentaSoulMovUp = false;
+        magentaSoulMovLeft = false;
+        magentaSoulMovRight = false;
+        magentaSoulMovDown = false;
         soulRegenRingSpeed = 0.03f;
         soulRegenGreenSpeed = 0.075f;
         soulRegenHeal = 0;
@@ -607,7 +627,8 @@ public class BattleController : MonoBehaviour
                             else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pass through the circles using <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to gain LP and FP.";
                             else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the yellow soul is over the enemy to deal damage. You have until the soul returns to deal damage.";
                             else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gather as many red souls as you can using <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move."; 
-                            else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Cosa de desaparecer."; 
+                            else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to dodge the walls while the soul fades out.";
+                            else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Jeje no se que poner.";
                             attackType = 2;
                             enemyName.SetActive(true);
                             if (menuSelectionPos == 0 || menuSelectionPos == 2)
@@ -615,7 +636,7 @@ public class BattleController : MonoBehaviour
                                 selectingEnemy = true;
                                 SelectAllEnemies();
                             }
-                            else if (menuSelectionPos == 1 || menuSelectionPos == 3 || menuSelectionPos == 4)
+                            else if (menuSelectionPos == 1 || menuSelectionPos == 3 || menuSelectionPos == 4 || menuSelectionPos == 5)
                             {
                                 player.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
@@ -1544,6 +1565,18 @@ public class BattleController : MonoBehaviour
                     if (Input.GetKeyUp(KeyCode.RightArrow)) blueSoulMovRight = false;
                     if (Input.GetKeyUp(KeyCode.DownArrow)) blueSoulMovDown = false;
                 }
+                else if (soulLightUp)
+                {
+                    if (Input.GetKeyDown(KeyCode.X)) fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x + 0.05f, fog.GetComponent<RectTransform>().localScale.y + 0.05f, fog.GetComponent<RectTransform>().localScale.z);
+                    if (Input.GetKey(KeyCode.UpArrow)) magentaSoulMovUp = true;
+                    if (Input.GetKey(KeyCode.LeftArrow)) magentaSoulMovLeft = true;
+                    if (Input.GetKey(KeyCode.RightArrow)) magentaSoulMovRight = true;
+                    if (Input.GetKey(KeyCode.DownArrow)) magentaSoulMovDown = true;
+                    if (Input.GetKeyUp(KeyCode.UpArrow)) magentaSoulMovUp = false;
+                    if (Input.GetKeyUp(KeyCode.LeftArrow)) magentaSoulMovLeft = false;
+                    if (Input.GetKeyUp(KeyCode.RightArrow)) magentaSoulMovRight = false;
+                    if (Input.GetKeyUp(KeyCode.DownArrow)) magentaSoulMovDown = false;
+                }
             }
             //We end the players turn when the player ends the shuriken animation
             else if (shurikenHit)
@@ -1753,6 +1786,30 @@ public class BattleController : MonoBehaviour
                 if (blueSoul.GetComponent<Image>().color.a > 0.05) blueSoul.GetComponent<Image>().color = new Color(blueSoul.GetComponent<Image>().color.r, blueSoul.GetComponent<Image>().color.g, blueSoul.GetComponent<Image>().color.b, blueSoul.GetComponent<Image>().color.a - 0.0006f);
                 else EndDisappearAttack();
             }
+            if (soulLightUp)
+            {
+                if (fog.GetComponent<RectTransform>().localScale.x > 1.0f) fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x - 0.004f, fog.GetComponent<RectTransform>().localScale.y - 0.004f, fog.GetComponent<RectTransform>().localScale.z);
+                if (magentaSoulMovUp && magentaSoul.GetComponent<RectTransform>().anchoredPosition.y < 2.0f)
+                {
+                    magentaSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(magentaSoul.GetComponent<RectTransform>().anchoredPosition.x, magentaSoul.GetComponent<RectTransform>().anchoredPosition.y + 0.075f);
+                    fog.GetComponent<RectTransform>().anchoredPosition = new Vector2(fog.GetComponent<RectTransform>().anchoredPosition.x, fog.GetComponent<RectTransform>().anchoredPosition.y + 0.075f);
+                }
+                if (magentaSoulMovLeft && magentaSoul.GetComponent<RectTransform>().anchoredPosition.x > -5.45f)
+                {
+                    magentaSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(magentaSoul.GetComponent<RectTransform>().anchoredPosition.x - 0.075f, magentaSoul.GetComponent<RectTransform>().anchoredPosition.y);
+                    fog.GetComponent<RectTransform>().anchoredPosition = new Vector2(fog.GetComponent<RectTransform>().anchoredPosition.x - 0.075f, fog.GetComponent<RectTransform>().anchoredPosition.y);
+                }
+                if (magentaSoulMovRight && magentaSoul.GetComponent<RectTransform>().anchoredPosition.x < 5.45f)
+                {
+                    magentaSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(magentaSoul.GetComponent<RectTransform>().anchoredPosition.x + 0.075f, magentaSoul.GetComponent<RectTransform>().anchoredPosition.y);
+                    fog.GetComponent<RectTransform>().anchoredPosition = new Vector2(fog.GetComponent<RectTransform>().anchoredPosition.x + 0.075f, fog.GetComponent<RectTransform>().anchoredPosition.y);
+                }
+                if (magentaSoulMovDown && magentaSoul.GetComponent<RectTransform>().anchoredPosition.y > -2.3f)
+                {
+                    magentaSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(magentaSoul.GetComponent<RectTransform>().anchoredPosition.x, magentaSoul.GetComponent<RectTransform>().anchoredPosition.y - 0.075f);
+                    fog.GetComponent<RectTransform>().anchoredPosition = new Vector2(fog.GetComponent<RectTransform>().anchoredPosition.x, fog.GetComponent<RectTransform>().anchoredPosition.y - 0.075f);
+                }
+            }
         }
         
         if (fleeing)
@@ -1816,6 +1873,7 @@ public class BattleController : MonoBehaviour
             lightningAction = player.GetChild(0).GetChild(9).gameObject;
             lifestealAction = player.GetChild(0).GetChild(10).gameObject;
             disappearAction = player.GetChild(0).GetChild(11).gameObject;
+            lightUpAction = player.GetChild(0).GetChild(12).gameObject;
         }
         else if (battlePos == 2)
         {
@@ -2019,6 +2077,7 @@ public class BattleController : MonoBehaviour
     //A function to end players turn
     public void EndPlayerTurn()
     {
+        player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
         player.GetComponent<PlayerTeamScript>().RestBuffDebuff();
         canvas.GetComponent<Animator>().SetBool("Hide", false);
         playerChoosingAction = true;
@@ -2394,6 +2453,15 @@ public class BattleController : MonoBehaviour
         finalAttack = true;
         soulDisappear = true;
     }
+    //Function to start the light up attack
+    public void StartLightUpAttack()
+    {
+        magentaSoul = Instantiate(magentaSoulPrefab, lightUpAction.transform);
+        fog = Instantiate(fogPrefab, lightUpAction.transform);
+        finalAttack = true;
+        soulLightUp = true;
+    }
+
     //A function to select the first available enemy
     private void SelectFirstEnemy()
     {
@@ -3170,15 +3238,15 @@ public class BattleController : MonoBehaviour
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = defend;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Defend";
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "";
-            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
             menuCanUse[1] = true;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().sprite = run;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = "Flee";
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "";
-            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
             menuCanUse[2] = true;
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(false);
             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(false);

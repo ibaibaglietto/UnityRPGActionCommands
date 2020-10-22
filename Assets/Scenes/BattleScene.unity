@@ -456,7 +456,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.20338441, y: 0}
   m_AnchorMax: {x: 0.4711922, y: 1}
-  m_AnchoredPosition: {x: 0.2990036, y: -0.000045776367}
+  m_AnchoredPosition: {x: 0.29901123, y: -0.000045776367}
   m_SizeDelta: {x: -0.21715546, y: -0.00002670288}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &149325935
@@ -2290,6 +2290,8 @@ MonoBehaviour:
   jarPrefab: {fileID: 8304496445762513258, guid: c7a7b4a8b3498e64e9e2181ec7d6d63f, type: 3}
   blueSoulPrefab: {fileID: 4742750944469495173, guid: 37e134a20ceaf6f418052705c768d4cf, type: 3}
   wallPrefab: {fileID: 6316738652927781355, guid: 07c014983f568bc4d8b858c971e07db9, type: 3}
+  magentaSoulPrefab: {fileID: 213714761863364445, guid: 819eb97bb9e7a4c41a333dbb2250bd95, type: 3}
+  fogPrefab: {fileID: 4411128139284904722, guid: 6b4816ac496585543ae16262232459c7, type: 3}
   lightningPrefab: {fileID: 4467010302461368411, guid: a694f6eec8ef2b149ae0e0352a2dcd70, type: 3}
   shurikenHit: 0
   shurikenTime: 0
@@ -3564,7 +3566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6320754, g: 0, b: 0.5054076, a: 1}
+  m_Color: {r: 0.6320754, g: 0, b: 0.5, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3576,7 +3578,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

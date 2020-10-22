@@ -192,6 +192,11 @@ public class PlayerTeamScript : MonoBehaviour
                 soulLightUp = false;
                 battleController.GetComponent<BattleController>().StartDisappearAttack();
             }
+            else if (attackStyle == 5)
+            {
+                soulLightUp = false;
+                battleController.GetComponent<BattleController>().StartLightUpAttack();
+            }
         }
         if (soulLightDown && soulLight.transform.position.y > -2.0f)
         {
@@ -329,6 +334,7 @@ public class PlayerTeamScript : MonoBehaviour
             }
         }
     }
+    //Function to rest 1 to the active buffs and debuffs
     public void RestBuffDebuff()
     {
         if (asleep != 0)
@@ -354,7 +360,7 @@ public class PlayerTeamScript : MonoBehaviour
             }
         }
     }
-    
+    //Function to end a buff or a debuff
     private void EndBuffDebuff(int pos)
     {
         if (pos == 0)
@@ -440,10 +446,66 @@ public class PlayerTeamScript : MonoBehaviour
             buffDebuffNumb -= 1;
         }
     }
-
+    //Function to hide the buffs and debuffs
+    public void HideBuffDebuff()
+    {
+        if (buffDebuffNumb > 0)
+        {
+            buffDebuffUI.transform.GetChild(3).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(3).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(3).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(3).GetComponent<Image>().color.b, 0.0f);
+            buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().color = new Color(buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().color.r, buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().color.g, buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().color.b, 0.0f);
+        }
+        if(buffDebuffNumb > 1)
+        {
+            buffDebuffUI.transform.GetChild(2).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(2).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(2).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(2).GetComponent<Image>().color.b, 0.0f);
+            buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().color = new Color(buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().color.r, buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().color.g, buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().color.b, 0.0f);
+        }
+        if (buffDebuffNumb > 2)
+        {
+            buffDebuffUI.transform.GetChild(1).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(1).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(1).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(1).GetComponent<Image>().color.b, 0.0f);
+            buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().color = new Color(buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().color.r, buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().color.g, buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().color.b, 0.0f);
+        }
+        if (buffDebuffNumb > 3)
+        {
+            buffDebuffUI.transform.GetChild(0).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(0).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(0).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().color = new Color(buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().color.r, buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().color.g, buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().color.b, 0.0f);
+        }
+    }
+    //Function to show the buffs and debuffs
+    public void ShowBuffDebuff()
+    {
+        if (buffDebuffNumb > 0)
+        {
+            buffDebuffUI.transform.GetChild(3).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(3).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(3).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(3).GetComponent<Image>().color.b, 1.0f);
+            buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(3).GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().color = new Color(buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().color.r, buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().color.g, buffDebuffUI.transform.GetChild(3).GetChild(1).GetComponent<Text>().color.b, 1.0f);
+        }
+        if (buffDebuffNumb > 1)
+        {
+            buffDebuffUI.transform.GetChild(2).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(2).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(2).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(2).GetComponent<Image>().color.b, 1.0f);
+            buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(2).GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().color = new Color(buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().color.r, buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().color.g, buffDebuffUI.transform.GetChild(2).GetChild(1).GetComponent<Text>().color.b, 1.0f);
+        }
+        if (buffDebuffNumb > 2)
+        {
+            buffDebuffUI.transform.GetChild(1).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(1).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(1).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(1).GetComponent<Image>().color.b, 1.0f);
+            buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(1).GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().color = new Color(buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().color.r, buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().color.g, buffDebuffUI.transform.GetChild(1).GetChild(1).GetComponent<Text>().color.b, 1.0f);
+        }
+        if (buffDebuffNumb > 3)
+        {
+            buffDebuffUI.transform.GetChild(0).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(0).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(0).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().color.r, buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().color.g, buffDebuffUI.transform.GetChild(0).GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().color = new Color(buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().color.r, buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().color.g, buffDebuffUI.transform.GetChild(0).GetChild(1).GetComponent<Text>().color.b, 1.0f);
+        }
+    }
     //A function to attack the enemy.type: 0-> melee, 1-> ranged. style: style of melee or ranged attack
     public void Attack(int type, int style, Transform objective)
     {
+        HideBuffDebuff();
         canvas.GetComponent<Animator>().SetBool("Hide", true);
         attackStyle = style;
         //If the one attacking is the player
@@ -539,6 +601,13 @@ public class PlayerTeamScript : MonoBehaviour
                     battleController.GetComponent<BattleController>().SpendSouls(3);
                     GetComponent<Animator>().SetBool("soulAttack", true);
                     soulLight.GetComponent<Light>().color = new Vector4(0.0f, 0.1461225f, 0.7264151f, 1.0f);
+                    soulLightUp = true;
+                }
+                else if (style == 5)
+                {
+                    battleController.GetComponent<BattleController>().SpendSouls(3);
+                    GetComponent<Animator>().SetBool("soulAttack", true);
+                    soulLight.GetComponent<Light>().color = new Vector4(0.6320754f, 0.0f, 0.5f, 1.0f);
                     soulLightUp = true;
                 }
             }
