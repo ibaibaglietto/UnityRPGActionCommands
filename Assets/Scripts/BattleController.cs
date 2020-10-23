@@ -220,9 +220,11 @@ public class BattleController : MonoBehaviour
     private Transform wall5;
     //A boolean to know if the player is doing the light up attack
     private bool soulLightUp;
-    //The magenta soul
+    //The magenta soul and shard
     [SerializeField] private Transform magentaSoulPrefab;
     private Transform magentaSoul;
+    [SerializeField] private Transform magentaShardPrefab;
+    private Transform magentaShard;
     //Booleans to know where the magenta soul is moving
     private bool magentaSoulMovUp;
     private bool magentaSoulMovLeft;
@@ -2458,6 +2460,9 @@ public class BattleController : MonoBehaviour
     {
         magentaSoul = Instantiate(magentaSoulPrefab, lightUpAction.transform);
         fog = Instantiate(fogPrefab, lightUpAction.transform);
+        magentaShard = Instantiate(magentaShardPrefab, lightUpAction.transform);
+        magentaShard.GetComponent<RectTransform>().localScale = new Vector3(0.2f, 0.2f, 1.0f);
+        magentaShard.transform.SetAsFirstSibling();
         finalAttack = true;
         soulLightUp = true;
     }

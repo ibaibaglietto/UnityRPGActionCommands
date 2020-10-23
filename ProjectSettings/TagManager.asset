@@ -11,6 +11,8 @@ TagManager:
   - enemy
   - redSoul
   - blueSoul
+  - magentaSoul
+  - magentaShard
   layers:
   - Default
   - TransparentFX

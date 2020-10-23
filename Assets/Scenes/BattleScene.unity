@@ -2291,6 +2291,7 @@ MonoBehaviour:
   blueSoulPrefab: {fileID: 4742750944469495173, guid: 37e134a20ceaf6f418052705c768d4cf, type: 3}
   wallPrefab: {fileID: 6316738652927781355, guid: 07c014983f568bc4d8b858c971e07db9, type: 3}
   magentaSoulPrefab: {fileID: 213714761863364445, guid: 819eb97bb9e7a4c41a333dbb2250bd95, type: 3}
+  magentaShardPrefab: {fileID: 2786374745638935200, guid: 05e41972612a4ce48b48a6933ef67a14, type: 3}
   fogPrefab: {fileID: 4411128139284904722, guid: 6b4816ac496585543ae16262232459c7, type: 3}
   lightningPrefab: {fileID: 4467010302461368411, guid: a694f6eec8ef2b149ae0e0352a2dcd70, type: 3}
   shurikenHit: 0
