@@ -74,6 +74,10 @@ public class PlayerTeamScript : MonoBehaviour
     private int disappear;
     //The position of the invisibility buff
     private int disappearPos;
+    //An int to know the power of the light up buff
+    private int lightUp;
+    //The position of the light up buff
+    private int lightUpPos;
     //An int to see the number of buffs or debuffs
     private int buffDebuffNumb;
     //The position of the slep debuff
@@ -84,6 +88,8 @@ public class PlayerTeamScript : MonoBehaviour
     [SerializeField] private Sprite lifestealSprite;
     //The sprite of the disappearUI
     [SerializeField] private Sprite disappearSprite;
+    //The sprite of the lightUpUI
+    [SerializeField] private Sprite lightUpSprite;
 
     void Awake()
     {
@@ -106,6 +112,8 @@ public class PlayerTeamScript : MonoBehaviour
         soulLightUp = false;
         asleep = 0;
         lifesteal = 0;
+        disappear = 0;
+        lightUp = 0;
         attackSpeed = 1.0f;
     }
 
@@ -211,6 +219,7 @@ public class PlayerTeamScript : MonoBehaviour
             else if (attackStyle == 2) battleController.GetComponent<BattleController>().EndSoulLightningAttack();
             else if (attackStyle == 3) battleController.GetComponent<BattleController>().EndSoulLifestealAttack();
             else if (attackStyle == 4) battleController.GetComponent<BattleController>().EndSoulDisappearAttack();
+            else if (attackStyle == 5) battleController.GetComponent<BattleController>().EndSoulLightUpAttack();
         }
     }
 
@@ -242,6 +251,11 @@ public class PlayerTeamScript : MonoBehaviour
     {
         soulLightDown = true;
     }
+    //A function to end the light up attack
+    public void EndLightUpAttack()
+    {
+        soulLightDown = true;
+    }
 
     //Function to set the amount of time the player will be asleep
     public void SetAsleepTime(int lvl)
@@ -262,7 +276,7 @@ public class PlayerTeamScript : MonoBehaviour
         else if (lvl < 10) duration = 3;
         else if (lvl == 10) duration = 4;
         SetBuffDebuff(1, duration);
-    }
+    }    
     //Function to see if the player has lifesteal
     public bool HasLifesteal()
     {
@@ -278,10 +292,20 @@ public class PlayerTeamScript : MonoBehaviour
         else duration = 3;
         SetBuffDebuff(2, duration);
     }
+    //Function to set the Light Up power
+    public void SetLightUpPower(float lvl)
+    {
+        SetBuffDebuff(3, (int)((lvl - 1.0f) * 2.0f));
+    }
     //Function to see if the player is visible
     public bool IsInvisible()
     {
         return disappear > 0;
+    }
+    //Function to get the light up power
+    public int GetLightUpPower()
+    {
+        return lightUp;
     }
     //A function to put a buff or a debuff in the UI. buffDeb = 0 -> Sleep, buffDeb = 1 -> lifesteal, buffDeb = 2 -> invisible
     public void SetBuffDebuff(int buffDeb, int duration)
@@ -331,6 +355,28 @@ public class PlayerTeamScript : MonoBehaviour
                 buffDebuffUI.transform.GetChild(disappearPos).GetChild(0).GetComponent<Image>().sprite = disappearSprite;
                 buffDebuffUI.transform.GetChild(disappearPos).GetChild(1).GetComponent<Text>().text = disappear.ToString();
                 buffDebuffNumb += 1;
+            }
+            else
+            {
+                disappear += duration;
+                buffDebuffUI.transform.GetChild(disappearPos).GetChild(1).GetComponent<Text>().text = disappear.ToString();
+            }
+        }
+        else if(buffDeb == 3)
+        {
+            if(lightUp == 0)
+            {
+                lightUpPos = 3 - buffDebuffNumb;
+                lightUp = duration;
+                buffDebuffUI.transform.GetChild(lightUpPos).gameObject.SetActive(true);
+                buffDebuffUI.transform.GetChild(lightUpPos).GetChild(0).GetComponent<Image>().sprite = lightUpSprite;
+                buffDebuffUI.transform.GetChild(lightUpPos).GetChild(1).GetComponent<Text>().text = lightUp.ToString();
+                buffDebuffNumb += 1;
+            }
+            else
+            {
+                lightUp += duration;
+                buffDebuffUI.transform.GetChild(lightUpPos).GetChild(1).GetComponent<Text>().text = lightUp.ToString();
             }
         }
     }
@@ -605,7 +651,7 @@ public class PlayerTeamScript : MonoBehaviour
                 }
                 else if (style == 5)
                 {
-                    battleController.GetComponent<BattleController>().SpendSouls(3);
+                    battleController.GetComponent<BattleController>().SpendSouls(2);
                     GetComponent<Animator>().SetBool("soulAttack", true);
                     soulLight.GetComponent<Light>().color = new Vector4(0.6320754f, 0.0f, 0.5f, 1.0f);
                     soulLightUp = true;
@@ -632,7 +678,7 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().FillSouls(0.15f);
                 lastAttack = true;
                 battleController.GetComponent<BattleController>().attackAction = false;
-                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, false);
+                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, false);
             }
             //else we end the attack and the player goes to the starting position
             else
@@ -651,7 +697,9 @@ public class PlayerTeamScript : MonoBehaviour
                 scale = transform.GetChild(0).transform.localScale;
                 scale.x *= -1;
                 transform.GetChild(0).transform.localScale = scale;
-                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, true);
+                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, true);
+                lightUp = 0;
+                EndBuffDebuff(lightUpPos);
             }
         }
         else if (attackStyle == 2)
@@ -663,7 +711,8 @@ public class PlayerTeamScript : MonoBehaviour
                 gameObject.GetComponent<Animator>().SetFloat("attackSpeed", attackSpeed);
                 battleController.GetComponent<BattleController>().goodAttack = false;
                 battleController.GetComponent<BattleController>().attackAction = false;
-                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, false);
+                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, false);
+                if(lightUp>0) lightUp -= 1;
             }
             //else we end the attack and the player goes to the starting position
             else
@@ -683,7 +732,9 @@ public class PlayerTeamScript : MonoBehaviour
                 scale = transform.GetChild(0).transform.localScale;
                 scale.x *= -1;
                 transform.GetChild(0).transform.localScale = scale;
-                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1, true);
+                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, true);
+                lightUp = 0;
+                EndBuffDebuff(lightUpPos);
             }
         }
                
@@ -700,7 +751,9 @@ public class PlayerTeamScript : MonoBehaviour
         scale = transform.GetChild(0).transform.localScale;
         scale.x *= -1;
         transform.GetChild(0).transform.localScale = scale;
-        battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), damage, true);
+        battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), damage + lightUp, true);
+        lightUp = 0;
+        EndBuffDebuff(lightUpPos);
     }
 
     //A function to throw a shuriken

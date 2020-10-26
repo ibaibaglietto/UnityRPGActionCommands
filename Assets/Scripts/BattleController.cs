@@ -220,6 +220,10 @@ public class BattleController : MonoBehaviour
     private Transform wall5;
     //A boolean to know if the player is doing the light up attack
     private bool soulLightUp;
+    //A boolean to know if the fog has been scaled
+    private bool fogScaled;
+    //A float to know the minumum size of the fog
+    private float minFogScale;
     //The magenta soul and shard
     [SerializeField] private Transform magentaSoulPrefab;
     private Transform magentaSoul;
@@ -233,6 +237,8 @@ public class BattleController : MonoBehaviour
     //The fog of the light up action
     [SerializeField] private Transform fogPrefab;
     private Transform fog;
+    //The time the light up action started
+    private float lightUpTime;
     //The lightning
     [SerializeField] private Transform lightningPrefab;
     //The regeneration action UI
@@ -391,6 +397,8 @@ public class BattleController : MonoBehaviour
         blueSoulMovRight = false;
         blueSoulMovDown = false;
         soulLightUp = false;
+        fogScaled = false;
+        minFogScale = 1.0f;
         magentaSoulMovUp = false;
         magentaSoulMovLeft = false;
         magentaSoulMovRight = false;
@@ -630,7 +638,7 @@ public class BattleController : MonoBehaviour
                             else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the yellow soul is over the enemy to deal damage. You have until the soul returns to deal damage.";
                             else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gather as many red souls as you can using <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move."; 
                             else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to dodge the walls while the soul fades out.";
-                            else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Jeje no se que poner.";
+                            else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move the soul and collect the soul shards. You can increase the visible area pressing <sprite=336> repeatedly.";
                             attackType = 2;
                             enemyName.SetActive(true);
                             if (menuSelectionPos == 0 || menuSelectionPos == 2)
@@ -1569,15 +1577,18 @@ public class BattleController : MonoBehaviour
                 }
                 else if (soulLightUp)
                 {
-                    if (Input.GetKeyDown(KeyCode.X)) fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x + 0.05f, fog.GetComponent<RectTransform>().localScale.y + 0.05f, fog.GetComponent<RectTransform>().localScale.z);
-                    if (Input.GetKey(KeyCode.UpArrow)) magentaSoulMovUp = true;
-                    if (Input.GetKey(KeyCode.LeftArrow)) magentaSoulMovLeft = true;
-                    if (Input.GetKey(KeyCode.RightArrow)) magentaSoulMovRight = true;
-                    if (Input.GetKey(KeyCode.DownArrow)) magentaSoulMovDown = true;
-                    if (Input.GetKeyUp(KeyCode.UpArrow)) magentaSoulMovUp = false;
-                    if (Input.GetKeyUp(KeyCode.LeftArrow)) magentaSoulMovLeft = false;
-                    if (Input.GetKeyUp(KeyCode.RightArrow)) magentaSoulMovRight = false;
-                    if (Input.GetKeyUp(KeyCode.DownArrow)) magentaSoulMovDown = false;
+                    if (fogScaled)
+                    {
+                        if (Input.GetKeyDown(KeyCode.X)) fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x + 0.075f, fog.GetComponent<RectTransform>().localScale.y + 0.075f, fog.GetComponent<RectTransform>().localScale.z);
+                        if (Input.GetKey(KeyCode.UpArrow)) magentaSoulMovUp = true;
+                        if (Input.GetKey(KeyCode.LeftArrow)) magentaSoulMovLeft = true;
+                        if (Input.GetKey(KeyCode.RightArrow)) magentaSoulMovRight = true;
+                        if (Input.GetKey(KeyCode.DownArrow)) magentaSoulMovDown = true;
+                        if (Input.GetKeyUp(KeyCode.UpArrow)) magentaSoulMovUp = false;
+                        if (Input.GetKeyUp(KeyCode.LeftArrow)) magentaSoulMovLeft = false;
+                        if (Input.GetKeyUp(KeyCode.RightArrow)) magentaSoulMovRight = false;
+                        if (Input.GetKeyUp(KeyCode.DownArrow)) magentaSoulMovDown = false;
+                    }                    
                 }
             }
             //We end the players turn when the player ends the shuriken animation
@@ -1790,27 +1801,41 @@ public class BattleController : MonoBehaviour
             }
             if (soulLightUp)
             {
-                if (fog.GetComponent<RectTransform>().localScale.x > 1.0f) fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x - 0.004f, fog.GetComponent<RectTransform>().localScale.y - 0.004f, fog.GetComponent<RectTransform>().localScale.z);
-                if (magentaSoulMovUp && magentaSoul.GetComponent<RectTransform>().anchoredPosition.y < 2.0f)
+                if (!fogScaled)
                 {
-                    magentaSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(magentaSoul.GetComponent<RectTransform>().anchoredPosition.x, magentaSoul.GetComponent<RectTransform>().anchoredPosition.y + 0.075f);
-                    fog.GetComponent<RectTransform>().anchoredPosition = new Vector2(fog.GetComponent<RectTransform>().anchoredPosition.x, fog.GetComponent<RectTransform>().anchoredPosition.y + 0.075f);
+                    if (fog.GetComponent<RectTransform>().localScale.x > 1.0f) fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x - 0.1f, fog.GetComponent<RectTransform>().localScale.y - 0.1f, fog.GetComponent<RectTransform>().localScale.z);
+                    else
+                    {
+                        fogScaled = true;
+                        lightUpTime = Time.fixedTime;
+                    }
                 }
-                if (magentaSoulMovLeft && magentaSoul.GetComponent<RectTransform>().anchoredPosition.x > -5.45f)
+                else
                 {
-                    magentaSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(magentaSoul.GetComponent<RectTransform>().anchoredPosition.x - 0.075f, magentaSoul.GetComponent<RectTransform>().anchoredPosition.y);
-                    fog.GetComponent<RectTransform>().anchoredPosition = new Vector2(fog.GetComponent<RectTransform>().anchoredPosition.x - 0.075f, fog.GetComponent<RectTransform>().anchoredPosition.y);
-                }
-                if (magentaSoulMovRight && magentaSoul.GetComponent<RectTransform>().anchoredPosition.x < 5.45f)
-                {
-                    magentaSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(magentaSoul.GetComponent<RectTransform>().anchoredPosition.x + 0.075f, magentaSoul.GetComponent<RectTransform>().anchoredPosition.y);
-                    fog.GetComponent<RectTransform>().anchoredPosition = new Vector2(fog.GetComponent<RectTransform>().anchoredPosition.x + 0.075f, fog.GetComponent<RectTransform>().anchoredPosition.y);
-                }
-                if (magentaSoulMovDown && magentaSoul.GetComponent<RectTransform>().anchoredPosition.y > -2.3f)
-                {
-                    magentaSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(magentaSoul.GetComponent<RectTransform>().anchoredPosition.x, magentaSoul.GetComponent<RectTransform>().anchoredPosition.y - 0.075f);
-                    fog.GetComponent<RectTransform>().anchoredPosition = new Vector2(fog.GetComponent<RectTransform>().anchoredPosition.x, fog.GetComponent<RectTransform>().anchoredPosition.y - 0.075f);
-                }
+                    if ((Time.fixedTime - lightUpTime) > 10.0f) EndLightUpAttack();
+                    if (fog.GetComponent<RectTransform>().localScale.x >= minFogScale) fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x - 0.004f, fog.GetComponent<RectTransform>().localScale.y - 0.004f, fog.GetComponent<RectTransform>().localScale.z);
+                    else fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x + 0.004f, fog.GetComponent<RectTransform>().localScale.y + 0.004f, fog.GetComponent<RectTransform>().localScale.z);
+                    if (magentaSoulMovUp && magentaSoul.GetComponent<RectTransform>().anchoredPosition.y < 2.0f)
+                    {
+                        magentaSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(magentaSoul.GetComponent<RectTransform>().anchoredPosition.x, magentaSoul.GetComponent<RectTransform>().anchoredPosition.y + 0.05f);
+                        fog.GetComponent<RectTransform>().anchoredPosition = new Vector2(fog.GetComponent<RectTransform>().anchoredPosition.x, fog.GetComponent<RectTransform>().anchoredPosition.y + 0.05f);
+                    }
+                    if (magentaSoulMovLeft && magentaSoul.GetComponent<RectTransform>().anchoredPosition.x > -5.45f)
+                    {
+                        magentaSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(magentaSoul.GetComponent<RectTransform>().anchoredPosition.x - 0.05f, magentaSoul.GetComponent<RectTransform>().anchoredPosition.y);
+                        fog.GetComponent<RectTransform>().anchoredPosition = new Vector2(fog.GetComponent<RectTransform>().anchoredPosition.x - 0.05f, fog.GetComponent<RectTransform>().anchoredPosition.y);
+                    }
+                    if (magentaSoulMovRight && magentaSoul.GetComponent<RectTransform>().anchoredPosition.x < 5.45f)
+                    {
+                        magentaSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(magentaSoul.GetComponent<RectTransform>().anchoredPosition.x + 0.05f, magentaSoul.GetComponent<RectTransform>().anchoredPosition.y);
+                        fog.GetComponent<RectTransform>().anchoredPosition = new Vector2(fog.GetComponent<RectTransform>().anchoredPosition.x + 0.05f, fog.GetComponent<RectTransform>().anchoredPosition.y);
+                    }
+                    if (magentaSoulMovDown && magentaSoul.GetComponent<RectTransform>().anchoredPosition.y > -2.3f)
+                    {
+                        magentaSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(magentaSoul.GetComponent<RectTransform>().anchoredPosition.x, magentaSoul.GetComponent<RectTransform>().anchoredPosition.y - 0.05f);
+                        fog.GetComponent<RectTransform>().anchoredPosition = new Vector2(fog.GetComponent<RectTransform>().anchoredPosition.x, fog.GetComponent<RectTransform>().anchoredPosition.y - 0.05f);
+                    }
+                }                
             }
         }
         
@@ -2463,8 +2488,48 @@ public class BattleController : MonoBehaviour
         magentaShard = Instantiate(magentaShardPrefab, lightUpAction.transform);
         magentaShard.GetComponent<RectTransform>().localScale = new Vector3(0.2f, 0.2f, 1.0f);
         magentaShard.transform.SetAsFirstSibling();
+        float posx = Random.Range(-5.45f,5.45f);
+        float posy = Random.Range(-2.3f,2.0f);
+        magentaShard.GetComponent<RectTransform>().anchoredPosition = new Vector2(posx, posy);
         finalAttack = true;
         soulLightUp = true;
+    }
+    //Functions to end the light up attack
+    public void EndLightUpAttack()
+    {
+        player.GetComponent<PlayerTeamScript>().SetLightUpPower(minFogScale);
+        magentaSoulMovUp = false;
+        magentaSoulMovLeft = false;
+        magentaSoulMovRight = false;
+        magentaSoulMovDown = false;
+        actionInstructions.SetActive(false);
+        minFogScale = 1.0f;
+        fogScaled = false;
+        soulLightUp = false;
+        Destroy(magentaSoul.gameObject);
+        Destroy(magentaShard.gameObject);
+        Destroy(fog.gameObject);
+        player.GetComponent<PlayerTeamScript>().EndLightUpAttack();
+    }
+    public void EndSoulLightUpAttack()
+    {
+        finalAttack = false;
+        EndPlayerTurn();
+    }
+    //Function to create a magenta shard
+    public void CreateMagentaShard()
+    {
+        magentaShard = Instantiate(magentaShardPrefab, lightUpAction.transform);
+        magentaShard.GetComponent<RectTransform>().localScale = new Vector3(0.2f, 0.2f, 1.0f);
+        magentaShard.transform.SetAsFirstSibling();
+        float posx = Random.Range(-5.45f, 5.45f);
+        float posy = Random.Range(-2.3f, 2.0f);
+        magentaShard.GetComponent<RectTransform>().anchoredPosition = new Vector2(posx, posy);
+    }
+    //Function to increment the minimum fog scale
+    public void IncrementFogSize()
+    {
+        minFogScale += 0.5f;
     }
 
     //A function to select the first available enemy

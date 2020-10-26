@@ -13,6 +13,11 @@ public class MagentaSoulScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "magentaShard") Debug.Log("JAJ te mamaste wei");
+        if (collision.tag == "magentaShard")
+        {
+            battleController.GetComponent<BattleController>().CreateMagentaShard();
+            battleController.GetComponent<BattleController>().IncrementFogSize();
+            Destroy(collision.gameObject);
+        }
     }
 }
