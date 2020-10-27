@@ -34,6 +34,7 @@ public class EnemyLifeControllerScript : MonoBehaviour
         if (currentHealth > 0)
         {
             currentHealth -= health;
+            if (health < 0) currentHealth = 0;
             lifeFill.fillAmount = (float)currentHealth / (float)maxHealth;
             lifeNumb.text = currentHealth.ToString();
         }

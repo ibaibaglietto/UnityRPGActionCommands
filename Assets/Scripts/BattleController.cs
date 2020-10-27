@@ -9,6 +9,7 @@ public class BattleController : MonoBehaviour
 {
     //The prefabs of the player, companions and enemies
     [SerializeField] private Transform playerBattle;
+    [SerializeField] private Transform adventurerBattle;
     [SerializeField] private Transform banditBattle;
     //The prefabs of the damage UI, heart and light
     [SerializeField] private Transform damageUI;
@@ -73,6 +74,7 @@ public class BattleController : MonoBehaviour
     private GameObject enemyName;
     //The player, companions and enemies
     private Transform player;
+    private Transform companion;
     private Transform enemy1;
     private Transform enemy2;
     //The souls

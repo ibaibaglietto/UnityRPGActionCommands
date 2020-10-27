@@ -38,7 +38,7 @@ public class PlayerTeamScript : MonoBehaviour
     private int shurikenDamage;
     //A boolean to check if it is the las attack
     private bool lastAttack;
-    //The type of the player team user. 0-> Player
+    //The type of the player team user. 0-> Player, 1-> adventurer
     public int playerTeamType; 
     //The start position
     private float startPos;
@@ -97,15 +97,15 @@ public class PlayerTeamScript : MonoBehaviour
         lightPointsUI = GameObject.Find("LightBckImage");
         battleController = GameObject.Find("BattleController");
         playerLife = GameObject.Find("PlayerLifeBckImage");
-        soulLight = transform.GetChild(3).gameObject;
-        soulMusicAction = GameObject.Find("SoulMusicAction");
+        if(playerTeamType == 0) soulLight = transform.GetChild(3).gameObject;
+        if (playerTeamType == 0) soulMusicAction = GameObject.Find("SoulMusicAction");
         canvas = GameObject.Find("Canvas");
         buffDebuffUI = transform.GetChild(0).Find("BuffsDebuffs").gameObject;
         buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
         buffDebuffUI.transform.GetChild(1).gameObject.SetActive(false);
         buffDebuffUI.transform.GetChild(2).gameObject.SetActive(false);
         buffDebuffUI.transform.GetChild(3).gameObject.SetActive(false);
-        soulMusicAction.SetActive(false);
+        if (playerTeamType == 0) soulMusicAction.SetActive(false);
         lastAttack = false;
         movingToEnemy = false;
         returnStartPos = false;
@@ -764,7 +764,9 @@ public class PlayerTeamScript : MonoBehaviour
             battleController.GetComponent<BattleController>().DeactivateActionInstructions();
             shuriken = Instantiate(shurikenPrefab, gameObject.transform.position, Quaternion.identity);
             shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
-            shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage);
+            shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+            lightUp = 0;
+            EndBuffDebuff(lightUpPos);
         }
         else if (attackStyle == 1)
         {
@@ -772,7 +774,9 @@ public class PlayerTeamScript : MonoBehaviour
             battleController.GetComponent<BattleController>().DeactivateActionInstructions();
             shuriken = Instantiate(lightShurikenPrefab, gameObject.transform.position, Quaternion.identity);
             shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
-            shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage);
+            shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+            lightUp = 0;
+            EndBuffDebuff(lightUpPos);
         }
         else if (attackStyle == 2)
         {
@@ -781,8 +785,10 @@ public class PlayerTeamScript : MonoBehaviour
             shuriken = Instantiate(fireShurikenPrefab, gameObject.transform.position, Quaternion.identity);
             shuriken.GetComponent<ShurikenScript>().SetFireObjectives(battleController.GetComponent<BattleController>().GetGroundEnemies());
             shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
-            shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage);
+            shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
             shuriken.GetComponent<ShurikenScript>().OnFireShuriken(true);
+            lightUp = 0;
+            EndBuffDebuff(lightUpPos);
         }
     }
     

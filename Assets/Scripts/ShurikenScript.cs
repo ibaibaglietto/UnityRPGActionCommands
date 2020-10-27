@@ -45,13 +45,11 @@ public class ShurikenScript : MonoBehaviour
         {
             if(shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.075f);
             else battleController.GetComponent<BattleController>().FillSouls(0.15f);
-            battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetGroundEnemies()[hit], shurikenDamage, true);
+            battleController.GetComponent<BattleController>().DealDamage(fireObjectives[hit], shurikenDamage, true);
             hit += 1;
-        }
-        
+        }       
         
     }
-
     //A function to set the objective
     public void SetObjective(Vector3 obj)
     {
