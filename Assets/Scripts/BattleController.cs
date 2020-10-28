@@ -102,6 +102,14 @@ public class BattleController : MonoBehaviour
     private int enemyNumber;
     //A boolean to check if it is player teams turn
     private bool playerTeamTurn;
+    //A boolean to check if its players turn
+    private bool playerTurn;
+    //A boolean to check if the player has completed their turn
+    private bool playerTurnCompleted;
+    //A boolean to check if its companions turn
+    private bool companionTurn;
+    //A boolean to check if the companion has completed their turn
+    private bool companionTurnCompleted;
     //A boolean to check if it is enemy teams turn
     private bool enemyTeamTurn;
     //A boolean to check if it is first enemys turn
@@ -110,6 +118,8 @@ public class BattleController : MonoBehaviour
     private bool enemy2Turn;
     //A boolean to check if the player is choosing the action
     private bool playerChoosingAction;
+    //A boolean to check if the companion is choosing the action
+    private bool companionChoosingAction;
     //A int to see which position of the menu is being selected
     private int menuSelectionPos;
     //A boolean to see if the player is choosing which enemy to attack
@@ -356,12 +366,18 @@ public class BattleController : MonoBehaviour
         ring8 = new Transform[2];
         enemyNumber = 0;
         SpawnCharacter(0);
+        SpawnCharacter(1);
         SpawnCharacter(2);
         SpawnCharacter(3);
         playerTeamTurn = true;
+        playerTurn = true;
+        playerTurnCompleted = false;
+        companionTurn = false;
+        companionTurnCompleted = false;
         enemyTeamTurn = false;
         enemy1Turn = false;
         playerChoosingAction = true;
+        companionChoosingAction = true;
         selectingEnemy = false;
         selectingPlayer = false;
         finalAttack = false;
@@ -417,1007 +433,1035 @@ public class BattleController : MonoBehaviour
         player.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
         player.GetChild(0).transform.GetChild(4).gameObject.SetActive(false);
         player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
-        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color.b, 0.0f);
+        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.b, 0.0f);
         player.GetChild(0).transform.GetChild(6).gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        //When its players turn
+        //When its player teams turn
         if (playerTeamTurn)
         {
-            //The fase when the player chooses what action to do
-            if (playerChoosingAction)
+            if (playerTurn)
             {
-                defense = 0;
-                if (!player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().GetBool("MenuOpened"))
+                //The fase when the player chooses what action to do
+                if (playerChoosingAction)
                 {
-                    //We use left and right arrows to move in the action menu
-                    if (Input.GetKeyDown(KeyCode.LeftArrow))
+                    defense = 0;
+                    if (!player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().GetBool("MenuOpened"))
                     {
-                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Left");
-                    }
-                    else if (Input.GetKeyDown(KeyCode.RightArrow))
-                    {
-                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Right");
-                    }
-                    //We press space to select the action we want to perform
-                    if (selectingAction == 0 && Input.GetKeyDown(KeyCode.Space))
-                    {
-                        //if nothing is unlocked
-                        if (PlayerPrefs.GetInt("Sword Styles") == 0)
+                        //We use left and right arrows to move in the action menu
+                        if (Input.GetKeyDown(KeyCode.LeftArrow))
                         {
-                            playerChoosingAction = false;
-                            actionInstructions.SetActive(true);
-                            actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
-                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy.";
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                            attackType = 0;
-                            selectingEnemy = true;
-                            enemyName.SetActive(true);
-                            SelectFirstEnemy();
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Left");
                         }
-                        else
+                        else if (Input.GetKeyDown(KeyCode.RightArrow))
                         {
-                            CreateMenu();
-                            actionInstructions.SetActive(true);
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Right");
                         }
-                    }
-                    else if (selectingAction == 1 && Input.GetKeyDown(KeyCode.Space))
-                    {
-                        //if nothing is unlocked
-                        if (PlayerPrefs.GetInt("Shuriken Styles") == 0)
+                        //We press space to select the action we want to perform
+                        if (selectingAction == 0 && Input.GetKeyDown(KeyCode.Space))
                         {
-                            playerChoosingAction = false;
-                            actionInstructions.SetActive(true);
-                            actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
-                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when <sprite=360> lights up.";
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                            attackType = 1;
-                            selectingEnemy = true;
-                            enemyName.SetActive(true);
-                            SelectFirstEnemy();
-                        }
-                        else
-                        {
-                            CreateMenu();
-                            actionInstructions.SetActive(true);
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
-                        }
-                    }
-                    else if (selectingAction == 2 && Input.GetKeyDown(KeyCode.Space))
-                    {
-                        CreateMenu();
-                        actionInstructions.SetActive(true);
-                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
-                    }
-                    else if (selectingAction == 3 && Input.GetKeyDown(KeyCode.Space))
-                    {
-                        CreateMenu();
-                        actionInstructions.SetActive(true);
-                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
-                    }
-                    else if (selectingAction == 4 && Input.GetKeyDown(KeyCode.Space))
-                    {
-                        CreateMenu();
-                        actionInstructions.SetActive(true);
-                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
-                    }
-                }
-                else
-                {
-                    if (selectingAction == 0)
-                    {
-                        if (menuSelectionPos == 0) usingStyle = 0;
-                        else if (menuSelectionPos == 1) usingStyle = swordStyles[0];
-                        else if (menuSelectionPos == 2) usingStyle = swordStyles[1];
-                        if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use your sword to hit an enemy twice.";
-                        else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use your light power to hit an enemy with your light sword.";
-                        else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hit an enemy as many times as you can with your sword.";
-                        if ((menuSelectionPos < PlayerPrefs.GetInt("Sword Styles")) && Input.GetKeyDown(KeyCode.DownArrow))
-                        {
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
-                        }
-                        else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
-                        {
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
-                        }
-                        if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
-                        {
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
-                            playerChoosingAction = false;
-                            actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
-                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                            if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy.";
-                            else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press and hold <sprite=336> until <sprite=360> fills completely.";
-                            else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy until you fail to press it in time.";
-                            attackType = 0;
-                            selectingEnemy = true;
-                            enemyName.SetActive(true);
-                            SelectFirstEnemy();
-                        }
-                    }
-                    else if (selectingAction == 1)
-                    {
-                        if (menuSelectionPos == 0) usingStyle = 0;
-                        else if (menuSelectionPos == 1) usingStyle = shurikenStyles[0];
-                        else if (menuSelectionPos == 2) usingStyle = shurikenStyles[1];
-                        if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Throw your shuriken to an enemy.";
-                        else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use your light power to throw a light shuriken to an enemy.";
-                        else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Throw a fire shuriken to all the grounded enemies.";
-                        if ((menuSelectionPos < PlayerPrefs.GetInt("Shuriken Styles")) && Input.GetKeyDown(KeyCode.DownArrow))
-                        {
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
-                        }
-                        else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
-                        {
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
-                        }
-                        if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
-                        {
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
-                            playerChoosingAction = false;
-                            actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
-                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                            if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when <sprite=360> lights up.";
-                            else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> repeatedly until <sprite=360> lights up.";
-                            else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=214> and <sprite=246> repeatedly until <sprite=360> lights up.";
-                            attackType = 1;
-                            selectingEnemy = true;
-                            enemyName.SetActive(true);
-                            if (usingStyle != 2) SelectFirstEnemy();
-                            else SelectGroundEnemies();
-                        }
-                    }
-                    else if (selectingAction == 2)
-                    {
-                        if (items[menuSelectionPos + scroll] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Eat this apple to restore 5 HP";
-                        else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Drink this potion to restore 5 LP";
-                        if (((menuSelectionPos + scroll) < (itemSize() - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
-                        {
-                            if (menuSelectionPos < 5) player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
-                            if (menuSelectionPos == 5)
+                            //if nothing is unlocked
+                            if (PlayerPrefs.GetInt("Sword Styles") == 0)
                             {
-                                scroll += 1;
-                                CreateMenu();
-                            }
-                        }
-                        else if (menuSelectionPos >= 0 && Input.GetKeyDown(KeyCode.UpArrow))
-                        {
-                            if (menuSelectionPos > 0) player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
-                            if (menuSelectionPos == 0 && scroll > 0)
-                            {
-                                scroll -= 1;
-                                CreateMenu();
-                            }
-                        }
-                        if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
-                        {
-                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
-                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
-                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
-                            enemyName.transform.GetChild(1).gameObject.SetActive(false);
-                            enemyName.transform.GetChild(2).gameObject.SetActive(false);
-                            enemyName.transform.GetChild(3).gameObject.SetActive(false);
-                            enemyName.transform.GetChild(4).gameObject.SetActive(false);
-                            player.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
-                            playerChoosingAction = false;
-                            if (items[menuSelectionPos] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to eat the apple";
-                            else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to drink the potion";
-                            selectingPlayer = true;
-                            enemyName.SetActive(true);
-                        }
-                    }
-                    else if (selectingAction == 3)
-                    {
-                        usingStyle = menuSelectionPos;
-                        if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Play some soul music to sleep the enemies. That was a silly joke, sorry.";
-                        else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Regenerate some of your HP and LP.";
-                        else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Throw a thunder to the enemies.";
-                        else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gain lifesteal, healing yourself damaging the enemy.";
-                        else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Dodge every attack for one or more enemy phases.";
-                        else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Power up for one attack. Stackable.";
-                        if ((menuSelectionPos < (PlayerPrefs.GetInt("Souls") - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
-                        {
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
-                        }
-                        else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
-                        {
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
-                        }
-                        if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
-                        {
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
-                            playerChoosingAction = false;
-                            actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
-                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                            if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> when they appear.";
-                            else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pass through the circles using <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to gain LP and FP.";
-                            else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the yellow soul is over the enemy to deal damage. You have until the soul returns to deal damage.";
-                            else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gather as many red souls as you can using <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move."; 
-                            else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to dodge the walls while the soul fades out.";
-                            else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move the soul and collect the soul shards. You can increase the visible area pressing <sprite=336> repeatedly.";
-                            attackType = 2;
-                            enemyName.SetActive(true);
-                            if (menuSelectionPos == 0 || menuSelectionPos == 2)
-                            {
+                                playerChoosingAction = false;
+                                actionInstructions.SetActive(true);
+                                actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
+                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
+                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy.";
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                attackType = 0;
                                 selectingEnemy = true;
-                                SelectAllEnemies();
+                                enemyName.SetActive(true);
+                                SelectFirstEnemy();
                             }
-                            else if (menuSelectionPos == 1 || menuSelectionPos == 3 || menuSelectionPos == 4 || menuSelectionPos == 5)
+                            else
                             {
-                                player.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
+                                CreateMenu();
+                                actionInstructions.SetActive(true);
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
+                            }
+                        }
+                        else if (selectingAction == 1 && Input.GetKeyDown(KeyCode.Space))
+                        {
+                            //if nothing is unlocked
+                            if (PlayerPrefs.GetInt("Shuriken Styles") == 0)
+                            {
+                                playerChoosingAction = false;
+                                actionInstructions.SetActive(true);
+                                actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
+                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
+                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when <sprite=360> lights up.";
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                attackType = 1;
+                                selectingEnemy = true;
+                                enemyName.SetActive(true);
+                                SelectFirstEnemy();
+                            }
+                            else
+                            {
+                                CreateMenu();
+                                actionInstructions.SetActive(true);
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
+                            }
+                        }
+                        else if (selectingAction == 2 && Input.GetKeyDown(KeyCode.Space))
+                        {
+                            CreateMenu();
+                            actionInstructions.SetActive(true);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
+                        }
+                        else if (selectingAction == 3 && Input.GetKeyDown(KeyCode.Space))
+                        {
+                            CreateMenu();
+                            actionInstructions.SetActive(true);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
+                        }
+                        else if (selectingAction == 4 && Input.GetKeyDown(KeyCode.Space))
+                        {
+                            CreateMenu();
+                            actionInstructions.SetActive(true);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
+                        }
+                    }
+                    else
+                    {
+                        if (selectingAction == 0)
+                        {
+                            if (menuSelectionPos == 0) usingStyle = 0;
+                            else if (menuSelectionPos == 1) usingStyle = swordStyles[0];
+                            else if (menuSelectionPos == 2) usingStyle = swordStyles[1];
+                            if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use your sword to hit an enemy twice.";
+                            else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use your light power to hit an enemy with your light sword.";
+                            else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hit an enemy as many times as you can with your sword.";
+                            if ((menuSelectionPos < PlayerPrefs.GetInt("Sword Styles")) && Input.GetKeyDown(KeyCode.DownArrow))
+                            {
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                            }
+                            else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                            {
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                            }
+                            if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                            {
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
+                                playerChoosingAction = false;
+                                actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
+                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
+                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy.";
+                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press and hold <sprite=336> until <sprite=360> fills completely.";
+                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy until you fail to press it in time.";
+                                attackType = 0;
+                                selectingEnemy = true;
+                                enemyName.SetActive(true);
+                                SelectFirstEnemy();
+                            }
+                        }
+                        else if (selectingAction == 1)
+                        {
+                            if (menuSelectionPos == 0) usingStyle = 0;
+                            else if (menuSelectionPos == 1) usingStyle = shurikenStyles[0];
+                            else if (menuSelectionPos == 2) usingStyle = shurikenStyles[1];
+                            if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Throw your shuriken to an enemy.";
+                            else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use your light power to throw a light shuriken to an enemy.";
+                            else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Throw a fire shuriken to all the grounded enemies.";
+                            if ((menuSelectionPos < PlayerPrefs.GetInt("Shuriken Styles")) && Input.GetKeyDown(KeyCode.DownArrow))
+                            {
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                            }
+                            else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                            {
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                            }
+                            if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                            {
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
+                                playerChoosingAction = false;
+                                actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
+                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
+                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when <sprite=360> lights up.";
+                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> repeatedly until <sprite=360> lights up.";
+                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=214> and <sprite=246> repeatedly until <sprite=360> lights up.";
+                                attackType = 1;
+                                selectingEnemy = true;
+                                enemyName.SetActive(true);
+                                if (usingStyle != 2) SelectFirstEnemy();
+                                else SelectGroundEnemies();
+                            }
+                        }
+                        else if (selectingAction == 2)
+                        {
+                            if (items[menuSelectionPos + scroll] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Eat this apple to restore 5 HP";
+                            else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Drink this potion to restore 5 LP";
+                            if (((menuSelectionPos + scroll) < (itemSize() - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
+                            {
+                                if (menuSelectionPos < 5) player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                                if (menuSelectionPos == 5)
+                                {
+                                    scroll += 1;
+                                    CreateMenu();
+                                }
+                            }
+                            else if (menuSelectionPos >= 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                            {
+                                if (menuSelectionPos > 0) player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                                if (menuSelectionPos == 0 && scroll > 0)
+                                {
+                                    scroll -= 1;
+                                    CreateMenu();
+                                }
+                            }
+                            if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                            {
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
                                 enemyName.transform.GetChild(1).gameObject.SetActive(false);
                                 enemyName.transform.GetChild(2).gameObject.SetActive(false);
                                 enemyName.transform.GetChild(3).gameObject.SetActive(false);
                                 enemyName.transform.GetChild(4).gameObject.SetActive(false);
-                                selectingPlayer = true;
-                            }
-                        }
-                    }
-                    else if (selectingAction == 4)
-                    {
-                        if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Change your partner with another from your party.";
-                        else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gain +1 of defense on the next enemy turn.";
-                        else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Try to flee the battle."; 
-                        if ((menuSelectionPos < 2) && Input.GetKeyDown(KeyCode.DownArrow))
-                        {
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
-                        }
-                        else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
-                        {
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
-                        }
-                        if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
-                        {
-                            if(menuSelectionPos == 1)
-                            {
-                                defense = 1;
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                actionInstructions.SetActive(false);
-                                EndPlayerTurn();
-                            }
-                            else if (menuSelectionPos == 2) 
-                            {                                
-                                player.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.position = new Vector3( (player.GetChild(0).transform.GetChild(6).transform.position.x - 1.930875f) + Random.Range(0.0f, 100.0f) * 0.0386175f, player.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.position.y, player.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.position.z);
-                                fleeRight = Random.Range(0.0f, 100.0f) > 50.0f;
-                                player.GetComponent<Animator>().SetFloat("Speed", 0.5f);
-                                player.GetComponent<Animator>().SetFloat("attackSpeed", 2.0f);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> repeatedly to fill the bar.";
-                                fleeTime = Time.fixedTime;
+                                player.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
                                 playerChoosingAction = false;
-                                Vector3 scale = player.transform.localScale;
-                                scale.x *= -1;
-                                player.transform.localScale = scale;
-                                player.GetChild(0).transform.GetChild(6).gameObject.SetActive(true);
-                                fleeing = true;
+                                if (items[menuSelectionPos] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to eat the apple";
+                                else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to drink the potion";
+                                selectingPlayer = true;
+                                enemyName.SetActive(true);
                             }
                         }
+                        else if (selectingAction == 3)
+                        {
+                            usingStyle = menuSelectionPos;
+                            if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Play some soul music to sleep the enemies. That was a silly joke, sorry.";
+                            else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Regenerate some of your HP and LP.";
+                            else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Throw a thunder to the enemies.";
+                            else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gain lifesteal, healing yourself damaging the enemy.";
+                            else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Dodge every attack for one or more enemy phases.";
+                            else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Power up for one attack. Stackable.";
+                            if ((menuSelectionPos < (PlayerPrefs.GetInt("Souls") - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
+                            {
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                            }
+                            else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                            {
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                            }
+                            if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                            {
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
+                                playerChoosingAction = false;
+                                actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
+                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
+                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> when they appear.";
+                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pass through the circles using <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to gain LP and FP.";
+                                else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the yellow soul is over the enemy to deal damage. You have until the soul returns to deal damage.";
+                                else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gather as many red souls as you can using <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move.";
+                                else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to dodge the walls while the soul fades out.";
+                                else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move the soul and collect the soul shards. You can increase the visible area pressing <sprite=336> repeatedly.";
+                                attackType = 2;
+                                enemyName.SetActive(true);
+                                if (menuSelectionPos == 0 || menuSelectionPos == 2)
+                                {
+                                    selectingEnemy = true;
+                                    SelectAllEnemies();
+                                }
+                                else if (menuSelectionPos == 1 || menuSelectionPos == 3 || menuSelectionPos == 4 || menuSelectionPos == 5)
+                                {
+                                    player.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
+                                    enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
+                                    enemyName.transform.GetChild(1).gameObject.SetActive(false);
+                                    enemyName.transform.GetChild(2).gameObject.SetActive(false);
+                                    enemyName.transform.GetChild(3).gameObject.SetActive(false);
+                                    enemyName.transform.GetChild(4).gameObject.SetActive(false);
+                                    selectingPlayer = true;
+                                }
+                            }
+                        }
+                        else if (selectingAction == 4)
+                        {
+                            if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Change your partner with another from your party.";
+                            else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gain +1 of defense on the next enemy turn.";
+                            else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Try to flee the battle.";
+                            if ((menuSelectionPos < 2) && Input.GetKeyDown(KeyCode.DownArrow))
+                            {
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                            }
+                            else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                            {
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                            }
+                            if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                            {
+                                if (menuSelectionPos == 1)
+                                {
+                                    defense = 1;
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                    actionInstructions.SetActive(false);
+                                    EndPlayerTurn(1);
+                                }
+                                else if (menuSelectionPos == 2)
+                                {
+                                    player.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.position = new Vector3((player.GetChild(0).transform.GetChild(6).transform.position.x - 1.930875f) + Random.Range(0.0f, 100.0f) * 0.0386175f, player.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.position.y, player.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.position.z);
+                                    fleeRight = Random.Range(0.0f, 100.0f) > 50.0f;
+                                    player.GetComponent<Animator>().SetFloat("Speed", 0.5f);
+                                    player.GetComponent<Animator>().SetFloat("attackSpeed", 2.0f);
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                    actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> repeatedly to fill the bar.";
+                                    fleeTime = Time.fixedTime;
+                                    playerChoosingAction = false;
+                                    Vector3 scale = player.transform.localScale;
+                                    scale.x *= -1;
+                                    player.transform.localScale = scale;
+                                    player.GetChild(0).transform.GetChild(6).gameObject.SetActive(true);
+                                    fleeing = true;
+                                }
+                            }
+                        }
+                        if (Input.GetKeyDown(KeyCode.Q))
+                        {
+                            actionInstructions.SetActive(false);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+                        }
                     }
+                }
+                //When we select a frindly object we give it to a partner
+                else if (selectingPlayer)
+                {
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
-                        actionInstructions.SetActive(false);
-                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
-                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
-                    }
-                }
-            } 
-            //When we select a frindly object we give it to a partner
-            else if (selectingPlayer)
-            {
-                if (Input.GetKeyDown(KeyCode.Q))
-                {
-                    CreateMenu();
-                    enemyName.SetActive(false);
-                    playerChoosingAction = true;
-                    selectingPlayer = false;
-                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
-                    player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
-                }
-                else if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).gameObject.SetActive(false);
-                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).gameObject.SetActive(false);
-                    player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
-                    if (selectingAction == 2)
-                    {
-                        if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5,false,true);
-                        else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5,false);
-                        DeleteItem(menuSelectionPos + scroll);
-                        scroll = 0;
-                        actionInstructions.SetActive(false);
-                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
-                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                        CreateMenu();
                         enemyName.SetActive(false);
+                        playerChoosingAction = true;
                         selectingPlayer = false;
-                        EndPlayerTurn();
+                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                        player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                     }
-                    else if(selectingAction == 3)
+                    else if (Input.GetKeyDown(KeyCode.Space))
                     {
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).gameObject.SetActive(false);
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).gameObject.SetActive(false);
+                        player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
+                        if (selectingAction == 2)
+                        {
+                            if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5, false, true);
+                            else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false);
+                            DeleteItem(menuSelectionPos + scroll);
+                            scroll = 0;
+                            actionInstructions.SetActive(false);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                            enemyName.SetActive(false);
+                            selectingPlayer = false;
+                            EndPlayerTurn(1);
+                        }
+                        else if (selectingAction == 3)
+                        {
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                            selectedEnemy = enemy1;
+                            selectingPlayer = false;
+                            enemyName.SetActive(false);
+                            actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
+                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
+                            player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
+                        }
+                    }
+                }
+                //When we attack we enter the selcting enemy fase
+                else if (selectingEnemy)
+                {
+                    //Press Q to return to start fase
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        enemyName.SetActive(false);
+                        playerChoosingAction = true;
+                        selectingEnemy = false;
+                        actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
+                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
+                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                        if (enemyNumber < 2) enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                        else if (enemyNumber < 3)
+                        {
+                            enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                            enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                        }
+                    }
+                    //When we can select an enemy
+                    if (canSelect)
+                    {
+                        //When we have 2 enemies we decide which enemy to attack using the arrows and we select it using space and the attack starts
+                        if (enemyNumber == 2)
+                        {
+                            if (enemy1.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
+                            {
+                                if (Input.GetKeyDown(KeyCode.RightArrow) && enemy2.GetComponent<EnemyTeamScript>().IsAlive())
+                                {
+                                    enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                    enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                    if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                    {
+                                        enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                    }
+                                }
+                                if (Input.GetKeyDown(KeyCode.Space))
+                                {
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                                    enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                    selectedEnemy = enemy1;
+                                    selectingEnemy = false;
+                                    enemyName.SetActive(false);
+                                    actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
+                                    actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
+                                    player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
+                                }
+                            }
+                            else if (enemy2.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
+                            {
+                                if (Input.GetKeyDown(KeyCode.LeftArrow) && enemy1.GetComponent<EnemyTeamScript>().IsAlive())
+                                {
+                                    enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                    enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                    if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                    {
+                                        enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                    }
+                                }
+                                if (Input.GetKeyDown(KeyCode.Space))
+                                {
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                                    enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                    selectedEnemy = enemy2;
+                                    selectingEnemy = false;
+                                    enemyName.SetActive(false);
+                                    actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
+                                    actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
+                                    player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
+                                }
+                            }
+                        }
+                        //If there is only one enemy we select it using space and the attack starts
+                        else if (Input.GetKeyDown(KeyCode.Space))
+                        {
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                            enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                            selectedEnemy = enemy1;
+                            selectingEnemy = false;
+                            enemyName.SetActive(false);
+                            actionInstructions.SetActive(false);
+                            player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
+                        }
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        Transform[] allEnemies = GetAllEnemies();
+                        for (int i = 0; i < allEnemies.Length; i++)
+                        {
+                            allEnemies[i].GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                            enemyName.transform.GetChild(i).gameObject.SetActive(false);
+                        }
                         player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                         player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
                         player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                         selectedEnemy = enemy1;
-                        selectingPlayer = false;
+                        selectingEnemy = false;
                         enemyName.SetActive(false);
                         actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
                         actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
                         player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                     }
                 }
-            }
-            //When we attack we enter the selcting enemy fase
-            else if (selectingEnemy)
-            {
-                //Press Q to return to start fase
-                if (Input.GetKeyDown(KeyCode.Q))
+                //The fase where the player deals the attack
+                else if (finalAttack)
                 {
-                    enemyName.SetActive(false);
-                    playerChoosingAction = true;
-                    selectingEnemy = false;
-                    actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
-                    actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
-                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
-                    if (enemyNumber < 2) enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                    else if (enemyNumber < 3)
+                    //If it is a melee attack
+                    if (attackType == 0)
                     {
-                        enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                        enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                    }
-                }
-                //When we can select an enemy
-                if (canSelect)
-                {
-                    //When we have 2 enemies we decide which enemy to attack using the arrows and we select it using space and the attack starts
-                    if (enemyNumber == 2)
-                    {
-                        if (enemy1.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
+                        if (usingStyle == 0)
                         {
-                            if (Input.GetKeyDown(KeyCode.RightArrow) && enemy2.GetComponent<EnemyTeamScript>().IsAlive())
-                            {
-                                enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
-                                {
-                                    enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                }
-                            }
-                            if (Input.GetKeyDown(KeyCode.Space))
-                            {
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
-                                enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                selectedEnemy = enemy1;
-                                selectingEnemy = false;
-                                enemyName.SetActive(false);
-                                actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
-                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
-                                player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
-                            }
-                        }
-                        else if (enemy2.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
-                        {
-                            if (Input.GetKeyDown(KeyCode.LeftArrow) && enemy1.GetComponent<EnemyTeamScript>().IsAlive())
-                            {
-                                enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0)
-                                {
-                                    enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                }
-                            }
-                            if (Input.GetKeyDown(KeyCode.Space))
-                            {
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
-                                enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                selectedEnemy = enemy2;
-                                selectingEnemy = false;
-                                enemyName.SetActive(false);
-                                actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
-                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
-                                player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
-                            }
-                        }
-                    }
-                    //If there is only one enemy we select it using space and the attack starts
-                    else if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
-                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                        enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                        selectedEnemy = enemy1;
-                        selectingEnemy = false;
-                        enemyName.SetActive(false);
-                        actionInstructions.SetActive(false);
-                        player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    Transform[] allEnemies = GetAllEnemies();
-                    for (int i = 0; i < allEnemies.Length; i++)
-                    {
-                        allEnemies[i].GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                        enemyName.transform.GetChild(i).gameObject.SetActive(false);
-                    }
-                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
-                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                    selectedEnemy = enemy1;
-                    selectingEnemy = false;
-                    enemyName.SetActive(false);
-                    actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
-                    actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
-                    player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
-                }                
-            }
-            //The fase where the player deals the attack
-            else if (finalAttack)
-            {
-                //If it is a melee attack
-                if (attackType == 0)
-                {
-                    if (usingStyle == 0)
-                    {
-                        //We check if the player presses the button when it is asked to be pressed
-                        if (!attackAction && Input.GetKeyDown(KeyCode.X)) badAttack = true;
-                        if (attackAction)
-                        {
-                            selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", true);
-                            if (Input.GetKeyDown(KeyCode.X) && !badAttack)
-                            {
-                                goodAttack = true;
-                            }
-                        }
-                        else
-                        {
-                            selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
-                        }
-                        player.GetComponent<Animator>().SetBool("isAttacking", true);
-                    }
-                    else if (usingStyle == 1)
-                    {
-                        if (Input.GetKey(KeyCode.X) && !player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().GetBool("charging"))
-                        {
-                            DeactivateActionInstructions();
-                            player.GetComponent<Animator>().SetTrigger("chargeLightMelee");
-                            player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("charging", true);
-                        }
-                        if(Input.GetKeyUp(KeyCode.X) && attackAction) 
-                        {
-                            player.GetComponent<Animator>().SetTrigger("goodChargeMelee");
-                            player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("charging", false);
-                            player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("active", false);
-                            attackAction = false;
-                            finalAttack = false;
-                        }
-                        else if (Input.GetKeyUp(KeyCode.X) && !attackAction && !attackFinished)
-                        {
-                            player.GetComponent<Animator>().SetTrigger("badChargeMelee");
-                            player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("charging", false);
-                            player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("active", false);
-                            finalAttack = false;
-                        }
-                        else if (attackFinished)
-                        {
-                            player.GetComponent<Animator>().SetTrigger("badChargeMelee");
-                            player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("charging", false);
-                            player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("active", false);
-                            finalAttack = false;
-                        }
-                    }
-                    else if(usingStyle == 2)
-                    {
-                        //We check if the player presses the button when it is asked to be pressed
-                        if (!attackAction && Input.GetKeyDown(KeyCode.X)) badAttack = true;
-                        if (attackAction)
-                        {
-                            selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", true);
-                            if (Input.GetKeyDown(KeyCode.X) && !badAttack)
-                            {
-                                goodAttack = true;
-                            }
-                        }
-                        else
-                        {
-                            selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
-                        }
-                        player.GetComponent<Animator>().SetBool("isAttacking", true);
-                    }
-                }
-                //If it is a shuriken attack
-                else if (attackType == 1)
-                {
-                    if(usingStyle == 0)
-                    {
-                        //We check if the button is pressed correctly and we wait the shuriken to hit
-                        if (Input.GetKeyDown(KeyCode.X))
-                        {
-                            player.GetChild(0).transform.GetChild(1).GetComponent<Animator>().SetBool("Active", false);
-                            player.GetComponent<Animator>().SetBool("isSpinning", false);
+                            //We check if the player presses the button when it is asked to be pressed
+                            if (!attackAction && Input.GetKeyDown(KeyCode.X)) badAttack = true;
                             if (attackAction)
                             {
-                                player.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
+                                selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", true);
+                                if (Input.GetKeyDown(KeyCode.X) && !badAttack)
+                                {
+                                    goodAttack = true;
+                                }
                             }
                             else
                             {
-                                player.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                                selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
                             }
-                            finalAttack = false;
+                            player.GetComponent<Animator>().SetBool("isAttacking", true);
                         }
-                    }
-                    else if(usingStyle == 1)
-                    {
-                        if (Time.fixedTime - shurikenTime < 2.5f && player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f && Input.GetKeyDown(KeyCode.X))
+                        else if (usingStyle == 1)
                         {
-                            player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.12f;
-                            if (player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
+                            if (Input.GetKey(KeyCode.X) && !player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().GetBool("charging"))
                             {
-                                player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(2).GetComponent<Image>().sprite = fillIcon;
-                                player.transform.GetChild(2).GetComponent<Light>().intensity = 4.0f;
+                                DeactivateActionInstructions();
+                                player.GetComponent<Animator>().SetTrigger("chargeLightMelee");
+                                player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("charging", true);
+                            }
+                            if (Input.GetKeyUp(KeyCode.X) && attackAction)
+                            {
+                                player.GetComponent<Animator>().SetTrigger("goodChargeMelee");
+                                player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("charging", false);
+                                player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("active", false);
+                                attackAction = false;
+                                finalAttack = false;
+                            }
+                            else if (Input.GetKeyUp(KeyCode.X) && !attackAction && !attackFinished)
+                            {
+                                player.GetComponent<Animator>().SetTrigger("badChargeMelee");
+                                player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("charging", false);
+                                player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("active", false);
+                                finalAttack = false;
+                            }
+                            else if (attackFinished)
+                            {
+                                player.GetComponent<Animator>().SetTrigger("badChargeMelee");
+                                player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("charging", false);
+                                player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("active", false);
+                                finalAttack = false;
                             }
                         }
-                    }
-                    else if(usingStyle == 2)
-                    {
-                        if (Time.fixedTime - shurikenTime < 2.5f && player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f)
+                        else if (usingStyle == 2)
                         {
-                            if(Input.GetKeyDown(KeyCode.LeftArrow) && !lastLeft)
+                            //We check if the player presses the button when it is asked to be pressed
+                            if (!attackAction && Input.GetKeyDown(KeyCode.X)) badAttack = true;
+                            if (attackAction)
                             {
-                                lastLeft = true;
-                                player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.06f;
-                                if (player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
+                                selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", true);
+                                if (Input.GetKeyDown(KeyCode.X) && !badAttack)
                                 {
-                                    player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(2).GetComponent<Image>().sprite = fillIcon;
+                                    goodAttack = true;
+                                }
+                            }
+                            else
+                            {
+                                selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
+                            }
+                            player.GetComponent<Animator>().SetBool("isAttacking", true);
+                        }
+                    }
+                    //If it is a shuriken attack
+                    else if (attackType == 1)
+                    {
+                        if (usingStyle == 0)
+                        {
+                            //We check if the button is pressed correctly and we wait the shuriken to hit
+                            if (Input.GetKeyDown(KeyCode.X))
+                            {
+                                player.GetChild(0).transform.GetChild(1).GetComponent<Animator>().SetBool("Active", false);
+                                player.GetComponent<Animator>().SetBool("isSpinning", false);
+                                if (attackAction)
+                                {
+                                    player.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
+                                }
+                                else
+                                {
+                                    player.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                                }
+                                finalAttack = false;
+                            }
+                        }
+                        else if (usingStyle == 1)
+                        {
+                            if (Time.fixedTime - shurikenTime < 2.5f && player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f && Input.GetKeyDown(KeyCode.X))
+                            {
+                                player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.12f;
+                                if (player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
+                                {
+                                    player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(2).GetComponent<Image>().sprite = fillIcon;
                                     player.transform.GetChild(2).GetComponent<Light>().intensity = 4.0f;
                                 }
                             }
-                            else if(Input.GetKeyDown(KeyCode.RightArrow) && lastLeft)
+                        }
+                        else if (usingStyle == 2)
+                        {
+                            if (Time.fixedTime - shurikenTime < 2.5f && player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f)
                             {
-                                lastLeft = false;
-                                player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.06f;
-                                if (player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
+                                if (Input.GetKeyDown(KeyCode.LeftArrow) && !lastLeft)
                                 {
-                                    player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(2).GetComponent<Image>().sprite = fillIcon;
-                                    player.transform.GetChild(2).GetComponent<Light>().intensity = 4.0f;
+                                    lastLeft = true;
+                                    player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.06f;
+                                    if (player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
+                                    {
+                                        player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(2).GetComponent<Image>().sprite = fillIcon;
+                                        player.transform.GetChild(2).GetComponent<Light>().intensity = 4.0f;
+                                    }
+                                }
+                                else if (Input.GetKeyDown(KeyCode.RightArrow) && lastLeft)
+                                {
+                                    lastLeft = false;
+                                    player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.06f;
+                                    if (player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
+                                    {
+                                        player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(2).GetComponent<Image>().sprite = fillIcon;
+                                        player.transform.GetChild(2).GetComponent<Light>().intensity = 4.0f;
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                else if (soulMusic>0 && !failMusic)
-                {
-                    player.GetChild(0).transform.GetChild(7).transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition = new Vector3(player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount * 10.9f - 5.45f, player.GetChild(0).transform.GetChild(7).transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition.y, 0.0f);
-                    if (soulMusicFilling)
-                    {                        
-                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.023f))
+                    else if (soulMusic > 0 && !failMusic)
+                    {
+                        player.GetChild(0).transform.GetChild(7).transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition = new Vector3(player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount * 10.9f - 5.45f, player.GetChild(0).transform.GetChild(7).transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition.y, 0.0f);
+                        if (soulMusicFilling)
                         {
-                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                        }
-                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key1Cover.gameObject.activeSelf)
-                        {
-                            key1Cover.GetComponent<Image>().color = new Vector4(key1Cover.GetComponent<Image>().color.r, key1Cover.GetComponent<Image>().color.g, key1Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
-                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
-                            {
-                                key1Cover.gameObject.SetActive(false);
-                                key1.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                            }
-                        }
-                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
-                        {
-                            if (key1Input == 0)
-                            {
-                                if (Input.GetKeyDown(KeyCode.UpArrow))
-                                {
-                                    key1.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key1Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                            else if (key1Input == 1)
-                            {
-                                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                                {
-                                    key1.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key1Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                            else if (key1Input == 2)
-                            {
-                                if (Input.GetKeyDown(KeyCode.RightArrow))
-                                {
-                                    key1.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key1Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                            else if (key1Input == 3)
-                            {
-                                if (Input.GetKeyDown(KeyCode.DownArrow))
-                                {
-                                    key1.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key1Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow)) failMusic = true;
-                            }
-                            else if (key1Input == 4)
+                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.023f))
                             {
                                 if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                             }
-                        }
-                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && key1Input != 4)
-                        {
-                            failMusic = true;
-                        }
-                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
-                        {
-                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                        }
-                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key2Cover.gameObject.activeSelf)
-                        {
-                            key2Cover.GetComponent<Image>().color = new Vector4(key2Cover.GetComponent<Image>().color.r, key2Cover.GetComponent<Image>().color.g, key2Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
-                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key1Cover.gameObject.activeSelf)
                             {
-                                key2Cover.gameObject.SetActive(false);
-                                key2.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                            }
-                        }
-                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
-                        {
-                            if (key2Input == 0)
-                            {
-                                if (Input.GetKeyDown(KeyCode.UpArrow))
+                                key1Cover.GetComponent<Image>().color = new Vector4(key1Cover.GetComponent<Image>().color.r, key1Cover.GetComponent<Image>().color.g, key1Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                                if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
                                 {
-                                    key2.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key2Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                            else if (key2Input == 1)
-                            {
-                                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                                {
-                                    key2.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key2Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                            else if (key2Input == 2)
-                            {
-                                if (Input.GetKeyDown(KeyCode.RightArrow))
-                                {
-                                    key2.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key2Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                            else if (key2Input == 3)
-                            {
-                                if (Input.GetKeyDown(KeyCode.DownArrow))
-                                {
-                                    key2.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key2Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow)) failMusic = true;
-                            }
-                            else if (key2Input == 4)
-                            {
-                                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                        }
-                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && key2Input != 4)
-                        {
-                            failMusic = true;
-                        }
-                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
-                        {
-                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                        }
-                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key3Cover.gameObject.activeSelf)
-                        {
-                            key3Cover.GetComponent<Image>().color = new Vector4(key3Cover.GetComponent<Image>().color.r, key3Cover.GetComponent<Image>().color.g, key3Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
-                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
-                            {
-                                key3Cover.gameObject.SetActive(false);
-                                key3.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                            }
-                        }
-                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
-                        {
-                            if (key3Input == 0)
-                            {
-                                if (Input.GetKeyDown(KeyCode.UpArrow))
-                                {
-                                    key3.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key3Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                            else if (key3Input == 1)
-                            {
-                                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                                {
-                                    key3.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key3Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                            else if (key3Input == 2)
-                            {
-                                if (Input.GetKeyDown(KeyCode.RightArrow))
-                                {
-                                    key3.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key3Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                            else if (key3Input == 3)
-                            {
-                                if (Input.GetKeyDown(KeyCode.DownArrow))
-                                {
-                                    key3.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key3Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow)) failMusic = true;
-                            }
-                            else if (key3Input == 4)
-                            {
-                                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                        }
-                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && key3Input != 4)
-                        {
-                            failMusic = true;
-                        }
-                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
-                        {
-                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                        }
-                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key4Cover.gameObject.activeSelf)
-                        {
-                            key4Cover.GetComponent<Image>().color = new Vector4(key4Cover.GetComponent<Image>().color.r, key4Cover.GetComponent<Image>().color.g, key4Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
-                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
-                            {
-                                key4Cover.gameObject.SetActive(false);
-                                key4.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                            }
-                        }
-                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
-                        {
-                            if (key4Input == 0)
-                            {
-                                if (Input.GetKeyDown(KeyCode.UpArrow))
-                                {
-                                    key4.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key4Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                            else if (key4Input == 1)
-                            {
-                                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                                {
-                                    key4.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key4Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                            else if (key4Input == 2)
-                            {
-                                if (Input.GetKeyDown(KeyCode.RightArrow))
-                                {
-                                    key4.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key4Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                            else if (key4Input == 3)
-                            {
-                                if (Input.GetKeyDown(KeyCode.DownArrow))
-                                {
-                                    key4.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                    key4Input = 4;
-                                }
-                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow)) failMusic = true;
-                            }
-                            else if (key4Input == 4)
-                            {
-                                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                        }
-                        if (soulMusic > 1)
-                        {
-                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
-                            {
-                                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
-                            }
-                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key5Cover.gameObject.activeSelf)
-                            {
-                                key5Cover.GetComponent<Image>().color = new Vector4(key5Cover.GetComponent<Image>().color.r, key5Cover.GetComponent<Image>().color.g, key5Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
-                                if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
-                                {
-                                    key5Cover.gameObject.SetActive(false);
-                                    key5.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                                    key1Cover.gameObject.SetActive(false);
+                                    key1.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                                 }
                             }
-                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
                             {
-                                if (key5Input == 0)
+                                if (key1Input == 0)
                                 {
                                     if (Input.GetKeyDown(KeyCode.UpArrow))
                                     {
-                                        key5.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                        key5Input = 4;
+                                        key1.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key1Input = 4;
                                     }
                                     else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                 }
-                                else if (key5Input == 1)
+                                else if (key1Input == 1)
                                 {
                                     if (Input.GetKeyDown(KeyCode.LeftArrow))
                                     {
-                                        key5.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                        key5Input = 4;
+                                        key1.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key1Input = 4;
                                     }
                                     else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                 }
-                                else if (key5Input == 2)
+                                else if (key1Input == 2)
                                 {
                                     if (Input.GetKeyDown(KeyCode.RightArrow))
                                     {
-                                        key5.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                        key5Input = 4;
+                                        key1.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key1Input = 4;
                                     }
                                     else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                 }
-                                else if (key5Input == 3)
+                                else if (key1Input == 3)
                                 {
                                     if (Input.GetKeyDown(KeyCode.DownArrow))
                                     {
-                                        key5.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                        key5Input = 4;
+                                        key1.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key1Input = 4;
                                     }
                                     else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow)) failMusic = true;
                                 }
-                                else if (key5Input == 4)
+                                else if (key1Input == 4)
                                 {
                                     if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                 }
                             }
-                            if (soulMusic > 2)
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && key1Input != 4)
                             {
-                                if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                                failMusic = true;
+                            }
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                            {
+                                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                            }
+                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key2Cover.gameObject.activeSelf)
+                            {
+                                key2Cover.GetComponent<Image>().color = new Vector4(key2Cover.GetComponent<Image>().color.r, key2Cover.GetComponent<Image>().color.g, key2Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                                if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                                {
+                                    key2Cover.gameObject.SetActive(false);
+                                    key2.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                                }
+                            }
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
+                            {
+                                if (key2Input == 0)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.UpArrow))
+                                    {
+                                        key2.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key2Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                else if (key2Input == 1)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.LeftArrow))
+                                    {
+                                        key2.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key2Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                else if (key2Input == 2)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.RightArrow))
+                                    {
+                                        key2.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key2Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                else if (key2Input == 3)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.DownArrow))
+                                    {
+                                        key2.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key2Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow)) failMusic = true;
+                                }
+                                else if (key2Input == 4)
                                 {
                                     if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                 }
-                                if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key6Cover.gameObject.activeSelf)
+                            }
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && key2Input != 4)
+                            {
+                                failMusic = true;
+                            }
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key2.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                            {
+                                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                            }
+                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key3Cover.gameObject.activeSelf)
+                            {
+                                key3Cover.GetComponent<Image>().color = new Vector4(key3Cover.GetComponent<Image>().color.r, key3Cover.GetComponent<Image>().color.g, key3Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                                if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
                                 {
-                                    key6Cover.GetComponent<Image>().color = new Vector4(key6Cover.GetComponent<Image>().color.r, key6Cover.GetComponent<Image>().color.g, key6Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
-                                    if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                                    key3Cover.gameObject.SetActive(false);
+                                    key3.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                                }
+                            }
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
+                            {
+                                if (key3Input == 0)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.UpArrow))
                                     {
-                                        key6Cover.gameObject.SetActive(false);
-                                        key6.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                                        key3.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key3Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                else if (key3Input == 1)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.LeftArrow))
+                                    {
+                                        key3.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key3Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                else if (key3Input == 2)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.RightArrow))
+                                    {
+                                        key3.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key3Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                else if (key3Input == 3)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.DownArrow))
+                                    {
+                                        key3.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key3Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow)) failMusic = true;
+                                }
+                                else if (key3Input == 4)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                            }
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && key3Input != 4)
+                            {
+                                failMusic = true;
+                            }
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key3.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                            {
+                                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                            }
+                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key4Cover.gameObject.activeSelf)
+                            {
+                                key4Cover.GetComponent<Image>().color = new Vector4(key4Cover.GetComponent<Image>().color.r, key4Cover.GetComponent<Image>().color.g, key4Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                                if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                                {
+                                    key4Cover.gameObject.SetActive(false);
+                                    key4.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                                }
+                            }
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
+                            {
+                                if (key4Input == 0)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.UpArrow))
+                                    {
+                                        key4.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key4Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                else if (key4Input == 1)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.LeftArrow))
+                                    {
+                                        key4.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key4Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                else if (key4Input == 2)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.RightArrow))
+                                    {
+                                        key4.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key4Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                else if (key4Input == 3)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.DownArrow))
+                                    {
+                                        key4.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                        key4Input = 4;
+                                    }
+                                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow)) failMusic = true;
+                                }
+                                else if (key4Input == 4)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                            }
+                            if (soulMusic > 1)
+                            {
+                                if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                                {
+                                    if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                }
+                                if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key5Cover.gameObject.activeSelf)
+                                {
+                                    key5Cover.GetComponent<Image>().color = new Vector4(key5Cover.GetComponent<Image>().color.r, key5Cover.GetComponent<Image>().color.g, key5Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                                    if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                                    {
+                                        key5Cover.gameObject.SetActive(false);
+                                        key5.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                                     }
                                 }
-                                else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
+                                else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
                                 {
-                                    if (key6Input == 0)
+                                    if (key5Input == 0)
                                     {
                                         if (Input.GetKeyDown(KeyCode.UpArrow))
                                         {
-                                            key6.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                            key6Input = 4;
+                                            key5.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                            key5Input = 4;
                                         }
                                         else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                     }
-                                    else if (key6Input == 1)
+                                    else if (key5Input == 1)
                                     {
                                         if (Input.GetKeyDown(KeyCode.LeftArrow))
                                         {
-                                            key6.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                            key6Input = 4;
+                                            key5.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                            key5Input = 4;
                                         }
                                         else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                     }
-                                    else if (key6Input == 2)
+                                    else if (key5Input == 2)
                                     {
                                         if (Input.GetKeyDown(KeyCode.RightArrow))
                                         {
-                                            key6.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                            key6Input = 4;
+                                            key5.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                            key5Input = 4;
                                         }
                                         else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                     }
-                                    else if (key6Input == 3)
+                                    else if (key5Input == 3)
                                     {
                                         if (Input.GetKeyDown(KeyCode.DownArrow))
                                         {
-                                            key6.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                            key6Input = 4;
+                                            key5.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                            key5Input = 4;
                                         }
                                         else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow)) failMusic = true;
                                     }
-                                    else if (key6Input == 4)
+                                    else if (key5Input == 4)
                                     {
                                         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                     }
                                 }
-                                if (soulMusic > 3)
+                                if (soulMusic > 2)
                                 {
-                                    if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                                    if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
                                     {
                                         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                     }
-                                    if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key7Cover.gameObject.activeSelf)
+                                    if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key6Cover.gameObject.activeSelf)
                                     {
-                                        key7Cover.GetComponent<Image>().color = new Vector4(key7Cover.GetComponent<Image>().color.r, key7Cover.GetComponent<Image>().color.g, key7Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
-                                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                                        key6Cover.GetComponent<Image>().color = new Vector4(key6Cover.GetComponent<Image>().color.r, key6Cover.GetComponent<Image>().color.g, key6Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
                                         {
-                                            key7Cover.gameObject.SetActive(false);
-                                            key7.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                                            key6Cover.gameObject.SetActive(false);
+                                            key6.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                                         }
                                     }
-                                    else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
+                                    else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
                                     {
-                                        if (key7Input == 0)
+                                        if (key6Input == 0)
                                         {
                                             if (Input.GetKeyDown(KeyCode.UpArrow))
                                             {
-                                                key7.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                                key7Input = 4;
+                                                key6.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                                key6Input = 4;
                                             }
                                             else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                         }
-                                        else if (key7Input == 1)
+                                        else if (key6Input == 1)
                                         {
                                             if (Input.GetKeyDown(KeyCode.LeftArrow))
                                             {
-                                                key7.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                                key7Input = 4;
+                                                key6.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                                key6Input = 4;
                                             }
                                             else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                         }
-                                        else if (key7Input == 2)
+                                        else if (key6Input == 2)
                                         {
                                             if (Input.GetKeyDown(KeyCode.RightArrow))
                                             {
-                                                key7.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                                key7Input = 4;
+                                                key6.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                                key6Input = 4;
                                             }
                                             else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                         }
-                                        else if (key7Input == 3)
+                                        else if (key6Input == 3)
                                         {
                                             if (Input.GetKeyDown(KeyCode.DownArrow))
                                             {
-                                                key7.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
-                                                key7Input = 4;
+                                                key6.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                                key6Input = 4;
                                             }
                                             else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow)) failMusic = true;
                                         }
-                                        else if (key7Input == 4)
+                                        else if (key6Input == 4)
                                         {
                                             if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                         }
                                     }
-                                    else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f)
+                                    if (soulMusic > 3)
                                     {
-                                        if (key7Input != 4) failMusic = true;
+                                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                                        {
+                                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                        }
+                                        if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.073f) && key7Cover.gameObject.activeSelf)
+                                        {
+                                            key7Cover.GetComponent<Image>().color = new Vector4(key7Cover.GetComponent<Image>().color.r, key7Cover.GetComponent<Image>().color.g, key7Cover.GetComponent<Image>().color.b, 1.0f - 20.0f * (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount - (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.073f)));
+                                            if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f))
+                                            {
+                                                key7Cover.gameObject.SetActive(false);
+                                                key7.GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                                            }
+                                        }
+                                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) - 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f))
+                                        {
+                                            if (key7Input == 0)
+                                            {
+                                                if (Input.GetKeyDown(KeyCode.UpArrow))
+                                                {
+                                                    key7.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                                    key7Input = 4;
+                                                }
+                                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                            }
+                                            else if (key7Input == 1)
+                                            {
+                                                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                                                {
+                                                    key7.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                                    key7Input = 4;
+                                                }
+                                                else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                            }
+                                            else if (key7Input == 2)
+                                            {
+                                                if (Input.GetKeyDown(KeyCode.RightArrow))
+                                                {
+                                                    key7.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                                    key7Input = 4;
+                                                }
+                                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                            }
+                                            else if (key7Input == 3)
+                                            {
+                                                if (Input.GetKeyDown(KeyCode.DownArrow))
+                                                {
+                                                    key7.GetComponent<Image>().color = new Vector4(0.0f, 0.7924528f, 0.1492666f, 1.0f);
+                                                    key7Input = 4;
+                                                }
+                                                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow)) failMusic = true;
+                                            }
+                                            else if (key7Input == 4)
+                                            {
+                                                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                            }
+                                        }
+                                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key7.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f)
+                                        {
+                                            if (key7Input != 4) failMusic = true;
+                                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                                        }
+                                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
+                                        {
+                                            Destroy(key1.gameObject);
+                                            Destroy(key2.gameObject);
+                                            Destroy(key3.gameObject);
+                                            Destroy(key4.gameObject);
+                                            Destroy(key5.gameObject);
+                                            Destroy(key6.gameObject);
+                                            Destroy(key7.gameObject);
+                                            Destroy(key1Cover.gameObject);
+                                            Destroy(key2Cover.gameObject);
+                                            Destroy(key3Cover.gameObject);
+                                            Destroy(key4Cover.gameObject);
+                                            Destroy(key5Cover.gameObject);
+                                            Destroy(key6Cover.gameObject);
+                                            Destroy(key7Cover.gameObject);
+                                            soulMusicFilling = false;
+                                        }
+                                    }
+                                    else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f)
+                                    {
+                                        if (key6Input != 4) failMusic = true;
                                         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                     }
                                     else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
@@ -1428,20 +1472,18 @@ public class BattleController : MonoBehaviour
                                         Destroy(key4.gameObject);
                                         Destroy(key5.gameObject);
                                         Destroy(key6.gameObject);
-                                        Destroy(key7.gameObject);
                                         Destroy(key1Cover.gameObject);
                                         Destroy(key2Cover.gameObject);
                                         Destroy(key3Cover.gameObject);
                                         Destroy(key4Cover.gameObject);
                                         Destroy(key5Cover.gameObject);
                                         Destroy(key6Cover.gameObject);
-                                        Destroy(key7Cover.gameObject);
                                         soulMusicFilling = false;
                                     }
                                 }
-                                else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key6.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f)
+                                else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f)
                                 {
-                                    if (key6Input != 4) failMusic = true;
+                                    if (key5Input != 4) failMusic = true;
                                     if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                                 }
                                 else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
@@ -1451,19 +1493,17 @@ public class BattleController : MonoBehaviour
                                     Destroy(key3.gameObject);
                                     Destroy(key4.gameObject);
                                     Destroy(key5.gameObject);
-                                    Destroy(key6.gameObject);
                                     Destroy(key1Cover.gameObject);
                                     Destroy(key2Cover.gameObject);
                                     Destroy(key3Cover.gameObject);
                                     Destroy(key4Cover.gameObject);
                                     Destroy(key5Cover.gameObject);
-                                    Destroy(key6Cover.gameObject);
                                     soulMusicFilling = false;
                                 }
                             }
-                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key5.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f)
+                            else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f)
                             {
-                                if (key5Input != 4) failMusic = true;
+                                if (key4Input != 4) failMusic = true;
                                 if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
                             }
                             else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
@@ -1472,21 +1512,25 @@ public class BattleController : MonoBehaviour
                                 Destroy(key2.gameObject);
                                 Destroy(key3.gameObject);
                                 Destroy(key4.gameObject);
-                                Destroy(key5.gameObject);
                                 Destroy(key1Cover.gameObject);
                                 Destroy(key2Cover.gameObject);
                                 Destroy(key3Cover.gameObject);
                                 Destroy(key4Cover.gameObject);
-                                Destroy(key5Cover.gameObject);
                                 soulMusicFilling = false;
                             }
                         }
-                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount > (((key4.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5 / 5.45) + 0.023f) && player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f)
+                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 0.0f)
                         {
-                            if (key4Input != 4) failMusic = true;
-                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) failMusic = true;
+                            soulMusic += 1;
+                            StartSoulMusicAttack(soulMusic);
+                            soulMusicFilling = true;
                         }
-                        else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
+                    }
+                    else if (failMusic)
+                    {
+                        actionInstructions.SetActive(false);
+                        failMusic = false;
+                        if (soulMusic >= 1)
                         {
                             Destroy(key1.gameObject);
                             Destroy(key2.gameObject);
@@ -1496,114 +1540,128 @@ public class BattleController : MonoBehaviour
                             Destroy(key2Cover.gameObject);
                             Destroy(key3Cover.gameObject);
                             Destroy(key4Cover.gameObject);
-                            soulMusicFilling = false;
+                        }
+                        if (soulMusic >= 2)
+                        {
+                            Destroy(key5.gameObject);
+                            Destroy(key5Cover.gameObject);
+                        }
+                        if (soulMusic >= 3)
+                        {
+                            Destroy(key6.gameObject);
+                            Destroy(key6Cover.gameObject);
+                        }
+                        if (soulMusic >= 4)
+                        {
+                            Destroy(key7.gameObject);
+                            Destroy(key7Cover.gameObject);
+                        }
+                        player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
+                        player.GetComponent<PlayerTeamScript>().EndSoulAttack(soulMusic);
+                        soulMusic = 0;
+                    }
+                    else if (soulRegen)
+                    {
+                        if (Input.GetKey(KeyCode.UpArrow)) soulRegenMovUp = true;
+                        if (Input.GetKey(KeyCode.LeftArrow)) soulRegenMovLeft = true;
+                        if (Input.GetKey(KeyCode.RightArrow)) soulRegenMovRight = true;
+                        if (Input.GetKey(KeyCode.DownArrow)) soulRegenMovDown = true;
+                        if (Input.GetKeyUp(KeyCode.UpArrow)) soulRegenMovUp = false;
+                        if (Input.GetKeyUp(KeyCode.LeftArrow)) soulRegenMovLeft = false;
+                        if (Input.GetKeyUp(KeyCode.RightArrow)) soulRegenMovRight = false;
+                        if (Input.GetKeyUp(KeyCode.DownArrow)) soulRegenMovDown = false;
+                    }
+                    else if (soulLightning)
+                    {
+                        if (Input.GetKeyDown(KeyCode.X)) Instantiate(lightningPrefab, new Vector3(yellowSoul.position.x, 1.5f, enemy1.position.z), Quaternion.identity);
+                    }
+                    else if (soulLifesteal)
+                    {
+                        if (Input.GetKey(KeyCode.UpArrow)) jarMovUp = true;
+                        if (Input.GetKey(KeyCode.LeftArrow)) jarMovLeft = true;
+                        if (Input.GetKey(KeyCode.RightArrow)) jarMovRight = true;
+                        if (Input.GetKey(KeyCode.DownArrow)) jarMovDown = true;
+                        if (Input.GetKeyUp(KeyCode.UpArrow)) jarMovUp = false;
+                        if (Input.GetKeyUp(KeyCode.LeftArrow)) jarMovLeft = false;
+                        if (Input.GetKeyUp(KeyCode.RightArrow)) jarMovRight = false;
+                        if (Input.GetKeyUp(KeyCode.DownArrow)) jarMovDown = false;
+                    }
+                    else if (soulDisappear)
+                    {
+                        if (Input.GetKey(KeyCode.UpArrow)) blueSoulMovUp = true;
+                        if (Input.GetKey(KeyCode.LeftArrow)) blueSoulMovLeft = true;
+                        if (Input.GetKey(KeyCode.RightArrow)) blueSoulMovRight = true;
+                        if (Input.GetKey(KeyCode.DownArrow)) blueSoulMovDown = true;
+                        if (Input.GetKeyUp(KeyCode.UpArrow)) blueSoulMovUp = false;
+                        if (Input.GetKeyUp(KeyCode.LeftArrow)) blueSoulMovLeft = false;
+                        if (Input.GetKeyUp(KeyCode.RightArrow)) blueSoulMovRight = false;
+                        if (Input.GetKeyUp(KeyCode.DownArrow)) blueSoulMovDown = false;
+                    }
+                    else if (soulLightUp)
+                    {
+                        if (fogScaled)
+                        {
+                            if (Input.GetKeyDown(KeyCode.X)) fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x + 0.075f, fog.GetComponent<RectTransform>().localScale.y + 0.075f, fog.GetComponent<RectTransform>().localScale.z);
+                            if (Input.GetKey(KeyCode.UpArrow)) magentaSoulMovUp = true;
+                            if (Input.GetKey(KeyCode.LeftArrow)) magentaSoulMovLeft = true;
+                            if (Input.GetKey(KeyCode.RightArrow)) magentaSoulMovRight = true;
+                            if (Input.GetKey(KeyCode.DownArrow)) magentaSoulMovDown = true;
+                            if (Input.GetKeyUp(KeyCode.UpArrow)) magentaSoulMovUp = false;
+                            if (Input.GetKeyUp(KeyCode.LeftArrow)) magentaSoulMovLeft = false;
+                            if (Input.GetKeyUp(KeyCode.RightArrow)) magentaSoulMovRight = false;
+                            if (Input.GetKeyUp(KeyCode.DownArrow)) magentaSoulMovDown = false;
                         }
                     }
-                    else if(player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 0.0f)
-                    {
-                        soulMusic += 1;
-                        StartSoulMusicAttack(soulMusic);
-                        soulMusicFilling = true;
-                    }
-                }                
-                else if (failMusic)
-                {
-                    actionInstructions.SetActive(false);
-                    failMusic = false;
-                    if (soulMusic >= 1)
-                    {
-                        Destroy(key1.gameObject);
-                        Destroy(key2.gameObject);
-                        Destroy(key3.gameObject);
-                        Destroy(key4.gameObject);
-                        Destroy(key1Cover.gameObject);
-                        Destroy(key2Cover.gameObject);
-                        Destroy(key3Cover.gameObject);
-                        Destroy(key4Cover.gameObject);
-                    }
-                    if(soulMusic>=2)
-                    {
-                        Destroy(key5.gameObject);
-                        Destroy(key5Cover.gameObject);
-                    }
-                    if (soulMusic >= 3)
-                    {
-                        Destroy(key6.gameObject);
-                        Destroy(key6Cover.gameObject);
-                    }
-                    if (soulMusic >= 4)
-                    {
-                        Destroy(key7.gameObject);
-                        Destroy(key7Cover.gameObject);
-                    }
-                    player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
-                    player.GetComponent<PlayerTeamScript>().EndSoulAttack(soulMusic);
-                    soulMusic = 0;
                 }
-                else if (soulRegen)
+                //We end the players turn when the player ends the shuriken animation
+                else if (shurikenHit)
                 {
-                    if (Input.GetKey(KeyCode.UpArrow)) soulRegenMovUp = true; 
-                    if (Input.GetKey(KeyCode.LeftArrow)) soulRegenMovLeft = true;
-                    if (Input.GetKey(KeyCode.RightArrow)) soulRegenMovRight = true;
-                    if (Input.GetKey(KeyCode.DownArrow)) soulRegenMovDown = true;
-                    if (Input.GetKeyUp(KeyCode.UpArrow)) soulRegenMovUp = false;
-                    if (Input.GetKeyUp(KeyCode.LeftArrow)) soulRegenMovLeft = false;
-                    if (Input.GetKeyUp(KeyCode.RightArrow)) soulRegenMovRight = false;
-                    if (Input.GetKeyUp(KeyCode.DownArrow)) soulRegenMovDown = false;
+                    shurikenHit = false;
+                    EndPlayerTurn(1);
                 }
-                else if (soulLightning)
+                else if (fleeing && (Time.fixedTime - fleeTime) < 10.0f)
                 {
-                    if (Input.GetKeyDown(KeyCode.X)) Instantiate(lightningPrefab, new Vector3(yellowSoul.position.x, 1.5f, enemy1.position.z), Quaternion.identity);
-                }
-                else if (soulLifesteal)
-                {
-                    if (Input.GetKey(KeyCode.UpArrow)) jarMovUp = true;
-                    if (Input.GetKey(KeyCode.LeftArrow)) jarMovLeft = true;
-                    if (Input.GetKey(KeyCode.RightArrow)) jarMovRight = true;
-                    if (Input.GetKey(KeyCode.DownArrow)) jarMovDown = true;
-                    if (Input.GetKeyUp(KeyCode.UpArrow)) jarMovUp = false;
-                    if (Input.GetKeyUp(KeyCode.LeftArrow)) jarMovLeft = false;
-                    if (Input.GetKeyUp(KeyCode.RightArrow)) jarMovRight = false;
-                    if (Input.GetKeyUp(KeyCode.DownArrow)) jarMovDown = false;
-                }
-                else if (soulDisappear)
-                {
-                    if (Input.GetKey(KeyCode.UpArrow)) blueSoulMovUp = true;
-                    if (Input.GetKey(KeyCode.LeftArrow)) blueSoulMovLeft = true;
-                    if (Input.GetKey(KeyCode.RightArrow)) blueSoulMovRight = true;
-                    if (Input.GetKey(KeyCode.DownArrow)) blueSoulMovDown = true;
-                    if (Input.GetKeyUp(KeyCode.UpArrow)) blueSoulMovUp = false;
-                    if (Input.GetKeyUp(KeyCode.LeftArrow)) blueSoulMovLeft = false;
-                    if (Input.GetKeyUp(KeyCode.RightArrow)) blueSoulMovRight = false;
-                    if (Input.GetKeyUp(KeyCode.DownArrow)) blueSoulMovDown = false;
-                }
-                else if (soulLightUp)
-                {
-                    if (fogScaled)
+                    if (Input.GetKeyDown(KeyCode.X))
                     {
-                        if (Input.GetKeyDown(KeyCode.X)) fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x + 0.075f, fog.GetComponent<RectTransform>().localScale.y + 0.075f, fog.GetComponent<RectTransform>().localScale.z);
-                        if (Input.GetKey(KeyCode.UpArrow)) magentaSoulMovUp = true;
-                        if (Input.GetKey(KeyCode.LeftArrow)) magentaSoulMovLeft = true;
-                        if (Input.GetKey(KeyCode.RightArrow)) magentaSoulMovRight = true;
-                        if (Input.GetKey(KeyCode.DownArrow)) magentaSoulMovDown = true;
-                        if (Input.GetKeyUp(KeyCode.UpArrow)) magentaSoulMovUp = false;
-                        if (Input.GetKeyUp(KeyCode.LeftArrow)) magentaSoulMovLeft = false;
-                        if (Input.GetKeyUp(KeyCode.RightArrow)) magentaSoulMovRight = false;
-                        if (Input.GetKeyUp(KeyCode.DownArrow)) magentaSoulMovDown = false;
-                    }                    
+                        if (player.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f) player.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.02f;
+                    }
                 }
             }
-            //We end the players turn when the player ends the shuriken animation
-            else if (shurikenHit)
+            if (companionTurn)
             {
-                shurikenHit = false;
-                EndPlayerTurn();
-            }    
-            else if (fleeing && (Time.fixedTime - fleeTime) < 10.0f)
-            {
-                if (Input.GetKeyDown(KeyCode.X))
+                if(companionChoosingAction)
                 {
-                    if(player.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f) player.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.02f;
+                    if (!companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().GetBool("MenuOpened"))
+                    {
+                        //We use left and right arrows to move in the action menu
+                        if (Input.GetKeyDown(KeyCode.LeftArrow))
+                        {
+                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Left");
+                        }
+                        else if (Input.GetKeyDown(KeyCode.RightArrow))
+                        {
+                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Right");
+                        }
+                        //We press space to select the action we want to perform
+                        if (selectingAction == 0 && Input.GetKeyDown(KeyCode.Space))
+                        {
+                            CreateMenu();
+                            actionInstructions.SetActive(true);
+                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
+                        }
+                        else if (selectingAction == 1 && Input.GetKeyDown(KeyCode.Space))
+                        {
+                            CreateMenu();
+                            actionInstructions.SetActive(true);
+                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
+                        }
+                        else if (selectingAction == 2 && Input.GetKeyDown(KeyCode.Space))
+                        {
+                            CreateMenu();
+                            actionInstructions.SetActive(true);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
+                        }
+                    }
                 }
             }
         }
@@ -1881,7 +1939,7 @@ public class BattleController : MonoBehaviour
                     scale.x *= -1;
                     player.transform.localScale = scale;
                     fleeing = false;
-                    EndPlayerTurn();
+                    EndPlayerTurn(1);
                 }
             }
         }
@@ -1903,6 +1961,10 @@ public class BattleController : MonoBehaviour
             lifestealAction = player.GetChild(0).GetChild(10).gameObject;
             disappearAction = player.GetChild(0).GetChild(11).gameObject;
             lightUpAction = player.GetChild(0).GetChild(12).gameObject;
+        }
+        else if (battlePos == 1)
+        {
+            companion = Instantiate(adventurerBattle, new Vector3(-6.4f, -0.713f, -2.0f), Quaternion.identity);
         }
         else if (battlePos == 2)
         {
@@ -2065,7 +2127,7 @@ public class BattleController : MonoBehaviour
     public void EndSoulRegenerationAttack()
     {
         finalAttack = false;
-        EndPlayerTurn();
+        EndPlayerTurn(1);
     }
 
     //Functions to end the lightning attack
@@ -2081,7 +2143,7 @@ public class BattleController : MonoBehaviour
     public void EndSoulLightningAttack()
     {
         finalAttack = false;
-        EndPlayerTurn();
+        EndPlayerTurn(1);
     }
     //Functions to end the disappear attack
     public void EndDisappearAttack()
@@ -2099,20 +2161,51 @@ public class BattleController : MonoBehaviour
     }
     public void EndSoulDisappearAttack()
     {
-        finalAttack = false;
-        EndPlayerTurn();
+        finalAttack = false;        
+        EndPlayerTurn(1);
     }
 
-    //A function to end players turn
-    public void EndPlayerTurn()
+    //A function to end players turn. User-->1 player, User-->2 companion
+    public void EndPlayerTurn(int user)
     {
-        player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
-        player.GetComponent<PlayerTeamScript>().RestBuffDebuff();
-        canvas.GetComponent<Animator>().SetBool("Hide", false);
-        playerChoosingAction = true;
-        playerTeamTurn = false;
-        enemyTeamTurn = true;
-        enemy1Turn = true;
+        if (user == 1) playerTurnCompleted = true;
+        else if (user == 2) companionTurnCompleted = true;
+        if (playerTurnCompleted && companionTurnCompleted)
+        {
+            player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+            player.GetComponent<PlayerTeamScript>().RestBuffDebuff();
+            canvas.GetComponent<Animator>().SetBool("Hide", false);
+            playerChoosingAction = true;
+            playerTeamTurn = false;
+            playerTurnCompleted = false;
+            companionTurnCompleted = false;
+            if (playerTurn)
+            {
+                playerTurn = false;
+                companionTurn = true;
+            }
+            else if (companionTurn)
+            {
+                playerTurn = true;
+                companionTurn = false;
+            }
+            enemyTeamTurn = true;
+            enemy1Turn = true;
+        }
+        else if (playerTurnCompleted && !companionTurnCompleted)
+        {
+            canvas.GetComponent<Animator>().SetBool("Hide", false);
+            playerTurn = false;
+            companionTurn = true;
+            companion.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+        }
+        else if (!playerTurnCompleted && companionTurnCompleted)
+        {
+            canvas.GetComponent<Animator>().SetBool("Hide", false);
+            playerTurn = true;
+            companionTurn = false;
+            player.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+        }
     }
 
     //A function to end enemy turn
@@ -2257,7 +2350,7 @@ public class BattleController : MonoBehaviour
         }
         soulMusic = 0;
         finalAttack = false;
-        EndPlayerTurn();
+        EndPlayerTurn(1);
     }
     
     //Function to start the regeneration attack
@@ -2453,7 +2546,7 @@ public class BattleController : MonoBehaviour
     public void EndSoulLifestealAttack()
     {
         finalAttack = false;
-        EndPlayerTurn();
+        EndPlayerTurn(1);
     }
     //A function to start the disappear attack
     public void StartDisappearAttack()
@@ -2516,7 +2609,7 @@ public class BattleController : MonoBehaviour
     public void EndSoulLightUpAttack()
     {
         finalAttack = false;
-        EndPlayerTurn();
+        EndPlayerTurn(1);
     }
     //Function to create a magenta shard
     public void CreateMagentaShard()

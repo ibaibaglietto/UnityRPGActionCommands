@@ -164,7 +164,7 @@ public class PlayerTeamScript : MonoBehaviour
                 transform.GetChild(0).transform.localScale = scale;
                 GetComponent<Animator>().SetFloat("Speed", 0.0f);
                 returnStartPos = false;
-                battleController.GetComponent<BattleController>().EndPlayerTurn();
+                battleController.GetComponent<BattleController>().EndPlayerTurn(1);
             }
         }
         //Soul light going up
