@@ -2349,6 +2349,11 @@ MonoBehaviour:
   partnerChange: {fileID: 21300000, guid: 7bf4c87ed9e69ae42b41f7d63a1d0f52, type: 3}
   defend: {fileID: 21300000, guid: 7c4672c9ab6f01f49a8e3bd5a39481fb, type: 3}
   run: {fileID: 21300000, guid: 4d00e75942f577b4391e746d109c1c75, type: 3}
+  firstSkill: {fileID: 21300000, guid: 226e26cf12b97cb43a3fbf98d9c63403, type: 3}
+  secondSkill: {fileID: 21300000, guid: df7a0f947f48c02429a20c9185ebc3ba, type: 3}
+  thirdSkill: {fileID: 21300000, guid: ba731db1249c2c04f80a091bbf3eb036, type: 3}
+  fourthSkill: {fileID: 21300000, guid: fe30b150505b88a44983c676f289cf53, type: 3}
+  fifthSkill: {fileID: 21300000, guid: 7fbd048f27f5f324d8ee942aa6c62200, type: 3}
   emptyIcon: {fileID: 21300000, guid: 49ec9d57c1dfacf4ea9ba8553fa36077, type: 3}
   fillIcon: {fileID: 21300000, guid: 7dc1d3a778ee7224aa43def702a6b4d2, type: 3}
   keyPrefab: {fileID: 2518599955892874953, guid: ae0952f6406224e45b9603fc3526ec43, type: 3}
@@ -3793,7 +3798,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.034, y: 0.79800004}
   m_AnchorMax: {x: 0.172, y: 0.84622586}
-  m_AnchoredPosition: {x: 0.52001953, y: -0.30000305}
+  m_AnchoredPosition: {x: 0.52001953, y: -0.3000183}
   m_SizeDelta: {x: 1, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1866550959

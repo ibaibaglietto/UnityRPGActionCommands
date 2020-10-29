@@ -913,7 +913,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 6
     m_ConditionEvent: Selected
-    m_EventTreshold: 4
+    m_EventTreshold: 2
   - m_ConditionMode: 1
     m_ConditionEvent: Active
     m_EventTreshold: 0
@@ -1485,7 +1485,7 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 6
     m_ConditionEvent: Selected
-    m_EventTreshold: 2
+    m_EventTreshold: 1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 2567390739178047424}
   m_Solo: 0

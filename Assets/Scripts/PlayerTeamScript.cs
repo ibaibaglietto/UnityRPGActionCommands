@@ -850,6 +850,9 @@ public class PlayerTeamScript : MonoBehaviour
         }
         else heartImage = Instantiate(heartUI, new Vector3(transform.position.x - 1.5f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         heartImage.GetChild(0).GetComponent<Text>().text = points.ToString();
+        heartImage.GetComponent<DamageImageScript>().SetDamage(false);
+        if(playerTeamType == 0) heartImage.GetComponent<DamageImageScript>().SetUser(1);
+        else heartImage.GetComponent<DamageImageScript>().SetUser(2);
         playerLife.GetComponent<PlayerLifeScript>().Heal(points);
     }
 
@@ -860,5 +863,8 @@ public class PlayerTeamScript : MonoBehaviour
         else lightImage = Instantiate(lightUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         lightImage.GetChild(0).GetComponent<Text>().text = points.ToString();
         lightPointsUI.GetComponent<LightPointsScript>().IncreaseLight(points);
+        lightImage.GetComponent<DamageImageScript>().SetDamage(false);
+        if (playerTeamType == 0) lightImage.GetComponent<DamageImageScript>().SetUser(1);
+        else lightImage.GetComponent<DamageImageScript>().SetUser(2);
     }
 }
