@@ -7,7 +7,7 @@ public class DamageImageScript : MonoBehaviour
     private bool isDamage;
     private GameObject battleController;
     //1-> player, 2-> companion
-    private int isPlayer; 
+    private int user; 
     private void Awake()
     {
         isDamage = true;
@@ -19,14 +19,15 @@ public class DamageImageScript : MonoBehaviour
         isDamage = type;
     }
     //Function to save if the user is the player or the companion
-    public void SetUser(int user)
+    public void SetUser(bool isPlayer)
     {
-        isPlayer = user;
+        if (isPlayer) user = 1;
+        else user = 2;
     }
     //Function to self Destroy
     public void SelfDestroy()
     {
-        if (!isDamage) battleController.GetComponent<BattleController>().EndPlayerTurn(isPlayer);
+        if (!isDamage) battleController.GetComponent<BattleController>().EndPlayerTurn(user);
         Destroy(gameObject);
     }
 }

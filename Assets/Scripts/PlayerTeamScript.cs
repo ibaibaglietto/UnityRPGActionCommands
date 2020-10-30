@@ -34,6 +34,8 @@ public class PlayerTeamScript : MonoBehaviour
     private GameObject battleController;
     //The player life
     private GameObject playerLife;
+    //The companion life
+    private GameObject companionLife;
     //The damage the shuriken will do
     private int shurikenDamage;
     //A boolean to check if it is the las attack
@@ -97,7 +99,8 @@ public class PlayerTeamScript : MonoBehaviour
         lightPointsUI = GameObject.Find("LightBckImage");
         battleController = GameObject.Find("BattleController");
         playerLife = GameObject.Find("PlayerLifeBckImage");
-        if(playerTeamType == 0) soulLight = transform.GetChild(3).gameObject;
+        companionLife = GameObject.Find("CompanionLifeBckImage");
+        if (playerTeamType == 0) soulLight = transform.GetChild(3).gameObject;
         if (playerTeamType == 0) soulMusicAction = GameObject.Find("SoulMusicAction");
         canvas = GameObject.Find("Canvas");
         buffDebuffUI = transform.GetChild(0).Find("BuffsDebuffs").gameObject;
@@ -841,7 +844,7 @@ public class PlayerTeamScript : MonoBehaviour
     }
 
     //A function to heal
-    public void Heal(int points, bool regen, bool right)
+    public void Heal(int points, bool regen, bool right, bool isPlayer)
     {
         if (right)
         {
@@ -851,9 +854,16 @@ public class PlayerTeamScript : MonoBehaviour
         else heartImage = Instantiate(heartUI, new Vector3(transform.position.x - 1.5f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         heartImage.GetChild(0).GetComponent<Text>().text = points.ToString();
         heartImage.GetComponent<DamageImageScript>().SetDamage(false);
-        if(playerTeamType == 0) heartImage.GetComponent<DamageImageScript>().SetUser(1);
-        else heartImage.GetComponent<DamageImageScript>().SetUser(2);
-        playerLife.GetComponent<PlayerLifeScript>().Heal(points);
+        if (playerTeamType == 0)
+        {
+            heartImage.GetComponent<DamageImageScript>().SetUser(isPlayer);
+            playerLife.GetComponent<PlayerLifeScript>().Heal(points);
+        }
+        else
+        {
+            heartImage.GetComponent<DamageImageScript>().SetUser(isPlayer);
+            companionLife.GetComponent<PlayerLifeScript>().Heal(points);
+        }
     }
 
     //A function to increase the light points
@@ -864,7 +874,7 @@ public class PlayerTeamScript : MonoBehaviour
         lightImage.GetChild(0).GetComponent<Text>().text = points.ToString();
         lightPointsUI.GetComponent<LightPointsScript>().IncreaseLight(points);
         lightImage.GetComponent<DamageImageScript>().SetDamage(false);
-        if (playerTeamType == 0) lightImage.GetComponent<DamageImageScript>().SetUser(1);
-        else lightImage.GetComponent<DamageImageScript>().SetUser(2);
+        if (playerTeamType == 0) lightImage.GetComponent<DamageImageScript>().SetUser(true);
+        else lightImage.GetComponent<DamageImageScript>().SetUser(false);
     }
 }
