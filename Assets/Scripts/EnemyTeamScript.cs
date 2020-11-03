@@ -292,7 +292,7 @@ public class EnemyTeamScript : MonoBehaviour
         attackObjective.GetComponent<PlayerTeamScript>().DealDamage(2-defended);
         if (!attackObjective.GetComponent<PlayerTeamScript>().IsInvisible())
         {
-            if (defended == 0) attackObjective.GetComponent<Animator>().SetTrigger("takeDamage");
+            if (defended == 0) attackObjective.GetComponent<Animator>().SetTrigger("takeDamage"); 
             else attackObjective.GetComponent<Animator>().SetBool("isDefending", false);
         }        
         defended = 0;

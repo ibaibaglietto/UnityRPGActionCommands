@@ -129,11 +129,13 @@ public class PlayerTeamScript : MonoBehaviour
             if (transform.position.x < movePos)
             {
                 transform.position = new Vector3(transform.position.x + 0.10f, transform.position.y, transform.position.z);
-                GetComponent<Animator>().SetFloat("Speed", 0.5f);
+                if(playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.5f);
+                else if(playerTeamType == 1) GetComponent<Animator>().SetBool("IsRunning", true);
             }
             else
             {
-                GetComponent<Animator>().SetFloat("Speed", 0.0f);
+                if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.0f);
+                else if (playerTeamType == 1) GetComponent<Animator>().SetBool("IsRunning", false);
                 movingToEnemy = false;
                 if (attackStyle == 1)
                 {
@@ -154,7 +156,8 @@ public class PlayerTeamScript : MonoBehaviour
                     attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
                 }
                 transform.position = new Vector3(transform.position.x - 0.15f, transform.position.y, transform.position.z);
-                GetComponent<Animator>().SetFloat("Speed", 0.5f);
+                if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.5f);
+                else if (playerTeamType == 1) GetComponent<Animator>().SetBool("IsRunning", true);
             }
             else
             {
@@ -165,9 +168,11 @@ public class PlayerTeamScript : MonoBehaviour
                 scale = transform.GetChild(0).transform.localScale;
                 scale.x *= -1;
                 transform.GetChild(0).transform.localScale = scale;
-                GetComponent<Animator>().SetFloat("Speed", 0.0f);
+                if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.0f);
+                else if (playerTeamType == 1) GetComponent<Animator>().SetBool("IsRunning", false);
                 returnStartPos = false;
-                battleController.GetComponent<BattleController>().EndPlayerTurn(1);
+                if (playerTeamType == 0) battleController.GetComponent<BattleController>().EndPlayerTurn(1);
+                else if (playerTeamType == 1) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
             }
         }
         //Soul light going up
@@ -566,21 +571,21 @@ public class PlayerTeamScript : MonoBehaviour
             if (type == 0)
             {
                 //To do the normal attack the player needs to move towards the enemy
-                if(style == 0)
+                if (style == 0)
                 {
                     attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
                     startPos = transform.position.x;
                     movePos = attackObjective.position.x - 1.1f;
                     movingToEnemy = true;
                 }
-                else if(style == 1)
+                else if (style == 1)
                 {
                     lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(2);
                     startPos = transform.position.x;
                     movePos = attackObjective.position.x - 1.1f;
                     movingToEnemy = true;
                 }
-                else if(style == 2)
+                else if (style == 2)
                 {
                     attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
                     lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(3);
@@ -590,48 +595,48 @@ public class PlayerTeamScript : MonoBehaviour
                 }
             }
             //The shuriken attack
-            if(type == 1)
+            if (type == 1)
             {
                 //To do the normal attack we save the objective and the player starts spinning
-                if(style == 0)
+                if (style == 0)
                 {
                     shurikenObjective = attackObjective.position;
                     GetComponent<Animator>().SetBool("isSpinning", true);
                 }
-                else if(style == 1)
+                else if (style == 1)
                 {
                     transform.GetChild(2).GetComponent<Light>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                     lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(2);
                     shurikenObjective = attackObjective.position;
                     GetComponent<Animator>().SetBool("isSpinning", true);
                 }
-                else if(style == 2)
+                else if (style == 2)
                 {
-                    transform.GetChild(2).GetComponent<Light>().color = new Vector4(0.8862745f, 0.345098f, 0.1333333f, 1.0f); 
+                    transform.GetChild(2).GetComponent<Light>().color = new Vector4(0.8862745f, 0.345098f, 0.1333333f, 1.0f);
                     lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(3);
                     shurikenObjective = new Vector3(12.0f, attackObjective.position.y, attackObjective.position.z);
                     GetComponent<Animator>().SetBool("isSpinning", true);
                 }
             }
             //Soul attack
-            if(type == 2)
+            if (type == 2)
             {
                 //Soul music attack
-                if(style == 0)
+                if (style == 0)
                 {
                     battleController.GetComponent<BattleController>().SpendSouls(1);
                     GetComponent<Animator>().SetBool("soulAttack", true);
                     soulLight.GetComponent<Light>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                     soulLightUp = true;
                 }
-                else if(style == 1)
+                else if (style == 1)
                 {
                     battleController.GetComponent<BattleController>().SpendSouls(2);
                     GetComponent<Animator>().SetBool("soulAttack", true);
                     soulLight.GetComponent<Light>().color = new Vector4(0.0f, 0.7264151f, 0.09315347f, 1.0f);
                     soulLightUp = true;
                 }
-                else if(style == 2)
+                else if (style == 2)
                 {
                     battleController.GetComponent<BattleController>().SpendSouls(3);
                     GetComponent<Animator>().SetBool("soulAttack", true);
@@ -661,6 +666,20 @@ public class PlayerTeamScript : MonoBehaviour
                 }
             }
         }
+        else if (playerTeamType == 1)
+        {
+            if (type == 0)
+            {
+                //To do the normal attack the player needs to move towards the enemy
+                if (style == 0)
+                {
+                    attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
+                    startPos = transform.position.x;
+                    movePos = attackObjective.position.x - 1.1f;
+                    movingToEnemy = true;
+                }
+            }
+        }
     }
 
     //A function to start the attack action
@@ -678,6 +697,7 @@ public class PlayerTeamScript : MonoBehaviour
         {
             if (battleController.GetComponent<BattleController>().goodAttack == true && lastAttack == false)
             {
+                if(playerTeamType == 1) gameObject.GetComponent<Animator>().SetBool("Melee2", true);
                 battleController.GetComponent<BattleController>().FillSouls(0.15f);
                 lastAttack = true;
                 battleController.GetComponent<BattleController>().attackAction = false;
@@ -691,7 +711,8 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().badAttack = false;
                 battleController.GetComponent<BattleController>().goodAttack = false;
                 battleController.GetComponent<BattleController>().attackAction = false;
-                gameObject.GetComponent<Animator>().SetBool("isAttacking", false);
+                if(playerTeamType == 0) gameObject.GetComponent<Animator>().SetBool("isAttacking", false);
+                else if (playerTeamType == 1) gameObject.GetComponent<Animator>().SetBool("Melee2", false);
                 battleController.GetComponent<BattleController>().finalAttack = false;
                 returnStartPos = true;
                 Vector3 scale = transform.localScale;
@@ -702,7 +723,7 @@ public class PlayerTeamScript : MonoBehaviour
                 transform.GetChild(0).transform.localScale = scale;
                 battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, true);
                 lightUp = 0;
-                EndBuffDebuff(lightUpPos);
+                if (playerTeamType == 0) EndBuffDebuff(lightUpPos);
             }
         }
         else if (attackStyle == 2)
@@ -829,17 +850,23 @@ public class PlayerTeamScript : MonoBehaviour
     {
         shurikenDamage = damage;
     }
+    //Function to get the player type
+    public int GetPlayerType()
+    {
+        return playerTeamType;
+    }
 
     //A function to deal damage
     public void DealDamage(int Damage)
     {
         if(disappear == 0)
         {
-            Damage -= battleController.GetComponent<BattleController>().GetDefense();
+            Damage -= battleController.GetComponent<BattleController>().GetDefense(playerTeamType);
             if (Damage < 0) Damage = 0;
             damageImage = Instantiate(damageUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
             damageImage.GetChild(0).GetComponent<Text>().text = Damage.ToString();
-            playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
+            if(playerTeamType==0) playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
+            else companionLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
         }        
     }
 
@@ -867,14 +894,13 @@ public class PlayerTeamScript : MonoBehaviour
     }
 
     //A function to increase the light points
-    public void IncreaseLight(int points, bool regen) 
+    public void IncreaseLight(int points, bool regen, bool isPlayer) 
     {
         if(regen) lightImage = Instantiate(lightUI, new Vector3(transform.position.x + 0.0f, transform.position.y + 2.3f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         else lightImage = Instantiate(lightUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         lightImage.GetChild(0).GetComponent<Text>().text = points.ToString();
         lightPointsUI.GetComponent<LightPointsScript>().IncreaseLight(points);
         lightImage.GetComponent<DamageImageScript>().SetDamage(false);
-        if (playerTeamType == 0) lightImage.GetComponent<DamageImageScript>().SetUser(true);
-        else lightImage.GetComponent<DamageImageScript>().SetUser(false);
+        lightImage.GetComponent<DamageImageScript>().SetUser(isPlayer);
     }
 }
