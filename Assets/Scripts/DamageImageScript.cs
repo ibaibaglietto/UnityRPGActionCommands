@@ -27,7 +27,11 @@ public class DamageImageScript : MonoBehaviour
     //Function to self Destroy
     public void SelfDestroy()
     {
-        if (!isDamage) battleController.GetComponent<BattleController>().EndPlayerTurn(user);
+        if (!isDamage)
+        {
+            Debug.Log("ups");
+            battleController.GetComponent<BattleController>().EndPlayerTurn(user);
+        }
         Destroy(gameObject);
     }
 }

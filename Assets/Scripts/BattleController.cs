@@ -130,7 +130,9 @@ public class BattleController : MonoBehaviour
     //A boolean to see if the player is choosing which enemy to attack
     private bool selectingEnemy;
     //A boolean to see if the companion is choosing which enemy to attack
-    private bool selectingEnemyCompanion;    
+    private bool selectingEnemyCompanion;
+    //A boolean to know if the player is changing position with the companion
+    private bool changePos;
     //A boolean to see if the player is choosing which partner give the object
     private bool selectingPlayer;
     //A boolean to see if the companion is choosing which partner give the object
@@ -396,6 +398,7 @@ public class BattleController : MonoBehaviour
         companionTurnCompleted = false;
         enemyTeamTurn = false;
         enemy1Turn = false;
+        changePos = false;
         playerChoosingAction = true;
         companionChoosingAction = false;
         selectingEnemy = false;
@@ -557,7 +560,7 @@ public class BattleController : MonoBehaviour
                             actionInstructions.SetActive(true);
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                         }
-                        if (!companionTurnCompleted && Input.GetKeyDown(KeyCode.Z)) ChangePosition(1);
+                        if (!companionTurnCompleted && Input.GetKeyDown(KeyCode.Z)) StartChangePosition(1);
                     }
                     else
                     {
@@ -785,102 +788,103 @@ public class BattleController : MonoBehaviour
                         player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                         companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
                     }
-                    if(selectingAction == 2)
+                    
+                    if (player.GetChild(0).transform.GetChild(5).gameObject.activeSelf)
                     {
-                        if (player.GetChild(0).transform.GetChild(5).gameObject.activeSelf)
+                        if (firstPosPlayer)
                         {
-                            if (firstPosPlayer)
+                            if (Input.GetKeyDown(KeyCode.LeftArrow))
                             {
-                                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                                {
-                                    player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
-                                    companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
-                                    enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Adventurer";
-                                }
-                            }
-                            else
-                            {
-                                if (Input.GetKeyDown(KeyCode.RightArrow))
-                                {
-                                    player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
-                                    companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
-                                    enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Adventurer";
-                                }
-                            }
-                            if (Input.GetKeyDown(KeyCode.Space))
-                            {
-                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).gameObject.SetActive(false);
-                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).gameObject.SetActive(false);
                                 player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
-                                if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5, false, true, true);
-                                else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, true);
-                                DeleteItem(menuSelectionPos + scroll);
-                                scroll = 0;
-                                actionInstructions.SetActive(false);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                enemyName.SetActive(false);
-                                selectingPlayer = false;
+                                companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
+                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Adventurer";
                             }
                         }
-                        else if (companion.GetChild(0).transform.GetChild(1).gameObject.activeSelf)
+                        else
                         {
-                            if (firstPosPlayer)
+                            if (Input.GetKeyDown(KeyCode.RightArrow))
                             {
-                                if (Input.GetKeyDown(KeyCode.RightArrow))
-                                {
-                                    player.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
-                                    companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
-                                    enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
-                                }
-                            }
-                            else
-                            {
-                                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                                {
-                                    player.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
-                                    companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
-                                    enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
-                                }
-                            }
-                            if (Input.GetKeyDown(KeyCode.Space))
-                            {
-                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).gameObject.SetActive(false);
-                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).gameObject.SetActive(false);
-                                companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
-                                if (items[menuSelectionPos + scroll] == 1) companion.GetComponent<PlayerTeamScript>().Heal(5, false, true, true);
-                                else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false,true);
-                                DeleteItem(menuSelectionPos + scroll);
-                                scroll = 0;
-                                actionInstructions.SetActive(false);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                enemyName.SetActive(false);
-                                selectingPlayer = false;
+                                player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
+                                companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
+                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Adventurer";
                             }
                         }
-                    }                    
-                    else if(selectingAction == 3)
-                    {
                         if (Input.GetKeyDown(KeyCode.Space))
                         {
-                            if (!firstPosPlayer) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x + 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
                             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).gameObject.SetActive(false);
                             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).gameObject.SetActive(false);
                             player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                            selectedEnemy = enemy1;
-                            selectingPlayer = false;
                             enemyName.SetActive(false);
-                            actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
-                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
-                            player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
+                            selectingPlayer = false;
+                            if (selectingAction == 2)
+                            {
+                                if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5, false, true, true, false);
+                                else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, true, false);
+                                DeleteItem(menuSelectionPos + scroll);
+                                scroll = 0;
+                                actionInstructions.SetActive(false);
+                            }
+                            else if (selectingAction == 3)
+                            {
+                                if (!firstPosPlayer) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x + 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
+                                selectedEnemy = player;
+                                actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
+                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
+                                player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
+                            }
                         }
                     }
+                    else if (companion.GetChild(0).transform.GetChild(1).gameObject.activeSelf)
+                    {
+                        if (firstPosPlayer)
+                        {
+                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            {
+                                player.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
+                                companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
+                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
+                            }
+                        }
+                        else
+                        {
+                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            {
+                                player.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
+                                companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
+                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
+                            }
+                        }
+                        if (Input.GetKeyDown(KeyCode.Space))
+                        {
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).gameObject.SetActive(false);
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).gameObject.SetActive(false);
+                            companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                            selectingPlayer = false;
+                            enemyName.SetActive(false);
+                            if (selectingAction == 2)
+                            {                                                              
+                                if (items[menuSelectionPos + scroll] == 1) companion.GetComponent<PlayerTeamScript>().Heal(5, false, true, true, false);
+                                else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, true, false);
+                                DeleteItem(menuSelectionPos + scroll);
+                                scroll = 0;
+                                actionInstructions.SetActive(false);
+                            }
+                            else if (selectingAction == 3)
+                            {
+                                if (!firstPosPlayer) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x + 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
+                                selectedEnemy = companion;
+                                actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
+                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
+                                player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
+                            }
+                        }
+                    }    
                 }
                 //When we attack we enter the selcting enemy fase
                 else if (selectingEnemy)
@@ -1014,8 +1018,7 @@ public class BattleController : MonoBehaviour
                             {
                                 selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
                             }
-                            if(player.GetComponent<PlayerTeamScript>().GetPlayerType()==0) player.GetComponent<Animator>().SetBool("isAttacking", true);
-                            else if (player.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) player.GetComponent<Animator>().SetTrigger("Melee1");
+                            player.GetComponent<Animator>().SetBool("isAttacking", true);
                         }
                         else if (usingStyle == 1)
                         {
@@ -1772,7 +1775,7 @@ public class BattleController : MonoBehaviour
                             companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                         }
 
-                        if (!playerTurnCompleted && Input.GetKeyDown(KeyCode.Z)) ChangePosition(2);
+                        if (!playerTurnCompleted && Input.GetKeyDown(KeyCode.Z)) StartChangePosition(2);
                     }
                     else
                     {
@@ -1942,8 +1945,8 @@ public class BattleController : MonoBehaviour
                             companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).gameObject.SetActive(false);
                             companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).gameObject.SetActive(false);
                             player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
-                            if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5, false, true, false);
-                            else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, false);
+                            if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5, false, true, false, false);
+                            else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, false, false);
                             DeleteItem(menuSelectionPos + scroll);
                             scroll = 0;
                             actionInstructions.SetActive(false);
@@ -1979,8 +1982,8 @@ public class BattleController : MonoBehaviour
                             companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).gameObject.SetActive(false);
                             companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).gameObject.SetActive(false);
                             companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
-                            if (items[menuSelectionPos + scroll] == 1) companion.GetComponent<PlayerTeamScript>().Heal(5, false, true, false);
-                            else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, false);
+                            if (items[menuSelectionPos + scroll] == 1) companion.GetComponent<PlayerTeamScript>().Heal(5, false, true, false, false);
+                            else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, false, false);
                             DeleteItem(menuSelectionPos + scroll);
                             scroll = 0;
                             actionInstructions.SetActive(false);
@@ -2060,7 +2063,7 @@ public class BattleController : MonoBehaviour
                                     enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                     companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                                     selectedEnemy = enemy2;
-                                    selectingEnemy = false;
+                                    selectingEnemyCompanion = false;
                                     enemyName.SetActive(false);
                                     actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
                                     actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
@@ -2122,7 +2125,6 @@ public class BattleController : MonoBehaviour
                             {
                                 selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
                             }
-                            player.GetComponent<Animator>().SetBool("isAttacking", true);
                         }
                     }
                 }
@@ -2274,6 +2276,37 @@ public class BattleController : MonoBehaviour
                 player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
                 player.GetComponent<Animator>().SetBool("isSpinning", false);
                 player.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
+            }
+        }
+        if (changePos)
+        {
+            if (playerTurn)
+            {
+                if (player.position.x > -5.7f)
+                {
+                    player.position = new Vector3(player.position.x - 0.056f, player.position.y, player.position.z + 0.02f);
+                    companion.position = new Vector3(companion.position.x + 0.056f, companion.position.y, companion.position.z - 0.02f);
+                }
+                else if (player.position.x > -6.4f)
+                {
+                    player.position = new Vector3(player.position.x - 0.056f, player.position.y, player.position.z - 0.02f);
+                    companion.position = new Vector3(companion.position.x + 0.056f, companion.position.y, companion.position.z + 0.02f);
+                }
+                else EndChangePosition(1);
+            }
+            else if (companionTurn)
+            {
+                if (companion.position.x > -5.7f)
+                {
+                    companion.position = new Vector3(companion.position.x - 0.056f, companion.position.y, companion.position.z + 0.02f);
+                    player.position = new Vector3(player.position.x + 0.056f, player.position.y, player.position.z - 0.02f);
+                }
+                else if (companion.position.x > -6.4f)
+                {
+                    companion.position = new Vector3(companion.position.x - 0.056f, companion.position.y, companion.position.z - 0.02f);
+                    player.position = new Vector3(player.position.x + 0.056f, player.position.y, player.position.z + 0.02f);
+                }
+                else EndChangePosition(2);
             }
         }
         if (finalAttack)
@@ -2551,7 +2584,8 @@ public class BattleController : MonoBehaviour
     //Function to deal damage to an enemy, giving the enemy, the amount of damage and a boolean that says if it is the last attack
     public void DealDamage(Transform objective, int damage, bool last)
     {
-        if(playerTeamTurn && player.GetComponent<PlayerTeamScript>().HasLifesteal()) player.GetComponent<PlayerTeamScript>().Heal(damage, false,false, true);
+        if(playerTurn && player.GetComponent<PlayerTeamScript>().HasLifesteal()) player.GetComponent<PlayerTeamScript>().Heal(damage, false,false, true, true);
+        if (companionTurn && companion.GetComponent<PlayerTeamScript>().HasLifesteal()) companion.GetComponent<PlayerTeamScript>().Heal(damage, false, false, true, true);
         //We instantiate the damage UI and save the damage amount
         damageImage = Instantiate(damageUI, new Vector3(objective.transform.position.x -0.25f, objective.transform.position.y + 1.0f, 0), Quaternion.identity, objective.transform.GetChild(0));
         damageImage.GetChild(0).GetComponent<Text>().text = damage.ToString();
@@ -2595,8 +2629,8 @@ public class BattleController : MonoBehaviour
         soulRegenMovDown = false;
         soulRegenRingSpeed = 0.03f;
         soulRegenGreenSpeed = 0.075f;
-        player.GetComponent<PlayerTeamScript>().Heal(soulRegenHeal/2, true,true, true);
-        player.GetComponent<PlayerTeamScript>().IncreaseLight(soulRegenLight/2, true, true);
+        player.GetComponent<PlayerTeamScript>().Heal(soulRegenHeal/2, true,true, true, true);
+        player.GetComponent<PlayerTeamScript>().IncreaseLight(soulRegenLight/2, true, true, true);
         soulRegenHeal = 0;
         soulRegenLight = 0;
         actionInstructions.SetActive(false);
@@ -2663,31 +2697,63 @@ public class BattleController : MonoBehaviour
         EndPlayerTurn(1);
     }
     //Function to change the position of the player team. 1-> player, 2-> companion
-    private void ChangePosition(int user)
+    private void StartChangePosition(int user)
     {
-        if(user == 1)
+        changePosAction.SetActive(false);
+        if (user == 1)
         {
-            firstPosPlayer = false;
-            playerTurn = false;
+            player.GetComponent<Animator>().SetFloat("Speed", 0.5f);
+            player.GetComponent<Animator>().SetFloat("attackSpeed", -2.0f);
+            companion.GetComponent<Animator>().SetFloat("Speed", 1.0f);
+            companion.GetComponent<Animator>().SetBool("IsRunning", true);            
+            changePos = true;
             playerChoosingAction = false;
-            companionTurn = true;
-            companionChoosingAction = true;
             player.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-            companion.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
-            player.position = new Vector3(-6.4f, player.position.y, player.position.z);
-            companion.position = new Vector3(-5.0f, companion.position.y, companion.position.z);
         }
         else if(user == 2)
         {
+            player.GetComponent<Animator>().SetFloat("Speed", 0.5f);
+            player.GetComponent<Animator>().SetFloat("attackSpeed", 2.0f);
+            companion.GetComponent<Animator>().SetFloat("Speed", -1.0f);
+            companion.GetComponent<Animator>().SetBool("IsRunning", true);
+            changePos = true;
+            companionChoosingAction = false;
+            companion.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+        }
+    }
+
+    private void EndChangePosition(int user)
+    {
+        changePosAction.SetActive(true);
+        if (user == 1)
+        {
+            player.GetComponent<Animator>().SetFloat("Speed", 0.0f);
+            player.GetComponent<Animator>().SetFloat("attackSpeed", 1.0f);
+            companion.GetComponent<Animator>().SetFloat("Speed", 1.0f);
+            companion.GetComponent<Animator>().SetBool("IsRunning", false);
+            changePos = false;
+            firstPosPlayer = false;
+            playerTurn = false;
+            companionTurn = true;
+            companionChoosingAction = true;
+            player.position = new Vector3(-6.4f, player.position.y, -2.0f);
+            companion.position = new Vector3(-5.0f, companion.position.y, -2.0f);
+            companion.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+        }
+        else if (user == 2)
+        {
+            player.GetComponent<Animator>().SetFloat("Speed", 0.0f);
+            player.GetComponent<Animator>().SetFloat("attackSpeed", 1.0f);
+            companion.GetComponent<Animator>().SetFloat("Speed", 1.0f);
+            companion.GetComponent<Animator>().SetBool("IsRunning", false);
+            changePos = false;
             firstPosPlayer = true;
+            companionTurn = false;
             playerTurn = true;
             playerChoosingAction = true;
-            companionTurn = false;
-            companionChoosingAction = false;
+            player.position = new Vector3(-5.0f, player.position.y, -2.0f);
+            companion.position = new Vector3(-6.4f, companion.position.y, -2.0f);
             player.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
-            companion.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-            player.position = new Vector3(-5.0f, player.position.y, player.position.z);
-            companion.position = new Vector3(-6.4f, companion.position.y, companion.position.z);
         }
     }
 
@@ -2702,6 +2768,8 @@ public class BattleController : MonoBehaviour
             companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
             player.GetComponent<PlayerTeamScript>().RestBuffDebuff();
+            companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+            companion.GetComponent<PlayerTeamScript>().RestBuffDebuff();
             canvas.GetComponent<Animator>().SetBool("Hide", false);
             playerChoosingAction = true;
             playerTeamTurn = false;
@@ -2726,6 +2794,8 @@ public class BattleController : MonoBehaviour
             if (!firstPosPlayer && attackType == 2) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x - 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
             player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
             canvas.GetComponent<Animator>().SetBool("Hide", false);
+            player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+            companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
             playerTurn = false;
             companionTurn = true;
             companionChoosingAction = true;
@@ -2735,6 +2805,8 @@ public class BattleController : MonoBehaviour
         {
             companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
             canvas.GetComponent<Animator>().SetBool("Hide", false);
+            player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+            companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
             playerTurn = true;
             playerChoosingAction = true;
             companionTurn = false;

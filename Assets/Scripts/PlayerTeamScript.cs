@@ -129,13 +129,21 @@ public class PlayerTeamScript : MonoBehaviour
             if (transform.position.x < movePos)
             {
                 transform.position = new Vector3(transform.position.x + 0.10f, transform.position.y, transform.position.z);
-                if(playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.5f);
-                else if(playerTeamType == 1) GetComponent<Animator>().SetBool("IsRunning", true);
+                if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.5f);
+                else if (playerTeamType == 1)
+                {
+                    GetComponent<Animator>().SetBool("IsRunning", true);
+                    GetComponent<Animator>().SetFloat("Speed", 1.0f);
+                }
             }
             else
             {
                 if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.0f);
-                else if (playerTeamType == 1) GetComponent<Animator>().SetBool("IsRunning", false);
+                else if (playerTeamType == 1)
+                {
+                    GetComponent<Animator>().SetTrigger("Melee1");
+                    GetComponent<Animator>().SetBool("IsRunning", false);
+                }
                 movingToEnemy = false;
                 if (attackStyle == 1)
                 {
@@ -283,7 +291,7 @@ public class PlayerTeamScript : MonoBehaviour
         else if (lvl < 7) duration = 2;
         else if (lvl < 10) duration = 3;
         else if (lvl == 10) duration = 4;
-        SetBuffDebuff(1, duration);
+        attackObjective.GetComponent<PlayerTeamScript>().SetBuffDebuff(1, duration);
     }    
     //Function to see if the player has lifesteal
     public bool HasLifesteal()
@@ -298,12 +306,12 @@ public class PlayerTeamScript : MonoBehaviour
         if (alpha > 0.5f) duration = 1;
         else if (alpha > 0.05f) duration = 2;
         else duration = 3;
-        SetBuffDebuff(2, duration);
+        attackObjective.GetComponent<PlayerTeamScript>().SetBuffDebuff(2, duration);
     }
     //Function to set the Light Up power
     public void SetLightUpPower(float lvl)
     {
-        SetBuffDebuff(3, (int)((lvl - 1.0f) * 2.0f));
+        attackObjective.GetComponent<PlayerTeamScript>().SetBuffDebuff(3, (int)((lvl - 1.0f) * 2.0f));
     }
     //Function to see if the player is visible
     public bool IsInvisible()
@@ -562,11 +570,11 @@ public class PlayerTeamScript : MonoBehaviour
         HideBuffDebuff();
         canvas.GetComponent<Animator>().SetBool("Hide", true);
         attackStyle = style;
+        //We save the objective
+        attackObjective = objective;
         //If the one attacking is the player
         if (playerTeamType == 0)
-        {
-            //We save the objective
-            attackObjective = objective;
+        {            
             //If it is the melee attack
             if (type == 0)
             {
@@ -701,7 +709,8 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().FillSouls(0.15f);
                 lastAttack = true;
                 battleController.GetComponent<BattleController>().attackAction = false;
-                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, false);
+                if (playerTeamType == 0) battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, false);
+                else if (playerTeamType == 1) battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, false);
             }
             //else we end the attack and the player goes to the starting position
             else
@@ -871,7 +880,7 @@ public class PlayerTeamScript : MonoBehaviour
     }
 
     //A function to heal
-    public void Heal(int points, bool regen, bool right, bool isPlayer)
+    public void Heal(int points, bool regen, bool right, bool isPlayer, bool dontEndTurn)
     {
         if (right)
         {
@@ -880,7 +889,7 @@ public class PlayerTeamScript : MonoBehaviour
         }
         else heartImage = Instantiate(heartUI, new Vector3(transform.position.x - 1.5f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         heartImage.GetChild(0).GetComponent<Text>().text = points.ToString();
-        heartImage.GetComponent<DamageImageScript>().SetDamage(false);
+        heartImage.GetComponent<DamageImageScript>().SetDamage(dontEndTurn);
         if (playerTeamType == 0)
         {
             heartImage.GetComponent<DamageImageScript>().SetUser(isPlayer);
@@ -894,13 +903,13 @@ public class PlayerTeamScript : MonoBehaviour
     }
 
     //A function to increase the light points
-    public void IncreaseLight(int points, bool regen, bool isPlayer) 
+    public void IncreaseLight(int points, bool regen, bool isPlayer, bool dontEndTurn) 
     {
         if(regen) lightImage = Instantiate(lightUI, new Vector3(transform.position.x + 0.0f, transform.position.y + 2.3f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         else lightImage = Instantiate(lightUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         lightImage.GetChild(0).GetComponent<Text>().text = points.ToString();
         lightPointsUI.GetComponent<LightPointsScript>().IncreaseLight(points);
-        lightImage.GetComponent<DamageImageScript>().SetDamage(false);
+        lightImage.GetComponent<DamageImageScript>().SetDamage(dontEndTurn);
         lightImage.GetComponent<DamageImageScript>().SetUser(isPlayer);
     }
 }
