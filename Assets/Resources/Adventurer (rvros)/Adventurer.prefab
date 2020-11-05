@@ -1710,6 +1710,7 @@ MonoBehaviour:
   lifestealSprite: {fileID: 21300000, guid: a3b085f0f5d568a4988230eed103f717, type: 3}
   disappearSprite: {fileID: 21300000, guid: 26218d2f0e217e540a0eb9539863f1e3, type: 3}
   lightUpSprite: {fileID: 21300000, guid: 837e1859a79bbb64989ce26ca03ffb70, type: 3}
+  glanceActionPrefab: {fileID: 8787689694209190932, guid: fbb777c06a55a6948a6c9db5a43b9cbe, type: 3}
 --- !u!95 &2404544259860478106
 Animator:
   serializedVersion: 3

@@ -18,7 +18,7 @@ public class PlayerLifeScript : MonoBehaviour
     void Start()
     {
         //We save the current health
-        currentHealth = maxHealth;
+        currentHealth = maxHealth - 5;
         //We find the current health text and max health text and initialize them
         currentHealthText = transform.GetChild(0).GetComponent<Text>();
         maxHealthText = transform.GetChild(2).GetComponent<Text>();

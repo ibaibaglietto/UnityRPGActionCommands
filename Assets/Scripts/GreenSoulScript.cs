@@ -13,16 +13,19 @@ public class GreenSoulScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.GetComponent<RingScript>().GetColor() && !other.GetComponent<RingScript>().IsCrossed())
+        if(other.tag == "Ring")
         {
-            other.GetComponent<RingScript>().Cross();
-            battleController.GetComponent<BattleController>().IncreaseRegenerationHeal();
-        }
-        if (!other.GetComponent<RingScript>().GetColor() && !other.GetComponent<RingScript>().IsCrossed())
-        {
-            other.GetComponent<RingScript>().Cross();
-            battleController.GetComponent<BattleController>().IncreaseRegenerationLight();
-        }
+            if (other.GetComponent<RingScript>().GetColor() && !other.GetComponent<RingScript>().IsCrossed())
+            {
+                other.GetComponent<RingScript>().Cross();
+                battleController.GetComponent<BattleController>().IncreaseRegenerationHeal();
+            }
+            if (!other.GetComponent<RingScript>().GetColor() && !other.GetComponent<RingScript>().IsCrossed())
+            {
+                other.GetComponent<RingScript>().Cross();
+                battleController.GetComponent<BattleController>().IncreaseRegenerationLight();
+            }
+        }        
     }
 
 }

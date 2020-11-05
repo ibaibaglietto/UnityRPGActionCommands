@@ -92,6 +92,9 @@ public class PlayerTeamScript : MonoBehaviour
     [SerializeField] private Sprite disappearSprite;
     //The sprite of the lightUpUI
     [SerializeField] private Sprite lightUpSprite;
+    //The prefab of the glance action
+    [SerializeField] private Transform glanceActionPrefab;
+    private Transform glanceAction;
 
     void Awake()
     {
@@ -301,7 +304,7 @@ public class PlayerTeamScript : MonoBehaviour
     //Function to set the amount of time the player will be invisible
     public void SetDisappearTime(float alpha)
     {
-        GetComponent<SpriteRenderer>().color = new Color(GetComponent<SpriteRenderer>().color.r, GetComponent<SpriteRenderer>().color.g, GetComponent<SpriteRenderer>().color.b, 0.5f);
+        attackObjective.GetComponent<SpriteRenderer>().color = new Color(attackObjective.GetComponent<SpriteRenderer>().color.r, attackObjective.GetComponent<SpriteRenderer>().color.g, attackObjective.GetComponent<SpriteRenderer>().color.b, 0.5f);
         int duration;
         if (alpha > 0.5f) duration = 1;
         else if (alpha > 0.05f) duration = 2;
@@ -686,6 +689,10 @@ public class PlayerTeamScript : MonoBehaviour
                     movePos = attackObjective.position.x - 1.1f;
                     movingToEnemy = true;
                 }
+                else if(style == 1)
+                {
+                    glanceAction = Instantiate(glanceActionPrefab, attackObjective.position, Quaternion.identity);
+                }
             }
         }
     }
@@ -731,8 +738,8 @@ public class PlayerTeamScript : MonoBehaviour
                 scale.x *= -1;
                 transform.GetChild(0).transform.localScale = scale;
                 battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, true);
-                lightUp = 0;
-                if (playerTeamType == 0) EndBuffDebuff(lightUpPos);
+                if (lightUp!=0) EndBuffDebuff(lightUpPos);
+                lightUp = 0;                
             }
         }
         else if (attackStyle == 2)
@@ -766,8 +773,8 @@ public class PlayerTeamScript : MonoBehaviour
                 scale.x *= -1;
                 transform.GetChild(0).transform.localScale = scale;
                 battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, true);
+                if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
-                EndBuffDebuff(lightUpPos);
             }
         }
                
@@ -785,8 +792,8 @@ public class PlayerTeamScript : MonoBehaviour
         scale.x *= -1;
         transform.GetChild(0).transform.localScale = scale;
         battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), damage + lightUp, true);
+        if (lightUp != 0) EndBuffDebuff(lightUpPos);
         lightUp = 0;
-        EndBuffDebuff(lightUpPos);
     }
 
     //A function to throw a shuriken
@@ -798,8 +805,8 @@ public class PlayerTeamScript : MonoBehaviour
             shuriken = Instantiate(shurikenPrefab, gameObject.transform.position, Quaternion.identity);
             shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
             shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+            if (lightUp != 0) EndBuffDebuff(lightUpPos);
             lightUp = 0;
-            EndBuffDebuff(lightUpPos);
         }
         else if (attackStyle == 1)
         {
@@ -808,8 +815,8 @@ public class PlayerTeamScript : MonoBehaviour
             shuriken = Instantiate(lightShurikenPrefab, gameObject.transform.position, Quaternion.identity);
             shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
             shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+            if (lightUp != 0) EndBuffDebuff(lightUpPos);
             lightUp = 0;
-            EndBuffDebuff(lightUpPos);
         }
         else if (attackStyle == 2)
         {
@@ -820,8 +827,9 @@ public class PlayerTeamScript : MonoBehaviour
             shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
             shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
             shuriken.GetComponent<ShurikenScript>().OnFireShuriken(true);
+            if(lightUp !=0) EndBuffDebuff(lightUpPos);
             lightUp = 0;
-            EndBuffDebuff(lightUpPos);
+            
         }
     }
     
@@ -884,10 +892,14 @@ public class PlayerTeamScript : MonoBehaviour
     {
         if (right)
         {
-            if (regen) heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 1.5f, transform.position.y + 0.8f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
-            else heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
+            if (regen) heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 0.75f, transform.position.y + 0.8f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
+            else heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 0.5f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         }
-        else heartImage = Instantiate(heartUI, new Vector3(transform.position.x - 1.5f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
+        else
+        {
+            if(regen) heartImage = Instantiate(heartUI, new Vector3(transform.position.x - 0.75f, transform.position.y + 0.8f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
+            else heartImage = Instantiate(heartUI, new Vector3(transform.position.x - 0.5f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
+        }
         heartImage.GetChild(0).GetComponent<Text>().text = points.ToString();
         heartImage.GetComponent<DamageImageScript>().SetDamage(dontEndTurn);
         if (playerTeamType == 0)
@@ -906,7 +918,7 @@ public class PlayerTeamScript : MonoBehaviour
     public void IncreaseLight(int points, bool regen, bool isPlayer, bool dontEndTurn) 
     {
         if(regen) lightImage = Instantiate(lightUI, new Vector3(transform.position.x + 0.0f, transform.position.y + 2.3f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
-        else lightImage = Instantiate(lightUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
+        else lightImage = Instantiate(lightUI, new Vector3(transform.position.x + 0.5f, transform.position.y + 1.5f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         lightImage.GetChild(0).GetComponent<Text>().text = points.ToString();
         lightPointsUI.GetComponent<LightPointsScript>().IncreaseLight(points);
         lightImage.GetComponent<DamageImageScript>().SetDamage(dontEndTurn);
