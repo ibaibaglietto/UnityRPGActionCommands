@@ -691,7 +691,11 @@ public class PlayerTeamScript : MonoBehaviour
                 }
                 else if(style == 1)
                 {
-                    glanceAction = Instantiate(glanceActionPrefab, attackObjective.position, Quaternion.identity);
+                    glanceAction = Instantiate(glanceActionPrefab, attackObjective.GetChild(0));
+                    glanceAction.position = attackObjective.position;
+                    glanceAction.rotation = Quaternion.Euler(0.0f,0.0f, Random.Range(-45.0f,10.0f));
+                    gameObject.GetComponent<Animator>().SetBool("IsGlancing", true);
+                    battleController.GetComponent<BattleController>().finalAttack = true;
                 }
             }
         }
@@ -885,6 +889,36 @@ public class PlayerTeamScript : MonoBehaviour
             if(playerTeamType==0) playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
             else companionLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
         }        
+    }
+    //A function to end the glance
+    public void EndGlance()
+    {
+        battleController.GetComponent<BattleController>().DeactivateActionInstructions();
+        if (battleController.GetComponent<BattleController>().goodAttack == true && lastAttack == false)
+        {
+            lastAttack = true;
+            glanceAction.rotation = Quaternion.Euler(0.0f, 0.0f, Random.Range(-45.0f, 10.0f));
+            attackObjective.GetChild(0).GetChild(4).GetChild(1).GetComponent<Animator>().SetTrigger("restart");
+        }
+        else 
+        {
+            if (battleController.GetComponent<BattleController>().goodAttack == true)
+            {
+                Debug.Log("buena");
+            }
+            else
+            {
+                Debug.Log("mala");
+            }
+            Destroy(attackObjective.GetChild(0).GetChild(4).gameObject);
+            lastAttack = false;
+            battleController.GetComponent<BattleController>().badAttack = false;
+            battleController.GetComponent<BattleController>().goodAttack = false;
+            battleController.GetComponent<BattleController>().attackAction = false;
+            battleController.GetComponent<BattleController>().finalAttack = false;
+            gameObject.GetComponent<Animator>().SetBool("IsGlancing", false);
+            battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+        }
     }
 
     //A function to heal

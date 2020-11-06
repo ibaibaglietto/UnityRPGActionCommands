@@ -2156,6 +2156,18 @@ public class BattleController : MonoBehaviour
                                 selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
                             }
                         }
+                        else if(usingStyle == 1)
+                        {
+                            if (!attackAction && Input.GetKeyDown(KeyCode.X)) badAttack = true;
+                            if (attackAction)
+                            {                                
+                                if (Input.GetKeyDown(KeyCode.X) && !badAttack)
+                                {
+                                    goodAttack = true;
+                                    companion.GetComponent<PlayerTeamScript>().EndGlance();
+                                }
+                            }
+                        }
                     }
                 }
                 else if (fleeing && (Time.fixedTime - fleeTime) < 10.0f)
