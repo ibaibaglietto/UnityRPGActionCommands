@@ -41,6 +41,8 @@ public class EnemyTeamScript : MonoBehaviour
     private int sleepPos;
     //The sprite of the sleepUI
     [SerializeField] private Sprite sleepSprite;
+    //The dialogue of the glance action
+    public Dialogue dialogue;
 
     void Start()
     {
@@ -56,7 +58,26 @@ public class EnemyTeamScript : MonoBehaviour
         alive = true;
         idle = true;
         asleep = 0;
-        if (enemyType == 0) grounded = true;
+        if (enemyType == 0)
+        {
+            grounded = true;
+            if (PlayerPrefs.GetInt("bandit") == 1) 
+            {
+                for(int i = 0; i<3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 1.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 1.0f);
+            }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 0.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
+            }
+        }
     }
 
 
@@ -105,6 +126,29 @@ public class EnemyTeamScript : MonoBehaviour
                 }
             }
         }        
+    }
+    //Function to check if the player knows the health of the enemy
+    public void KnowHealth()
+    {
+        if(enemyType == 0)
+        {
+            if (PlayerPrefs.GetInt("bandit") == 1)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 1.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 1.0f);
+            }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 0.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
+            }
+        }
     }
     //Function to know if the enemy is on the ground
     public bool IsGrounded()

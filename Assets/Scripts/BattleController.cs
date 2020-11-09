@@ -298,6 +298,8 @@ public class BattleController : MonoBehaviour
     private GameObject fleeAction;
     //The gameobject of the Change position object
     private GameObject changePosAction;
+    //A bool to know if the adventurer is talking
+    private bool talking;
 
 
     private void Awake()
@@ -310,6 +312,8 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
         PlayerPrefs.SetInt("Souls", 6);
         PlayerPrefs.SetInt("AdventurerLvl",3);
+        PlayerPrefs.SetInt("language", 0);
+        PlayerPrefs.SetInt("bandit", 0);
         //Find the gameobjects
         lightPointsUI = GameObject.Find("LightBckImage");
         actionInstructions = GameObject.Find("ActionInstructions");
@@ -448,6 +452,7 @@ public class BattleController : MonoBehaviour
         magentaSoulMovLeft = false;
         magentaSoulMovRight = false;
         magentaSoulMovDown = false;
+        talking = false;
         soulRegenRingSpeed = 0.03f;
         soulRegenGreenSpeed = 0.075f;
         soulRegenHeal = 0;
@@ -1832,7 +1837,7 @@ public class BattleController : MonoBehaviour
                                 actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
                                 actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
                                 if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy.";
-                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press X when the arrives to the .";
+                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the  arrives to the .";
                                 else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy until you fail to press it in time.";
                                 attackType = 0;
                                 selectingEnemyCompanion = true;
@@ -2169,6 +2174,10 @@ public class BattleController : MonoBehaviour
                             }
                         }
                     }
+                }
+                else if (talking)
+                {
+                    if (Input.GetKeyDown(KeyCode.X)) GetComponent<DialogueManager>().DisplayNextSentence();
                 }
                 else if (fleeing && (Time.fixedTime - fleeTime) < 10.0f)
                 {
@@ -3365,7 +3374,15 @@ public class BattleController : MonoBehaviour
         }
         canSelect = false;
     }
-    
+    //Function to refresh the state of the health bar of every enemy
+    public void KnowHealth()
+    {
+        Transform[] enemies = GetAllEnemies();
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i].GetComponent<EnemyTeamScript>().KnowHealth();
+        }
+    }
 
     //Function to deactivate the action command instructions
     public void DeactivateActionInstructions()
@@ -3561,6 +3578,11 @@ public class BattleController : MonoBehaviour
         {
             soul1.GetComponent<Image>().fillAmount = 0.0f;
         }
+    }
+    //Function to set the talking state
+    public void SetTalking(bool state)
+    {
+        talking = state;
     }
 
     //Function to get the soul points

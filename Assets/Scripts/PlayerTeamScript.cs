@@ -148,7 +148,7 @@ public class PlayerTeamScript : MonoBehaviour
                     GetComponent<Animator>().SetBool("IsRunning", false);
                 }
                 movingToEnemy = false;
-                if (attackStyle == 1)
+                if (playerTeamType == 0 && attackStyle == 1)
                 {
                     gameObject.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("active", true);
                     gameObject.GetComponent<Animator>().SetTrigger("statChargeLightMelee");
@@ -697,6 +697,13 @@ public class PlayerTeamScript : MonoBehaviour
                     gameObject.GetComponent<Animator>().SetBool("IsGlancing", true);
                     battleController.GetComponent<BattleController>().finalAttack = true;
                 }
+                else if(style == 2)
+                {
+                    attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
+                    startPos = transform.position.x;
+                    movePos = attackObjective.position.x - 1.1f;
+                    movingToEnemy = true;
+                }
             }
         }
     }
@@ -904,11 +911,13 @@ public class PlayerTeamScript : MonoBehaviour
         {
             if (battleController.GetComponent<BattleController>().goodAttack == true)
             {
-                Debug.Log("buena");
+                battleController.GetComponent<DialogueManager>().StartDialogue(attackObjective.GetComponent<EnemyTeamScript>().dialogue);
+                if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 0) PlayerPrefs.SetInt("bandit", 1);
+                battleController.GetComponent<BattleController>().KnowHealth();
             }
             else
             {
-                Debug.Log("mala");
+                battleController.GetComponent<BattleController>().EndPlayerTurn(2);
             }
             Destroy(attackObjective.GetChild(0).GetChild(4).gameObject);
             lastAttack = false;
@@ -916,8 +925,8 @@ public class PlayerTeamScript : MonoBehaviour
             battleController.GetComponent<BattleController>().goodAttack = false;
             battleController.GetComponent<BattleController>().attackAction = false;
             battleController.GetComponent<BattleController>().finalAttack = false;
-            gameObject.GetComponent<Animator>().SetBool("IsGlancing", false);
-            battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+            gameObject.GetComponent<Animator>().SetBool("IsGlancing", false); 
+            
         }
     }
 

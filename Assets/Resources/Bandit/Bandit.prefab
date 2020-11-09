@@ -717,6 +717,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: 0
   sleepSprite: {fileID: -3877204253021290591, guid: 9b361e3522856904390736bcbc9aa048, type: 3}
+  dialogue:
+    name: Aventurer
+    sentencesEnglish:
+    - This bandit uses his sword to give a powerful strike.
+    - 'HP: 4
+
+      Damage: 2
+
+      Defense: 0'
+    sentencesSpanish: []
+    sentencesBasque: []
 --- !u!61 &3432786895357854636
 BoxCollider2D:
   m_ObjectHideFlags: 0
