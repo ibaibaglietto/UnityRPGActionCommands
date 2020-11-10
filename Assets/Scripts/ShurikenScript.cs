@@ -28,7 +28,7 @@ public class ShurikenScript : MonoBehaviour
     void FixedUpdate()
     {
         //if the shuriken hasn't arrive to the objective it keeps moving
-        if (gameObject.transform.position.x < objective.x) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.3f, gameObject.transform.position.y, gameObject.transform.position.z);
+        if (gameObject.transform.position.x < objective.x) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.4f, gameObject.transform.position.y, gameObject.transform.position.z);
         //When the shuriken arrives it deals damage and self destroys
         else
         {

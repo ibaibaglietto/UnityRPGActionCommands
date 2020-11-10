@@ -1441,7 +1441,7 @@ RectTransform:
   m_GameObject: {fileID: 3183541047535516679}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children:
   - {fileID: 3849226651436472149}
   - {fileID: 8126528625784380801}
@@ -2121,7 +2121,7 @@ RectTransform:
   m_GameObject: {fileID: 4125734996704434414}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children:
   - {fileID: 4801453811377391915}
   - {fileID: 1431378615143594266}
@@ -3361,6 +3361,7 @@ MonoBehaviour:
   lifestealSprite: {fileID: 21300000, guid: a3b085f0f5d568a4988230eed103f717, type: 3}
   disappearSprite: {fileID: 21300000, guid: 26218d2f0e217e540a0eb9539863f1e3, type: 3}
   lightUpSprite: {fileID: 21300000, guid: 837e1859a79bbb64989ce26ca03ffb70, type: 3}
+  glanceActionPrefab: {fileID: 0}
 --- !u!1 &5352649904939885479
 GameObject:
   m_ObjectHideFlags: 0
@@ -6905,7 +6906,7 @@ RectTransform:
   m_GameObject: {fileID: 8706161891463471246}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children:
   - {fileID: 364396721788892918}
   - {fileID: 3346993917195248003}

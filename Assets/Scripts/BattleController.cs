@@ -1837,12 +1837,14 @@ public class BattleController : MonoBehaviour
                                 actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
                                 actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
                                 if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy.";
-                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the  arrives to the .";
+                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the <sprite=361> arrives to the <sprite=362>.";
                                 else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy until you fail to press it in time.";
+                                else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> until <sprite=360> lights up.";
                                 attackType = 0;
                                 selectingEnemyCompanion = true;
                                 enemyName.SetActive(true);
-                                SelectFirstEnemy();
+                                if (usingStyle != 3) SelectFirstEnemy();
+                                else SelectGroundEnemies();
                             }
                         }
                         else if (selectingAction == 1)
@@ -2144,7 +2146,7 @@ public class BattleController : MonoBehaviour
                     //If it is a melee attack
                     if (attackType == 0)
                     {
-                        if (usingStyle == 0)
+                        if (usingStyle == 0 || usingStyle == 2)
                         {
                             //We check if the player presses the button when it is asked to be pressed
                             if (!attackAction && Input.GetKeyDown(KeyCode.X)) badAttack = true;
@@ -2171,6 +2173,39 @@ public class BattleController : MonoBehaviour
                                     goodAttack = true;
                                     companion.GetComponent<PlayerTeamScript>().EndGlance();
                                 }
+                            }
+                        }
+                        else if(usingStyle == 3)
+                        {
+                            if (Input.GetKey(KeyCode.X) && !companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().GetBool("charging"))
+                            {
+                                DeactivateActionInstructions();
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", true);
+                            }
+                            if (Input.GetKeyUp(KeyCode.X) && attackAction)
+                            {
+                                companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(3);
+                                companion.GetComponent<Animator>().SetTrigger("ShootArrow");
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
+                                attackAction = false;
+                                finalAttack = false;
+                            }
+                            else if (Input.GetKeyUp(KeyCode.X) && !attackAction && !attackFinished)
+                            {
+                                companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                                companion.GetComponent<Animator>().SetTrigger("ShootArrow");
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
+                                finalAttack = false;
+                            }
+                            else if (attackFinished)
+                            {
+                                companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                                companion.GetComponent<Animator>().SetTrigger("ShootArrow");
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
+                                finalAttack = false;
                             }
                         }
                     }
@@ -4134,8 +4169,8 @@ public class BattleController : MonoBehaviour
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).gameObject.SetActive(true);
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().sprite = thirdSkill;
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = "Sword spin";
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "2 LP";
-                    if (!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(2))
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "3 LP";
+                    if (!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(3))
                     {
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
