@@ -300,6 +300,10 @@ public class BattleController : MonoBehaviour
     private GameObject changePosAction;
     //A bool to know if the adventurer is talking
     private bool talking;
+    //A floar to know the rotation of the aim action
+    private float aimRotation;
+    //A bool to know if the aim rotation is going up or down
+    private bool aimUp;
 
 
     private void Awake()
@@ -470,6 +474,8 @@ public class BattleController : MonoBehaviour
         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.b, 0.0f);
         player.GetChild(0).transform.GetChild(6).gameObject.SetActive(false);
         fleeAction.SetActive(false);
+        aimRotation = 0.0f;
+        aimUp = true;
     }
 
     private void Update()
@@ -1840,11 +1846,13 @@ public class BattleController : MonoBehaviour
                                 else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the <sprite=361> arrives to the <sprite=362>.";
                                 else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy until you fail to press it in time.";
                                 else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> until <sprite=360> lights up.";
+                                else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Texto equis de.";
                                 attackType = 0;
                                 selectingEnemyCompanion = true;
                                 enemyName.SetActive(true);
-                                if (usingStyle != 3) SelectFirstEnemy();
-                                else SelectGroundEnemies();
+                                if (usingStyle < 3) SelectFirstEnemy();
+                                else if (usingStyle == 3) SelectGroundEnemies();
+                                else SelectAllEnemies();
                             }
                         }
                         else if (selectingAction == 1)
@@ -2208,6 +2216,14 @@ public class BattleController : MonoBehaviour
                                 finalAttack = false;
                             }
                         }
+                        else if(usingStyle == 4)
+                        {
+                            if (Input.GetKey(KeyCode.X))
+                            {
+                                companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                                companion.GetComponent<Animator>().SetTrigger("ShootArrow");
+                            }
+                        }
                     }
                 }
                 else if (talking)
@@ -2303,7 +2319,7 @@ public class BattleController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(finalAttack && attackType == 1 && usingStyle == 1)
+        if(playerTurn && finalAttack && attackType == 1 && usingStyle == 1)
         {
             if (Time.fixedTime - shurikenTime < 2.5f )
             {
@@ -2332,7 +2348,7 @@ public class BattleController : MonoBehaviour
                 player.GetComponent<PlayerTeamScript>().SetShurikenDamage(4);
             }
         }
-        if (finalAttack && attackType == 1 && usingStyle == 2)
+        if (playerTurn && finalAttack && attackType == 1 && usingStyle == 2)
         {
             if (Time.fixedTime - shurikenTime < 2.5f)
             {
@@ -2395,7 +2411,7 @@ public class BattleController : MonoBehaviour
                 else EndChangePosition(2);
             }
         }
-        if (finalAttack)
+        if (playerTurn && finalAttack)
         {
             if (soulMusic > 0 && !failMusic)
             {
@@ -2505,7 +2521,29 @@ public class BattleController : MonoBehaviour
                 }                
             }
         }
-        
+        if(companionTurn && finalAttack && usingStyle == 4)
+        {
+            if(aimRotation<40.0f && aimUp)
+            {
+                aimRotation += 0.5f;
+                companion.GetChild(0).GetChild(4).GetChild(0).GetComponent<RectTransform>().rotation = Quaternion.Euler(0.0f,0.0f,aimRotation);
+            }
+            else if(aimRotation>= 40.0f && aimUp)
+            {
+                aimUp = false;
+            }
+            else if(aimRotation > -10.0f && !aimUp)
+            {
+                aimRotation -= 0.5f;
+                companion.GetChild(0).GetChild(4).GetChild(0).GetComponent<RectTransform>().rotation = Quaternion.Euler(0.0f, 0.0f, aimRotation);
+            }
+            else if (aimRotation <= -10.0f && !aimUp)
+            {
+                aimUp = true;
+            }
+
+        }
+
         if (fleeing)
         {
             if ((Time.fixedTime - fleeTime) < 10.0f)
@@ -2925,6 +2963,11 @@ public class BattleController : MonoBehaviour
             companionChoosingAction = true;
         }
         enemyTeamTurn = false;
+    }
+    //Function to get the aim rotation
+    public float GetAimRotation()
+    {
+        return aimRotation;
     }
 
     //A function to pass the turn to the next enemy

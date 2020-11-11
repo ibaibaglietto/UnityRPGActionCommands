@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class ShurikenScript : MonoBehaviour
 {
@@ -16,38 +17,50 @@ public class ShurikenScript : MonoBehaviour
     private bool fire;
     //An int to know the number of enemies hit
     private int hit;
+    //A boolean to know if the bullet is thrown by the BK47
+    private bool BK47;
+    //A float to save the rotation of the bk47 arrow
+    private float rotation;
 
-    private void Start()
+    private void Awake()
     {
         //We find the battle controller
         battleController = GameObject.Find("BattleController");
         //We initialize the hit int
         hit = 0;
+        BK47 = false;
     }
 
     void FixedUpdate()
     {
-        //if the shuriken hasn't arrive to the objective it keeps moving
-        if (gameObject.transform.position.x < objective.x) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.4f, gameObject.transform.position.y, gameObject.transform.position.z);
-        //When the shuriken arrives it deals damage and self destroys
+        if (!BK47)
+        {
+            //if the shuriken hasn't arrived to the objective it keeps moving
+            if (gameObject.transform.position.x < objective.x) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.4f, gameObject.transform.position.y, gameObject.transform.position.z);
+            //When the shuriken arrives it deals damage and self destroys
+            else
+            {
+                if (!fire)
+                {
+                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), shurikenDamage, true);
+                    if (shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.1f);
+                    else if (shurikenDamage == 2) battleController.GetComponent<BattleController>().FillSouls(0.3f);
+                    else battleController.GetComponent<BattleController>().FillSouls(0.4f);
+                }
+                Destroy(gameObject);
+            }
+            if (fire && fireObjectives.Length > hit && gameObject.transform.position.x > (fireObjectives[hit].transform.position.x - 0.15f) && gameObject.transform.position.x <= (fireObjectives[hit].transform.position.x + 0.15f))
+            {
+                if (shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.075f);
+                else battleController.GetComponent<BattleController>().FillSouls(0.15f);
+                battleController.GetComponent<BattleController>().DealDamage(fireObjectives[hit], shurikenDamage, true);
+                hit += 1;
+            }
+        }
         else
         {
-            if (!fire)
-            {
-                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), shurikenDamage, true);
-                if (shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.1f);
-                else if (shurikenDamage == 2) battleController.GetComponent<BattleController>().FillSouls(0.3f);
-                else battleController.GetComponent<BattleController>().FillSouls(0.4f);
-            }
-            Destroy(gameObject);
-        }
-        if (fire && fireObjectives.Length > hit && gameObject.transform.position.x > (fireObjectives[hit].transform.position.x - 0.15f) && gameObject.transform.position.x <= (fireObjectives[hit].transform.position.x + 0.15f))
-        {
-            if(shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.075f);
-            else battleController.GetComponent<BattleController>().FillSouls(0.15f);
-            battleController.GetComponent<BattleController>().DealDamage(fireObjectives[hit], shurikenDamage, true);
-            hit += 1;
-        }       
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.4f * Mathf.Cos(rotation), gameObject.transform.position.y + 0.4f * Mathf.Sin(rotation), gameObject.transform.position.z);
+        }      
         
     }
     //A function to set the objective
@@ -71,5 +84,12 @@ public class ShurikenScript : MonoBehaviour
     public void OnFireShuriken(bool onFire)
     {
         fire = onFire;
+    }
+
+    //Function to set the bk47 mode
+    public void SetBK47(float rot)
+    {
+        rotation = rot;
+        BK47 = true;
     }
 }

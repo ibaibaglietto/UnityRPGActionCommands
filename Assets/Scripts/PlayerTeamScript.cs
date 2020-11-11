@@ -710,9 +710,16 @@ public class PlayerTeamScript : MonoBehaviour
                 }
                 else if(style == 3)
                 {
-            transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", true);
+                    transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", true);
                     lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(4);
                     shurikenObjective = new Vector3(12.0f, attackObjective.position.y, attackObjective.position.z);
+                    gameObject.GetComponent<Animator>().SetTrigger("ChargeBow");
+                    battleController.GetComponent<BattleController>().finalAttack = true;
+                }
+                else if(style == 4)
+                {
+                    transform.GetChild(0).transform.GetChild(4).gameObject.SetActive(true);
+                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(7);
                     gameObject.GetComponent<Animator>().SetTrigger("ChargeBow");
                     battleController.GetComponent<BattleController>().finalAttack = true;
                 }
@@ -860,14 +867,24 @@ public class PlayerTeamScript : MonoBehaviour
         }
         else if(playerTeamType == 1)
         {
-            battleController.GetComponent<BattleController>().DeactivateActionInstructions();
-            shuriken = Instantiate(arrow, gameObject.transform.position, Quaternion.identity);
-            shuriken.GetComponent<ShurikenScript>().SetFireObjectives(battleController.GetComponent<BattleController>().GetGroundEnemies());
-            shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
-            shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
-            shuriken.GetComponent<ShurikenScript>().OnFireShuriken(true);
-            if (lightUp != 0) EndBuffDebuff(lightUpPos);
-            lightUp = 0;
+            if (attackStyle == 3)
+            {
+                battleController.GetComponent<BattleController>().DeactivateActionInstructions();
+                shuriken = Instantiate(arrow, gameObject.transform.position, Quaternion.identity);
+                shuriken.GetComponent<ShurikenScript>().SetFireObjectives(battleController.GetComponent<BattleController>().GetGroundEnemies());
+                shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+                shuriken.GetComponent<ShurikenScript>().OnFireShuriken(true);
+                if (lightUp != 0) EndBuffDebuff(lightUpPos);
+                lightUp = 0;
+            }
+            else if (attackStyle == 4)
+            {
+                shuriken = Instantiate(arrow, gameObject.transform.position, Quaternion.Euler(0.0f,0.0f,battleController.GetComponent<BattleController>().GetAimRotation()));
+                shuriken.GetComponent<ShurikenScript>().SetBK47(battleController.GetComponent<BattleController>().GetAimRotation());
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+                if (lightUp > 0) lightUp -= 1;
+            }
         }
     }
     
@@ -898,7 +915,11 @@ public class PlayerTeamScript : MonoBehaviour
     public void EndShurikenThrow()
     {
         if (playerTeamType == 0) battleController.GetComponent<BattleController>().shurikenHit = true;
-        else if (playerTeamType == 1) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+        else if (playerTeamType == 1) 
+        {
+            if(attackStyle == 3) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+            //else GetComponent<Animator>().SetTrigger("ChargeBow");
+        }
     }
 
     //A function to set the shuriken damage
