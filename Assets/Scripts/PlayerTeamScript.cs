@@ -97,6 +97,8 @@ public class PlayerTeamScript : MonoBehaviour
     //The prefab of the glance action
     [SerializeField] private Transform glanceActionPrefab;
     private Transform glanceAction;
+    //The number of arrows shot by the BK47
+    private int arrowNumb;
 
     void Awake()
     {
@@ -123,6 +125,7 @@ public class PlayerTeamScript : MonoBehaviour
         disappear = 0;
         lightUp = 0;
         attackSpeed = 1.0f;
+        arrowNumb = 0;
     }
 
 
@@ -721,6 +724,7 @@ public class PlayerTeamScript : MonoBehaviour
                     transform.GetChild(0).transform.GetChild(4).gameObject.SetActive(true);
                     lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(7);
                     gameObject.GetComponent<Animator>().SetTrigger("ChargeBow");
+                    GetComponent<Animator>().SetBool("ShootFast",true);
                     battleController.GetComponent<BattleController>().finalAttack = true;
                 }
             }
@@ -783,7 +787,12 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().goodAttack = false;
                 battleController.GetComponent<BattleController>().attackAction = false;
                 battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, false);
-                if(lightUp>0) lightUp -= 1;
+                if (lightUp > 1) lightUp -= 1;
+                else if (lightUp == 1)
+                {
+                    EndBuffDebuff(lightUpPos);
+                    lightUp = 0;
+                }
             }
             //else we end the attack and the player goes to the starting position
             else
@@ -880,10 +889,17 @@ public class PlayerTeamScript : MonoBehaviour
             }
             else if (attackStyle == 4)
             {
-                shuriken = Instantiate(arrow, gameObject.transform.position, Quaternion.Euler(0.0f,0.0f,battleController.GetComponent<BattleController>().GetAimRotation()));
-                shuriken.GetComponent<ShurikenScript>().SetBK47(battleController.GetComponent<BattleController>().GetAimRotation());
-                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
-                if (lightUp > 0) lightUp -= 1;
+                SetReadyShoot(0);
+                arrowNumb += 1;
+                shuriken = Instantiate(arrow, gameObject.transform.GetChild(0).GetChild(4).GetChild(0).position, Quaternion.Euler(0.0f,0.0f,battleController.GetComponent<BattleController>().GetAimRotation()));
+                shuriken.GetComponent<ShurikenScript>().SetBK47(battleController.GetComponent<BattleController>().GetAimRotation() * Mathf.Deg2Rad);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp); 
+                if (lightUp > 1) lightUp -= 1;
+                else if (lightUp == 1)
+                {
+                    EndBuffDebuff(lightUpPos);
+                    lightUp = 0;
+                }
             }
         }
     }
@@ -917,8 +933,35 @@ public class PlayerTeamScript : MonoBehaviour
         if (playerTeamType == 0) battleController.GetComponent<BattleController>().shurikenHit = true;
         else if (playerTeamType == 1) 
         {
-            if(attackStyle == 3) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
-            //else GetComponent<Animator>().SetTrigger("ChargeBow");
+            if (attackStyle == 3) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+            else if (attackStyle == 4) 
+            { 
+                if(battleController.GetComponent<BattleController>().GetAllEnemies() != null)
+                {
+                    if (arrowNumb < 5) gameObject.GetComponent<Animator>().SetTrigger("ChargeBow");
+                    else
+                    {
+                        arrowNumb = 0;
+                        if (lightUp != 0) EndBuffDebuff(lightUpPos);
+                        lightUp = 0;
+                        battleController.GetComponent<BattleController>().ResetAim();
+                        transform.GetChild(0).transform.GetChild(4).gameObject.SetActive(false);
+                        battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+                    }
+                    if (arrowNumb == 4) GetComponent<Animator>().SetBool("ShootFast", false);
+                }
+                else
+                {
+                    arrowNumb = 0;
+                    if (lightUp != 0) EndBuffDebuff(lightUpPos);
+                    lightUp = 0;
+                    GetComponent<Animator>().SetBool("ShootFast", false);
+                    GetComponent<Animator>().SetTrigger("DontShoot");
+                    battleController.GetComponent<BattleController>().ResetAim();
+                    transform.GetChild(0).transform.GetChild(4).gameObject.SetActive(false);
+                    battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+                }
+            }
         }
     }
 
@@ -927,6 +970,14 @@ public class PlayerTeamScript : MonoBehaviour
     {
         shurikenDamage = damage;
     }
+    //A function to activate the shoot ability of the BK47
+    public void SetReadyShoot(int ready)
+    {
+        if(ready == 1) battleController.GetComponent<BattleController>().SetReadyShoot(true);
+        else battleController.GetComponent<BattleController>().SetReadyShoot(false);
+    }
+
+
     //Function to get the player type
     public int GetPlayerType()
     {

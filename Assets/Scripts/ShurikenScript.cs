@@ -59,10 +59,20 @@ public class ShurikenScript : MonoBehaviour
         }
         else
         {
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.4f * Mathf.Cos(rotation), gameObject.transform.position.y + 0.4f * Mathf.Sin(rotation), gameObject.transform.position.z);
+            if(gameObject.transform.position.x < 10.0f) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.4f * Mathf.Cos(rotation), gameObject.transform.position.y + 0.4f * Mathf.Sin(rotation), gameObject.transform.position.z);
+            else Destroy(gameObject);
         }      
         
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(BK47 && collision.tag == "enemy" && collision.GetComponent<EnemyTeamScript>().IsAlive())
+        {
+            battleController.GetComponent<BattleController>().DealDamage(collision.transform, shurikenDamage, true);
+            Destroy(gameObject);
+        }
+    }
+
     //A function to set the objective
     public void SetObjective(Vector3 obj)
     {

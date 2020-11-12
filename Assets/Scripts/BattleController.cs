@@ -304,6 +304,8 @@ public class BattleController : MonoBehaviour
     private float aimRotation;
     //A bool to know if the aim rotation is going up or down
     private bool aimUp;
+    //A bool to know if the adventurer is ready to shoot
+    private bool readyShoot;
 
 
     private void Awake()
@@ -476,6 +478,7 @@ public class BattleController : MonoBehaviour
         fleeAction.SetActive(false);
         aimRotation = 0.0f;
         aimUp = true;
+        readyShoot = false;
     }
 
     private void Update()
@@ -1827,7 +1830,7 @@ public class BattleController : MonoBehaviour
                             else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Look at the enemy to see their weak points.";
                             else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hit an enemy as many times as you can with your sword.";
                             else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use your dragon slayer bow to shoot an arrow to all the grounded enemies.";
-                            else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Shoot multiple arrows that will hit the first enemy they find in their way.";
+                            else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Shoot five arrows that will hit the first enemy they find in their way.";
                             if ((menuSelectionPos < PlayerPrefs.GetInt("AdventurerLvl") + 1) && Input.GetKeyDown(KeyCode.DownArrow))
                             {
                                 companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
@@ -1846,7 +1849,7 @@ public class BattleController : MonoBehaviour
                                 else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the <sprite=361> arrives to the <sprite=362>.";
                                 else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy until you fail to press it in time.";
                                 else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> until <sprite=360> lights up.";
-                                else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Texto equis de.";
+                                else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the adventurer aims to an objective.";
                                 attackType = 0;
                                 selectingEnemyCompanion = true;
                                 enemyName.SetActive(true);
@@ -2218,11 +2221,16 @@ public class BattleController : MonoBehaviour
                         }
                         else if(usingStyle == 4)
                         {
-                            if (Input.GetKey(KeyCode.X))
+                            if (GetAllEnemies() != null)
                             {
-                                companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
-                                companion.GetComponent<Animator>().SetTrigger("ShootArrow");
+                                if (readyShoot && Input.GetKeyDown(KeyCode.X))
+                                {
+                                    GetComponent<BattleController>().DeactivateActionInstructions();
+                                    companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
+                                    companion.GetComponent<Animator>().SetTrigger("ShootArrow");
+                                }
                             }
+                            else companion.GetComponent<PlayerTeamScript>().EndShurikenThrow();
                         }
                     }
                 }
@@ -2622,13 +2630,25 @@ public class BattleController : MonoBehaviour
         else if (battlePos == 2)
         {
             enemyNumber += 1;
-            enemy1 = Instantiate(banditBattle, new Vector3(3.0f, -0.64f, -2.0f), Quaternion.identity);
+            enemy1 = Instantiate(banditBattle, new Vector3(2.5f, -0.64f, -2.0f), Quaternion.identity);
             enemy1.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
         else if (battlePos == 3)
         {
             enemyNumber += 1;
-            enemy2 = Instantiate(banditBattle, new Vector3(4.5f, -0.64f, -2.0f), Quaternion.identity);
+            enemy2 = Instantiate(banditBattle, new Vector3(4.0f, -0.64f, -2.0f), Quaternion.identity);
+            enemy2.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
+        }
+        else if (battlePos == 4)
+        {
+            enemyNumber += 1;
+            enemy1 = Instantiate(banditBattle, new Vector3(5.5f, -0.64f, -2.0f), Quaternion.identity);
+            enemy1.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
+        }
+        else if (battlePos == 5)
+        {
+            enemyNumber += 1;
+            enemy2 = Instantiate(banditBattle, new Vector3(7.0f, -0.64f, -2.0f), Quaternion.identity);
             enemy2.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
     }
@@ -3461,7 +3481,18 @@ public class BattleController : MonoBehaviour
             enemies[i].GetComponent<EnemyTeamScript>().KnowHealth();
         }
     }
+    //Function to reset the aim rotation
+    public void ResetAim()
+    {
+        aimRotation = 0.0f;
+        aimUp = true;
+    }
 
+    //Function to set the shoot ready state
+    public void SetReadyShoot(bool ready)
+    {
+        readyShoot = ready;
+    }
     //Function to deactivate the action command instructions
     public void DeactivateActionInstructions()
     {
