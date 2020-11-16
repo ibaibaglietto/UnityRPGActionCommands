@@ -36,7 +36,7 @@ public class ShurikenScript : MonoBehaviour
         if (!BK47)
         {
             //if the shuriken hasn't arrived to the objective it keeps moving
-            if (gameObject.transform.position.x < objective.x) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.4f, gameObject.transform.position.y, gameObject.transform.position.z);
+            if (gameObject.transform.position.x < objective.x) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.39f, gameObject.transform.position.y, gameObject.transform.position.z);
             //When the shuriken arrives it deals damage and self destroys
             else
             {
@@ -49,7 +49,7 @@ public class ShurikenScript : MonoBehaviour
                 }
                 Destroy(gameObject);
             }
-            if (fire && fireObjectives.Length > hit && gameObject.transform.position.x > (fireObjectives[hit].transform.position.x - 0.15f) && gameObject.transform.position.x <= (fireObjectives[hit].transform.position.x + 0.15f))
+            if (fire && fireObjectives.Length > hit && gameObject.transform.position.x > (fireObjectives[hit].transform.position.x - 0.2f) && gameObject.transform.position.x <= (fireObjectives[hit].transform.position.x + 0.2f))
             {
                 if (shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.075f);
                 else battleController.GetComponent<BattleController>().FillSouls(0.15f);

@@ -1,22 +1,16 @@
 fileFormatVersion: 2
-guid: 338051f995666bb4883b865d114a67fe
+guid: d512801f1c0b9124e8a7fd9272d2797e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -775148681970729183
-    second: atack melee_0
+      213: -6936443113747208121
+    second: running left_0
   - first:
-      213: -3197495950874222216
-    second: atack melee_1
+      213: -5787189252196935343
+    second: running left_1
   - first:
-      213: 6484459084827584250
-    second: atack melee_2
-  - first:
-      213: 1051220938270029892
-    second: atack melee_3
-  - first:
-      213: -1705214031252477097
-    second: atack melee_4
+      213: -5476642815258566135
+    second: running left_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -52,7 +46,7 @@ TextureImporter:
     mipBias: -100
     wrapU: 1
     wrapV: 1
-    wrapW: 1
+    wrapW: -1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -128,12 +122,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: atack melee_0
+      name: running left_0
       rect:
         serializedVersion: 2
-        x: 11
+        x: 0
         y: 0
-        width: 100
+        width: 113.333336
         height: 148
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -142,19 +136,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 12fb503716e1e35f0800000000000000
-      internalID: -775148681970729183
+      spriteID: 748a4682dbdccbf90800000000000000
+      internalID: -6936443113747208121
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atack melee_1
+      name: running left_1
       rect:
         serializedVersion: 2
-        x: 137
+        x: 113
         y: 0
-        width: 96
+        width: 113.333336
         height: 148
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -163,19 +157,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 871646daf5630a3d0800000000000000
-      internalID: -3197495950874222216
+      spriteID: 159d7d67906cfafa0800000000000000
+      internalID: -5787189252196935343
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atack melee_2
+      name: running left_2
       rect:
         serializedVersion: 2
-        x: 264
+        x: 226
         y: 0
-        width: 95
+        width: 113.333336
         height: 148
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -184,50 +178,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: af6e3b77e2d6df950800000000000000
-      internalID: 6484459084827584250
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: atack melee_3
-      rect:
-        serializedVersion: 2
-        x: 391
-        y: 0
-        width: 101
-        height: 148
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 448b90eafdfa69e00800000000000000
-      internalID: 1051220938270029892
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: atack melee_4
-      rect:
-        serializedVersion: 2
-        x: 513
-        y: 0
-        width: 116
-        height: 148
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 75b2f298fdcd558e0800000000000000
-      internalID: -1705214031252477097
+      spriteID: 90261d2406e0ff3b0800000000000000
+      internalID: -5476642815258566135
       vertices: []
       indices: 
       edges: []
@@ -235,7 +187,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: f633513f0ae487849b5d25fa16a7eb5b
     internalID: 0
     vertices: []
     indices: 

@@ -3275,8 +3275,8 @@ SpriteRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5352649904852120472}
   m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
+  m_CastShadows: 2
+  m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -3286,7 +3286,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 125e5f43a72ec7147a007690807dc20b, type: 2}
+  - {fileID: 2100000, guid: bde19a1b6e49cf346a3470389a181f3a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3352,6 +3352,7 @@ MonoBehaviour:
   shurikenPrefab: {fileID: 3194789301759182513, guid: 4ee8b18b587ebbe4dac8ed2fba6f9c0b, type: 3}
   lightShurikenPrefab: {fileID: 3194789301759182513, guid: 73cc4a4f72a74d843bbec10a835ec816, type: 3}
   fireShurikenPrefab: {fileID: 3194789301759182513, guid: 669c26566875cdc45866f51b03e63d69, type: 3}
+  arrow: {fileID: 0}
   damageUI: {fileID: 2003888347808236252, guid: ba485e94df23bb6459b7ed70110d5086, type: 3}
   heartUI: {fileID: 818641258651084142, guid: 5bf8e6463a68aa847a35a51750d1809b, type: 3}
   lightUI: {fileID: 2510748878334399226, guid: 76b82cdca63c3864f813a3b75e9427e0, type: 3}

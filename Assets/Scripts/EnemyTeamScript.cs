@@ -108,13 +108,10 @@ public class EnemyTeamScript : MonoBehaviour
                 if (transform.position.x < startPos)
                 {
                     transform.position = new Vector3(transform.position.x + 0.15f, transform.position.y, transform.position.z);
-                    GetComponent<Animator>().SetFloat("Speed", 0.5f);
+                    GetComponent<Animator>().SetFloat("Speed", -0.5f);
                 }
                 else
-                {
-                    Vector3 scale = transform.localScale;
-                    scale.x *= -1;
-                    transform.localScale = scale;
+                {                    
                     GetComponent<Animator>().SetFloat("Speed", 0.0f);
                     returnStartPos = false;
                     transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
@@ -343,9 +340,6 @@ public class EnemyTeamScript : MonoBehaviour
         gameObject.GetComponent<Animator>().SetBool("IsAttacking", false);
         movingToEnemy = false;
         returnStartPos = true;
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
     }
 
     //A function to put the idle boolean false

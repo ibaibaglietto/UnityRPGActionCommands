@@ -140,7 +140,7 @@ public class PlayerTeamScript : MonoBehaviour
                 if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.5f);
                 else if (playerTeamType == 1)
                 {
-                    GetComponent<Animator>().SetBool("IsRunning", true);
+                    GetComponent<Animator>().SetFloat("RunSpeed", 0.5f);
                     GetComponent<Animator>().SetFloat("Speed", 1.0f);
                 }
             }
@@ -150,7 +150,7 @@ public class PlayerTeamScript : MonoBehaviour
                 else if (playerTeamType == 1)
                 {
                     GetComponent<Animator>().SetTrigger("Melee1");
-                    GetComponent<Animator>().SetBool("IsRunning", false);
+                    GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                 }
                 movingToEnemy = false;
                 if (playerTeamType == 0 && attackStyle == 1)
@@ -172,20 +172,14 @@ public class PlayerTeamScript : MonoBehaviour
                     attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
                 }
                 transform.position = new Vector3(transform.position.x - 0.15f, transform.position.y, transform.position.z);
-                if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.5f);
-                else if (playerTeamType == 1) GetComponent<Animator>().SetBool("IsRunning", true);
+                if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", -0.5f);
+                else if (playerTeamType == 1) GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
             }
             else
             {
                 battleController.GetComponent<BattleController>().attackFinished = false;
-                Vector3 scale = transform.localScale;
-                scale.x *= -1;
-                transform.localScale = scale;
-                scale = transform.GetChild(0).transform.localScale;
-                scale.x *= -1;
-                transform.GetChild(0).transform.localScale = scale;
                 if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.0f);
-                else if (playerTeamType == 1) GetComponent<Animator>().SetBool("IsRunning", false);
+                else if (playerTeamType == 1) GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                 returnStartPos = false;
                 if (playerTeamType == 0) battleController.GetComponent<BattleController>().EndPlayerTurn(1);
                 else if (playerTeamType == 1) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
@@ -765,12 +759,6 @@ public class PlayerTeamScript : MonoBehaviour
                 else if (playerTeamType == 1) gameObject.GetComponent<Animator>().SetBool("Melee2", false);
                 battleController.GetComponent<BattleController>().finalAttack = false;
                 returnStartPos = true;
-                Vector3 scale = transform.localScale;
-                scale.x *= -1;
-                transform.localScale = scale;
-                scale = transform.GetChild(0).transform.localScale;
-                scale.x *= -1;
-                transform.GetChild(0).transform.localScale = scale;
                 battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, true);
                 if (lightUp!=0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;                
@@ -807,12 +795,6 @@ public class PlayerTeamScript : MonoBehaviour
                 else if (playerTeamType == 1) gameObject.GetComponent<Animator>().SetBool("Melee3", false);
                 battleController.GetComponent<BattleController>().finalAttack = false;
                 returnStartPos = true;
-                Vector3 scale = transform.localScale;
-                scale.x *= -1;
-                transform.localScale = scale;
-                scale = transform.GetChild(0).transform.localScale;
-                scale.x *= -1;
-                transform.GetChild(0).transform.localScale = scale;
                 battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, true);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
@@ -826,12 +808,6 @@ public class PlayerTeamScript : MonoBehaviour
     {
         battleController.GetComponent<BattleController>().FillSouls(0.4f);
         returnStartPos = true;
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
-        scale = transform.GetChild(0).transform.localScale;
-        scale.x *= -1;
-        transform.GetChild(0).transform.localScale = scale;
         battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), damage + lightUp, true);
         if (lightUp != 0) EndBuffDebuff(lightUpPos);
         lightUp = 0;
