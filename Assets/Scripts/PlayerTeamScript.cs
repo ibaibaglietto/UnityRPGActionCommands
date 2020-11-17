@@ -989,6 +989,7 @@ public class PlayerTeamScript : MonoBehaviour
             {
                 battleController.GetComponent<DialogueManager>().StartDialogue(attackObjective.GetComponent<EnemyTeamScript>().dialogue);
                 if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 0) PlayerPrefs.SetInt("bandit", 1);
+                else if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 1) PlayerPrefs.SetInt("wizard", 1);
                 battleController.GetComponent<BattleController>().KnowHealth();
             }
             else

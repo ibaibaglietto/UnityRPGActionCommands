@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class EnemyTeamScript : MonoBehaviour
 {
-    //The enemy type. 0-> Bandit
+    //The enemy type. 0-> Bandit, 1-> EvilWizard
     public int enemyType; 
     //The objective of the attack
     private Transform attackObjective;
@@ -78,13 +78,33 @@ public class EnemyTeamScript : MonoBehaviour
                 transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
             }
         }
+        else if (enemyType == 1)
+        {
+            grounded = false;
+            if (PlayerPrefs.GetInt("wizard") == 1)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 1.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 1.0f);
+            }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 0.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
+            }
+        }
     }
 
 
     void FixedUpdate()
     {
         //If the enemy is a bandit
-        if(enemyType == 0)
+        if(enemyType == 0 || enemyType == 1)
         {
             //We move the enemy to the move position if it has to move towards it
             if (movingToEnemy)
@@ -92,6 +112,7 @@ public class EnemyTeamScript : MonoBehaviour
                 if (transform.position.x > movePos)
                 {
                     transform.position = new Vector3(transform.position.x - 0.10f, transform.position.y, transform.position.z);
+                    if(enemyType == 1 && transform.position.y> -0.6f) transform.position = new Vector3(transform.position.x, transform.position.y - 0.0334f, transform.position.z);
                     GetComponent<Animator>().SetFloat("Speed", 0.5f);
                 }
                 else
@@ -108,6 +129,7 @@ public class EnemyTeamScript : MonoBehaviour
                 if (transform.position.x < startPos)
                 {
                     transform.position = new Vector3(transform.position.x + 0.15f, transform.position.y, transform.position.z);
+                    if (enemyType == 1 && transform.position.y < 1.0f) transform.position = new Vector3(transform.position.x, transform.position.y + 0.0334f, transform.position.z);
                     GetComponent<Animator>().SetFloat("Speed", -0.5f);
                 }
                 else
@@ -130,6 +152,25 @@ public class EnemyTeamScript : MonoBehaviour
         if(enemyType == 0)
         {
             if (PlayerPrefs.GetInt("bandit") == 1)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 1.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 1.0f);
+            }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 0.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
+            }
+        }
+        if(enemyType == 1)
+        {
+            if (PlayerPrefs.GetInt("wizard") == 1)
             {
                 for (int i = 0; i < 3; i++)
                 {
@@ -170,7 +211,7 @@ public class EnemyTeamScript : MonoBehaviour
     {
         int duration = 0;
         float rand;
-        if(enemyType == 0)
+        if(enemyType == 0 || enemyType == 1)
         {
             duration = Mathf.FloorToInt((lvl-1) / 2.0f);
             rand = ((lvl-1) / 2.0f) - Mathf.FloorToInt((lvl - 1) / 2.0f);
@@ -284,7 +325,7 @@ public class EnemyTeamScript : MonoBehaviour
             attackObjective = objective;
             transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
             //If the enemy is a bandit we make it move towards the player
-            if (enemyType == 0)
+            if (enemyType == 0 || enemyType == 1)
             {
                 startPos = transform.position.x;
                 movePos = attackObjective.position.x + 1.1f;

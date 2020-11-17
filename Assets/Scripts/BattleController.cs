@@ -11,6 +11,7 @@ public class BattleController : MonoBehaviour
     [SerializeField] private Transform playerBattle;
     [SerializeField] private Transform adventurerBattle;
     [SerializeField] private Transform banditBattle;
+    [SerializeField] private Transform wizardBattle;
     //The prefabs of the damage UI, heart and light
     [SerializeField] private Transform damageUI;
     //The canvas
@@ -326,6 +327,7 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("AdventurerLvl",3);
         PlayerPrefs.SetInt("language", 0);
         PlayerPrefs.SetInt("bandit", 0);
+        PlayerPrefs.SetInt("wizard", 0);
         //Find the gameobjects
         lightPointsUI = GameObject.Find("LightBckImage");
         actionInstructions = GameObject.Find("ActionInstructions");
@@ -987,6 +989,10 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                     else if(enemyNumber>2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
@@ -996,6 +1002,10 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                     else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
@@ -1004,6 +1014,10 @@ public class BattleController : MonoBehaviour
                                         if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0)
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                        }
+                                        else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                         }
                                     }
                                 }
@@ -1031,6 +1045,10 @@ public class BattleController : MonoBehaviour
                                     {
                                         enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                     }
+                                    else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                    {
+                                        enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                    }
                                 }
                                 if (Input.GetKeyDown(KeyCode.RightArrow))
                                 {
@@ -1042,6 +1060,10 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                     else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
@@ -1050,6 +1072,10 @@ public class BattleController : MonoBehaviour
                                         if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0)
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                        }
+                                        else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                         }
                                     }
                                 }
@@ -1079,6 +1105,10 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                     else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
@@ -1087,6 +1117,10 @@ public class BattleController : MonoBehaviour
                                         if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0)
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                        }
+                                        else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                         }
                                     }
                                 }
@@ -1099,6 +1133,10 @@ public class BattleController : MonoBehaviour
                                         if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0)
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                        }
+                                        else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                         }
                                     }
                                 }
@@ -1128,6 +1166,10 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                     else if (enemy2.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
@@ -1137,6 +1179,10 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                     else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
@@ -1145,6 +1191,10 @@ public class BattleController : MonoBehaviour
                                         if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0)
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                        }
+                                        if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                         }
                                     }
                                 }
@@ -2244,6 +2294,10 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                     else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
@@ -2252,6 +2306,10 @@ public class BattleController : MonoBehaviour
                                         if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0)
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                        }
+                                        else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                         }
                                     }
                                     else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive())
@@ -2262,20 +2320,24 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                 }
                                 if (Input.GetKeyDown(KeyCode.Space))
                                 {
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
                                     enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                                     selectedEnemy = enemy1;
-                                    selectingEnemy = false;
+                                    selectingEnemyCompanion = false;
                                     enemyName.SetActive(false);
                                     actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
                                     actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
-                                    player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
+                                    companion.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                                 }
                             }
                             else if (enemy2.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
@@ -2288,6 +2350,10 @@ public class BattleController : MonoBehaviour
                                     {
                                         enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                     }
+                                    else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                    {
+                                        enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                    }
                                 }
                                 if (Input.GetKeyDown(KeyCode.RightArrow))
                                 {
@@ -2299,6 +2365,10 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                     else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
@@ -2308,20 +2378,24 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                 }
                                 if (Input.GetKeyDown(KeyCode.Space))
                                 {
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
                                     enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                                     selectedEnemy = enemy2;
-                                    selectingEnemy = false;
+                                    selectingEnemyCompanion = false;
                                     enemyName.SetActive(false);
                                     actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
                                     actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
-                                    player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
+                                    companion.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                                 }
                             }
                             else if (enemy3.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
@@ -2336,6 +2410,10 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                     else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
@@ -2344,6 +2422,10 @@ public class BattleController : MonoBehaviour
                                         if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0)
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                        }
+                                        else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                         }
                                     }
                                 }
@@ -2357,20 +2439,24 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                 }
                                 if (Input.GetKeyDown(KeyCode.Space))
                                 {
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
                                     enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                                     selectedEnemy = enemy3;
-                                    selectingEnemy = false;
+                                    selectingEnemyCompanion = false;
                                     enemyName.SetActive(false);
                                     actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
                                     actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
-                                    player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
+                                    companion.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                                 }
                             }
                             else if (enemy4.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
@@ -2385,6 +2471,10 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                     else if (enemy2.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
@@ -2393,6 +2483,10 @@ public class BattleController : MonoBehaviour
                                         if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                        }
+                                        else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                         }
                                     }
                                     else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive())
@@ -2403,35 +2497,39 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
                                         }
+                                        else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        {
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                        }
                                     }
                                 }
                                 if (Input.GetKeyDown(KeyCode.Space))
                                 {
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
                                     enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                                     selectedEnemy = enemy4;
-                                    selectingEnemy = false;
+                                    selectingEnemyCompanion = false;
                                     enemyName.SetActive(false);
                                     actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
                                     actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
-                                    player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
+                                    companion.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                                 }
                             }
                         }
                         //If there is only one enemy we select it using space and the attack starts
                         else if (Input.GetKeyDown(KeyCode.Space))
                         {
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                             selectedEnemy = enemy1;
-                            selectingEnemy = false;
+                            selectingEnemyCompanion = false;
                             enemyName.SetActive(false);
                             actionInstructions.SetActive(false);
-                            player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
+                            companion.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                         }
                     }
                     else if (Input.GetKeyDown(KeyCode.Space))
@@ -2675,8 +2773,7 @@ public class BattleController : MonoBehaviour
                 else
                 {
                     enemy4Turn = false;
-                    if (enemyNumber > 4) NextEnemy(4);
-                    else EndEnemyTurn();
+                    EndEnemyTurn();
                 }
             }
             else if (enemy4.GetComponent<EnemyTeamScript>().IsAttacking())
@@ -2998,7 +3095,7 @@ public class BattleController : MonoBehaviour
         else if (battlePos == 3)
         {
             enemyNumber += 1;
-            enemy2 = Instantiate(banditBattle, new Vector3(4.0f, -0.64f, -2.02f), Quaternion.identity);
+            enemy2 = Instantiate(wizardBattle, new Vector3(4.0f, 1.00f, -2.02f), Quaternion.identity);
             enemy2.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
         else if (battlePos == 4)
@@ -3461,7 +3558,7 @@ public class BattleController : MonoBehaviour
         if(playerTurn && player.GetComponent<PlayerTeamScript>().HasLifesteal()) player.GetComponent<PlayerTeamScript>().Heal(damage, false,false, true, true);
         if (companionTurn && companion.GetComponent<PlayerTeamScript>().HasLifesteal()) companion.GetComponent<PlayerTeamScript>().Heal(damage, false, false, true, true);
         //We instantiate the damage UI and save the damage amount
-        damageImage = Instantiate(damageUI, new Vector3(objective.transform.position.x -0.25f, objective.transform.position.y + 1.0f, 0), Quaternion.identity, objective.transform.GetChild(0));
+        damageImage = Instantiate(damageUI, new Vector3(objective.transform.position.x -0.25f, objective.transform.position.y + 1.0f, objective.transform.position.z), Quaternion.identity, objective.transform.GetChild(0));
         damageImage.GetChild(0).GetComponent<Text>().text = damage.ToString();
         //We deal damage to the objective
         objective.transform.GetChild(0).transform.GetChild(2).GetComponent<EnemyLifeControllerScript>().DealDamage(damage);
@@ -3726,6 +3823,14 @@ public class BattleController : MonoBehaviour
         if(numb == 1)
         {
             enemy2Turn = true;
+        }
+        else if (numb == 2)
+        {
+            enemy3Turn = true;
+        }
+        else if (numb == 3)
+        {
+            enemy4Turn = true;
         }
     }
 
@@ -4133,7 +4238,7 @@ public class BattleController : MonoBehaviour
     {
         minFogScale += 0.5f;
     }
-    dasdsadas
+
     //A function to select the first available enemy
     private void SelectFirstEnemy()
     {
@@ -4148,6 +4253,10 @@ public class BattleController : MonoBehaviour
             {
                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
             }
+            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
+            {
+                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+            }
         }
         else if(enemyNumber > 1 && enemy2.GetComponent<EnemyTeamScript>().IsAlive())
         {
@@ -4155,6 +4264,34 @@ public class BattleController : MonoBehaviour
             if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
             {
                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+            }
+            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
+            {
+                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+            }
+        }
+        else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive())
+        {
+            enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+            if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0)
+            {
+                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+            }
+            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1)
+            {
+                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+            }
+        }
+        else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive())
+        {
+            enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+            if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0)
+            {
+                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+            }
+            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
+            {
+                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
             }
         }
         canSelect = true;
@@ -4171,6 +4308,13 @@ public class BattleController : MonoBehaviour
                 groundEnemies[i].GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                 enemyName.transform.GetChild(i).gameObject.SetActive(true);
                 enemyName.transform.GetChild(i).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                lastI = i;
+            }
+            else if(groundEnemies[i].GetComponent<EnemyTeamScript>().enemyType == 1)
+            {
+                groundEnemies[i].GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                enemyName.transform.GetChild(i).gameObject.SetActive(true);
+                enemyName.transform.GetChild(i).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                 lastI = i;
             }
         }
@@ -4193,6 +4337,13 @@ public class BattleController : MonoBehaviour
                 groundEnemies[i].GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                 enemyName.transform.GetChild(i).gameObject.SetActive(true);
                 enemyName.transform.GetChild(i).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                lastI = i;
+            }
+            else if (groundEnemies[i].GetComponent<EnemyTeamScript>().enemyType == 1)
+            {
+                groundEnemies[i].GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                enemyName.transform.GetChild(i).gameObject.SetActive(true);
+                enemyName.transform.GetChild(i).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                 lastI = i;
             }
         }

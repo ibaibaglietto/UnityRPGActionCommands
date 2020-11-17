@@ -3116,6 +3116,7 @@ MonoBehaviour:
   playerBattle: {fileID: 5352649904852120479, guid: 2c851f67d46ba8748aae653b60bcbf5f, type: 3}
   adventurerBattle: {fileID: 3162316843376333020, guid: 40023355911a3ce4cadd203438298a8b, type: 3}
   banditBattle: {fileID: 3877302658384341422, guid: 5d8eb0b2f1de23c46ba3ea7b614f4dd8, type: 3}
+  wizardBattle: {fileID: 6119504698528858195, guid: 83986c8c45739944ea4460a458413eec, type: 3}
   damageUI: {fileID: 2003888347808236252, guid: ba485e94df23bb6459b7ed70110d5086, type: 3}
   normalSword: {fileID: 21300000, guid: 016fa064988a4ad409e0708b60a94625, type: 3}
   lightSword: {fileID: 21300000, guid: c8c7a5f5e1930be4dae588b05dab6a64, type: 3}
@@ -4603,7 +4604,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1446351583}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 13.341204, y: 16.623026, z: -53.32025}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
