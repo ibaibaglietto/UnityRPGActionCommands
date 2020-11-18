@@ -28,10 +28,12 @@
 			struct Input
 			{
 				float2 uv_MainTex;
+				fixed4 color : COLOR;
 			};
 
+
 			void surf(Input IN, inout SurfaceOutput o) {
-				fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
+				fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * IN.color;
 				o.Albedo = c.rgb;
 				o.Alpha = c.a;
 				clip(o.Alpha - _Cutoff);
