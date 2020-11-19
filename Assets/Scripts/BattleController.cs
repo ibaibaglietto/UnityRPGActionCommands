@@ -981,43 +981,63 @@ public class BattleController : MonoBehaviour
                             {
                                 if (Input.GetKeyDown(KeyCode.RightArrow))
                                 {
-                                    if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction==0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
+                                    if(selectingAction == 0)
                                     {
-                                        enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                        enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                        if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                        if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                            enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
-                                        else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                            enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                        }
+                                        else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
+                                        {
+                                            enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                            enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
                                     }
-                                    else if(enemyNumber>2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
+                                    else
                                     {
+                                        Transform enemy = SelectNextShuriken(enemy1.GetComponent<EnemyTeamScript>().IsGrounded());
                                         enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                        enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                        if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                        if(enemy!= null)
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                        }
-                                        else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1)
-                                        {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
-                                        }
-                                    }
-                                    else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
-                                    {
-                                        enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                        enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                        if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0)
-                                        {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                        }
-                                        else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
-                                        {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
                                     }
                                 }
@@ -1052,32 +1072,53 @@ public class BattleController : MonoBehaviour
                                 }
                                 if (Input.GetKeyDown(KeyCode.RightArrow))
                                 {
-                                    if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
+                                    if(selectingAction == 0)
                                     {
-                                        enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                        enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                        if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                        if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                            enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
-                                        else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                            enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
                                     }
-                                    else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
+                                    else if(!enemy1.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
+                                        Transform enemy = SelectNextShuriken(enemy2.GetComponent<EnemyTeamScript>().IsGrounded());
                                         enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                        enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                        if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                        if(enemy != null)
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                        }
-                                        else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
-                                        {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
                                     }
+                                    
                                 }
                                 if (Input.GetKeyDown(KeyCode.Space))
                                 {
@@ -1097,46 +1138,86 @@ public class BattleController : MonoBehaviour
                             {
                                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                                 {
-                                    if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
+                                    if(selectingAction == 0)
                                     {
-                                        enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                        enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                        if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                        if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                            if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
-                                        else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                            if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
                                     }
-                                    else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
+                                    else if(enemy1.GetComponent<EnemyTeamScript>().IsAlive() || enemy2.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
-                                        enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                        Transform enemy = SelectNextShuriken(enemy3.GetComponent<EnemyTeamScript>().IsGrounded());
                                         enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                        if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                        if (enemy != null)
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                        }
-                                        else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
-                                        {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
                                     }
                                 }
                                 if (Input.GetKeyDown(KeyCode.RightArrow))
                                 {
-                                    if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
+                                    if(selectingAction == 0)
                                     {
-                                        enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                        enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                        if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                        if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                            enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
-                                        else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                    }
+                                    else if (!enemy1.GetComponent<EnemyTeamScript>().IsAlive() && !enemy2.GetComponent<EnemyTeamScript>().IsAlive())
+                                    {
+                                        Transform enemy = SelectNextShuriken(enemy3.GetComponent<EnemyTeamScript>().IsGrounded());
+                                        enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                        if (enemy != null)
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
                                     }
                                 }
@@ -1158,43 +1239,63 @@ public class BattleController : MonoBehaviour
                             {
                                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                                 {
-                                    if (enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
+                                    if(selectingAction == 0)
                                     {
-                                        enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                        enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                        if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                        if (enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                            if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
-                                        else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                        else if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                            if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                        }
+                                        else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
+                                        {
+                                            enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                                            if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
                                     }
-                                    else if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
+                                    else
                                     {
-                                        enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                        Transform enemy = SelectNextShuriken(enemy4.GetComponent<EnemyTeamScript>().IsGrounded());
                                         enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                        if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                        if (enemy != null)
                                         {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                        }
-                                        if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
-                                        {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
-                                        }
-                                    }
-                                    else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
-                                    {
-                                        enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                        enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                        if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0)
-                                        {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                        }
-                                        if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
-                                        {
-                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                                            if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
                                         }
                                     }
                                 }
@@ -3095,19 +3196,25 @@ public class BattleController : MonoBehaviour
         else if (battlePos == 3)
         {
             enemyNumber += 1;
-            enemy2 = Instantiate(wizardBattle, new Vector3(4.0f, 1.00f, -2.02f), Quaternion.identity);
+            enemy2 = Instantiate(banditBattle, new Vector3(4.0f, -0.64f, -2.01f), Quaternion.identity);
             enemy2.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
+            //enemyNumber += 1;
+            //enemy2 = Instantiate(wizardBattle, new Vector3(4.0f, 1.00f, -2.02f), Quaternion.identity);
+            //enemy2.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
         else if (battlePos == 4)
         {
             enemyNumber += 1;
-            enemy3 = Instantiate(banditBattle, new Vector3(5.5f, -0.64f, -2.01f), Quaternion.identity);
+            enemy3 = Instantiate(banditBattle, new Vector3(5.5f, -0.64f, -2.02f), Quaternion.identity);
             enemy3.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
+            //enemyNumber += 1;
+            //enemy3 = Instantiate(banditBattle, new Vector3(5.5f, -0.64f, -2.01f), Quaternion.identity);
+            //enemy3.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
         else if (battlePos == 5)
         {
             enemyNumber += 1;
-            enemy4 = Instantiate(banditBattle, new Vector3(7.0f, -0.64f, -2.0f), Quaternion.identity);
+            enemy4 = Instantiate(wizardBattle, new Vector3(7.0f, 1.0f, -2.0f), Quaternion.identity);
             enemy4.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
     }
@@ -4238,7 +4345,27 @@ public class BattleController : MonoBehaviour
     {
         minFogScale += 0.5f;
     }
-
+    //A function to select the next flying or grounded enemy.
+    private Transform SelectNextShuriken(bool grounded)
+    {
+        Transform[] enemies = GetAllEnemies();
+        int i = 0;
+        bool found = false;
+        while (i < enemies.Length && !found)
+        {
+            if(grounded)
+            {
+                if (!enemies[i].GetComponent<EnemyTeamScript>().IsGrounded()) found = true;
+            }
+            else
+            {
+                if (enemies[i].GetComponent<EnemyTeamScript>().IsGrounded()) found = true;
+            }
+            i++;
+        }
+        if (found) return enemies[i - 1];
+        else return null;
+    }
     //A function to select the first available enemy
     private void SelectFirstEnemy()
     {
@@ -4246,7 +4373,7 @@ public class BattleController : MonoBehaviour
         enemyName.transform.GetChild(2).gameObject.SetActive(false);
         enemyName.transform.GetChild(3).gameObject.SetActive(false);
         enemyName.transform.GetChild(4).gameObject.SetActive(false);
-        if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || companionTurn))
+        if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))))
         {
             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
             if(enemy1.GetComponent<EnemyTeamScript>().enemyType == 0)
@@ -4258,7 +4385,7 @@ public class BattleController : MonoBehaviour
                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
             }
         }
-        else if(enemyNumber > 1 && enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || companionTurn))
+        else if(enemyNumber > 1 && enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))))
         {
             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
             if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
@@ -4270,7 +4397,7 @@ public class BattleController : MonoBehaviour
                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
             }
         }
-        else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || companionTurn))
+        else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))))
         {
             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
             if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0)
@@ -4282,7 +4409,7 @@ public class BattleController : MonoBehaviour
                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
             }
         }
-        else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || companionTurn))
+        else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))))
         {
             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
             if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0)
@@ -4324,6 +4451,8 @@ public class BattleController : MonoBehaviour
         }
         canSelect = false;
     }
+
+
 
     //A function to select all enemies
     private void SelectAllEnemies()
