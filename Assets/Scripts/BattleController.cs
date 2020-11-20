@@ -405,12 +405,12 @@ public class BattleController : MonoBehaviour
         ring7 = new Transform[2];
         ring8 = new Transform[2];
         enemyNumber = 0;
-        SpawnCharacter(0);
-        SpawnCharacter(1);
-        SpawnCharacter(2);
-        SpawnCharacter(3);
-        SpawnCharacter(4);
-        SpawnCharacter(5);
+        SpawnCharacter(0,0);
+        SpawnCharacter(1,0);
+        SpawnCharacter(2,1);
+        SpawnCharacter(3,0);
+        SpawnCharacter(4,1);
+        SpawnCharacter(5,0);
         playerTeamTurn = true;
         playerTurn = true;
         playerTurnCompleted = false;
@@ -3171,8 +3171,8 @@ public class BattleController : MonoBehaviour
         }
     }
 
-    //Function to spawn the characters. 0 -> Player, 1-> companion, 2-> Enemy1, 3-> Enemy2, 4-> Enemy3, 5-> Enemy4
-    private void SpawnCharacter(int battlePos)
+    //Function to spawn the characters. 0 -> Player, 1-> companion, 2-> Enemy1, 3-> Enemy2, 4-> Enemy3, 5-> Enemy4. type-> 0 adventurer and bandit, 1-> wizard
+    private void SpawnCharacter(int battlePos, int type)
     {
         if (battlePos == 0)
         {
@@ -3185,36 +3185,34 @@ public class BattleController : MonoBehaviour
         }
         else if (battlePos == 1)
         {
-            companion = Instantiate(adventurerBattle, new Vector3(-6.4f, -0.713f, -2.04f), Quaternion.identity);
+            if(type == 0) companion = Instantiate(adventurerBattle, new Vector3(-6.4f, -0.713f, -2.04f), Quaternion.identity);
         }
         else if (battlePos == 2)
         {
+            if (type == 0) enemy1 = Instantiate(banditBattle, new Vector3(2.5f, -0.64f, -2.03f), Quaternion.identity);
+            else if(type == 1) enemy1 = Instantiate(wizardBattle, new Vector3(2.5f, 1.0f, -2.03f), Quaternion.identity);
             enemyNumber += 1;
-            enemy1 = Instantiate(banditBattle, new Vector3(2.5f, -0.64f, -2.03f), Quaternion.identity);
             enemy1.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
         else if (battlePos == 3)
         {
+            if (type == 0) enemy2 = Instantiate(banditBattle, new Vector3(4.0f, -0.64f, -2.02f), Quaternion.identity);
+            else if (type == 1) enemy2 = Instantiate(wizardBattle, new Vector3(4.0f, 1.0f, -2.02f), Quaternion.identity);
             enemyNumber += 1;
-            enemy2 = Instantiate(banditBattle, new Vector3(4.0f, -0.64f, -2.01f), Quaternion.identity);
             enemy2.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
-            //enemyNumber += 1;
-            //enemy2 = Instantiate(wizardBattle, new Vector3(4.0f, 1.00f, -2.02f), Quaternion.identity);
-            //enemy2.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
         else if (battlePos == 4)
         {
+            if (type == 0) enemy3 = Instantiate(banditBattle, new Vector3(5.5f, -0.64f, -2.01f), Quaternion.identity);
+            else if (type == 1) enemy3 = Instantiate(wizardBattle, new Vector3(5.5f, 1.0f, -2.01f), Quaternion.identity);
             enemyNumber += 1;
-            enemy3 = Instantiate(banditBattle, new Vector3(5.5f, -0.64f, -2.02f), Quaternion.identity);
             enemy3.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
-            //enemyNumber += 1;
-            //enemy3 = Instantiate(banditBattle, new Vector3(5.5f, -0.64f, -2.01f), Quaternion.identity);
-            //enemy3.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
         else if (battlePos == 5)
         {
+            if (type == 0) enemy4 = Instantiate(banditBattle, new Vector3(7.0f, -0.64f, -2.0f), Quaternion.identity);
+            else if (type == 1) enemy4 = Instantiate(wizardBattle, new Vector3(7.0f, 1.0f, -2.0f), Quaternion.identity);
             enemyNumber += 1;
-            enemy4 = Instantiate(wizardBattle, new Vector3(7.0f, 1.0f, -2.0f), Quaternion.identity);
             enemy4.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
     }

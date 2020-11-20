@@ -29,6 +29,7 @@ public class ShurikenScript : MonoBehaviour
         //We initialize the hit int
         hit = 0;
         BK47 = false;
+        rotation = 0.0f;
     }
 
     void FixedUpdate()
@@ -36,7 +37,7 @@ public class ShurikenScript : MonoBehaviour
         if (!BK47)
         {
             //if the shuriken hasn't arrived to the objective it keeps moving
-            if (gameObject.transform.position.x < objective.x) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.39f, gameObject.transform.position.y, gameObject.transform.position.z);
+            if (gameObject.transform.position.x < objective.x) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.39f * Mathf.Cos(rotation), gameObject.transform.position.y + 0.39f * Mathf.Sin(rotation), gameObject.transform.position.z);
             //When the shuriken arrives it deals damage and self destroys
             else
             {
@@ -59,7 +60,7 @@ public class ShurikenScript : MonoBehaviour
         }
         else
         {
-            if(gameObject.transform.position.x < 10.0f) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.4f * Mathf.Cos(rotation), gameObject.transform.position.y + 0.4f * Mathf.Sin(rotation), gameObject.transform.position.z);
+            if(gameObject.transform.position.x < 10.0f) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.39f * Mathf.Cos(rotation), gameObject.transform.position.y + 0.39f * Mathf.Sin(rotation), gameObject.transform.position.z);
             else Destroy(gameObject);
         }      
         
@@ -77,6 +78,11 @@ public class ShurikenScript : MonoBehaviour
     public void SetObjective(Vector3 obj)
     {
         objective = obj;
+        if (!BK47) 
+        {
+            rotation = Mathf.Atan2(objective.y - transform.position.y, objective.x - transform.position.x);
+            transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotation * Mathf.Rad2Deg);
+        } 
     }
     //A function to set the objectives of the fire shuriken
     public void SetFireObjectives(Transform[] objs)
