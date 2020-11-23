@@ -324,6 +324,10 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("Fire Shuriken", 1);
         PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
         PlayerPrefs.SetInt("Souls", 6);
+        PlayerPrefs.SetInt("PlayerHeartLvl", 0);
+        PlayerPrefs.SetInt("PlayerLightLvl", 0);
+        PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
+        PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
         PlayerPrefs.SetInt("AdventurerLvl",3);
         PlayerPrefs.SetInt("language", 0);
         PlayerPrefs.SetInt("bandit", 0);
@@ -3670,7 +3674,7 @@ public class BattleController : MonoBehaviour
         //if the enemy is dead and it is the last attack we play the die animation, else we play the damage animation
         if(objective.transform.GetChild(0).transform.GetChild(2).GetComponent<EnemyLifeControllerScript>().GetHealth() <= 0 && last)
         {
-            objective.GetComponent<EnemyTeamScript>().EnemyDied();
+            if(!objective.GetComponent<EnemyTeamScript>().IsGrounded()) objective.GetComponent<EnemyTeamScript>().EnemyDied();
             objective.GetComponent<Animator>().SetBool("IsDead", true);
             objective.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
         }

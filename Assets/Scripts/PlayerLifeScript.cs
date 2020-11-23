@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class PlayerLifeScript : MonoBehaviour
 {
+    //An int to know who is the player or companion using the bar. 0-> Player, 1-> Adventurer
+    public int user;
     //An int to save the max health of the player
-    public int maxHealth;
+    private int maxHealth;
     //An int to save the current health of the player
     private int currentHealth;
     //The max health text
@@ -17,6 +19,8 @@ public class PlayerLifeScript : MonoBehaviour
 
     void Start()
     {
+        if(user == 0) maxHealth = 10 + PlayerPrefs.GetInt("PlayerHeartLvl") * 5;
+        else if (user == 1) maxHealth = 10 + PlayerPrefs.GetInt("AdventurerLvl") * 10;
         //We save the current health
         currentHealth = maxHealth;
         //We find the current health text and max health text and initialize them

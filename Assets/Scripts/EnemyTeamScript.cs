@@ -41,6 +41,9 @@ public class EnemyTeamScript : MonoBehaviour
     private int sleepPos;
     //The sprite of the sleepUI
     [SerializeField] private Sprite sleepSprite;
+    //The dust 
+    [SerializeField] private Transform dustObject;
+    private Transform dust;
     //The dialogue of the glance action
     public Dialogue dialogue;
 
@@ -103,7 +106,7 @@ public class EnemyTeamScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        //If the enemy is a bandit
+        //If the enemy is a bandit or a wizard
         if(enemyType == 0 || enemyType == 1)
         {
             //We move the enemy to the move position if it has to move towards it
@@ -144,7 +147,38 @@ public class EnemyTeamScript : MonoBehaviour
                     else battleController.GetComponent<BattleController>().EndEnemyTurn();
                 }
             }
-        }        
+        }
+        if (enemyType == 1 && !alive && transform.position.y > -0.66f)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y - 0.0665f, transform.position.z);
+            if (transform.position.y <= -0.66f)
+            {
+                grounded = true;
+                dust = Instantiate(dustObject, new Vector3(transform.position.x + 0.5f, -1.57f, -0.3f), Quaternion.identity);
+            }
+        }
+        if (!alive && grounded)
+        {
+            if (enemyType == 0)
+            {
+                if (transform.eulerAngles.x == 0.0f) dust = Instantiate(dustObject, new Vector3(transform.position.x + 0.5f, -1.57f, -0.3f), Quaternion.identity);
+                if (transform.eulerAngles.x < 90.0f)
+                {
+                    transform.rotation = Quaternion.Euler(transform.eulerAngles.x + 1.8f, transform.eulerAngles.y, transform.eulerAngles.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y - 0.04f, transform.position.z);
+                    if (transform.eulerAngles.x >= 90.0f) Destroy(dust.gameObject);
+                }
+            }
+            if(enemyType == 1) 
+            {
+                if (transform.eulerAngles.x < 90.0f)
+                {
+                    transform.rotation = Quaternion.Euler(transform.eulerAngles.x +1.8f, transform.eulerAngles.y, transform.eulerAngles.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y-0.03f, transform.position.z);
+                    if (transform.eulerAngles.x >= 90.0f) Destroy(dust.gameObject);
+                }
+            }
+        }
     }
     //Function to check if the player knows the health of the enemy
     public void KnowHealth()

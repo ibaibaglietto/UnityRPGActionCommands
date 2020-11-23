@@ -17,6 +17,7 @@ public class LightPointsScript : MonoBehaviour
 
     void Start()
     {
+        maxLight = 5 + PlayerPrefs.GetInt("PlayerLightLvl") * 5;
         //We save the current health
         currentLight = maxLight;
         //We find the current health text and max health text and initialize them
