@@ -452,6 +452,26 @@ public class EnemyTeamScript : MonoBehaviour
     {
         idle = true;
         alive = false;
+        GiveXP();
+    }
+
+    //A function to give XP
+    public void GiveXP()
+    {
+        if(enemyType == 0)
+        {
+            if (PlayerPrefs.GetInt("PlayerLvl") == 1)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(4);
+            }
+        }
+        else if(enemyType == 1)
+        {
+            if (PlayerPrefs.GetInt("PlayerLvl") == 1)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(5);
+            }
+        }
     }
 
     //A function to check if the enemy is alive
