@@ -315,7 +315,7 @@ public class BattleController : MonoBehaviour
     private bool readyShoot;
     //A bool to save the xp gained in the current fight
     private int currentFightXP;
-    //The gameobject qhere the xp is shown
+    //The gameobject where the xp is shown
     private GameObject xpObject;
 
     private void Awake()
