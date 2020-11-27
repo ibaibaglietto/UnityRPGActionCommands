@@ -317,6 +317,8 @@ public class BattleController : MonoBehaviour
     private int currentFightXP;
     //The gameobject where the xp is shown
     private GameObject xpObject;
+    //The number of the current lvl xp
+    private Text xpText;
 
     private void Awake()
     {
@@ -335,6 +337,7 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("language", 0);
         PlayerPrefs.SetInt("bandit", 0);
         PlayerPrefs.SetInt("wizard", 0);
+        PlayerPrefs.SetInt("lvlXP", 0);
         //Find the gameobjects
         lightPointsUI = GameObject.Find("LightBckImage");
         actionInstructions = GameObject.Find("ActionInstructions");
@@ -348,6 +351,8 @@ public class BattleController : MonoBehaviour
         soul5 = GameObject.Find("Soul5Fill");
         soul6 = GameObject.Find("Soul6Fill");
         canvas = GameObject.Find("Canvas");
+        xpText = canvas.transform.GetChild(3).GetChild(1).GetComponent<Text>();
+        xpText.text = 0.ToString();
         xpObject = GameObject.Find("EXP");
         //Initialize variables
         if (PlayerPrefs.GetInt("Souls") == 1)
@@ -414,11 +419,14 @@ public class BattleController : MonoBehaviour
         ring8 = new Transform[2];
         enemyNumber = 0;
         SpawnCharacter(0,0);
+        player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+        player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+        player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
         SpawnCharacter(1,0);
         SpawnCharacter(2,1);
         SpawnCharacter(3,0);
-        SpawnCharacter(4,1);
-        SpawnCharacter(5,0);
+        //SpawnCharacter(4,1);
+        //SpawnCharacter(5,0);
         playerTeamTurn = true;
         playerTurn = true;
         playerTurnCompleted = false;
@@ -502,6 +510,7 @@ public class BattleController : MonoBehaviour
         aimUp = true;
         readyShoot = false;
         currentFightXP = 0;
+        
     }
 
     private void Update()
@@ -526,7 +535,7 @@ public class BattleController : MonoBehaviour
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Right");
                         }
                         //We press space to select the action we want to perform
-                        if (selectingAction == 0 && Input.GetKeyDown(KeyCode.Space))
+                        if (selectingAction == 0 && Input.GetKeyDown(KeyCode.Space) && GetGroundEnemies() != null)
                         {
                             //if nothing is unlocked
                             if (PlayerPrefs.GetInt("Sword Styles") == 0)
@@ -3198,28 +3207,52 @@ public class BattleController : MonoBehaviour
         }
         else if (battlePos == 2)
         {
-            if (type == 0) enemy1 = Instantiate(banditBattle, new Vector3(2.5f, -0.64f, -2.03f), Quaternion.identity);
-            else if(type == 1) enemy1 = Instantiate(wizardBattle, new Vector3(2.5f, 1.0f, -2.03f), Quaternion.identity);
+            if (type == 0)
+            {
+                enemy1 = Instantiate(banditBattle, new Vector3(2.5f, -0.64f, -2.03f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+            }
+            else if (type == 1) enemy1 = Instantiate(wizardBattle, new Vector3(2.5f, 1.0f, -2.03f), Quaternion.identity);
             enemyNumber += 1;
             enemy1.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
         else if (battlePos == 3)
         {
-            if (type == 0) enemy2 = Instantiate(banditBattle, new Vector3(4.0f, -0.64f, -2.02f), Quaternion.identity);
+            if (type == 0)
+            {
+                enemy2 = Instantiate(banditBattle, new Vector3(4.0f, -0.64f, -2.02f), Quaternion.identity); 
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+            }
             else if (type == 1) enemy2 = Instantiate(wizardBattle, new Vector3(4.0f, 1.0f, -2.02f), Quaternion.identity);
             enemyNumber += 1;
             enemy2.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
         else if (battlePos == 4)
         {
-            if (type == 0) enemy3 = Instantiate(banditBattle, new Vector3(5.5f, -0.64f, -2.01f), Quaternion.identity);
+            if (type == 0)
+            {
+                enemy3 = Instantiate(banditBattle, new Vector3(5.5f, -0.64f, -2.01f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+            }
             else if (type == 1) enemy3 = Instantiate(wizardBattle, new Vector3(5.5f, 1.0f, -2.01f), Quaternion.identity);
             enemyNumber += 1;
             enemy3.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
         else if (battlePos == 5)
         {
-            if (type == 0) enemy4 = Instantiate(banditBattle, new Vector3(7.0f, -0.64f, -2.0f), Quaternion.identity);
+            if (type == 0)
+            {
+                enemy4 = Instantiate(banditBattle, new Vector3(7.0f, -0.64f, -2.0f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+            }
             else if (type == 1) enemy4 = Instantiate(wizardBattle, new Vector3(7.0f, 1.0f, -2.0f), Quaternion.identity);
             enemyNumber += 1;
             enemy4.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
@@ -3846,57 +3879,70 @@ public class BattleController : MonoBehaviour
     //A function to end players turn. User-->1 player, User-->2 companion
     public void EndPlayerTurn(int user)
     {
-        if (user == 1) playerTurnCompleted = true;
-        else if (user == 2) companionTurnCompleted = true;
-        if (playerTurnCompleted && companionTurnCompleted)
+        if(GetAllEnemies() != null)
         {
-            player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
-            companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
-            player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
-            player.GetComponent<PlayerTeamScript>().RestBuffDebuff();
-            companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
-            companion.GetComponent<PlayerTeamScript>().RestBuffDebuff();
-            canvas.GetComponent<Animator>().SetBool("Hide", false);
-            playerChoosingAction = true;
-            playerTeamTurn = false;
-            playerTurnCompleted = false;
-            companionTurnCompleted = false;
-            if (playerTurn)
+            if (GetGroundEnemies() == null)
+            {
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+            }
+            if (user == 1) playerTurnCompleted = true;
+            else if (user == 2) companionTurnCompleted = true;
+            if (playerTurnCompleted && companionTurnCompleted)
+            {
+                player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
+                companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
+                player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+                player.GetComponent<PlayerTeamScript>().RestBuffDebuff();
+                companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+                companion.GetComponent<PlayerTeamScript>().RestBuffDebuff();
+                canvas.GetComponent<Animator>().SetBool("Hide", false);
+                playerChoosingAction = true;
+                playerTeamTurn = false;
+                playerTurnCompleted = false;
+                companionTurnCompleted = false;
+                if (playerTurn)
+                {
+                    if (!firstPosPlayer && attackType == 2) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x - 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
+                    playerTurn = false;
+                    companionTurn = true;
+                }
+                else if (companionTurn)
+                {
+                    playerTurn = true;
+                    companionTurn = false;
+                }
+                enemyTeamTurn = true;
+                enemy1Turn = true;
+            }
+            else if (playerTurnCompleted && !companionTurnCompleted)
             {
                 if (!firstPosPlayer && attackType == 2) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x - 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
+                player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
+                canvas.GetComponent<Animator>().SetBool("Hide", false);
+                player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+                companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
                 playerTurn = false;
                 companionTurn = true;
+                companionChoosingAction = true;
+                companion.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
             }
-            else if (companionTurn)
+            else if (!playerTurnCompleted && companionTurnCompleted)
             {
+                companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
+                canvas.GetComponent<Animator>().SetBool("Hide", false);
+                player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+                companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
                 playerTurn = true;
+                playerChoosingAction = true;
                 companionTurn = false;
+                player.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
             }
-            enemyTeamTurn = true;
-            enemy1Turn = true;
         }
-        else if (playerTurnCompleted && !companionTurnCompleted)
+        else
         {
-            if (!firstPosPlayer && attackType == 2) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x - 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
-            player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
-            canvas.GetComponent<Animator>().SetBool("Hide", false);
-            player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
-            companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
-            playerTurn = false;
-            companionTurn = true;
-            companionChoosingAction = true;
-            companion.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
-        }
-        else if (!playerTurnCompleted && companionTurnCompleted)
-        {
-            companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
-            canvas.GetComponent<Animator>().SetBool("Hide", false);
-            player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
-            companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
-            playerTurn = true;
-            playerChoosingAction = true;
-            companionTurn = false;
-            player.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+            Debug.Log("pos se murieron xd");
         }
     }
 
@@ -5156,7 +5202,7 @@ public class BattleController : MonoBehaviour
                         player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = lightShuriken;
                         player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Light shuriken";
                         player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "3 LP";
-                        if (!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(2))
+                        if (!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(2) || GetGroundEnemies() == null)
                         {
                             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
                             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
@@ -5493,12 +5539,21 @@ public class BattleController : MonoBehaviour
             if(selectingAction == 0)
             {
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).gameObject.SetActive(true);
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = firstSkill;
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Sword";
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
-                menuCanUse[0] = true;
+                if(GetGroundEnemies() != null)
+                {
+                    menuCanUse[0] = true;
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                }
+                else
+                {
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                    menuCanUse[0] = false;
+                }
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).gameObject.SetActive(true);
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -5513,7 +5568,7 @@ public class BattleController : MonoBehaviour
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().sprite = thirdSkill;
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = "Sword spin";
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "3 LP";
-                    if (!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(3))
+                    if (!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(3) || GetGroundEnemies() == null)
                     {
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
@@ -5535,7 +5590,7 @@ public class BattleController : MonoBehaviour
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = fourthSkill;
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(4).transform.GetChild(1).GetComponent<Text>().text = "Dragon slayer bow";
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(4).transform.GetChild(2).GetComponent<Text>().text = "4 LP";
-                    if (!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(4))
+                    if (!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(4) || GetGroundEnemies() == null)
                     {
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(4).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
