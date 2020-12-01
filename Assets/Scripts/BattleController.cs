@@ -14,6 +14,8 @@ public class BattleController : MonoBehaviour
     [SerializeField] private Transform wizardBattle;
     //The prefabs of the damage UI, heart and light
     [SerializeField] private Transform damageUI;
+    //The main camera
+    private GameObject mainCamera;
     //The canvas
     private GameObject canvas;
     //The icons of every action of the menu
@@ -319,6 +321,10 @@ public class BattleController : MonoBehaviour
     private GameObject xpObject;
     //The number of the current lvl xp
     private Text xpText;
+    //The victory xp gameobject
+    private GameObject victoryXP;
+    //The victory state
+    private bool victory;
 
     private void Awake()
     {
@@ -339,6 +345,8 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("wizard", 0);
         PlayerPrefs.SetInt("lvlXP", 0);
         //Find the gameobjects
+        victoryXP = GameObject.Find("VictoryEXP");
+        mainCamera = GameObject.Find("Main Camera");
         lightPointsUI = GameObject.Find("LightBckImage");
         actionInstructions = GameObject.Find("ActionInstructions");
         enemyName = GameObject.Find("EnemyNames");
@@ -2805,107 +2813,116 @@ public class BattleController : MonoBehaviour
                 }
             }
             //The same with the rest of the enemies
-            if (enemy2Turn && enemy2.GetComponent<EnemyTeamScript>().IsIdle())
+            if(enemyNumber > 1)
             {
-                if (enemy2.GetComponent<EnemyTeamScript>().IsAlive())
+                if (enemy2Turn && enemy2.GetComponent<EnemyTeamScript>().IsIdle())
                 {
-                    if (Random.Range(0.0f, 1.0f) < 0.75f)
+                    if (enemy2.GetComponent<EnemyTeamScript>().IsAlive())
                     {
-                        if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(player);
-                        else enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                        if (Random.Range(0.0f, 1.0f) < 0.75f)
+                        {
+                            if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                            else enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                        }
+                        else
+                        {
+                            if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                            else enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                        }
+                        enemy2Turn = false;
                     }
                     else
                     {
-                        if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
-                        else enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                        enemy2Turn = false;
+                        if (enemyNumber > 2) NextEnemy(2);
+                        else EndEnemyTurn();
                     }
-                    enemy2Turn = false;
                 }
-                else
+                else if (enemy2.GetComponent<EnemyTeamScript>().IsAttacking())
                 {
-                    enemy2Turn = false;
-                    if (enemyNumber > 2) NextEnemy(2);
-                    else EndEnemyTurn();
-                }                    
-            }
-            else if (enemy2.GetComponent<EnemyTeamScript>().IsAttacking())
-            {
-                if (Input.GetKeyDown(KeyCode.X))
-                {
-                    if (defenseZone)
+                    if (Input.GetKeyDown(KeyCode.X))
                     {
-                        enemy2.GetComponent<EnemyTeamScript>().IsDefended(true);
+                        if (defenseZone)
+                        {
+                            enemy2.GetComponent<EnemyTeamScript>().IsDefended(true);
+                        }
+                        else enemy2.GetComponent<EnemyTeamScript>().IsDefended(false);
                     }
-                    else enemy2.GetComponent<EnemyTeamScript>().IsDefended(false);
                 }
             }
-            if (enemy3Turn && enemy3.GetComponent<EnemyTeamScript>().IsIdle())
+            if (enemyNumber > 2)
             {
-                if (enemy3.GetComponent<EnemyTeamScript>().IsAlive())
+                if (enemy3Turn && enemy3.GetComponent<EnemyTeamScript>().IsIdle())
                 {
-                    if (Random.Range(0.0f, 1.0f) < 0.75f)
+                    if (enemy3.GetComponent<EnemyTeamScript>().IsAlive())
                     {
-                        if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(player);
-                        else enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                        if (Random.Range(0.0f, 1.0f) < 0.75f)
+                        {
+                            if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                            else enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                        }
+                        else
+                        {
+                            if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                            else enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                        }
+                        enemy3Turn = false;
                     }
                     else
                     {
-                        if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
-                        else enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                        enemy3Turn = false;
+                        if (enemyNumber > 3) NextEnemy(3);
+                        else EndEnemyTurn();
                     }
-                    enemy3Turn = false;
                 }
-                else
+                else if (enemy3.GetComponent<EnemyTeamScript>().IsAttacking())
                 {
-                    enemy3Turn = false;
-                    if (enemyNumber > 3) NextEnemy(3);
-                    else EndEnemyTurn();
+                    if (Input.GetKeyDown(KeyCode.X))
+                    {
+                        if (defenseZone)
+                        {
+                            enemy3.GetComponent<EnemyTeamScript>().IsDefended(true);
+                        }
+                        else enemy3.GetComponent<EnemyTeamScript>().IsDefended(false);
+                    }
                 }
             }
-            else if (enemy3.GetComponent<EnemyTeamScript>().IsAttacking())
+            if (enemyNumber > 3)
             {
-                if (Input.GetKeyDown(KeyCode.X))
+                if (enemy4Turn && enemy4.GetComponent<EnemyTeamScript>().IsIdle())
                 {
-                    if (defenseZone)
+                    if (enemy4.GetComponent<EnemyTeamScript>().IsAlive())
                     {
-                        enemy3.GetComponent<EnemyTeamScript>().IsDefended(true);
-                    }
-                    else enemy3.GetComponent<EnemyTeamScript>().IsDefended(false);
-                }
-            }
-            if (enemy4Turn && enemy4.GetComponent<EnemyTeamScript>().IsIdle())
-            {
-                if (enemy4.GetComponent<EnemyTeamScript>().IsAlive())
-                {
-                    if (Random.Range(0.0f, 1.0f) < 0.75f)
-                    {
-                        if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(player);
-                        else enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                        if (Random.Range(0.0f, 1.0f) < 0.75f)
+                        {
+                            if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                            else enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                        }
+                        else
+                        {
+                            if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                            else enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                        }
+                        enemy4Turn = false;
                     }
                     else
                     {
-                        if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
-                        else enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                        enemy4Turn = false;
+                        EndEnemyTurn();
                     }
-                    enemy4Turn = false;
                 }
-                else
+                else if (enemy4.GetComponent<EnemyTeamScript>().IsAttacking())
                 {
-                    enemy4Turn = false;
-                    EndEnemyTurn();
-                }
-            }
-            else if (enemy4.GetComponent<EnemyTeamScript>().IsAttacking())
-            {
-                if (Input.GetKeyDown(KeyCode.X))
-                {
-                    if (defenseZone)
+                    if (Input.GetKeyDown(KeyCode.X))
                     {
-                        enemy4.GetComponent<EnemyTeamScript>().IsDefended(true);
+                        if (defenseZone)
+                        {
+                            enemy4.GetComponent<EnemyTeamScript>().IsDefended(true);
+                        }
+                        else enemy4.GetComponent<EnemyTeamScript>().IsDefended(false);
                     }
-                    else enemy4.GetComponent<EnemyTeamScript>().IsDefended(false);
                 }
-            }
+            }                
         }
     }
 
@@ -3186,6 +3203,11 @@ public class BattleController : MonoBehaviour
             if(player.transform.position.x > -10.0f) player.transform.position = new Vector3(player.transform.position.x - 0.2f, player.transform.position.y, player.transform.position.z);
             if(companion.transform.position.x > -10.0f) companion.transform.position = new Vector3(companion.transform.position.x - 0.2f, companion.transform.position.y, companion.transform.position.z);
             //else EndBattle();
+        }
+        if (victory)
+        {
+            Debug.Log("victorieado");
+            if (Input.GetKeyDown(KeyCode.X)) SaveXP();
         }
     }
 
@@ -3942,7 +3964,23 @@ public class BattleController : MonoBehaviour
         }
         else
         {
-            Debug.Log("pos se murieron xd");
+            player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
+            companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
+            canvas.GetComponent<Animator>().SetBool("Hide", false);
+            mainCamera.GetComponent<CameraScript>().ChangeCameraState(1);
+            xpObject.SetActive(false);
+            victoryXP.transform.GetChild(18).GetComponent<Image>().color = new Color(1.0f,1.0f,1.0f,0.4f);
+            victoryXP.transform.GetChild(19).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(20).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(21).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(21).GetComponent<Text>().text = currentFightXP.ToString();
+            playerTeamTurn = false;
+            playerTurnCompleted = false;
+            companionTurnCompleted = false;
+            victory = true;
+            ShowVictoryXP();
+            player.GetComponent<Animator>().SetTrigger("Victory");
+            companion.GetComponent<Animator>().SetTrigger("Victory");
         }
     }
 
@@ -5020,6 +5058,260 @@ public class BattleController : MonoBehaviour
             xpObject.transform.GetChild(16).GetComponent<Image>().color = new Color(xpObject.transform.GetChild(0).GetComponent<Image>().color.r, xpObject.transform.GetChild(0).GetComponent<Image>().color.g, xpObject.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
             xpObject.transform.GetChild(17).GetComponent<Image>().color = new Color(xpObject.transform.GetChild(0).GetComponent<Image>().color.r, xpObject.transform.GetChild(0).GetComponent<Image>().color.g, xpObject.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
         }
+    }
+
+    //Function to show the victory xp
+    private void ShowVictoryXP()
+    {
+        int rest = currentFightXP % 10;
+        int quotient = currentFightXP / 10;
+        if (rest == 0)
+        {
+            victoryXP.transform.GetChild(0).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(1).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(2).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(3).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(4).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(5).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(6).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(7).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(8).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+        }
+        else if (rest == 1)
+        {
+            victoryXP.transform.GetChild(0).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(1).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(2).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(3).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(4).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(5).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(6).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(7).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(8).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+        }
+        else if (rest == 2)
+        {
+            victoryXP.transform.GetChild(0).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(1).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(2).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(3).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(4).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(5).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(6).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(7).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(8).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+        }
+        else if (rest == 3)
+        {
+            victoryXP.transform.GetChild(0).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(1).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(2).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(3).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(4).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(5).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(6).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(7).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(8).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+        }
+        else if (rest == 4)
+        {
+            victoryXP.transform.GetChild(0).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(1).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(2).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(3).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(4).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(5).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(6).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(7).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(8).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+        }
+        else if (rest == 5)
+        {
+            victoryXP.transform.GetChild(0).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(1).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(2).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(3).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(4).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(5).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(6).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(7).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(8).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+        }
+        else if (rest == 6)
+        {
+            victoryXP.transform.GetChild(0).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(1).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(2).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(3).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(4).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(5).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(6).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(7).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(8).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+        }
+        else if (rest == 7)
+        {
+            victoryXP.transform.GetChild(0).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(1).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(2).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(3).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(4).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(5).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(6).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(7).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            victoryXP.transform.GetChild(8).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+        }
+        else if (rest == 8)
+        {
+            victoryXP.transform.GetChild(0).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(1).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(2).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(3).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(4).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(5).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(6).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(7).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(8).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
+        }
+        else if (rest == 9)
+        {
+            victoryXP.transform.GetChild(0).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(1).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(2).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(3).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(4).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(5).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(6).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(7).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            victoryXP.transform.GetChild(8).GetComponent<Image>().color = new Color(victoryXP.transform.GetChild(0).GetComponent<Image>().color.r, victoryXP.transform.GetChild(0).GetComponent<Image>().color.g, victoryXP.transform.GetChild(0).GetComponent<Image>().color.b, 1.0f);
+        }
+        if (quotient == 0)
+        {
+            victoryXP.transform.GetChild(9).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(10).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(11).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(12).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(13).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(14).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(15).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(16).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(17).gameObject.SetActive(false);
+        }
+        else if (quotient == 1)
+        {
+            victoryXP.transform.GetChild(9).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(10).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(11).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(12).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(13).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(14).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(15).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(16).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(17).gameObject.SetActive(false);
+        }
+        else if (quotient == 2)
+        {
+            victoryXP.transform.GetChild(9).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(10).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(11).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(12).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(13).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(14).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(15).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(16).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(17).gameObject.SetActive(false);
+        }
+        else if (quotient == 3)
+        {
+            victoryXP.transform.GetChild(9).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(10).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(11).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(12).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(13).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(14).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(15).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(16).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(17).gameObject.SetActive(false);
+        }
+        else if (quotient == 4)
+        {
+            victoryXP.transform.GetChild(9).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(10).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(11).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(12).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(13).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(14).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(15).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(16).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(17).gameObject.SetActive(false);
+        }
+        else if (quotient == 5)
+        {
+            victoryXP.transform.GetChild(9).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(10).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(11).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(12).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(13).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(14).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(15).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(16).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(17).gameObject.SetActive(false);
+        }
+        else if (quotient == 6)
+        {
+            victoryXP.transform.GetChild(9).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(10).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(11).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(12).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(13).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(14).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(15).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(16).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(17).gameObject.SetActive(false);
+        }
+        else if (quotient == 7)
+        {
+            victoryXP.transform.GetChild(9).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(10).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(11).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(12).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(13).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(14).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(15).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(16).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(17).gameObject.SetActive(false);
+        }
+        else if (quotient == 8)
+        {
+            victoryXP.transform.GetChild(9).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(10).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(11).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(12).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(13).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(14).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(15).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(16).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(17).gameObject.SetActive(false);
+        }
+        else if (quotient == 9)
+        {
+            victoryXP.transform.GetChild(9).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(10).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(11).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(12).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(13).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(14).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(15).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(16).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(17).gameObject.SetActive(true);
+        }
+    }
+    private void SaveXP()
+    {
+        PlayerPrefs.SetInt("lvlXP", PlayerPrefs.GetInt("lvlXP") + 1);
+        currentFightXP -= 1;
+        ShowVictoryXP();
+        if (currentFightXP > 0) SaveXP();
     }
 
     //Function to create the menu

@@ -1,22 +1,22 @@
 fileFormatVersion: 2
-guid: 8a1338dae0c578b4687e3367a861a545
+guid: 0e251198958c2b7458145b181118b3b7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4774413583235222536
-    second: end spin_0
+      213: -4046101688063162232
+    second: endVictorySpin_0
   - first:
-      213: -7733688025289506692
-    second: end spin_1
+      213: 1430112547567118283
+    second: endVictorySpin_1
   - first:
-      213: 5946947500154732596
-    second: end spin_2
+      213: 7555318763989811813
+    second: endVictorySpin_2
   - first:
-      213: 1370637176352302040
-    second: end spin_3
+      213: 3048577425835893100
+    second: endVictorySpin_3
   - first:
-      213: 5616679420533715122
-    second: end spin_4
+      213: -1540313889921396113
+    second: endVictorySpin_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -52,7 +52,7 @@ TextureImporter:
     mipBias: -100
     wrapU: 1
     wrapV: 1
-    wrapW: 1
+    wrapW: -1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -101,18 +101,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -128,10 +116,10 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: end spin_0
+      name: endVictorySpin_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
         width: 124
         height: 150
@@ -142,17 +130,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8f3f6785420edbdb0800000000000000
-      internalID: -4774413583235222536
+      spriteID: 88803eda3fb59d7c0800000000000000
+      internalID: -4046101688063162232
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: end spin_1
+      name: endVictorySpin_1
       rect:
         serializedVersion: 2
-        x: 150
+        x: 151
         y: 0
         width: 72
         height: 150
@@ -163,17 +151,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c704de047bb6ca490800000000000000
-      internalID: -7733688025289506692
+      spriteID: bc72192f8c7c8d310800000000000000
+      internalID: 1430112547567118283
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: end spin_2
+      name: endVictorySpin_2
       rect:
         serializedVersion: 2
-        x: 232
+        x: 233
         y: 0
         width: 120
         height: 150
@@ -184,17 +172,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 430ce9c3e3dc78250800000000000000
-      internalID: 5946947500154732596
+      spriteID: 562c474d262e9d860800000000000000
+      internalID: 7555318763989811813
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: end spin_3
+      name: endVictorySpin_3
       rect:
         serializedVersion: 2
-        x: 372
+        x: 373
         y: 0
         width: 93
         height: 150
@@ -205,17 +193,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8d36c6cff3b750310800000000000000
-      internalID: 1370637176352302040
+      spriteID: c6129394409be4a20800000000000000
+      internalID: 3048577425835893100
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: end spin_4
+      name: endVictorySpin_4
       rect:
         serializedVersion: 2
-        x: 481
+        x: 482
         y: 0
         width: 98
         height: 150
@@ -226,8 +214,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2b0b82eac2472fd40800000000000000
-      internalID: 5616679420533715122
+      spriteID: f6292a49da4bf9ae0800000000000000
+      internalID: -1540313889921396113
       vertices: []
       indices: 
       edges: []
@@ -235,7 +223,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: f6c7d9c9d334dca4b9099e85ccd17c55
     internalID: 0
     vertices: []
     indices: 

@@ -1,22 +1,22 @@
 fileFormatVersion: 2
-guid: 8a1338dae0c578b4687e3367a861a545
+guid: 660112ae517d62d4186e78f02f81eb7a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4774413583235222536
-    second: end spin_0
+      213: -1085129465491808310
+    second: victorySpin_0
   - first:
-      213: -7733688025289506692
-    second: end spin_1
+      213: -945884361076368343
+    second: victorySpin_1
   - first:
-      213: 5946947500154732596
-    second: end spin_2
+      213: -642196067915626137
+    second: victorySpin_2
   - first:
-      213: 1370637176352302040
-    second: end spin_3
+      213: -6675592022929178239
+    second: victorySpin_3
   - first:
-      213: 5616679420533715122
-    second: end spin_4
+      213: -6757831033143071189
+    second: victorySpin_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -52,7 +52,7 @@ TextureImporter:
     mipBias: -100
     wrapU: 1
     wrapV: 1
-    wrapW: 1
+    wrapW: -1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -101,18 +101,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -128,12 +116,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: end spin_0
+      name: victorySpin_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 15
         y: 0
-        width: 124
+        width: 82
         height: 150
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -142,19 +130,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8f3f6785420edbdb0800000000000000
-      internalID: -4774413583235222536
+      spriteID: acf1d0a1088d0f0f0800000000000000
+      internalID: -1085129465491808310
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: end spin_1
+      name: victorySpin_1
       rect:
         serializedVersion: 2
-        x: 150
+        x: 116
         y: 0
-        width: 72
+        width: 97
         height: 150
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -163,19 +151,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c704de047bb6ca490800000000000000
-      internalID: -7733688025289506692
+      spriteID: 92c12736f2b8fd2f0800000000000000
+      internalID: -945884361076368343
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: end spin_2
+      name: victorySpin_2
       rect:
         serializedVersion: 2
         x: 232
         y: 0
-        width: 120
+        width: 102
         height: 150
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -184,19 +172,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 430ce9c3e3dc78250800000000000000
-      internalID: 5946947500154732596
+      spriteID: 7698cb724167617f0800000000000000
+      internalID: -642196067915626137
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: end spin_3
+      name: victorySpin_3
       rect:
         serializedVersion: 2
-        x: 372
+        x: 349
         y: 0
-        width: 93
+        width: 96
         height: 150
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -205,19 +193,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8d36c6cff3b750310800000000000000
-      internalID: 1370637176352302040
+      spriteID: 18100e78c688b53a0800000000000000
+      internalID: -6675592022929178239
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: end spin_4
+      name: victorySpin_4
       rect:
         serializedVersion: 2
-        x: 481
+        x: 460
         y: 0
-        width: 98
+        width: 92
         height: 150
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -226,8 +214,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2b0b82eac2472fd40800000000000000
-      internalID: 5616679420533715122
+      spriteID: b2e6569da7c5732a0800000000000000
+      internalID: -6757831033143071189
       vertices: []
       indices: 
       edges: []
