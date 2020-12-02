@@ -325,6 +325,12 @@ public class BattleController : MonoBehaviour
     private GameObject victoryXP;
     //The victory state
     private bool victory;
+    //A boolean to know if the player lvl up this fight
+    private bool lvlUp;
+    //The lvl up gameobject
+    private GameObject lvlUpMenu;
+    //The selected atribute to lvl up. 0 -> Heart, 1 -> Light, 2 -> Gem
+    private int lvlUpSelected;
 
     private void Awake()
     {
@@ -343,7 +349,7 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("language", 0);
         PlayerPrefs.SetInt("bandit", 0);
         PlayerPrefs.SetInt("wizard", 0);
-        PlayerPrefs.SetInt("lvlXP", 0);
+        PlayerPrefs.SetInt("lvlXP", 90);
         //Find the gameobjects
         victoryXP = GameObject.Find("VictoryEXP");
         mainCamera = GameObject.Find("Main Camera");
@@ -359,8 +365,9 @@ public class BattleController : MonoBehaviour
         soul5 = GameObject.Find("Soul5Fill");
         soul6 = GameObject.Find("Soul6Fill");
         canvas = GameObject.Find("Canvas");
+        lvlUpMenu = GameObject.Find("LvlUp");
         xpText = canvas.transform.GetChild(3).GetChild(1).GetComponent<Text>();
-        xpText.text = 0.ToString();
+        xpText.text = PlayerPrefs.GetInt("lvlXP").ToString();
         xpObject = GameObject.Find("EXP");
         //Initialize variables
         if (PlayerPrefs.GetInt("Souls") == 1)
@@ -518,7 +525,9 @@ public class BattleController : MonoBehaviour
         aimUp = true;
         readyShoot = false;
         currentFightXP = 0;
-        
+        lvlUp = false;
+        lvlUpMenu.SetActive(false);
+        lvlUpSelected = 0;
     }
 
     private void Update()
@@ -1160,7 +1169,7 @@ public class BattleController : MonoBehaviour
                                     player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                                 }
                             }
-                            else if (enemy3.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
+                            else if (enemyNumber>2 && enemy3.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
                             {
                                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                                 {
@@ -1261,7 +1270,7 @@ public class BattleController : MonoBehaviour
                                     player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                                 }
                             }
-                            else if (enemy4.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
+                            else if (enemyNumber > 3 && enemy4.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
                             {
                                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                                 {
@@ -2525,7 +2534,7 @@ public class BattleController : MonoBehaviour
                                     companion.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                                 }
                             }
-                            else if (enemy3.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
+                            else if (enemyNumber > 2 && enemy3.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
                             {
                                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                                 {
@@ -2586,7 +2595,7 @@ public class BattleController : MonoBehaviour
                                     companion.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                                 }
                             }
-                            else if (enemy4.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
+                            else if (enemyNumber > 3 && enemy4.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
                             {
                                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                                 {
@@ -2924,6 +2933,17 @@ public class BattleController : MonoBehaviour
                 }
             }                
         }
+        if (victory)
+        {
+            if (Input.GetKeyDown(KeyCode.X)) StartCoroutine(SaveXP());
+            if (!lvlUpMenu.activeSelf && mainCamera.GetComponent<CameraScript>().GetCameraState() == 0) lvlUpMenu.SetActive(true);
+            if (lvlUpMenu.activeSelf)
+            {
+                if (lvlUpSelected == 0) Debug.Log("Corason");
+                else if (lvlUpSelected == 1) Debug.Log("Lus");
+                else if (lvlUpSelected == 2) Debug.Log("Medaya");
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -3203,11 +3223,6 @@ public class BattleController : MonoBehaviour
             if(player.transform.position.x > -10.0f) player.transform.position = new Vector3(player.transform.position.x - 0.2f, player.transform.position.y, player.transform.position.z);
             if(companion.transform.position.x > -10.0f) companion.transform.position = new Vector3(companion.transform.position.x - 0.2f, companion.transform.position.y, companion.transform.position.z);
             //else EndBattle();
-        }
-        if (victory)
-        {
-            Debug.Log("victorieado");
-            if (Input.GetKeyDown(KeyCode.X)) SaveXP();
         }
     }
 
@@ -4357,6 +4372,11 @@ public class BattleController : MonoBehaviour
         finalAttack = false;
         EndPlayerTurn(1);
     }
+    //A function to get the lvl up menu position
+    public void SetLvlUpSelected(int pos)
+    {
+        lvlUpSelected = pos;
+    }
     //A function to start the disappear attack
     public void StartDisappearAttack()
     {
@@ -5306,12 +5326,30 @@ public class BattleController : MonoBehaviour
             victoryXP.transform.GetChild(17).gameObject.SetActive(true);
         }
     }
-    private void SaveXP()
-    {
-        PlayerPrefs.SetInt("lvlXP", PlayerPrefs.GetInt("lvlXP") + 1);
-        currentFightXP -= 1;
-        ShowVictoryXP();
-        if (currentFightXP > 0) SaveXP();
+    IEnumerator SaveXP()
+    {        
+        while (currentFightXP > 0)
+        {
+            if (PlayerPrefs.GetInt("lvlXP") < 99) PlayerPrefs.SetInt("lvlXP", PlayerPrefs.GetInt("lvlXP") + 1);
+            else
+            {
+                PlayerPrefs.SetInt("lvlXP", 0);
+                lvlUp = true;
+            }
+            currentFightXP -= 1;
+            ShowVictoryXP();
+            xpText.text = PlayerPrefs.GetInt("lvlXP").ToString();
+            yield return new WaitForFixedUpdate();
+        }
+        if (lvlUp)
+        {
+            canvas.GetComponent<Animator>().SetBool("Hide", true);
+            victoryXP.transform.GetChild(18).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            victoryXP.transform.GetChild(19).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(20).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(21).gameObject.SetActive(false);
+            mainCamera.GetComponent<CameraScript>().ChangeCameraState(0);
+        }
     }
 
     //Function to create the menu

@@ -8,6 +8,7 @@ public class CameraScript : MonoBehaviour
     private bool idle;
     private bool victory;
     private bool idleToVictory;
+    private bool victoryToIdle;
 
 
     void Start()
@@ -15,6 +16,7 @@ public class CameraScript : MonoBehaviour
         idle = true;
         victory = false;
         idleToVictory = false;
+        victoryToIdle = false;
     }
 
     // Idle -> transform.position = new Vector3(0.0f, 0.25f, -10.0f);
@@ -26,8 +28,19 @@ public class CameraScript : MonoBehaviour
             if (transform.position.x > -5.35f) transform.position = new Vector3(transform.position.x - 0.108f, transform.position.y - 0.005f, transform.position.z + 0.07f);
             else
             {
-                //transform.position = new Vector3(-5.4f, 0.0f, -6.5f);
+                transform.position = new Vector3(-5.4f, 0.0f, -6.5f);
+                victory = true;
                 idleToVictory = false;
+            }
+        }
+        else if (victoryToIdle)
+        {
+            if (transform.position.x < 0.0f) transform.position = new Vector3(transform.position.x + 0.108f, transform.position.y + 0.005f, transform.position.z - 0.07f);
+            else
+            {
+                transform.position = new Vector3(0.0f, 0.25f, -10.0f);
+                idle = true;
+                victoryToIdle = false;
             }
         }
     }
@@ -37,17 +50,27 @@ public class CameraScript : MonoBehaviour
     {
         if(state == 0)
         {
-            idle = true;
-            victory = false;
+            if (victory)
+            {
+                victory = false;
+                victoryToIdle = true;
+            }
         }
         else if(state == 1)
         {
             if (idle)
             {
                 idle = false;
-                victory = true;
                 idleToVictory = true;
             }
         }
+    }
+
+    //Function to get the camera state
+    public int GetCameraState()
+    {
+        if (idle) return 0;
+        else if (victory) return 1;
+        else return -1;
     }
 }
