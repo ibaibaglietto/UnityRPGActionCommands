@@ -13,7 +13,7 @@ public class MagentaSoulScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "magentaShard")
+        if (collision.tag.Equals("magentaShard"))
         {
             battleController.GetComponent<BattleController>().CreateMagentaShard();
             battleController.GetComponent<BattleController>().IncrementFogSize();

@@ -969,8 +969,21 @@ public class PlayerTeamScript : MonoBehaviour
             if (Damage < 0) Damage = 0;
             damageImage = Instantiate(damageUI, new Vector3(transform.position.x + 1.25f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
             damageImage.GetChild(0).GetComponent<Text>().text = Damage.ToString();
-            if(playerTeamType==0) playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
-            else companionLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
+            if (playerTeamType == 0)
+            {
+                playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
+                if (playerLife.GetComponent<PlayerLifeScript>().IsDead())
+                {
+                    battleController.GetComponent<BattleController>().EndBattle();
+                    GetComponent<Animator>().SetBool("isDead", true);
+                }
+            }
+            else
+            {
+                companionLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
+                if (companionLife.GetComponent<PlayerLifeScript>().IsDead()) Debug.Log("Se murio xd");
+            }
+            
         }        
     }
     //A function to end the glance

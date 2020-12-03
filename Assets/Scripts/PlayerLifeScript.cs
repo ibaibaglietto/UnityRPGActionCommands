@@ -22,7 +22,7 @@ public class PlayerLifeScript : MonoBehaviour
         if(user == 0) maxHealth = 10 + PlayerPrefs.GetInt("PlayerHeartLvl") * 5;
         else if (user == 1) maxHealth = 10 + PlayerPrefs.GetInt("AdventurerLvl") * 10;
         //We save the current health
-        currentHealth = maxHealth;
+        currentHealth = maxHealth - 9;
         //We find the current health text and max health text and initialize them
         currentHealthText = transform.GetChild(0).GetComponent<Text>();
         maxHealthText = transform.GetChild(2).GetComponent<Text>();
@@ -40,7 +40,13 @@ public class PlayerLifeScript : MonoBehaviour
     public void DealDamage(int health)
     {
         currentHealth -= health;
+        if (currentHealth < 0) currentHealth = 0;
         currentHealthText.text = currentHealth.ToString();
+    }
+    //A function to know if the player is dead
+    public bool IsDead()
+    {
+        return currentHealth == 0;
     }
     //A function to heal the player
     public void Heal(int health)

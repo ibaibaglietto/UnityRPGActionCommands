@@ -24,7 +24,7 @@ public class JarScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "redSoul")
+        if (other.tag.Equals("redSoul"))
         {
             battleController.GetComponent<BattleController>().GatherRedSoul();
             fill += 0.1f;

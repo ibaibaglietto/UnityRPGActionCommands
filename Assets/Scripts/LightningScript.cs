@@ -13,7 +13,7 @@ public class LightningScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "enemy" && collision.GetComponent<EnemyTeamScript>().IsAlive()) battleController.GetComponent<BattleController>().DealDamage(collision.transform, 1, true); 
+        if (collision.tag.Equals("enemy") && collision.GetComponent<EnemyTeamScript>().IsAlive()) battleController.GetComponent<BattleController>().DealDamage(collision.transform, 1, true); 
     }
 
     public void SelfDestroy()

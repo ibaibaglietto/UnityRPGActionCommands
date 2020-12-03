@@ -325,10 +325,14 @@ public class BattleController : MonoBehaviour
     private GameObject victoryXP;
     //The victory state
     private bool victory;
+    //The end battle state
+    private bool endBattle;
     //A boolean to know if the player lvl up this fight
     private bool lvlUp;
     //The lvl up gameobject
     private GameObject lvlUpMenu;
+    //The end battle image
+    private GameObject endBattleImage;
     //The selected atribute to lvl up. 0 -> Heart, 1 -> Light, 2 -> Gem
     private int lvlUpSelected;
 
@@ -369,6 +373,7 @@ public class BattleController : MonoBehaviour
         xpText = canvas.transform.GetChild(3).GetChild(1).GetComponent<Text>();
         xpText.text = PlayerPrefs.GetInt("lvlXP").ToString();
         xpObject = GameObject.Find("EXP");
+        endBattleImage = GameObject.Find("EndBattleImage");
         //Initialize variables
         if (PlayerPrefs.GetInt("Souls") == 1)
         {
@@ -528,6 +533,8 @@ public class BattleController : MonoBehaviour
         lvlUp = false;
         lvlUpMenu.SetActive(false);
         lvlUpSelected = 0;
+        victory = false;
+        endBattle = false;
     }
 
     private void Update()
@@ -2760,7 +2767,7 @@ public class BattleController : MonoBehaviour
                             {
                                 if (readyShoot && Input.GetKeyDown(KeyCode.X))
                                 {
-                                    GetComponent<BattleController>().DeactivateActionInstructions();
+                                    DeactivateActionInstructions();
                                     companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
                                     companion.GetComponent<Animator>().SetTrigger("ShootArrow");
                                 }
@@ -2935,13 +2942,25 @@ public class BattleController : MonoBehaviour
         }
         if (victory)
         {
-            if (Input.GetKeyDown(KeyCode.X)) StartCoroutine(SaveXP());
+            if (!lvlUpMenu.activeSelf && Input.GetKeyDown(KeyCode.X)) StartCoroutine(SaveXP());
             if (!lvlUpMenu.activeSelf && mainCamera.GetComponent<CameraScript>().GetCameraState() == 0) lvlUpMenu.SetActive(true);
-            if (lvlUpMenu.activeSelf)
+            if (lvlUpMenu.activeSelf && lvlUpSelected != -2)
             {
-                if (lvlUpSelected == 0) Debug.Log("Corason");
-                else if (lvlUpSelected == 1) Debug.Log("Lus");
-                else if (lvlUpSelected == 2) Debug.Log("Medaya");
+                if (Input.GetKeyDown(KeyCode.Space) && lvlUpSelected> -1) LvlUpPlayer(lvlUpSelected);
+                else if (Input.GetKeyDown(KeyCode.RightArrow) && lvlUpSelected != 2)
+                {
+                    lvlUpMenu.GetComponent<Animator>().SetTrigger("Right");
+                    if (lvlUpSelected == -1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Increase your HP by 5! Great to tank more damage.";
+                    else if (lvlUpSelected == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Increase your LP by 5! Perfect if you love to use abilities often.";
+                    else if (lvlUpSelected == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Increase your GP by 3! Ideal if you want to use more gems.";
+                }
+                else if (Input.GetKeyDown(KeyCode.LeftArrow) && lvlUpSelected != 0)
+                {
+                    lvlUpMenu.GetComponent<Animator>().SetTrigger("Left");
+                    if (lvlUpSelected == -1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Increase your GP by 3! Ideal if you want to use more gems.";
+                    else if (lvlUpSelected == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Increase your HP by 5! Great to tank more damage.";
+                    else if (lvlUpSelected == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Increase your LP by 5! Perfect if you love to use abilities often.";
+                }
             }
         }
     }
@@ -3222,7 +3241,19 @@ public class BattleController : MonoBehaviour
         {
             if(player.transform.position.x > -10.0f) player.transform.position = new Vector3(player.transform.position.x - 0.2f, player.transform.position.y, player.transform.position.z);
             if(companion.transform.position.x > -10.0f) companion.transform.position = new Vector3(companion.transform.position.x - 0.2f, companion.transform.position.y, companion.transform.position.z);
-            //else EndBattle();
+            else endBattle = true;
+        }
+
+        if (endBattle)
+        {
+            if(endBattleImage.GetComponent<Image>().color.a < 1.0f)
+            {
+                endBattleImage.GetComponent<Image>().color = new Color(endBattleImage.GetComponent<Image>().color.r, endBattleImage.GetComponent<Image>().color.g, endBattleImage.GetComponent<Image>().color.b, endBattleImage.GetComponent<Image>().color.a + 0.02f);
+            }
+            else
+            {
+                Debug.Log("Se termino xd");
+            }
         }
     }
 
@@ -4235,49 +4266,49 @@ public class BattleController : MonoBehaviour
         greenSoul = Instantiate(greenSoulPrefab, regenerationAction.transform);
         greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(0.0f, 0.0f);
         ring1[1] = Instantiate(RingFront, regenerationAction.transform);
-        if (ring1[0].tag == "RedRing") ring1[1].GetComponent<RingScript>().SetColor(true);
+        if (ring1[0].tag.Equals("RedRing")) ring1[1].GetComponent<RingScript>().SetColor(true);
         else ring1[1].GetComponent<RingScript>().SetColor(false);
         ring1[1].GetComponent<RingScript>().SetTopRing(ring1[0]);
         ring1[1].GetComponent<RingScript>().SetPrevRing(ring8[0]);
         ring1[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring1[0].GetComponent<RectTransform>().anchoredPosition.x, ring1[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
         ring2[1] = Instantiate(RingFront, regenerationAction.transform);
-        if (ring2[0].tag == "RedRing") ring2[1].GetComponent<RingScript>().SetColor(true);
+        if (ring2[0].tag.Equals("RedRing")) ring2[1].GetComponent<RingScript>().SetColor(true);
         else ring2[1].GetComponent<RingScript>().SetColor(false);
         ring2[1].GetComponent<RingScript>().SetTopRing(ring2[0]);
         ring2[1].GetComponent<RingScript>().SetPrevRing(ring1[0]);
         ring2[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring2[0].GetComponent<RectTransform>().anchoredPosition.x, ring2[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
         ring3[1] = Instantiate(RingFront, regenerationAction.transform);
-        if (ring3[0].tag == "RedRing") ring3[1].GetComponent<RingScript>().SetColor(true);
+        if (ring3[0].tag.Equals("RedRing")) ring3[1].GetComponent<RingScript>().SetColor(true);
         else ring3[1].GetComponent<RingScript>().SetColor(false);
         ring3[1].GetComponent<RingScript>().SetTopRing(ring3[0]);
         ring3[1].GetComponent<RingScript>().SetPrevRing(ring2[0]);
         ring3[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring3[0].GetComponent<RectTransform>().anchoredPosition.x, ring3[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
         ring4[1] = Instantiate(RingFront, regenerationAction.transform);
-        if (ring4[0].tag == "RedRing") ring4[1].GetComponent<RingScript>().SetColor(true);
+        if (ring4[0].tag.Equals("RedRing")) ring4[1].GetComponent<RingScript>().SetColor(true);
         else ring4[1].GetComponent<RingScript>().SetColor(false);
         ring4[1].GetComponent<RingScript>().SetTopRing(ring4[0]);
         ring4[1].GetComponent<RingScript>().SetPrevRing(ring3[0]);
         ring4[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring4[0].GetComponent<RectTransform>().anchoredPosition.x, ring4[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
         ring5[1] = Instantiate(RingFront, regenerationAction.transform);
-        if (ring5[0].tag == "RedRing") ring5[1].GetComponent<RingScript>().SetColor(true);
+        if (ring5[0].tag.Equals("RedRing")) ring5[1].GetComponent<RingScript>().SetColor(true);
         else ring5[1].GetComponent<RingScript>().SetColor(false);
         ring5[1].GetComponent<RingScript>().SetTopRing(ring5[0]);
         ring5[1].GetComponent<RingScript>().SetPrevRing(ring4[0]);
         ring5[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring5[0].GetComponent<RectTransform>().anchoredPosition.x, ring5[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
         ring6[1] = Instantiate(RingFront, regenerationAction.transform);
-        if (ring6[0].tag == "RedRing") ring6[1].GetComponent<RingScript>().SetColor(true);
+        if (ring6[0].tag.Equals("RedRing")) ring6[1].GetComponent<RingScript>().SetColor(true);
         else ring6[1].GetComponent<RingScript>().SetColor(false);
         ring6[1].GetComponent<RingScript>().SetTopRing(ring6[0]);
         ring6[1].GetComponent<RingScript>().SetPrevRing(ring5[0]);
         ring6[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring6[0].GetComponent<RectTransform>().anchoredPosition.x, ring6[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
         ring7[1] = Instantiate(RingFront, regenerationAction.transform);
-        if (ring7[0].tag == "RedRing") ring7[1].GetComponent<RingScript>().SetColor(true);
+        if (ring7[0].tag.Equals("RedRing")) ring7[1].GetComponent<RingScript>().SetColor(true);
         else ring7[1].GetComponent<RingScript>().SetColor(false);
         ring7[1].GetComponent<RingScript>().SetTopRing(ring7[0]);
         ring7[1].GetComponent<RingScript>().SetPrevRing(ring6[0]);
         ring7[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring7[0].GetComponent<RectTransform>().anchoredPosition.x, ring7[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
         ring8[1] = Instantiate(RingFront, regenerationAction.transform);
-        if (ring8[0].tag == "RedRing") ring8[1].GetComponent<RingScript>().SetColor(true);
+        if (ring8[0].tag.Equals("RedRing")) ring8[1].GetComponent<RingScript>().SetColor(true);
         else ring8[1].GetComponent<RingScript>().SetColor(false);
         ring8[1].GetComponent<RingScript>().SetTopRing(ring8[0]);
         ring8[1].GetComponent<RingScript>().SetPrevRing(ring7[0]);
@@ -5326,6 +5357,7 @@ public class BattleController : MonoBehaviour
             victoryXP.transform.GetChild(17).gameObject.SetActive(true);
         }
     }
+    //Function to save the gained xp
     IEnumerator SaveXP()
     {        
         while (currentFightXP > 0)
@@ -5343,15 +5375,61 @@ public class BattleController : MonoBehaviour
         }
         if (lvlUp)
         {
+            lvlUpMenu.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().text = (PlayerPrefs.GetInt("PlayerHeartLvl") * 5 + 10).ToString();
+            lvlUpMenu.transform.GetChild(0).GetChild(0).GetChild(2).GetComponent<Text>().text = (PlayerPrefs.GetInt("PlayerHeartLvl") * 5 + 15).ToString();
+            lvlUpMenu.transform.GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().text = (PlayerPrefs.GetInt("PlayerLightLvl") * 5 + 5).ToString();
+            lvlUpMenu.transform.GetChild(1).GetChild(0).GetChild(2).GetComponent<Text>().text = (PlayerPrefs.GetInt("PlayerLightLvl") * 5 + 10).ToString();
+            lvlUpMenu.transform.GetChild(2).GetChild(0).GetChild(0).GetComponent<Text>().text = (PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3).ToString();
+            lvlUpMenu.transform.GetChild(2).GetChild(0).GetChild(2).GetComponent<Text>().text = (PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 6).ToString();
             canvas.GetComponent<Animator>().SetBool("Hide", true);
+            actionInstructions.SetActive(true);
+            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select one to upgrade!";
             victoryXP.transform.GetChild(18).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             victoryXP.transform.GetChild(19).gameObject.SetActive(false);
             victoryXP.transform.GetChild(20).gameObject.SetActive(false);
             victoryXP.transform.GetChild(21).gameObject.SetActive(false);
             mainCamera.GetComponent<CameraScript>().ChangeCameraState(0);
         }
+        else
+        {
+            victoryXP.transform.GetChild(18).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            victoryXP.transform.GetChild(19).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(20).gameObject.SetActive(false);
+            victoryXP.transform.GetChild(21).gameObject.SetActive(false);
+            endBattle = true;
+        }
     }
+    //Function to end the battle
+    public void EndBattle()
+    {
+        endBattle = true;
+    }
+    //Function to lvl up the player
+    private void LvlUpPlayer(int selection)
+    {
+        if(selection == 0)
+        {
+            lvlUpSelected = -3;
+            PlayerPrefs.SetInt("PlayerHeartLvl", PlayerPrefs.GetInt("PlayerHeartLvl") + 1);
+            PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerLvl"));
+        }
+        else if(selection == 1)
+        {
+            lvlUpSelected = -3;
+            PlayerPrefs.SetInt("PlayerLightLvl", PlayerPrefs.GetInt("PlayerLightLvl") + 1);
+            PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerLvl"));
 
+        }
+        else if(selection == 2)
+        {
+            lvlUpSelected = -3;
+            PlayerPrefs.SetInt("PlayerBadgeLvl", PlayerPrefs.GetInt("PlayerBadgeLvl") + 1);
+            PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerLvl"));
+        }
+        lvlUpMenu.transform.GetChild(selection).GetComponent<Animator>().SetTrigger("Selected");
+        victory = false;
+        endBattle = true;
+    }
     //Function to create the menu
     private void CreateMenu()
     {

@@ -67,7 +67,7 @@ public class ShurikenScript : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(BK47 && collision.tag == "enemy" && collision.GetComponent<EnemyTeamScript>().IsAlive())
+        if(BK47 && collision.tag.Equals("enemy") && collision.GetComponent<EnemyTeamScript>().IsAlive())
         {
             battleController.GetComponent<BattleController>().DealDamage(collision.transform, shurikenDamage, true);
             Destroy(gameObject);

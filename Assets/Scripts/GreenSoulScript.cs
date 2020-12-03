@@ -13,7 +13,7 @@ public class GreenSoulScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "Ring")
+        if(other.tag.Equals("Ring"))
         {
             if (other.GetComponent<RingScript>().GetColor() && !other.GetComponent<RingScript>().IsCrossed())
             {
