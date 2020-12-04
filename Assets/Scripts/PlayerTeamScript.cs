@@ -972,19 +972,21 @@ public class PlayerTeamScript : MonoBehaviour
             if (playerTeamType == 0)
             {
                 playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
-                if (playerLife.GetComponent<PlayerLifeScript>().IsDead())
-                {
-                    battleController.GetComponent<BattleController>().EndBattle();
-                    GetComponent<Animator>().SetBool("isDead", true);
-                }
+                if(playerLife.GetComponent<PlayerLifeScript>().IsDead()) GetComponent<Animator>().SetBool("isDead", true);
             }
             else
             {
                 companionLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
-                if (companionLife.GetComponent<PlayerLifeScript>().IsDead()) Debug.Log("Se murio xd");
+                if (companionLife.GetComponent<PlayerLifeScript>().IsDead()) GetComponent<Animator>().SetBool("isDead", true);
             }
             
         }        
+    }
+    //A function to know if the player is dead
+    public bool IsDead()
+    {
+        if (playerTeamType == 0) return playerLife.GetComponent<PlayerLifeScript>().IsDead();
+        else return companionLife.GetComponent<PlayerLifeScript>().IsDead();       
     }
     //A function to end the glance
     public void EndGlance()

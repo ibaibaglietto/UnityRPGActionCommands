@@ -349,7 +349,7 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("PlayerLightLvl", 0);
         PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
         PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
-        PlayerPrefs.SetInt("AdventurerLvl",3);
+        PlayerPrefs.SetInt("AdventurerLvl",0); //3
         PlayerPrefs.SetInt("language", 0);
         PlayerPrefs.SetInt("bandit", 0);
         PlayerPrefs.SetInt("wizard", 0);
@@ -2797,17 +2797,25 @@ public class BattleController : MonoBehaviour
             {
                 if (enemy1.GetComponent<EnemyTeamScript>().IsAlive())
                 {
-                    if (Random.Range(0.0f, 1.0f) < 0.75f)
+                    if (companion.GetComponent<PlayerTeamScript>().IsDead())
                     {
-                        if(firstPosPlayer) enemy1.GetComponent<EnemyTeamScript>().Attack(player);
-                        else enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                        enemy1.GetComponent<EnemyTeamScript>().Attack(player);
+                        enemy1Turn = false;
                     }
                     else
                     {
-                        if (firstPosPlayer) enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
-                        else enemy1.GetComponent<EnemyTeamScript>().Attack(player);
-                    }
-                    enemy1Turn = false;
+                        if (Random.Range(0.0f, 1.0f) < 0.75f)
+                        {
+                            if (firstPosPlayer) enemy1.GetComponent<EnemyTeamScript>().Attack(player);
+                            else enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                        }
+                        else
+                        {
+                            if (firstPosPlayer) enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                            else enemy1.GetComponent<EnemyTeamScript>().Attack(player);
+                        }
+                        enemy1Turn = false;
+                    }                    
                 }
                 else
                 {
@@ -2835,17 +2843,25 @@ public class BattleController : MonoBehaviour
                 {
                     if (enemy2.GetComponent<EnemyTeamScript>().IsAlive())
                     {
-                        if (Random.Range(0.0f, 1.0f) < 0.75f)
+                        if (companion.GetComponent<PlayerTeamScript>().IsDead())
                         {
-                            if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(player);
-                            else enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                            enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                            enemy2Turn = false;
                         }
                         else
                         {
-                            if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
-                            else enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                            if (Random.Range(0.0f, 1.0f) < 0.75f)
+                            {
+                                if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                                else enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                            }
+                            else
+                            {
+                                if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                                else enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                            }
+                            enemy2Turn = false;
                         }
-                        enemy2Turn = false;
                     }
                     else
                     {
@@ -2872,17 +2888,25 @@ public class BattleController : MonoBehaviour
                 {
                     if (enemy3.GetComponent<EnemyTeamScript>().IsAlive())
                     {
-                        if (Random.Range(0.0f, 1.0f) < 0.75f)
+                        if (companion.GetComponent<PlayerTeamScript>().IsDead())
                         {
-                            if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(player);
-                            else enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                            enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                            enemy3Turn = false;
                         }
                         else
                         {
-                            if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
-                            else enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                            if (Random.Range(0.0f, 1.0f) < 0.75f)
+                            {
+                                if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                                else enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                            }
+                            else
+                            {
+                                if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                                else enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                            }
+                            enemy3Turn = false;
                         }
-                        enemy3Turn = false;
                     }
                     else
                     {
@@ -2909,17 +2933,25 @@ public class BattleController : MonoBehaviour
                 {
                     if (enemy4.GetComponent<EnemyTeamScript>().IsAlive())
                     {
-                        if (Random.Range(0.0f, 1.0f) < 0.75f)
+                        if (companion.GetComponent<PlayerTeamScript>().IsDead())
                         {
-                            if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(player);
-                            else enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                            enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                            enemy4Turn = false;
                         }
                         else
                         {
-                            if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
-                            else enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                            if (Random.Range(0.0f, 1.0f) < 0.75f)
+                            {
+                                if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                                else enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                            }
+                            else
+                            {
+                                if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                                else enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                            }
+                            enemy4Turn = false;
                         }
-                        enemy4Turn = false;
                     }
                     else
                     {
@@ -3956,7 +3988,7 @@ public class BattleController : MonoBehaviour
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
             }
             if (user == 1) playerTurnCompleted = true;
-            else if (user == 2) companionTurnCompleted = true;
+            if (user == 2 || companion.GetComponent<PlayerTeamScript>().IsDead()) companionTurnCompleted = true;
             if (playerTurnCompleted && companionTurnCompleted)
             {
                 player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
@@ -4033,27 +4065,42 @@ public class BattleController : MonoBehaviour
     //A function to end enemy turn
     public void EndEnemyTurn()
     {
-        defensePlayer = 0;
-        defenseCompanion = 0;
-        changePosAction.SetActive(true);
-        playerTeamTurn = true;
-        if (firstPosPlayer)
-        {
-            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
-            companionTurn = false;
-            companionChoosingAction = false;
-            playerTurn = true;
-            playerChoosingAction = true;
-        }
+        if (player.GetComponent<PlayerTeamScript>().IsDead()) endBattle = true;
         else
         {
-            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
-            playerTurn = false;
-            playerChoosingAction = false;
-            companionTurn = true;
-            companionChoosingAction = true;
-        }
-        enemyTeamTurn = false;
+            defensePlayer = 0;
+            defenseCompanion = 0;
+            changePosAction.SetActive(true);
+            playerTeamTurn = true;
+            if (companion.GetComponent<PlayerTeamScript>().IsDead())
+            {
+                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+                companionTurn = false;
+                companionChoosingAction = false;
+                playerTurn = true;
+                playerChoosingAction = true;
+            }
+            else
+            {
+                if (firstPosPlayer)
+                {
+                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+                    companionTurn = false;
+                    companionChoosingAction = false;
+                    playerTurn = true;
+                    playerChoosingAction = true;
+                }
+                else
+                {
+                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+                    playerTurn = false;
+                    playerChoosingAction = false;
+                    companionTurn = true;
+                    companionChoosingAction = true;
+                }
+            }                
+            enemyTeamTurn = false;
+        }        
     }
     //Function to get the aim rotation
     public float GetAimRotation()
@@ -4064,7 +4111,11 @@ public class BattleController : MonoBehaviour
     //A function to pass the turn to the next enemy
     public void NextEnemy(int numb)
     {
-        if(numb == 1)
+        if (player.GetComponent<PlayerTeamScript>().IsDead())
+        {
+            endBattle = true;
+        }
+        else if (numb == 1)
         {
             enemy2Turn = true;
         }
