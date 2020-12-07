@@ -1419,7 +1419,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.20338441, y: 0}
   m_AnchorMax: {x: 0.4711922, y: 1}
-  m_AnchoredPosition: {x: 0.29815674, y: -0.000045776367}
+  m_AnchoredPosition: {x: 0.29810333, y: -0.000045776367}
   m_SizeDelta: {x: -0.21715546, y: -0.00002670288}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &149325935
@@ -6900,6 +6900,7 @@ MonoBehaviour:
   fireShuriken: {fileID: 21300000, guid: 96aae68d6dc460e4fa61e37de41b2bdb, type: 3}
   apple: {fileID: 21300000, guid: ac557a4efb78d694db0c3a777f381a86, type: 3}
   lightPotion: {fileID: 21300000, guid: 034e73f5171fd16498937cec15feb9aa, type: 3}
+  resurrectPotion: {fileID: 21300000, guid: 712f265c14de619459470fa2f8e04db7, type: 3}
   music: {fileID: 21300000, guid: b0db6193d4a5f774ea6e0d3ab0d466d1, type: 3}
   regeneration: {fileID: 21300000, guid: 87f9cd89cccec6d42933f1f061f8f31d, type: 3}
   thunder: {fileID: 21300000, guid: ee17751eb365a524a9ed4306c32018e5, type: 3}

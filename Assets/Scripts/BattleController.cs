@@ -27,6 +27,7 @@ public class BattleController : MonoBehaviour
     [SerializeField] private Sprite fireShuriken;
     [SerializeField] private Sprite apple;
     [SerializeField] private Sprite lightPotion;
+    [SerializeField] private Sprite resurrectPotion;
     [SerializeField] private Sprite music;
     [SerializeField] private Sprite regeneration;
     [SerializeField] private Sprite thunder;
@@ -101,7 +102,7 @@ public class BattleController : MonoBehaviour
     //The shuriken styles that are active
     private int[] shurikenStyles;
     //The items the player has. 0-> no item, 1-> apple
-    private int[] items = {2,1,1,2,2,1,1,2,1,2,0,0,0,0,0,0,0,0,0,0};
+    private int[] items = {2,1,1,2,3,1,1,2,1,2,0,0,0,0,0,0,0,0,0,0};
     //The number of times the player has scrolled down (item menu)
     private int scroll;
     //The style we are using at the moment
@@ -335,7 +336,8 @@ public class BattleController : MonoBehaviour
     private GameObject endBattleImage;
     //The selected atribute to lvl up. 0 -> Heart, 1 -> Light, 2 -> Gem
     private int lvlUpSelected;
-
+    //The number of the enemy that killed the player
+    private int killerEnemy;
     private void Awake()
     {
         PlayerPrefs.SetInt("Light Sword", 1);
@@ -535,6 +537,7 @@ public class BattleController : MonoBehaviour
         lvlUpSelected = 0;
         victory = false;
         endBattle = false;
+        killerEnemy = -1;
     }
 
     private void Update()
@@ -630,7 +633,7 @@ public class BattleController : MonoBehaviour
                             actionInstructions.SetActive(true);
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                         }
-                        if (!companionTurnCompleted && Input.GetKeyDown(KeyCode.Z)) StartChangePosition(1);
+                        if (!companionTurnCompleted && Input.GetKeyDown(KeyCode.Z) && !companion.GetComponent<PlayerTeamScript>().IsDead()) StartChangePosition(1);
                     }
                     else
                     {
@@ -701,6 +704,7 @@ public class BattleController : MonoBehaviour
                         {
                             if (items[menuSelectionPos + scroll] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Eat this apple to restore 5 HP";
                             else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Drink this potion to restore 5 LP";
+                            else if (items[menuSelectionPos + scroll] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Drink this to restore 10 HP from a fallen party member.";
                             if (((menuSelectionPos + scroll) < (itemSize() - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
                             {
                                 if (menuSelectionPos < 5) player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
@@ -732,7 +736,8 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
                                 playerChoosingAction = false;
                                 if (items[menuSelectionPos] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to eat the apple";
-                                else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to drink the potion";
+                                else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to drink the light potion";
+                                else if (items[menuSelectionPos] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to drink the recovery potion";
                                 selectingPlayer = true;
                                 canSelect = true;
                                 enemyName.SetActive(true);
@@ -840,7 +845,7 @@ public class BattleController : MonoBehaviour
                         }
                         if (Input.GetKeyDown(KeyCode.Q))
                         {
-                            changePosAction.SetActive(!companionTurnCompleted);
+                            changePosAction.SetActive(!companionTurnCompleted && !companion.GetComponent<PlayerTeamScript>().IsDead());
                             actionInstructions.SetActive(false);
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
@@ -885,8 +890,6 @@ public class BattleController : MonoBehaviour
                             }
                             if (Input.GetKeyDown(KeyCode.Space))
                             {
-                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).gameObject.SetActive(false);
-                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).gameObject.SetActive(false);
                                 player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
@@ -897,6 +900,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5, false, true, true, false);
                                     else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, true, false);
+                                    else if (items[menuSelectionPos + scroll] == 3) player.GetComponent<PlayerTeamScript>().Recover(true);
                                     DeleteItem(menuSelectionPos + scroll);
                                     scroll = 0;
                                     actionInstructions.SetActive(false);
@@ -933,8 +937,6 @@ public class BattleController : MonoBehaviour
                             }
                             if (Input.GetKeyDown(KeyCode.Space))
                             {
-                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).gameObject.SetActive(false);
-                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).gameObject.SetActive(false);
                                 companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
@@ -945,6 +947,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     if (items[menuSelectionPos + scroll] == 1) companion.GetComponent<PlayerTeamScript>().Heal(5, false, true, true, false);
                                     else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, true, false);
+                                    else if (items[menuSelectionPos + scroll] == 3) companion.GetComponent<PlayerTeamScript>().Recover(true);
                                     DeleteItem(menuSelectionPos + scroll);
                                     scroll = 0;
                                     actionInstructions.SetActive(false);
@@ -964,8 +967,6 @@ public class BattleController : MonoBehaviour
                     {
                         if (Input.GetKeyDown(KeyCode.Space))
                         {
-                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).gameObject.SetActive(false);
-                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).gameObject.SetActive(false);
                             player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                             companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
@@ -2334,11 +2335,10 @@ public class BattleController : MonoBehaviour
                         }
                         if (Input.GetKeyDown(KeyCode.Space))
                         {
-                            companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).gameObject.SetActive(false);
-                            companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).gameObject.SetActive(false);
                             player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                             if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5, false, true, false, false);
                             else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, false, false);
+                            else if (items[menuSelectionPos + scroll] == 3) player.GetComponent<PlayerTeamScript>().Recover(false);
                             DeleteItem(menuSelectionPos + scroll);
                             scroll = 0;
                             actionInstructions.SetActive(false);
@@ -2371,11 +2371,10 @@ public class BattleController : MonoBehaviour
                         }
                         if (Input.GetKeyDown(KeyCode.Space))
                         {
-                            companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).gameObject.SetActive(false);
-                            companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).gameObject.SetActive(false);
                             companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
                             if (items[menuSelectionPos + scroll] == 1) companion.GetComponent<PlayerTeamScript>().Heal(5, false, true, false, false);
                             else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, false, false);
+                            else if (items[menuSelectionPos + scroll] == 3) companion.GetComponent<PlayerTeamScript>().Recover(false);
                             DeleteItem(menuSelectionPos + scroll);
                             scroll = 0;
                             actionInstructions.SetActive(false);
@@ -3916,7 +3915,7 @@ public class BattleController : MonoBehaviour
         EndPlayerTurn(1);
     }
     //Function to change the position of the player team. 1-> player, 2-> companion
-    private void StartChangePosition(int user)
+    public void StartChangePosition(int user)
     {
         changePosAction.SetActive(false);
         if (user == 1)
@@ -3943,7 +3942,7 @@ public class BattleController : MonoBehaviour
 
     private void EndChangePosition(int user)
     {
-        changePosAction.SetActive(true);
+        if(!companion.GetComponent<PlayerTeamScript>().IsDead()) changePosAction.SetActive(true);
         if (user == 1)
         {
             player.GetComponent<Animator>().SetFloat("Speed", 0.0f);
@@ -3968,11 +3967,14 @@ public class BattleController : MonoBehaviour
             changePos = false;
             firstPosPlayer = true;
             companionTurn = false;
-            playerTurn = true;
-            playerChoosingAction = true;
+            if (!companion.GetComponent<PlayerTeamScript>().IsDead())
+            {
+                playerTurn = true;
+                playerChoosingAction = true;
+                player.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+            }
             player.position = new Vector3(-5.0f, player.position.y, -2.05f);
             companion.position = new Vector3(-6.4f, companion.position.y, -2.04f);
-            player.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
         }
     }
 
@@ -4065,12 +4067,12 @@ public class BattleController : MonoBehaviour
     //A function to end enemy turn
     public void EndEnemyTurn()
     {
-        if (player.GetComponent<PlayerTeamScript>().IsDead()) endBattle = true;
+        if (player.GetComponent<PlayerTeamScript>().IsDead()) killerEnemy = 5;
         else
         {
             defensePlayer = 0;
             defenseCompanion = 0;
-            changePosAction.SetActive(true);
+            if (!companion.GetComponent<PlayerTeamScript>().IsDead()) changePosAction.SetActive(true);
             playerTeamTurn = true;
             if (companion.GetComponent<PlayerTeamScript>().IsDead())
             {
@@ -4098,9 +4100,14 @@ public class BattleController : MonoBehaviour
                     companionTurn = true;
                     companionChoosingAction = true;
                 }
-            }                
+            }
             enemyTeamTurn = false;
-        }        
+        }                        
+    }
+    //Function to get the first pos teamate. true-> player, false-> companion
+    public bool IsPLayerFirst()
+    {
+        return firstPosPlayer;
     }
     //Function to get the aim rotation
     public float GetAimRotation()
@@ -4108,25 +4115,37 @@ public class BattleController : MonoBehaviour
         return aimRotation;
     }
 
+
     //A function to pass the turn to the next enemy
     public void NextEnemy(int numb)
     {
         if (player.GetComponent<PlayerTeamScript>().IsDead())
         {
-            endBattle = true;
+            Debug.Log("Esta muerto");
+            killerEnemy = numb;
         }
-        else if (numb == 1)
+        else
         {
-            enemy2Turn = true;
-        }
-        else if (numb == 2)
-        {
-            enemy3Turn = true;
-        }
-        else if (numb == 3)
-        {
-            enemy4Turn = true;
-        }
+            Debug.Log("No esta muerto");
+            if (numb == 1)
+            {
+                enemy2Turn = true;
+            }
+            else if (numb == 2)
+            {
+                enemy3Turn = true;
+            }
+            else if (numb == 3)
+            {
+                enemy4Turn = true;
+            }
+        }        
+    }
+    //Function to restart the enemy attack when the player dies
+    public void ContinueEnemy()
+    {
+        if (killerEnemy != 5) NextEnemy(killerEnemy);
+        else EndEnemyTurn();
     }
 
     //A function to start the defense zone
@@ -4727,6 +4746,31 @@ public class BattleController : MonoBehaviour
             if (i < 19) items[i] = items[i + 1];
             else items[i] = 0;
         }
+    }
+    //Function to know the position of the recover potion item
+    private int RecoverPotionPos()
+    {
+        int i = 0;
+        while (items[i] != 3 && i < 19)
+        {
+            i++;
+        }
+        if (items[i] == 3) return i;
+        else return -1;
+    }
+
+    //Function to use a recover potion
+    public bool UseRecoverPotion()
+    {
+        int pos = RecoverPotionPos();
+        if (pos != -1)
+        {
+            player.GetComponent<PlayerTeamScript>().Recover(firstPosPlayer);
+            DeleteItem(pos);
+            return true;
+        }
+        else return false;
+
     }
 
     //Function to fill the souls
@@ -5788,6 +5832,13 @@ public class BattleController : MonoBehaviour
                             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Light potion";
                             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
                         }
+                        else if (items[i + scroll - 1] == 3)
+                        {
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).gameObject.SetActive(true);
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).transform.GetChild(0).GetComponent<Image>().sprite = resurrectPotion;
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Resurrect potion";
+                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
+                        }
                     }
                 }
                 else
@@ -5811,6 +5862,13 @@ public class BattleController : MonoBehaviour
                                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).gameObject.SetActive(true);
                                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).transform.GetChild(0).GetComponent<Image>().sprite = lightPotion;
                                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Light potion";
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
+                            }
+                            else if (items[i - 1] == 3)
+                            {
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).gameObject.SetActive(true);
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).transform.GetChild(0).GetComponent<Image>().sprite = resurrectPotion;
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Resurrect potion";
                                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
                             }
                         }
@@ -6121,6 +6179,13 @@ public class BattleController : MonoBehaviour
                             companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Light potion";
                             companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
                         }
+                        else if (items[i + scroll - 1] == 3)
+                        {
+                            companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).gameObject.SetActive(true);
+                            companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(0).GetComponent<Image>().sprite = resurrectPotion;
+                            companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Resurrect potion";
+                            companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
+                        }
                     }
                 }
                 else
@@ -6144,6 +6209,13 @@ public class BattleController : MonoBehaviour
                                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).gameObject.SetActive(true);
                                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(0).GetComponent<Image>().sprite = lightPotion;
                                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Light potion";
+                                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
+                            }
+                            else if (items[i - 1] == 3)
+                            {
+                                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).gameObject.SetActive(true);
+                                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(0).GetComponent<Image>().sprite = resurrectPotion;
+                                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Resurrect potion";
                                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
                             }
                         }

@@ -99,7 +99,8 @@ public class PlayerTeamScript : MonoBehaviour
     private Transform glanceAction;
     //The number of arrows shot by the BK47
     private int arrowNumb;
-
+    //A boolean to know if the player has recovered
+    private bool recovered;
     void Awake()
     {
         //We find the gameobjects and initialize some variables
@@ -126,6 +127,7 @@ public class PlayerTeamScript : MonoBehaviour
         lightUp = 0;
         attackSpeed = 1.0f;
         arrowNumb = 0;
+        recovered = true;
     }
 
 
@@ -959,7 +961,20 @@ public class PlayerTeamScript : MonoBehaviour
     {
         return playerTeamType;
     }
+    //A function to use a recover potion
+    public void UseRecoverPotion()
+    {
+        GetComponent<Animator>().SetBool("isDefending", false);
+        if (battleController.GetComponent<BattleController>().UseRecoverPotion()) GetComponent<Animator>().SetBool("isDead", false);
+        else battleController.GetComponent<BattleController>().EndBattle();
+    }
 
+    //A function to continue with the enemy turn
+    public void ContinueEnemy()
+    {
+        recovered = true;
+        battleController.GetComponent<BattleController>().ContinueEnemy();
+    }
     //A function to deal damage
     public void DealDamage(int Damage)
     {
@@ -972,12 +987,21 @@ public class PlayerTeamScript : MonoBehaviour
             if (playerTeamType == 0)
             {
                 playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
-                if(playerLife.GetComponent<PlayerLifeScript>().IsDead()) GetComponent<Animator>().SetBool("isDead", true);
+                if (playerLife.GetComponent<PlayerLifeScript>().IsDead())
+                {
+                    recovered = false;
+                    GetComponent<Animator>().SetBool("isDead", true);
+                }
             }
             else
             {
                 companionLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
-                if (companionLife.GetComponent<PlayerLifeScript>().IsDead()) GetComponent<Animator>().SetBool("isDead", true);
+                if (companionLife.GetComponent<PlayerLifeScript>().IsDead())
+                {
+                    recovered = false;
+                    GetComponent<Animator>().SetBool("isDead", true);
+                    if (!battleController.GetComponent<BattleController>().IsPLayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+                }
             }
             
         }        
@@ -985,7 +1009,7 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to know if the player is dead
     public bool IsDead()
     {
-        if (playerTeamType == 0) return playerLife.GetComponent<PlayerLifeScript>().IsDead();
+        if (playerTeamType == 0) return playerLife.GetComponent<PlayerLifeScript>().IsDead() || !recovered;
         else return companionLife.GetComponent<PlayerLifeScript>().IsDead();       
     }
     //A function to end the glance
@@ -1046,6 +1070,25 @@ public class PlayerTeamScript : MonoBehaviour
         {
             heartImage.GetComponent<DamageImageScript>().SetUser(isPlayer);
             companionLife.GetComponent<PlayerLifeScript>().Heal(points);
+        }
+    }
+
+    //A function to recover a companion
+    public void Recover(bool isPlayer)
+    {
+        heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 0.5f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
+        heartImage.GetChild(0).GetComponent<Text>().text = 10.ToString();
+        heartImage.GetComponent<DamageImageScript>().SetDamage(true);
+        if (playerTeamType == 0)
+        {
+            heartImage.GetComponent<DamageImageScript>().SetUser(isPlayer);
+            playerLife.GetComponent<PlayerLifeScript>().Heal(10);
+        }
+        else
+        {
+            heartImage.GetComponent<DamageImageScript>().SetUser(isPlayer);
+            companionLife.GetComponent<PlayerLifeScript>().Heal(10);
+            GetComponent<Animator>().SetBool("isDead", false);
         }
     }
 
