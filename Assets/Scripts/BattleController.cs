@@ -900,7 +900,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5, false, true, true, false);
                                     else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, true, false);
-                                    else if (items[menuSelectionPos + scroll] == 3) player.GetComponent<PlayerTeamScript>().Recover(true);
+                                    else if (items[menuSelectionPos + scroll] == 3) player.GetComponent<PlayerTeamScript>().Recover(true, false);
                                     DeleteItem(menuSelectionPos + scroll);
                                     scroll = 0;
                                     actionInstructions.SetActive(false);
@@ -947,7 +947,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     if (items[menuSelectionPos + scroll] == 1) companion.GetComponent<PlayerTeamScript>().Heal(5, false, true, true, false);
                                     else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, true, false);
-                                    else if (items[menuSelectionPos + scroll] == 3) companion.GetComponent<PlayerTeamScript>().Recover(true);
+                                    else if (items[menuSelectionPos + scroll] == 3) companion.GetComponent<PlayerTeamScript>().Recover(true, false);
                                     DeleteItem(menuSelectionPos + scroll);
                                     scroll = 0;
                                     actionInstructions.SetActive(false);
@@ -2338,7 +2338,7 @@ public class BattleController : MonoBehaviour
                             player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                             if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5, false, true, false, false);
                             else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, false, false);
-                            else if (items[menuSelectionPos + scroll] == 3) player.GetComponent<PlayerTeamScript>().Recover(false);
+                            else if (items[menuSelectionPos + scroll] == 3) player.GetComponent<PlayerTeamScript>().Recover(false, false);
                             DeleteItem(menuSelectionPos + scroll);
                             scroll = 0;
                             actionInstructions.SetActive(false);
@@ -2374,7 +2374,7 @@ public class BattleController : MonoBehaviour
                             companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
                             if (items[menuSelectionPos + scroll] == 1) companion.GetComponent<PlayerTeamScript>().Heal(5, false, true, false, false);
                             else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, false, false);
-                            else if (items[menuSelectionPos + scroll] == 3) companion.GetComponent<PlayerTeamScript>().Recover(false);
+                            else if (items[menuSelectionPos + scroll] == 3) companion.GetComponent<PlayerTeamScript>().Recover(false, false);
                             DeleteItem(menuSelectionPos + scroll);
                             scroll = 0;
                             actionInstructions.SetActive(false);
@@ -3990,7 +3990,7 @@ public class BattleController : MonoBehaviour
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
             }
             if (user == 1) playerTurnCompleted = true;
-            if (user == 2 || companion.GetComponent<PlayerTeamScript>().IsDead()) companionTurnCompleted = true;
+            if (user == 2 || companion.GetComponent<PlayerTeamScript>().IsDead()) companionTurnCompleted = true; 
             if (playerTurnCompleted && companionTurnCompleted)
             {
                 player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
@@ -4060,7 +4060,7 @@ public class BattleController : MonoBehaviour
             victory = true;
             ShowVictoryXP();
             player.GetComponent<Animator>().SetTrigger("Victory");
-            companion.GetComponent<Animator>().SetTrigger("Victory");
+            if(!companion.GetComponent<PlayerTeamScript>().IsDead()) companion.GetComponent<Animator>().SetTrigger("Victory");
         }
     }
 
@@ -4121,12 +4121,10 @@ public class BattleController : MonoBehaviour
     {
         if (player.GetComponent<PlayerTeamScript>().IsDead())
         {
-            Debug.Log("Esta muerto");
             killerEnemy = numb;
         }
         else
         {
-            Debug.Log("No esta muerto");
             if (numb == 1)
             {
                 enemy2Turn = true;
@@ -4765,7 +4763,7 @@ public class BattleController : MonoBehaviour
         int pos = RecoverPotionPos();
         if (pos != -1)
         {
-            player.GetComponent<PlayerTeamScript>().Recover(firstPosPlayer);
+            player.GetComponent<PlayerTeamScript>().Recover(firstPosPlayer, false);
             DeleteItem(pos);
             return true;
         }
@@ -5504,24 +5502,26 @@ public class BattleController : MonoBehaviour
     {
         if(selection == 0)
         {
-            lvlUpSelected = -3;
             PlayerPrefs.SetInt("PlayerHeartLvl", PlayerPrefs.GetInt("PlayerHeartLvl") + 1);
             PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerLvl"));
         }
         else if(selection == 1)
         {
-            lvlUpSelected = -3;
             PlayerPrefs.SetInt("PlayerLightLvl", PlayerPrefs.GetInt("PlayerLightLvl") + 1);
             PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerLvl"));
 
         }
         else if(selection == 2)
         {
-            lvlUpSelected = -3;
             PlayerPrefs.SetInt("PlayerBadgeLvl", PlayerPrefs.GetInt("PlayerBadgeLvl") + 1);
             PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerLvl"));
         }
+        player.GetComponent<PlayerTeamScript>().Heal(player.GetComponent<PlayerTeamScript>().GetMaxHealth(), true, firstPosPlayer, true, true);
+        player.GetComponent<PlayerTeamScript>().IncreaseLight(player.GetComponent<PlayerTeamScript>().GetMaxLight() , true, true, true);
+        if (companion.GetComponent<PlayerTeamScript>().IsDead()) companion.GetComponent<PlayerTeamScript>().Recover(false, true);
+        else companion.GetComponent<PlayerTeamScript>().Heal(companion.GetComponent<PlayerTeamScript>().GetMaxHealth(), true, !firstPosPlayer, false, true);
         lvlUpMenu.transform.GetChild(selection).GetComponent<Animator>().SetTrigger("Selected");
+        lvlUpSelected = -3;
         victory = false;
         endBattle = true;
     }

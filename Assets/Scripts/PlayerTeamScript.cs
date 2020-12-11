@@ -998,7 +998,8 @@ public class PlayerTeamScript : MonoBehaviour
                 companionLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
                 if (companionLife.GetComponent<PlayerLifeScript>().IsDead())
                 {
-                    recovered = false;
+                    recovered = false; 
+                    GetComponent<Animator>().SetBool("isDefending", false);
                     GetComponent<Animator>().SetBool("isDead", true);
                     if (!battleController.GetComponent<BattleController>().IsPLayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
                 }
@@ -1074,20 +1075,30 @@ public class PlayerTeamScript : MonoBehaviour
     }
 
     //A function to recover a companion
-    public void Recover(bool isPlayer)
+    public void Recover(bool isPlayer, bool full)
     {
         heartImage = Instantiate(heartUI, new Vector3(transform.position.x + 0.5f, transform.position.y + 1.25f, transform.GetChild(0).position.z), Quaternion.identity, transform.GetChild(0));
         heartImage.GetChild(0).GetComponent<Text>().text = 10.ToString();
-        heartImage.GetComponent<DamageImageScript>().SetDamage(true);
         if (playerTeamType == 0)
         {
+            heartImage.GetComponent<DamageImageScript>().SetDamage(true);
             heartImage.GetComponent<DamageImageScript>().SetUser(isPlayer);
             playerLife.GetComponent<PlayerLifeScript>().Heal(10);
         }
         else
         {
+            
             heartImage.GetComponent<DamageImageScript>().SetUser(isPlayer);
-            companionLife.GetComponent<PlayerLifeScript>().Heal(10);
+            if (full)
+            {
+                heartImage.GetComponent<DamageImageScript>().SetDamage(true);
+                companionLife.GetComponent<PlayerLifeScript>().Heal(GetMaxHealth());
+            }
+            else
+            {
+                heartImage.GetComponent<DamageImageScript>().SetDamage(false);
+                companionLife.GetComponent<PlayerLifeScript>().Heal(10);
+            }
             GetComponent<Animator>().SetBool("isDead", false);
         }
     }
@@ -1102,4 +1113,20 @@ public class PlayerTeamScript : MonoBehaviour
         lightImage.GetComponent<DamageImageScript>().SetDamage(dontEndTurn);
         lightImage.GetComponent<DamageImageScript>().SetUser(isPlayer);
     }
+    //A function to get the max health
+    public int GetMaxHealth()
+    {
+        if (playerTeamType == 0)
+        {
+            return playerLife.GetComponent<PlayerLifeScript>().GetMaxHealth();
+        }
+        else return companionLife.GetComponent<PlayerLifeScript>().GetMaxHealth();
+    }
+
+    //A function to get the max light
+    public int GetMaxLight()
+    {
+        return lightPointsUI.GetComponent<LightPointsScript>().GetMaxLight();
+    }
+
 }

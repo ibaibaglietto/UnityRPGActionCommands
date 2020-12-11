@@ -48,4 +48,12 @@ public class LightPointsScript : MonoBehaviour
         currentLightText.text = currentLight.ToString();
     }
 
+    //Function to get the max light
+    public int GetMaxLight()
+    {
+        maxLight = 5 + PlayerPrefs.GetInt("PlayerLightLvl") * 5;
+        maxLightText.text = maxLight.ToString();
+        return maxLight;
+    }
+
 }
