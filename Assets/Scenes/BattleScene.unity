@@ -1419,7 +1419,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.20338441, y: 0}
   m_AnchorMax: {x: 0.4711922, y: 1}
-  m_AnchoredPosition: {x: 0.29795837, y: -0.000045776367}
+  m_AnchoredPosition: {x: 0.29785156, y: -0.000045776367}
   m_SizeDelta: {x: -0.21715546, y: -0.00002670288}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &149325935
@@ -6889,6 +6889,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerBattle: {fileID: 5352649904852120479, guid: 2c851f67d46ba8748aae653b60bcbf5f, type: 3}
   adventurerBattle: {fileID: 3162316843376333020, guid: 40023355911a3ce4cadd203438298a8b, type: 3}
+  companionWizardBattle: {fileID: 4486233812575140428, guid: 6233991c119b967419c28b5a53912582, type: 3}
   banditBattle: {fileID: 3877302658384341422, guid: 5d8eb0b2f1de23c46ba3ea7b614f4dd8, type: 3}
   wizardBattle: {fileID: 6119504698528858195, guid: 83986c8c45739944ea4460a458413eec, type: 3}
   damageUI: {fileID: 2003888347808236252, guid: ba485e94df23bb6459b7ed70110d5086, type: 3}
@@ -10829,7 +10830,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: f8aa8921d3b2c6b4398bc21974355924, type: 3}
+  m_Texture: {fileID: 2800000, guid: 893ff00715228e4438fb9ecdcb0f8e49, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
