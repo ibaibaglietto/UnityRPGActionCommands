@@ -20,7 +20,7 @@ public class SwordActionScript : MonoBehaviour
         battleController.GetComponent<BattleController>().attackAction = true;
     }
 
-    //A function to end the shuriken action
+    //A function to end the sword action
     public void EndSwordAction()
     {
         battleController.GetComponent<BattleController>().attackAction = false;

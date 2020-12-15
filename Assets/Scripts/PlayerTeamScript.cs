@@ -11,6 +11,8 @@ public class PlayerTeamScript : MonoBehaviour
     [SerializeField] private Transform lightShurikenPrefab;
     //The prefab of the fire shuriken
     [SerializeField] private Transform fireShurikenPrefab;
+    //The prefab of the magic ball
+    [SerializeField] private Transform magicBallPrefab;
     //The prefab of the arrow
     [SerializeField] private Transform arrow;
     //The prefab of the damage, heart and light UI
@@ -42,7 +44,7 @@ public class PlayerTeamScript : MonoBehaviour
     private int shurikenDamage;
     //A boolean to check if it is the las attack
     private bool lastAttack;
-    //The type of the player team user. 0-> Player, 1-> adventurer
+    //The type of the player team user. 0-> Player, 1-> adventurer, 2-> wizard
     public int playerTeamType; 
     //The start position
     private float startPos;
@@ -140,7 +142,7 @@ public class PlayerTeamScript : MonoBehaviour
             {
                 transform.position = new Vector3(transform.position.x + 0.10f, transform.position.y, transform.position.z);
                 if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.5f);
-                else if (playerTeamType == 1)
+                else if (playerTeamType == 1 || playerTeamType == 2)
                 {
                     GetComponent<Animator>().SetFloat("RunSpeed", 0.5f);
                     GetComponent<Animator>().SetFloat("Speed", 1.0f);
@@ -149,7 +151,7 @@ public class PlayerTeamScript : MonoBehaviour
             else
             {
                 if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.0f);
-                else if (playerTeamType == 1)
+                else if (playerTeamType == 1 || playerTeamType == 2)
                 {
                     GetComponent<Animator>().SetTrigger("Melee1");
                     GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
@@ -175,16 +177,16 @@ public class PlayerTeamScript : MonoBehaviour
                 }
                 transform.position = new Vector3(transform.position.x - 0.15f, transform.position.y, transform.position.z);
                 if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", -0.5f);
-                else if (playerTeamType == 1) GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
+                else if (playerTeamType == 1 || playerTeamType == 2) GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
             }
             else
             {
                 battleController.GetComponent<BattleController>().attackFinished = false;
                 if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.0f);
-                else if (playerTeamType == 1) GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
+                else if (playerTeamType == 1 || playerTeamType == 2) GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                 returnStartPos = false;
                 if (playerTeamType == 0) battleController.GetComponent<BattleController>().EndPlayerTurn(1);
-                else if (playerTeamType == 1) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+                else if (playerTeamType == 1 || playerTeamType == 2) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
             }
         }
         //Soul light going up
@@ -725,6 +727,18 @@ public class PlayerTeamScript : MonoBehaviour
                 }
             }
         }
+        else if(playerTeamType == 2)
+        {
+            if(type == 0)
+            {
+                if (style == 0)
+                {
+                    transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(true);
+                    GetComponent<Animator>().SetBool("magicBall", true);
+                    battleController.GetComponent<BattleController>().finalAttack = true;
+                }
+            }
+        }
     }
 
     //A function to start the attack action
@@ -880,6 +894,18 @@ public class PlayerTeamScript : MonoBehaviour
                 }
             }
         }
+        else if(playerTeamType == 2)
+        {
+            if(attackStyle == 0)
+            {
+                battleController.GetComponent<BattleController>().DeactivateActionInstructions();
+                shuriken = Instantiate(magicBallPrefab, gameObject.transform.position, Quaternion.identity);
+                shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+                if (lightUp != 0) EndBuffDebuff(lightUpPos);
+                lightUp = 0;
+            }
+        }
     }
     
     //A function to activate the shuriken action
@@ -941,7 +967,9 @@ public class PlayerTeamScript : MonoBehaviour
                 }
             }
         }
+        else if(playerTeamType == 2) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
     }
+
 
     //A function to set the shuriken damage
     public void SetShurikenDamage(int damage)
