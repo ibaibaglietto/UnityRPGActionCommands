@@ -24,18 +24,22 @@ public class MagicBallScript : MonoBehaviour
         float r = Random.Range(0.0f, 4.0f);
         if (r < 1.0f)
         {
+            battleController.GetComponent<BattleController>().SetMagicKey(KeyCode.UpArrow);
             transform.GetChild(6).GetComponent<Image>().sprite = upButton;
         }
         else if (r < 2.0f)
         {
+            battleController.GetComponent<BattleController>().SetMagicKey(KeyCode.DownArrow);
             transform.GetChild(6).GetComponent<Image>().sprite = downButton;
         }
         else if (r < 3.0f)
         {
+            battleController.GetComponent<BattleController>().SetMagicKey(KeyCode.LeftArrow);
             transform.GetChild(6).GetComponent<Image>().sprite = leftButton;
         }
         else if (r < 4.0f)
         {
+            battleController.GetComponent<BattleController>().SetMagicKey(KeyCode.RightArrow);
             transform.GetChild(6).GetComponent<Image>().sprite = rightButton;
         }
     }

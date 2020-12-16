@@ -21,6 +21,10 @@ public class ShurikenScript : MonoBehaviour
     private bool BK47;
     //A float to save the rotation of the bk47 arrow
     private float rotation;
+    //A boolean to know if the bullet is a magic ball
+    private bool magic;
+    //A boolean to know if the magic ball has exploded
+    private bool exploded;
 
     private void Awake()
     {
@@ -29,6 +33,8 @@ public class ShurikenScript : MonoBehaviour
         //We initialize the hit int
         hit = 0;
         BK47 = false;
+        magic = false;
+        exploded = false;
         rotation = 0.0f;
     }
 
@@ -41,14 +47,19 @@ public class ShurikenScript : MonoBehaviour
             //When the shuriken arrives it deals damage and self destroys
             else
             {
-                if (!fire)
+                if (!fire && !exploded)
                 {
                     battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), shurikenDamage, true);
                     if (shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.1f);
                     else if (shurikenDamage == 2) battleController.GetComponent<BattleController>().FillSouls(0.3f);
                     else battleController.GetComponent<BattleController>().FillSouls(0.4f);
                 }
-                Destroy(gameObject);
+                if (!magic) Destroy(gameObject);
+                else
+                {
+                    exploded = true;
+                    GetComponent<Animator>().SetTrigger("explode");
+                }
             }
             if (fire && fireObjectives.Length > hit && gameObject.transform.position.x > (fireObjectives[hit].transform.position.x - 0.2f) && gameObject.transform.position.x <= (fireObjectives[hit].transform.position.x + 0.2f))
             {
@@ -102,10 +113,22 @@ public class ShurikenScript : MonoBehaviour
         fire = onFire;
     }
 
+    //Function to set the magic ball
+    public void SetMagic()
+    {
+        magic = true;
+    }
+
     //Function to set the bk47 mode
     public void SetBK47(float rot)
     {
         rotation = rot;
         BK47 = true;
     }
+    //Function to self destroy
+    public void SelfDestroy()
+    {
+        Destroy(gameObject);
+    }
+
 }

@@ -341,6 +341,8 @@ public class BattleController : MonoBehaviour
     private int killerEnemy;
     //An int to know who is the current companion. 0-> Adventurer, 1-> Wizard
     private int currentCompanion;
+    //The randomly generated key to be used with the magic ball action
+    private KeyCode magicKey;
 
     private void Awake()
     {
@@ -2449,12 +2451,14 @@ public class BattleController : MonoBehaviour
                     else if (Input.GetKeyDown(KeyCode.Space))
                     {
                         player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
-                        actionInstructions.SetActive(false);
                         companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                         companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
                         companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                         enemyName.SetActive(false);
                         selectingCompanion = false;
+                        actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
+                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
+                        companion.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, player);
                     }
 
                 }
@@ -2841,7 +2845,8 @@ public class BattleController : MonoBehaviour
                             selectedEnemy = enemy1;
                             selectingEnemyCompanion = false;
                             enemyName.SetActive(false);
-                            actionInstructions.SetActive(false);
+                            actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
+                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
                             companion.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                         }
                     }
@@ -2951,26 +2956,28 @@ public class BattleController : MonoBehaviour
                     {
                         if(usingStyle == 0)
                         {
-                            if (!attackAction && Input.GetKeyDown(KeyCode.X))
+                            if (!attackAction && (Input.GetKeyDown(KeyCode.UpArrow)|| Input.GetKeyDown(KeyCode.DownArrow)|| Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)))
                             {
                                 companion.transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
-                                companion.GetComponent<Animator>().SetBool("magicBall", false);
                                 companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                                companion.GetComponent<Animator>().SetBool("magicBall", false);
                             }
                             if (attackAction)
                             {
-                                if (Input.GetKeyDown(KeyCode.X) && !badAttack)
+                                if (Input.GetKeyDown(magicKey) && !badAttack)
                                 {
                                     companion.transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
-                                    companion.GetComponent<Animator>().SetBool("magicBall", false);
                                     companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
+                                    companion.GetComponent<Animator>().SetBool("magicBall", false);
+                                    attackAction = false;
                                 }
                             }
                             if (attackFinished)
                             {
                                 companion.transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
-                                companion.GetComponent<Animator>().SetBool("magicBall", false);
                                 companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                                companion.GetComponent<Animator>().SetBool("magicBall", false);
+                                attackAction = false;
                             }
                         }
                     }
@@ -4927,6 +4934,12 @@ public class BattleController : MonoBehaviour
         menuSelectionPos = pos;
     }
 
+    //Function to get if the player is in the first position
+    private bool IsPlayerFirst()
+    {
+        return firstPosPlayer;
+    }
+
     //Function to know the number of items the player has
     private int itemSize()
     {
@@ -5135,6 +5148,13 @@ public class BattleController : MonoBehaviour
             soul1.GetComponent<Image>().fillAmount = 0.0f;
         }
     }
+
+    //Function to set the magic key
+    public void SetMagicKey(KeyCode key)
+    {
+        magicKey = key;
+    }
+
     //Function to set the talking state
     public void SetTalking(bool state)
     {

@@ -119,12 +119,12 @@ TextureImporter:
       name: AttackMagicBall_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
-        width: 231
+        width: 229
         height: 190
       alignment: 9
-      pivot: {x: 0.6941431, y: 0.5845506}
+      pivot: {x: 0, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -140,12 +140,12 @@ TextureImporter:
       name: AttackMagicBall_1
       rect:
         serializedVersion: 2
-        x: 231
+        x: 230
         y: 0
-        width: 231
+        width: 232
         height: 190
       alignment: 9
-      pivot: {x: 0.6941431, y: 0.5845506}
+      pivot: {x: 0, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -161,12 +161,12 @@ TextureImporter:
       name: AttackMagicBall_2
       rect:
         serializedVersion: 2
-        x: 462
+        x: 463
         y: 0
-        width: 231
+        width: 226
         height: 190
       alignment: 9
-      pivot: {x: 0.6941431, y: 0.5845506}
+      pivot: {x: 0, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -182,12 +182,12 @@ TextureImporter:
       name: AttackMagicBall_3
       rect:
         serializedVersion: 2
-        x: 693
+        x: 689
         y: 0
-        width: 231
+        width: 235
         height: 190
       alignment: 9
-      pivot: {x: 0.6941431, y: 0.5845506}
+      pivot: {x: 0, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -208,7 +208,7 @@ TextureImporter:
         width: 231
         height: 190
       alignment: 9
-      pivot: {x: 0.6941431, y: 0.5845506}
+      pivot: {x: 0, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

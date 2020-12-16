@@ -25,6 +25,8 @@ AnimationClip:
       value: {fileID: 8288915215451595207, guid: 20bdd0feec1e5554ba6fcc85d1a11386, type: 3}
     - time: 0.2
       value: {fileID: 7441861488978599509, guid: 20bdd0feec1e5554ba6fcc85d1a11386, type: 3}
+    - time: 1
+      value: {fileID: 7441861488978599509, guid: 20bdd0feec1e5554ba6fcc85d1a11386, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -47,12 +49,13 @@ AnimationClip:
     - {fileID: 4668938655123782945, guid: 20bdd0feec1e5554ba6fcc85d1a11386, type: 3}
     - {fileID: 8288915215451595207, guid: 20bdd0feec1e5554ba6fcc85d1a11386, type: 3}
     - {fileID: 7441861488978599509, guid: 20bdd0feec1e5554ba6fcc85d1a11386, type: 3}
+    - {fileID: 7441861488978599509, guid: 20bdd0feec1e5554ba6fcc85d1a11386, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.3
+    m_StopTime: 1.1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -79,7 +82,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.2
+  - time: 1
     functionName: EndShurikenThrow
     data: 
     objectReferenceParameter: {fileID: 0}

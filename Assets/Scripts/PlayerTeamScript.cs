@@ -52,8 +52,12 @@ public class PlayerTeamScript : MonoBehaviour
     private float movePos;
     //A bool to check if the player is moving towards the enemy
     private bool movingToEnemy;
+    //A bool to check if the player is moving towards an ally
+    private bool movingToAlly;
     //A bool to check if the player is returning to the start position
     private bool returnStartPos;
+    //A bool to check if the player is returning to the start position from an ally
+    private bool returnStartPosAlly;
     //Boolean to check if we are on the state where the soul light goes up
     private bool soulLightUp;
     //Boolean to check if we are on the state where the soul light goes down
@@ -121,7 +125,9 @@ public class PlayerTeamScript : MonoBehaviour
         if (playerTeamType == 0) soulMusicAction.SetActive(false);
         lastAttack = false;
         movingToEnemy = false;
+        movingToAlly = false;
         returnStartPos = false;
+        returnStartPosAlly = false;
         soulLightUp = false;
         asleep = 0;
         lifesteal = 0;
@@ -170,7 +176,7 @@ public class PlayerTeamScript : MonoBehaviour
         {
             if (transform.position.x > startPos)
             {
-                if(attackStyle == 0 || attackStyle == 2)
+                if (attackStyle == 0 || attackStyle == 2)
                 {
                     attackObjective.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
                     attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
@@ -185,6 +191,73 @@ public class PlayerTeamScript : MonoBehaviour
                 if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.0f);
                 else if (playerTeamType == 1 || playerTeamType == 2) GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                 returnStartPos = false;
+                if (playerTeamType == 0) battleController.GetComponent<BattleController>().EndPlayerTurn(1);
+                else if (playerTeamType == 1 || playerTeamType == 2) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+            }
+        }
+        if (movingToAlly)
+        {
+            if (battleController.GetComponent<BattleController>().IsPLayerFirst())
+            {
+                if (transform.position.x < movePos)
+                {
+                    transform.position = new Vector3(transform.position.x + 0.05f, transform.position.y, transform.position.z);
+                    if (playerTeamType == 2)
+                    {
+                        GetComponent<Animator>().SetFloat("RunSpeed", 0.5f);
+                        GetComponent<Animator>().SetFloat("Speed", 1.0f);
+                    }
+                }
+                else
+                {
+                    GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
+                    movingToAlly = false;
+                    if (playerTeamType == 2 && attackStyle == 1) GetComponent<Animator>().SetBool("isDefending", true);
+                    transform.GetChild(0).GetChild(4).gameObject.SetActive(true);
+                    battleController.GetComponent<BattleController>().finalAttack = true;
+                }
+            }
+            else
+            {
+                if (transform.position.x > movePos)
+                {
+                    transform.position = new Vector3(transform.position.x - 0.05f, transform.position.y, transform.position.z);
+                    if (playerTeamType == 2)
+                    {
+                        GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
+                        GetComponent<Animator>().SetFloat("Speed", 1.0f);
+                    }
+                }
+                else
+                {
+                    GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
+                    movingToAlly = false;
+                    if(playerTeamType == 2 && attackStyle == 1) GetComponent<Animator>().SetBool("isDefending", true);
+                    transform.GetChild(0).GetChild(4).gameObject.SetActive(true);
+                    battleController.GetComponent<BattleController>().finalAttack = true;
+                }
+            }
+        }
+        //The player returns to the start position after attacking
+        else if (returnStartPosAlly)
+        {
+            if (transform.position.x > startPos)
+            {
+                if (attackStyle == 0 || attackStyle == 2)
+                {
+                    attackObjective.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
+                    attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
+                }
+                transform.position = new Vector3(transform.position.x - 0.15f, transform.position.y, transform.position.z);
+                if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", -0.5f);
+                else if (playerTeamType == 1 || playerTeamType == 2) GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
+            }
+            else
+            {
+                battleController.GetComponent<BattleController>().attackFinished = false;
+                if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.0f);
+                else if (playerTeamType == 1 || playerTeamType == 2) GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
+                returnStartPosAlly = false;
                 if (playerTeamType == 0) battleController.GetComponent<BattleController>().EndPlayerTurn(1);
                 else if (playerTeamType == 1 || playerTeamType == 2) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
             }
@@ -733,12 +806,24 @@ public class PlayerTeamScript : MonoBehaviour
             {
                 if (style == 0)
                 {
-                    transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(true);
                     GetComponent<Animator>().SetBool("magicBall", true);
-                    battleController.GetComponent<BattleController>().finalAttack = true;
+                    shurikenObjective = attackObjective.position;
+                }
+                else if(style == 1)
+                {
+                    startPos = transform.position.x;
+                    movePos = attackObjective.position.x + 0.9f;
+                    movingToAlly = true;
                 }
             }
         }
+    }
+
+    //A function to make the magic ball action appear
+    public void AppearMagicBallAction()
+    {
+        battleController.GetComponent<BattleController>().finalAttack = true;
+        transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(true);
     }
 
     //A function to start the attack action
@@ -899,8 +984,9 @@ public class PlayerTeamScript : MonoBehaviour
             if(attackStyle == 0)
             {
                 battleController.GetComponent<BattleController>().DeactivateActionInstructions();
-                shuriken = Instantiate(magicBallPrefab, gameObject.transform.position, Quaternion.identity);
+                shuriken = Instantiate(magicBallPrefab, new Vector3(gameObject.transform.position.x + 1.0104f, gameObject.transform.position.y + 0.3781f, gameObject.transform.position.z), Quaternion.identity);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
+                shuriken.GetComponent<ShurikenScript>().SetMagic();
                 shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
