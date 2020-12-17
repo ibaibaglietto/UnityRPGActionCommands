@@ -197,7 +197,7 @@ public class PlayerTeamScript : MonoBehaviour
         }
         if (movingToAlly)
         {
-            if (battleController.GetComponent<BattleController>().IsPLayerFirst())
+            if (battleController.GetComponent<BattleController>().IsPlayerFirst())
             {
                 if (transform.position.x < movePos)
                 {
@@ -212,9 +212,9 @@ public class PlayerTeamScript : MonoBehaviour
                 {
                     GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                     movingToAlly = false;
-                    if (playerTeamType == 2 && attackStyle == 1) GetComponent<Animator>().SetBool("isDefending", true);
-                    transform.GetChild(0).GetChild(4).gameObject.SetActive(true);
+                    if (playerTeamType == 2 && attackStyle == 1) GetComponent<Animator>().SetBool("isDefending", true);                    
                     battleController.GetComponent<BattleController>().finalAttack = true;
+                    battleController.GetComponent<BattleController>().CreateBarrierAction();
                 }
             }
             else
@@ -233,33 +233,49 @@ public class PlayerTeamScript : MonoBehaviour
                     GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                     movingToAlly = false;
                     if(playerTeamType == 2 && attackStyle == 1) GetComponent<Animator>().SetBool("isDefending", true);
-                    transform.GetChild(0).GetChild(4).gameObject.SetActive(true);
                     battleController.GetComponent<BattleController>().finalAttack = true;
+                    battleController.GetComponent<BattleController>().CreateBarrierAction();
                 }
             }
         }
         //The player returns to the start position after attacking
         else if (returnStartPosAlly)
         {
-            if (transform.position.x > startPos)
+            if (battleController.GetComponent<BattleController>().IsPlayerFirst())
             {
-                if (attackStyle == 0 || attackStyle == 2)
+                if (transform.position.x > startPos)
                 {
-                    attackObjective.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
-                    attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
+                    transform.position = new Vector3(transform.position.x - 0.05f, transform.position.y, transform.position.z);
+                    if (playerTeamType == 2)
+                    {
+                        GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
+                        GetComponent<Animator>().SetFloat("Speed", 1.0f);
+                    }
                 }
-                transform.position = new Vector3(transform.position.x - 0.15f, transform.position.y, transform.position.z);
-                if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", -0.5f);
-                else if (playerTeamType == 1 || playerTeamType == 2) GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
+                else
+                {
+                    GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
+                    returnStartPosAlly = false;
+                    battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+                }
             }
             else
             {
-                battleController.GetComponent<BattleController>().attackFinished = false;
-                if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.0f);
-                else if (playerTeamType == 1 || playerTeamType == 2) GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
-                returnStartPosAlly = false;
-                if (playerTeamType == 0) battleController.GetComponent<BattleController>().EndPlayerTurn(1);
-                else if (playerTeamType == 1 || playerTeamType == 2) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+                if (transform.position.x < startPos)
+                {
+                    transform.position = new Vector3(transform.position.x + 0.05f, transform.position.y, transform.position.z);
+                    if (playerTeamType == 2)
+                    {
+                        GetComponent<Animator>().SetFloat("RunSpeed", 0.5f);
+                        GetComponent<Animator>().SetFloat("Speed", 1.0f);
+                    }
+                }
+                else
+                {
+                    GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
+                    returnStartPosAlly = false;
+                    battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+                }
             }
         }
         //Soul light going up
@@ -811,6 +827,7 @@ public class PlayerTeamScript : MonoBehaviour
                 }
                 else if(style == 1)
                 {
+                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(1);
                     startPos = transform.position.x;
                     movePos = attackObjective.position.x + 0.9f;
                     movingToAlly = true;
@@ -824,6 +841,11 @@ public class PlayerTeamScript : MonoBehaviour
     {
         battleController.GetComponent<BattleController>().finalAttack = true;
         transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(true);
+    }
+    //Function to make the wizard return to the starting position
+    public void ReturnStartPos()
+    {
+        returnStartPosAlly = true;
     }
 
     //A function to start the attack action
@@ -944,9 +966,9 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().DeactivateActionInstructions();
                 shuriken = Instantiate(fireShurikenPrefab, gameObject.transform.position, Quaternion.identity);
                 shuriken.GetComponent<ShurikenScript>().SetFireObjectives(battleController.GetComponent<BattleController>().GetGroundEnemies());
+                shuriken.GetComponent<ShurikenScript>().OnFireShuriken(true);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
                 shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
-                shuriken.GetComponent<ShurikenScript>().OnFireShuriken(true);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
@@ -958,9 +980,9 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().DeactivateActionInstructions();
                 shuriken = Instantiate(arrow, gameObject.transform.position, Quaternion.identity);
                 shuriken.GetComponent<ShurikenScript>().SetFireObjectives(battleController.GetComponent<BattleController>().GetGroundEnemies());
+                shuriken.GetComponent<ShurikenScript>().OnFireShuriken(true);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
                 shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
-                shuriken.GetComponent<ShurikenScript>().OnFireShuriken(true);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
@@ -1115,7 +1137,7 @@ public class PlayerTeamScript : MonoBehaviour
                     recovered = false; 
                     GetComponent<Animator>().SetBool("isDefending", false);
                     GetComponent<Animator>().SetBool("isDead", true);
-                    if (!battleController.GetComponent<BattleController>().IsPLayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+                    if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
                 }
             }
             

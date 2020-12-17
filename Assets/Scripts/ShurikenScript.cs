@@ -89,7 +89,7 @@ public class ShurikenScript : MonoBehaviour
     public void SetObjective(Vector3 obj)
     {
         objective = obj;
-        if (!BK47) 
+        if (!BK47 && !fire) 
         {
             rotation = Mathf.Atan2(objective.y - transform.position.y, objective.x - transform.position.x);
             transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotation * Mathf.Rad2Deg);

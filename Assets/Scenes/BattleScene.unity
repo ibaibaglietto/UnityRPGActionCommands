@@ -2623,6 +2623,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5630524632406247090, guid: a34b9a35be8cc8146a4203c6c96a00f3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bde19a1b6e49cf346a3470389a181f3a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a34b9a35be8cc8146a4203c6c96a00f3, type: 3}
 --- !u!1 &298907133
@@ -4257,6 +4261,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5630524632406247090, guid: a34b9a35be8cc8146a4203c6c96a00f3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bde19a1b6e49cf346a3470389a181f3a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a34b9a35be8cc8146a4203c6c96a00f3, type: 3}
 --- !u!1 &638346549
@@ -6923,6 +6931,10 @@ MonoBehaviour:
   leftArrowSprite: {fileID: 8746342764438225453, guid: bd6dfd2e3e1f29a49b451520d85962fc, type: 3}
   rightArrowSprite: {fileID: -8585493491078291697, guid: bd6dfd2e3e1f29a49b451520d85962fc, type: 3}
   downArrowSprite: {fileID: -3798998906436529524, guid: bd6dfd2e3e1f29a49b451520d85962fc, type: 3}
+  upArrowSpritePressed: {fileID: 466913624026476913, guid: 085c7c4ca3bb1d845982e4ec0f278844, type: 3}
+  leftArrowSpritePressed: {fileID: 46050715304335678, guid: 085c7c4ca3bb1d845982e4ec0f278844, type: 3}
+  rightArrowSpritePressed: {fileID: 2480682418808482285, guid: 085c7c4ca3bb1d845982e4ec0f278844, type: 3}
+  downArrowSpritePressed: {fileID: 2296917250436518745, guid: 085c7c4ca3bb1d845982e4ec0f278844, type: 3}
   finalAttack: 0
   attackAction: 0
   attackFinished: 0
@@ -13419,6 +13431,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   user: 1
+  playerHealth: {fileID: 21300000, guid: 0c63770805187f342bf73b1447c378b4, type: 3}
+  adventurerHealth: {fileID: 21300000, guid: f8aa8921d3b2c6b4398bc21974355924, type: 3}
+  wizardHealth: {fileID: 21300000, guid: 893ff00715228e4438fb9ecdcb0f8e49, type: 3}
 --- !u!1 &1874372241
 GameObject:
   m_ObjectHideFlags: 0
@@ -14263,6 +14278,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   user: 0
+  playerHealth: {fileID: 21300000, guid: 0c63770805187f342bf73b1447c378b4, type: 3}
+  adventurerHealth: {fileID: 21300000, guid: f8aa8921d3b2c6b4398bc21974355924, type: 3}
+  wizardHealth: {fileID: 21300000, guid: 893ff00715228e4438fb9ecdcb0f8e49, type: 3}
 --- !u!1 &1993526395
 GameObject:
   m_ObjectHideFlags: 0
@@ -15331,6 +15349,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5630524632406247090, guid: a34b9a35be8cc8146a4203c6c96a00f3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bde19a1b6e49cf346a3470389a181f3a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a34b9a35be8cc8146a4203c6c96a00f3, type: 3}
 --- !u!1 &2109665942
@@ -15577,6 +15599,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5630524632406247090, guid: a34b9a35be8cc8146a4203c6c96a00f3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bde19a1b6e49cf346a3470389a181f3a, type: 2}
     - target: {fileID: 8222612259377542603, guid: a34b9a35be8cc8146a4203c6c96a00f3, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.314

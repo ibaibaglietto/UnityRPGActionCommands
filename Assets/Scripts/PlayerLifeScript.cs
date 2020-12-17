@@ -15,12 +15,20 @@ public class PlayerLifeScript : MonoBehaviour
     private Text maxHealthText;
     //The current health text
     private Text currentHealthText;
+    //The image of the player health
+    [SerializeField] private Sprite playerHealth;
+    //The image of the adventurer health
+    [SerializeField] private Sprite adventurerHealth;
+    //The image of the wizard health
+    [SerializeField] private Sprite wizardHealth;
 
 
     void Start()
     {
-        if(user == 0) maxHealth = 10 + PlayerPrefs.GetInt("PlayerHeartLvl") * 5;
+        //transform.GetChild(3).GetComponent<RawImage>().texture = (Texture)playerHealth;
+        if (user == 0) maxHealth = 10 + PlayerPrefs.GetInt("PlayerHeartLvl") * 5;
         else if (user == 1) maxHealth = 10 + PlayerPrefs.GetInt("AdventurerLvl") * 10;
+        else if (user == 2) maxHealth = 15 + PlayerPrefs.GetInt("WizardLvl") * 10;
         //We save the current health
         currentHealth = maxHealth;
         //We find the current health text and max health text and initialize them
@@ -41,6 +49,7 @@ public class PlayerLifeScript : MonoBehaviour
     {
         if (user == 0) maxHealth = 10 + PlayerPrefs.GetInt("PlayerHeartLvl") * 5;
         else if (user == 1) maxHealth = 10 + PlayerPrefs.GetInt("AdventurerLvl") * 10;
+        else if (user == 2) maxHealth = 15 + PlayerPrefs.GetInt("WizardLvl") * 10;
         maxHealthText.text = maxHealth.ToString();
         return maxHealth;
     }

@@ -53,6 +53,10 @@ public class BattleController : MonoBehaviour
     [SerializeField] private Sprite leftArrowSprite;
     [SerializeField] private Sprite rightArrowSprite;
     [SerializeField] private Sprite downArrowSprite;
+    [SerializeField] private Sprite upArrowSpritePressed;
+    [SerializeField] private Sprite leftArrowSpritePressed;
+    [SerializeField] private Sprite rightArrowSpritePressed;
+    [SerializeField] private Sprite downArrowSpritePressed;
     //The keys
     private Transform key1;
     private Transform key1Cover;
@@ -343,6 +347,14 @@ public class BattleController : MonoBehaviour
     private int currentCompanion;
     //The randomly generated key to be used with the magic ball action
     private KeyCode magicKey;
+    //An array to know the keys the player has to press to perform the barrier action
+    private KeyCode[] barrierKeys;
+    //An int to know how many keys has the player pressed during the barrier action
+    private int barrierNumber;
+    //A float to know the time the player started the barrier action
+    private float barrierTime;
+    //A bool to know if the wizard is taunting the enemies
+    private bool taunting;
 
     private void Awake()
     {
@@ -545,6 +557,8 @@ public class BattleController : MonoBehaviour
         victory = false;
         endBattle = false;
         killerEnemy = -1;
+        barrierKeys = new KeyCode[5];
+        taunting = false;
     }
 
     private void Update()
@@ -822,7 +836,11 @@ public class BattleController : MonoBehaviour
                             }
                             if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
                             {
-                                if (menuSelectionPos == 1)
+                                if(menuSelectionPos == 0)
+                                {
+                                    Debug.Log("menu de cambio de pj");
+                                }
+                                else if (menuSelectionPos == 1)
                                 {
                                     defensePlayer = 1;
                                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
@@ -1079,9 +1097,9 @@ public class BattleController : MonoBehaviour
                                     else
                                     {
                                         Transform enemy = SelectNextShuriken(enemy1.GetComponent<EnemyTeamScript>().IsGrounded());
-                                        enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                         if(enemy!= null)
                                         {
+                                            enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
                                             {
@@ -1157,9 +1175,9 @@ public class BattleController : MonoBehaviour
                                     else if(!enemy1.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
                                         Transform enemy = SelectNextShuriken(enemy2.GetComponent<EnemyTeamScript>().IsGrounded());
-                                        enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                         if(enemy != null)
                                         {
+                                            enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
                                             {
@@ -1222,9 +1240,9 @@ public class BattleController : MonoBehaviour
                                     else if(enemy1.GetComponent<EnemyTeamScript>().IsAlive() || enemy2.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
                                         Transform enemy = SelectNextShuriken(enemy3.GetComponent<EnemyTeamScript>().IsGrounded());
-                                        enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                         if (enemy != null)
                                         {
+                                            enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
                                             {
@@ -1258,9 +1276,9 @@ public class BattleController : MonoBehaviour
                                     else if (!enemy1.GetComponent<EnemyTeamScript>().IsAlive() && !enemy2.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
                                         Transform enemy = SelectNextShuriken(enemy3.GetComponent<EnemyTeamScript>().IsGrounded());
-                                        enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                         if (enemy != null)
                                         {
+                                            enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
                                             {
@@ -1336,9 +1354,9 @@ public class BattleController : MonoBehaviour
                                     else
                                     {
                                         Transform enemy = SelectNextShuriken(enemy4.GetComponent<EnemyTeamScript>().IsGrounded());
-                                        enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                         if (enemy != null)
                                         {
+                                            enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
                                             {
@@ -1483,7 +1501,6 @@ public class BattleController : MonoBehaviour
                             if (Input.GetKeyDown(KeyCode.X))
                             {
                                 player.GetChild(0).transform.GetChild(1).GetComponent<Animator>().SetBool("Active", false);
-                                player.GetComponent<Animator>().SetBool("isSpinning", false);
                                 if (attackAction)
                                 {
                                     player.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
@@ -1492,6 +1509,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     player.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
                                 }
+                                player.GetComponent<Animator>().SetBool("isSpinning", false);
                                 finalAttack = false;
                             }
                         }
@@ -2548,9 +2566,9 @@ public class BattleController : MonoBehaviour
                                     else 
                                     {
                                         Transform enemy = SelectNextShuriken(enemy1.GetComponent<EnemyTeamScript>().IsGrounded());
-                                        enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                         if (enemy != null)
                                         {
+                                            enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
                                             {
@@ -2626,9 +2644,9 @@ public class BattleController : MonoBehaviour
                                     else if (!enemy1.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
                                         Transform enemy = SelectNextShuriken(enemy2.GetComponent<EnemyTeamScript>().IsGrounded());
-                                        enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                         if (enemy != null)
                                         {
+                                            enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
                                             {
@@ -2691,9 +2709,9 @@ public class BattleController : MonoBehaviour
                                     else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() || enemy2.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
                                         Transform enemy = SelectNextShuriken(enemy3.GetComponent<EnemyTeamScript>().IsGrounded());
-                                        enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                         if (enemy != null)
                                         {
+                                            enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
                                             {
@@ -2727,9 +2745,9 @@ public class BattleController : MonoBehaviour
                                     else if (!enemy1.GetComponent<EnemyTeamScript>().IsAlive() && !enemy2.GetComponent<EnemyTeamScript>().IsAlive())
                                     {
                                         Transform enemy = SelectNextShuriken(enemy3.GetComponent<EnemyTeamScript>().IsGrounded());
-                                        enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                         if (enemy != null)
                                         {
+                                            enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
                                             {
@@ -2805,9 +2823,9 @@ public class BattleController : MonoBehaviour
                                     else
                                     {
                                         Transform enemy = SelectNextShuriken(enemy4.GetComponent<EnemyTeamScript>().IsGrounded());
-                                        enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                         if (enemy != null)
                                         {
+                                            enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0)
                                             {
@@ -2980,6 +2998,52 @@ public class BattleController : MonoBehaviour
                                 attackAction = false;
                             }
                         }
+                        else if(usingStyle == 1)
+                        {
+                            if ((Time.fixedTime - barrierTime) < 2.0f && barrierNumber < 5)
+                            {
+                                if (Input.GetKeyDown(barrierKeys[barrierNumber]))
+                                {
+                                    if (barrierKeys[barrierNumber] == KeyCode.UpArrow) companion.transform.GetChild(0).GetChild(4).GetChild(barrierNumber).GetComponent<Image>().sprite = upArrowSpritePressed;
+                                    else if (barrierKeys[barrierNumber] == KeyCode.DownArrow) companion.transform.GetChild(0).GetChild(4).GetChild(barrierNumber).GetComponent<Image>().sprite = downArrowSpritePressed;
+                                    else if (barrierKeys[barrierNumber] == KeyCode.LeftArrow) companion.transform.GetChild(0).GetChild(4).GetChild(barrierNumber).GetComponent<Image>().sprite = leftArrowSpritePressed;
+                                    else if (barrierKeys[barrierNumber] == KeyCode.RightArrow) companion.transform.GetChild(0).GetChild(4).GetChild(barrierNumber).GetComponent<Image>().sprite = rightArrowSpritePressed;
+                                    barrierNumber += 1;
+                                }
+                                else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+                                {
+                                    actionInstructions.SetActive(false);
+                                    barrierNumber = 0;
+                                    taunting = true;
+                                    companion.GetChild(0).Find("BarrierAction").gameObject.SetActive(false);
+                                    finalAttack = false;
+                                    EndPlayerTurn(2);
+                                }
+                            }
+                            else
+                            {
+                                if (barrierNumber < 5)
+                                {
+                                    actionInstructions.SetActive(false);
+                                    barrierNumber = 0;
+                                    taunting = true;
+                                    companion.GetChild(0).Find("BarrierAction").gameObject.SetActive(false);
+                                    finalAttack = false;
+                                    EndPlayerTurn(2);
+                                }
+                                else
+                                {
+                                    actionInstructions.SetActive(false);
+                                    barrierNumber = 0;
+                                    defenseCompanion = 2;
+                                    taunting = true;
+                                    companion.GetChild(0).Find("BarrierAction").gameObject.SetActive(false);
+                                    finalAttack = false;
+                                    companion.GetChild(1).GetComponent<SpriteRenderer>().color = new Color(companion.GetChild(1).GetComponent<SpriteRenderer>().color.r, companion.GetChild(1).GetComponent<SpriteRenderer>().color.g, companion.GetChild(1).GetComponent<SpriteRenderer>().color.b, 1.0f);
+                                    EndPlayerTurn(2);
+                                }
+                            }
+                        }
                     }
                 }
                 else if (talking)
@@ -3010,16 +3074,20 @@ public class BattleController : MonoBehaviour
                     }
                     else
                     {
-                        if (Random.Range(0.0f, 1.0f) < 0.75f)
+                        if (!taunting)
                         {
-                            if (firstPosPlayer) enemy1.GetComponent<EnemyTeamScript>().Attack(player);
-                            else enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                            if (Random.Range(0.0f, 1.0f) < 0.75f)
+                            {
+                                if (firstPosPlayer) enemy1.GetComponent<EnemyTeamScript>().Attack(player);
+                                else enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                            }
+                            else
+                            {
+                                if (firstPosPlayer) enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                                else enemy1.GetComponent<EnemyTeamScript>().Attack(player);
+                            }
                         }
-                        else
-                        {
-                            if (firstPosPlayer) enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
-                            else enemy1.GetComponent<EnemyTeamScript>().Attack(player);
-                        }
+                        else enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
                         enemy1Turn = false;
                     }                    
                 }
@@ -3056,16 +3124,20 @@ public class BattleController : MonoBehaviour
                         }
                         else
                         {
-                            if (Random.Range(0.0f, 1.0f) < 0.75f)
+                            if (!taunting)
                             {
-                                if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(player);
-                                else enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                                if (Random.Range(0.0f, 1.0f) < 0.75f)
+                                {
+                                    if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                                    else enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                                }
+                                else
+                                {
+                                    if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                                    else enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                                }
                             }
-                            else
-                            {
-                                if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
-                                else enemy2.GetComponent<EnemyTeamScript>().Attack(player);
-                            }
+                            else enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
                             enemy2Turn = false;
                         }
                     }
@@ -3101,16 +3173,20 @@ public class BattleController : MonoBehaviour
                         }
                         else
                         {
-                            if (Random.Range(0.0f, 1.0f) < 0.75f)
+                            if (!taunting)
                             {
-                                if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(player);
-                                else enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                                if (Random.Range(0.0f, 1.0f) < 0.75f)
+                                {
+                                    if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                                    else enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                                }
+                                else
+                                {
+                                    if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                                    else enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                                }
                             }
-                            else
-                            {
-                                if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
-                                else enemy3.GetComponent<EnemyTeamScript>().Attack(player);
-                            }
+                            else enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
                             enemy3Turn = false;
                         }
                     }
@@ -3146,16 +3222,20 @@ public class BattleController : MonoBehaviour
                         }
                         else
                         {
-                            if (Random.Range(0.0f, 1.0f) < 0.75f)
+                            if (!taunting)
                             {
-                                if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(player);
-                                else enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                                if (Random.Range(0.0f, 1.0f) < 0.75f)
+                                {
+                                    if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                                    else enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                                }
+                                else
+                                {
+                                    if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                                    else enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                                }
                             }
-                            else
-                            {
-                                if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
-                                else enemy4.GetComponent<EnemyTeamScript>().Attack(player);
-                            }
+                            else enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
                             enemy4Turn = false;
                         }
                     }
@@ -3221,8 +3301,8 @@ public class BattleController : MonoBehaviour
                 player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(2).GetComponent<Image>().sprite = emptyIcon;
                 player.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
                 player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
-                player.GetComponent<Animator>().SetBool("isSpinning", false);
                 player.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                player.GetComponent<Animator>().SetBool("isSpinning", false);
             }
             else if(player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
             {
@@ -3230,8 +3310,8 @@ public class BattleController : MonoBehaviour
                 player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(2).GetComponent<Image>().sprite = emptyIcon;
                 player.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
                 player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
-                player.GetComponent<Animator>().SetBool("isSpinning", false);
                 player.GetComponent<PlayerTeamScript>().SetShurikenDamage(4);
+                player.GetComponent<Animator>().SetBool("isSpinning", false);
             }
         }
         if (playerTurn && finalAttack && attackType == 1 && usingStyle == 2)
@@ -3252,8 +3332,8 @@ public class BattleController : MonoBehaviour
                 player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(2).GetComponent<Image>().sprite = emptyIcon;
                 player.GetChild(0).transform.GetChild(4).gameObject.SetActive(false);
                 player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
-                player.GetComponent<Animator>().SetBool("isSpinning", false);
                 player.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                player.GetComponent<Animator>().SetBool("isSpinning", false);
             }
             else if (player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
             {
@@ -3262,8 +3342,8 @@ public class BattleController : MonoBehaviour
                 player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(2).GetComponent<Image>().sprite = emptyIcon;
                 player.GetChild(0).transform.GetChild(4).gameObject.SetActive(false);
                 player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
-                player.GetComponent<Animator>().SetBool("isSpinning", false);
                 player.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
+                player.GetComponent<Animator>().SetBool("isSpinning", false);
             }
         }
         if (changePos)
@@ -4029,6 +4109,11 @@ public class BattleController : MonoBehaviour
             objective.GetComponent<Animator>().SetTrigger("TakeDamage");
         }
     }
+    //Function to know if the wizard is taunting
+    public bool IsTaunting()
+    {
+        return taunting;
+    }
 
     //Function to get the defense of the player
     public int GetDefense(int type)
@@ -4190,6 +4275,7 @@ public class BattleController : MonoBehaviour
     //A function to end players turn. User-->1 player, User-->2 companion
     public void EndPlayerTurn(int user)
     {
+        attackAction = false;
         if(GetAllEnemies() != null)
         {
             if (GetGroundEnemies() == null)
@@ -4281,19 +4367,21 @@ public class BattleController : MonoBehaviour
         {
             defensePlayer = 0;
             defenseCompanion = 0;
-            if (!companion.GetComponent<PlayerTeamScript>().IsDead()) changePosAction.SetActive(true);
             playerTeamTurn = true;
-            if (companion.GetComponent<PlayerTeamScript>().IsDead())
+            if (taunting)
             {
-                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
-                companionTurn = false;
-                companionChoosingAction = false;
-                playerTurn = true;
-                playerChoosingAction = true;
+                taunting = false;
+                companion.GetComponent<Animator>().SetBool("isDefending", false);
+                companion.GetChild(1).GetComponent<SpriteRenderer>().color = new Color(companion.GetChild(1).GetComponent<SpriteRenderer>().color.r, companion.GetChild(1).GetComponent<SpriteRenderer>().color.g, companion.GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                playerTurn = false;
+                playerChoosingAction = false;
+                companionTurn = true;
+                companion.GetComponent<PlayerTeamScript>().ReturnStartPos();
             }
             else
             {
-                if (firstPosPlayer)
+                if (!companion.GetComponent<PlayerTeamScript>().IsDead()) changePosAction.SetActive(true);
+                if (companion.GetComponent<PlayerTeamScript>().IsDead())
                 {
                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
                     companionTurn = false;
@@ -4303,18 +4391,29 @@ public class BattleController : MonoBehaviour
                 }
                 else
                 {
-                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
-                    playerTurn = false;
-                    playerChoosingAction = false;
-                    companionTurn = true;
-                    companionChoosingAction = true;
+                    if (firstPosPlayer)
+                    {
+                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+                        companionTurn = false;
+                        companionChoosingAction = false;
+                        playerTurn = true;
+                        playerChoosingAction = true;
+                    }
+                    else
+                    {
+                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+                        playerTurn = false;
+                        playerChoosingAction = false;
+                        companionTurn = true;
+                        companionChoosingAction = true;
+                    }
                 }
-            }
+            }            
             enemyTeamTurn = false;
         }                        
     }
     //Function to get the first pos teamate. true-> player, false-> companion
-    public bool IsPLayerFirst()
+    public bool IsPlayerFirst()
     {
         return firstPosPlayer;
     }
@@ -4934,12 +5033,6 @@ public class BattleController : MonoBehaviour
         menuSelectionPos = pos;
     }
 
-    //Function to get if the player is in the first position
-    private bool IsPlayerFirst()
-    {
-        return firstPosPlayer;
-    }
-
     //Function to know the number of items the player has
     private int itemSize()
     {
@@ -5042,6 +5135,38 @@ public class BattleController : MonoBehaviour
             }
             else soul6.GetComponent<Image>().fillAmount += soul;
         }
+    }
+    //Function to create the barrier action
+    public void CreateBarrierAction()
+    {
+        barrierNumber = 0;
+        companion.transform.GetChild(0).GetChild(4).gameObject.SetActive(true);
+        float r;
+        for(int i = 0; i<5; i++)
+        {
+            r = Random.Range(0.0f, 4.0f);
+            if (r < 1.0f)
+            {
+                barrierKeys[i] = KeyCode.UpArrow;
+                companion.transform.GetChild(0).GetChild(4).GetChild(i).GetComponent<Image>().sprite = upArrowSprite;
+            }
+            else if (r < 2.0f)
+            {
+                barrierKeys[i] = KeyCode.DownArrow;
+                companion.transform.GetChild(0).GetChild(4).GetChild(i).GetComponent<Image>().sprite = downArrowSprite;
+            }
+            else if (r < 3.0f)
+            {
+                barrierKeys[i] = KeyCode.LeftArrow;
+                companion.transform.GetChild(0).GetChild(4).GetChild(i).GetComponent<Image>().sprite = leftArrowSprite;
+            }
+            else if (r < 4.0f)
+            {
+                barrierKeys[i] = KeyCode.RightArrow;
+                companion.transform.GetChild(0).GetChild(4).GetChild(i).GetComponent<Image>().sprite = rightArrowSprite;
+            }
+        }
+        barrierTime = Time.fixedTime;
     }
 
     //Function to spend souls
@@ -6251,9 +6376,9 @@ public class BattleController : MonoBehaviour
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = partnerChange;
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Change partner";
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
-                menuCanUse[0] = false;
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                menuCanUse[0] = true;
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = defend;
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Defend";
@@ -6380,25 +6505,26 @@ public class BattleController : MonoBehaviour
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = firstSkill;
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Magic ball";
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
-                    if (GetGroundEnemies() != null)
+                    menuCanUse[0] = true;
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    if (lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(1))
                     {
-                        menuCanUse[0] = true;
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).gameObject.SetActive(true);
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        menuCanUse[1] = true;
                     }
                     else
                     {
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
-                        menuCanUse[0] = false;
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).gameObject.SetActive(true);
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        menuCanUse[1] = false;
                     }
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).gameObject.SetActive(true);
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = secondSkill;
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Barrier";
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "";
-                    menuCanUse[1] = true;
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "1 LP";
                     number = PlayerPrefs.GetInt("WizardLvl");
                     if (number > 0)
                     {
@@ -6554,9 +6680,9 @@ public class BattleController : MonoBehaviour
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = partnerChange;
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Change partner";
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
-                menuCanUse[0] = false;
+                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                menuCanUse[0] = true;
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).gameObject.SetActive(true);
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = defend;
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Defend";
