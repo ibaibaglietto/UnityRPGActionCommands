@@ -6935,6 +6935,8 @@ MonoBehaviour:
   leftArrowSpritePressed: {fileID: 46050715304335678, guid: 085c7c4ca3bb1d845982e4ec0f278844, type: 3}
   rightArrowSpritePressed: {fileID: 2480682418808482285, guid: 085c7c4ca3bb1d845982e4ec0f278844, type: 3}
   downArrowSpritePressed: {fileID: 2296917250436518745, guid: 085c7c4ca3bb1d845982e4ec0f278844, type: 3}
+  adventurerIcon: {fileID: 21300000, guid: 61c8a9e9575084640bf57dd84ed74e2f, type: 3}
+  wizardIcon: {fileID: 21300000, guid: 595418a96fa230c4f923aaa42ba7577f, type: 3}
   finalAttack: 0
   attackAction: 0
   attackFinished: 0

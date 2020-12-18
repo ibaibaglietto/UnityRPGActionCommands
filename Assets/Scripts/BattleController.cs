@@ -57,6 +57,9 @@ public class BattleController : MonoBehaviour
     [SerializeField] private Sprite leftArrowSpritePressed;
     [SerializeField] private Sprite rightArrowSpritePressed;
     [SerializeField] private Sprite downArrowSpritePressed;
+    //The sprites of the companions
+    [SerializeField] private Sprite adventurerIcon;
+    [SerializeField] private Sprite wizardIcon;
     //The keys
     private Transform key1;
     private Transform key1Cover;
@@ -355,6 +358,8 @@ public class BattleController : MonoBehaviour
     private float barrierTime;
     //A bool to know if the wizard is taunting the enemies
     private bool taunting;
+    //A bool to know if we are changing companion
+    private bool changeCompanion;
 
     private void Awake()
     {
@@ -375,6 +380,7 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("bandit", 0);
         PlayerPrefs.SetInt("wizard", 0);
         PlayerPrefs.SetInt("lvlXP", 90);
+        PlayerPrefs.SetInt("UnlockedCompanions", 2);
         //Find the gameobjects
         victoryXP = GameObject.Find("VictoryEXP");
         mainCamera = GameObject.Find("Main Camera");
@@ -559,6 +565,7 @@ public class BattleController : MonoBehaviour
         killerEnemy = -1;
         barrierKeys = new KeyCode[5];
         taunting = false;
+        changeCompanion = false;
     }
 
     private void Update()
@@ -823,59 +830,100 @@ public class BattleController : MonoBehaviour
                         }
                         else if (selectingAction == 4)
                         {
-                            if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Change your partner with another from your party.";
-                            else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gain +1 of defense on the next enemy turn.";
-                            else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Try to flee the battle.";
-                            if ((menuSelectionPos < 2) && Input.GetKeyDown(KeyCode.DownArrow))
+                            if (!changeCompanion)
                             {
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
-                            }
-                            else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
-                            {
-                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
-                            }
-                            if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
-                            {
-                                if(menuSelectionPos == 0)
+                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Change your partner with another from your party.";
+                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gain +1 of defense on the next enemy turn.";
+                                else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Try to flee the battle.";
+                                if ((menuSelectionPos < 2) && Input.GetKeyDown(KeyCode.DownArrow))
                                 {
-                                    Debug.Log("menu de cambio de pj");
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
                                 }
-                                else if (menuSelectionPos == 1)
+                                else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
                                 {
-                                    defensePlayer = 1;
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                    actionInstructions.SetActive(false);
-                                    EndPlayerTurn(1);
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
                                 }
-                                else if (menuSelectionPos == 2)
+                                if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
                                 {
-                                    fleeAction.transform.GetChild(2).transform.position = new Vector3((fleeAction.transform.position.x - 1.930875f) + Random.Range(0.0f, 100.0f) * 0.0386175f, fleeAction.transform.GetChild(2).transform.position.y, fleeAction.transform.GetChild(2).transform.position.z);
-                                    fleeRight = Random.Range(0.0f, 100.0f) > 50.0f;
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                    actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> repeatedly to fill the bar.";
-                                    fleeTime = Time.fixedTime;
-                                    playerChoosingAction = false;
-                                    player.GetComponent<Animator>().SetFloat("Speed", -0.5f);
-                                    player.GetComponent<Animator>().SetFloat("attackSpeed", 2.0f);
-                                    companion.GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
-                                    companion.GetComponent<Animator>().SetFloat("Speed", 1.5f);
-                                    fleeTime = Time.fixedTime;
-                                    companionChoosingAction = false;
-                                    fleeAction.SetActive(true);
-                                    fleeing = true;
+                                    if (menuSelectionPos == 0)
+                                    {
+                                        changeCompanion = true;
+                                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("SelectCompanion");
+                                        CreateMenu();
+                                    }
+                                    else if (menuSelectionPos == 1)
+                                    {
+                                        defensePlayer = 1;
+                                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                        actionInstructions.SetActive(false);
+                                        EndPlayerTurn(1);
+                                    }
+                                    else if (menuSelectionPos == 2)
+                                    {
+                                        fleeAction.transform.GetChild(2).transform.position = new Vector3((fleeAction.transform.position.x - 1.930875f) + Random.Range(0.0f, 100.0f) * 0.0386175f, fleeAction.transform.GetChild(2).transform.position.y, fleeAction.transform.GetChild(2).transform.position.z);
+                                        fleeRight = Random.Range(0.0f, 100.0f) > 50.0f;
+                                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> repeatedly to fill the bar.";
+                                        fleeTime = Time.fixedTime;
+                                        playerChoosingAction = false;
+                                        player.GetComponent<Animator>().SetFloat("Speed", -0.5f);
+                                        player.GetComponent<Animator>().SetFloat("attackSpeed", 2.0f);
+                                        companion.GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
+                                        companion.GetComponent<Animator>().SetFloat("Speed", 1.5f);
+                                        fleeTime = Time.fixedTime;
+                                        companionChoosingAction = false;
+                                        fleeAction.SetActive(true);
+                                        fleeing = true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "An adventurer that can attack using his weapons or look at the enemies to know their weaknesses.";
+                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "A tanking expert wizard that can also attack using his magic spells.";
+                                if ((menuSelectionPos < PlayerPrefs.GetInt("UnlockedCompanions") - 1) && Input.GetKeyDown(KeyCode.DownArrow))
+                                {
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                                }
+                                else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                                {
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                                }
+                                if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                                {
+                                    if (menuSelectionPos == 0)
+                                    {
+                                        
+                                    }
+                                    else if (menuSelectionPos == 1)
+                                    {
+                                        
+                                    }
+                                    else if (menuSelectionPos == 2)
+                                    {
+                                        
+                                    }
                                 }
                             }
                         }
                         if (Input.GetKeyDown(KeyCode.Q))
                         {
-                            changePosAction.SetActive(!companionTurnCompleted && !companion.GetComponent<PlayerTeamScript>().IsDead());
-                            actionInstructions.SetActive(false);
-                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
-                            player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+                            if (!changeCompanion)
+                            {
+                                changePosAction.SetActive(!companionTurnCompleted && !companion.GetComponent<PlayerTeamScript>().IsDead());
+                                actionInstructions.SetActive(false);
+                                player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+                                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+                            }
+                            else
+                            {
+                                changeCompanion = false;
+                                CreateMenu();
+                            }
                         }
                     }
                 }
@@ -6372,30 +6420,51 @@ public class BattleController : MonoBehaviour
             }
             else if (selectingAction == 4)
             {
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = partnerChange;
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Change partner";
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                menuCanUse[0] = true;
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = defend;
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Defend";
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "";
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                menuCanUse[1] = true;
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().sprite = run;
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = "Flee";
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "";
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                menuCanUse[2] = true;
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(false);
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(false);
-                player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).gameObject.SetActive(false);
+                if (!changeCompanion)
+                {
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = partnerChange;
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Change partner";
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    menuCanUse[0] = true;
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = defend;
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Defend";
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "";
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    menuCanUse[1] = true;
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(true);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().sprite = run;
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = "Flee";
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "";
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    menuCanUse[2] = true;
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(4).gameObject.SetActive(false);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(false);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).gameObject.SetActive(false);
+                }
+                else
+                {
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = adventurerIcon;
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Adventurer";
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "10/10";
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    menuCanUse[0] = true;
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = wizardIcon;
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Wizard";
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "15/15";
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(false);
+                    menuCanUse[1] = true;
+                }
             }
         }
         else if (companionTurn)
