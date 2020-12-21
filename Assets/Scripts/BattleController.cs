@@ -374,8 +374,11 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("PlayerLightLvl", 0);
         PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
         PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
+        PlayerPrefs.SetInt("PlayerCurrentHealth", 10);
         PlayerPrefs.SetInt("AdventurerLvl",0); //3
+        PlayerPrefs.SetInt("AdventurerCurrentHealth", 10);
         PlayerPrefs.SetInt("WizardLvl", 0); //3
+        PlayerPrefs.SetInt("WizardCurrentHealth", 15); 
         PlayerPrefs.SetInt("language", 0);
         PlayerPrefs.SetInt("bandit", 0);
         PlayerPrefs.SetInt("wizard", 0);
@@ -469,7 +472,7 @@ public class BattleController : MonoBehaviour
         player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
-        SpawnCharacter(1,1);
+        SpawnCharacter(1,0);
         SpawnCharacter(2,1);
         SpawnCharacter(3,0);
         //SpawnCharacter(4,1);
@@ -896,16 +899,18 @@ public class BattleController : MonoBehaviour
                                 {
                                     if (menuSelectionPos == 0)
                                     {
-                                        
+                                        companion.GetComponent<PlayerTeamScript>().ChangeCompanion(0);
                                     }
                                     else if (menuSelectionPos == 1)
                                     {
-                                        
+                                        companion.GetComponent<PlayerTeamScript>().ChangeCompanion(1);
                                     }
-                                    else if (menuSelectionPos == 2)
-                                    {
-                                        
-                                    }
+                                    actionInstructions.SetActive(false);
+                                    playerChoosingAction = false;
+                                    changeCompanion = false;
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                                    player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                                 }
                             }
                         }
@@ -2377,53 +2382,100 @@ public class BattleController : MonoBehaviour
                         }
                         else if (selectingAction == 2)
                         {
-                            if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Change your partner with another from your party.";
-                            else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gain +1 of defense on the next enemy turn.";
-                            else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Try to flee the battle.";
-                            if ((menuSelectionPos < 2) && Input.GetKeyDown(KeyCode.DownArrow))
+                            if (!changeCompanion)
                             {
-                                companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
-                            }
-                            else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
-                            {
-                                companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
-                            }
-                            if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
-                            {
-                                if (menuSelectionPos == 1)
+                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Change your partner with another from your party.";
+                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gain +1 of defense on the next enemy turn.";
+                                else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Try to flee the battle.";
+                                if ((menuSelectionPos < 2) && Input.GetKeyDown(KeyCode.DownArrow))
                                 {
-                                    defenseCompanion = 1;
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                                }
+                                else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                                {
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                                }
+                                if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                                {
+                                    if (menuSelectionPos == 0)
+                                    {
+                                        changeCompanion = true;
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("SelectCompanion");
+                                        CreateMenu();
+                                    }
+                                    else if (menuSelectionPos == 1)
+                                    {
+                                        defenseCompanion = 1;
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                        actionInstructions.SetActive(false);
+                                        EndPlayerTurn(2);
+                                    }
+                                    else if (menuSelectionPos == 2)
+                                    {
+                                        fleeAction.transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition = new Vector2(Random.Range(-1.425f, 1.425f), fleeAction.transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition.y);
+                                        fleeRight = Random.Range(0.0f, 100.0f) > 50.0f;
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> repeatedly to fill the bar.";
+                                        companion.GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
+                                        companion.GetComponent<Animator>().SetFloat("Speed", 1.5f);
+                                        fleeTime = Time.fixedTime;
+                                        player.GetComponent<Animator>().SetFloat("Speed", -0.5f);
+                                        player.GetComponent<Animator>().SetFloat("attackSpeed", 2.0f);
+                                        fleeAction.SetActive(true);
+                                        companionChoosingAction = false;
+                                        fleeing = true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "An adventurer that can attack using his weapons or look at the enemies to know their weaknesses.";
+                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "A tanking expert wizard that can also attack using his magic spells.";
+                                if ((menuSelectionPos < PlayerPrefs.GetInt("UnlockedCompanions") - 1) && Input.GetKeyDown(KeyCode.DownArrow))
+                                {
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                                }
+                                else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                                {
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                                }
+                                if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                                {
+                                    if (menuSelectionPos == 0)
+                                    {
+                                        companion.GetComponent<PlayerTeamScript>().ChangeCompanion(0);
+                                    }
+                                    else if (menuSelectionPos == 1)
+                                    {
+                                        companion.GetComponent<PlayerTeamScript>().ChangeCompanion(1);
+                                    }
+                                    actionInstructions.SetActive(false);
+                                    companionChoosingAction = false;
+                                    changeCompanion = false;
                                     companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                                     companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
                                     companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                    actionInstructions.SetActive(false);
-                                    EndPlayerTurn(2);
-                                }
-                                else if (menuSelectionPos == 2)
-                                {
-                                    fleeAction.transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition = new Vector2(Random.Range(-1.425f, 1.425f), fleeAction.transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition.y);
-                                    fleeRight = Random.Range(0.0f, 100.0f) > 50.0f;
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                    actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> repeatedly to fill the bar.";
-                                    companion.GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
-                                    companion.GetComponent<Animator>().SetFloat("Speed", 1.5f);
-                                    fleeTime = Time.fixedTime;
-                                    player.GetComponent<Animator>().SetFloat("Speed", -0.5f);
-                                    player.GetComponent<Animator>().SetFloat("attackSpeed", 2.0f);
-                                    fleeAction.SetActive(true);
-                                    companionChoosingAction = false;
-                                    fleeing = true;
                                 }
                             }
                         }
                         if (Input.GetKeyDown(KeyCode.Q))
                         {
-                            changePosAction.SetActive(!playerTurnCompleted);
-                            actionInstructions.SetActive(false);
-                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                            companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
-                            companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.b, 0.0f);
+                            if (!changeCompanion)
+                            {
+                                changePosAction.SetActive(!playerTurnCompleted);
+                                actionInstructions.SetActive(false);
+                                companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+                                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.b, 0.0f);
+                            }
+                            else
+                            {
+                                changeCompanion = false;
+                                CreateMenu();
+                            }
                         }
                     }
                 }
@@ -3624,8 +3676,17 @@ public class BattleController : MonoBehaviour
     }
 
     //Function to spawn the characters. 0 -> Player, 1-> companion, 2-> Enemy1, 3-> Enemy2, 4-> Enemy3, 5-> Enemy4. type-> 0 adventurer and bandit, 1-> wizard
-    private void SpawnCharacter(int battlePos, int type)
+    public void SpawnCharacter(int battlePos, int type)
     {
+        if(battlePos == -1)
+        {
+            if (type == 0) companion = Instantiate(adventurerBattle, new Vector3(-9.0f, -0.713f, -2.04f), Quaternion.identity); 
+            else if (type == 1) companion = Instantiate(companionWizardBattle, new Vector3(-9.0f, -0.72f, -2.04f), Quaternion.identity);
+            currentCompanion = type;
+            companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+            companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.b, 0.0f);
+            companion.GetComponent<PlayerTeamScript>().SetEnter();
+        }
         if (battlePos == 0)
         {
             player = Instantiate(playerBattle, new Vector3(-5, -1, -2.05f), Quaternion.identity);
@@ -4324,6 +4385,7 @@ public class BattleController : MonoBehaviour
     public void EndPlayerTurn(int user)
     {
         attackAction = false;
+        finalAttack = false;
         if(GetAllEnemies() != null)
         {
             if (GetGroundEnemies() == null)
@@ -6426,9 +6488,18 @@ public class BattleController : MonoBehaviour
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = partnerChange;
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Change partner";
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
-                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                    menuCanUse[0] = true;
+                    if (PlayerPrefs.GetInt("UnlockedCompanions") > 1)
+                    {
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        menuCanUse[0] = true;
+                    }
+                    else
+                    {
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        menuCanUse[0] = false;
+                    }
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = defend;
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Defend";
@@ -6452,18 +6523,38 @@ public class BattleController : MonoBehaviour
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = adventurerIcon;
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Adventurer";
-                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "10/10";
-                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                    menuCanUse[0] = true;
+                    if(currentCompanion == 0)
+                    {
+                        PlayerPrefs.SetInt("AdventurerCurrentHealth", companion.GetComponent<PlayerTeamScript>().GetHealth());
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        menuCanUse[0] = false;
+                    }
+                    else
+                    {
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        menuCanUse[0] = true;
+                    }
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = PlayerPrefs.GetInt("AdventurerCurrentHealth").ToString() + "/" + (10 + PlayerPrefs.GetInt("AdventurerLvl") * 10).ToString();
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = wizardIcon;
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Wizard";
-                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "15/15";
-                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    if(currentCompanion == 1)
+                    {
+                        PlayerPrefs.SetInt("WizardCurrentHealth", companion.GetComponent<PlayerTeamScript>().GetHealth());
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        menuCanUse[1] = false;
+                    }
+                    else
+                    {
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        menuCanUse[1] = true;
+                    }
+                    player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = PlayerPrefs.GetInt("WizardCurrentHealth").ToString() + "/" + (15 + PlayerPrefs.GetInt("WizardLvl") * 10).ToString();
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(3).gameObject.SetActive(false);
-                    menuCanUse[1] = true;
                 }
             }
         }
@@ -6745,30 +6836,81 @@ public class BattleController : MonoBehaviour
             }
             else if (selectingAction == 2)
             {
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).gameObject.SetActive(true);
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = partnerChange;
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Change partner";
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                menuCanUse[0] = true;
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).gameObject.SetActive(true);
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = defend;
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Defend";
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "";
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                menuCanUse[1] = true;
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).gameObject.SetActive(true);
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().sprite = run;
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = "Flee";
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "";
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                menuCanUse[2] = true;
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(4).gameObject.SetActive(false);
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(5).gameObject.SetActive(false);
-                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(6).gameObject.SetActive(false);
+                if (!changeCompanion)
+                {
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).gameObject.SetActive(true);
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = partnerChange;
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Change partner";
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
+                    if (PlayerPrefs.GetInt("UnlockedCompanions")>1)
+                    {
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        menuCanUse[0] = true;
+                    }
+                    else
+                    {
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        menuCanUse[0] = false;
+                    }
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).gameObject.SetActive(true);
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = defend;
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Defend";
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = "";
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    menuCanUse[1] = true;
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).gameObject.SetActive(true);
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().sprite = run;
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = "Flee";
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "";
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    menuCanUse[2] = true;
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(4).gameObject.SetActive(false);
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(5).gameObject.SetActive(false);
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(6).gameObject.SetActive(false);
+                }
+                else
+                {
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).gameObject.SetActive(true);
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = adventurerIcon;
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Adventurer";
+                    if (currentCompanion == 0)
+                    {
+                        PlayerPrefs.SetInt("AdventurerCurrentHealth", companion.GetComponent<PlayerTeamScript>().GetHealth());
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        menuCanUse[0] = false;
+                    }
+                    else
+                    {
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        menuCanUse[0] = true;
+                    }
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = PlayerPrefs.GetInt("AdventurerCurrentHealth").ToString() + "/" + (10 + PlayerPrefs.GetInt("AdventurerLvl") * 10).ToString();
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).gameObject.SetActive(true);
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = wizardIcon;
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Wizard";
+                    if(currentCompanion == 1)
+                    {
+                        PlayerPrefs.SetInt("WizardCurrentHealth", companion.GetComponent<PlayerTeamScript>().GetHealth());
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).gameObject.SetActive(false);
+                        menuCanUse[1] = false;
+                    }
+                    else
+                    {
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).gameObject.SetActive(false);
+                        menuCanUse[1] = true;
+                    }
+                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(2).transform.GetChild(2).GetComponent<Text>().text = PlayerPrefs.GetInt("WizardCurrentHealth").ToString() + "/" + (15 + PlayerPrefs.GetInt("WizardLvl") * 10).ToString();
+                }
             }
         }
     }

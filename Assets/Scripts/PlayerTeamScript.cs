@@ -107,6 +107,10 @@ public class PlayerTeamScript : MonoBehaviour
     private int arrowNumb;
     //A boolean to know if the player has recovered
     private bool recovered;
+    //Booleans to know if the companion is going out or in
+    private bool companionOut;
+    private bool companionIn;
+    private int enteringCompanion;
     void Awake()
     {
         //We find the gameobjects and initialize some variables
@@ -136,6 +140,13 @@ public class PlayerTeamScript : MonoBehaviour
         attackSpeed = 1.0f;
         arrowNumb = 0;
         recovered = true;
+        companionOut = false;
+        companionIn = false;
+    }
+    private void Start()
+    {
+        if (playerTeamType == 0) playerLife.GetComponent<PlayerLifeScript>().SetUser(0);
+        else companionLife.GetComponent<PlayerLifeScript>().SetUser(playerTeamType);
     }
 
 
@@ -278,6 +289,43 @@ public class PlayerTeamScript : MonoBehaviour
                 }
             }
         }
+        //Companion change
+        if (companionOut)
+        {
+            if (transform.position.x > -9.0f)
+            {
+                transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y, transform.position.z);
+                GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
+                GetComponent<Animator>().SetFloat("Speed", 1.0f);
+            }
+            else
+            {
+                battleController.GetComponent<BattleController>().SpawnCharacter(-1, enteringCompanion);
+                Destroy(gameObject);
+            }
+        }
+        else if (companionIn)
+        {
+            if(battleController.GetComponent<BattleController>().IsPlayerFirst() && transform.position.x < -6.4f)
+            {
+                transform.position = new Vector3(transform.position.x + 0.1f, transform.position.y, transform.position.z);
+                GetComponent<Animator>().SetFloat("RunSpeed", 0.5f);
+                GetComponent<Animator>().SetFloat("Speed", 1.0f);
+            }
+            else if (!battleController.GetComponent<BattleController>().IsPlayerFirst() && transform.position.x < -5.0f)
+            {
+                transform.position = new Vector3(transform.position.x + 0.1f, transform.position.y, transform.position.z);
+                GetComponent<Animator>().SetFloat("RunSpeed", 0.5f);
+                GetComponent<Animator>().SetFloat("Speed", 1.0f);
+            }
+            else
+            {
+                companionIn = false;
+                if(battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().EndPlayerTurn(1);
+                else battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+                GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
+            }
+        }
         //Soul light going up
         if (soulLightUp && soulLight.transform.position.y < 75.0f)
         {
@@ -366,6 +414,18 @@ public class PlayerTeamScript : MonoBehaviour
     public void EndLightUpAttack()
     {
         soulLightDown = true;
+    }
+    //A function to change the companion
+    public void ChangeCompanion(int comp)
+    {
+        companionOut = true;
+        enteringCompanion = comp;
+    }
+
+    //A function to set the companion entering the battle
+    public void SetEnter()
+    {
+        companionIn = true;
     }
 
     //Function to set the amount of time the player will be asleep
@@ -834,6 +894,12 @@ public class PlayerTeamScript : MonoBehaviour
                 }
             }
         }
+    }
+    //Function to get the health
+    public int GetHealth()
+    {
+        if (playerTeamType == 0) return playerLife.GetComponent<PlayerLifeScript>().GetHealth();
+        else return companionLife.GetComponent<PlayerLifeScript>().GetHealth();
     }
 
     //A function to make the magic ball action appear

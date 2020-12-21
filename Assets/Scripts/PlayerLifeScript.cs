@@ -16,32 +16,47 @@ public class PlayerLifeScript : MonoBehaviour
     //The current health text
     private Text currentHealthText;
     //The image of the player health
-    [SerializeField] private Sprite playerHealth;
+    [SerializeField] private Texture playerHealth;
     //The image of the adventurer health
-    [SerializeField] private Sprite adventurerHealth;
+    [SerializeField] private Texture adventurerHealth;
     //The image of the wizard health
-    [SerializeField] private Sprite wizardHealth;
+    [SerializeField] private Texture wizardHealth;
 
 
-    void Start()
-    {
-        //transform.GetChild(3).GetComponent<RawImage>().texture = (Texture)playerHealth;
-        if (user == 0) maxHealth = 10 + PlayerPrefs.GetInt("PlayerHeartLvl") * 5;
-        else if (user == 1) maxHealth = 10 + PlayerPrefs.GetInt("AdventurerLvl") * 10;
-        else if (user == 2) maxHealth = 15 + PlayerPrefs.GetInt("WizardLvl") * 10;
-        //We save the current health
-        currentHealth = maxHealth;
-        //We find the current health text and max health text and initialize them
-        currentHealthText = transform.GetChild(0).GetComponent<Text>();
-        maxHealthText = transform.GetChild(2).GetComponent<Text>();
-        maxHealthText.text = maxHealth.ToString();
-        currentHealthText.text = currentHealth.ToString();
-    }
       
     //A function to get the current health
     public int GetHealth()
     {
         return currentHealth;
+    }
+
+    //Function to set the user
+    public void SetUser(int u)
+    {
+        user = u;
+        if (user == 0)
+        {
+            transform.GetChild(3).GetComponent<RawImage>().texture = playerHealth;
+            maxHealth = 10 + PlayerPrefs.GetInt("PlayerHeartLvl") * 5;
+            currentHealth = PlayerPrefs.GetInt("PlayerCurrentHealth");
+        }
+        else if (user == 1)
+        {
+            transform.GetChild(3).GetComponent<RawImage>().texture = adventurerHealth;
+            maxHealth = 10 + PlayerPrefs.GetInt("AdventurerLvl") * 10;
+            currentHealth = PlayerPrefs.GetInt("AdventurerCurrentHealth");
+        }
+        else if (user == 2)
+        {
+            transform.GetChild(3).GetComponent<RawImage>().texture = wizardHealth;
+            maxHealth = 15 + PlayerPrefs.GetInt("WizardLvl") * 10;
+            currentHealth = PlayerPrefs.GetInt("WizardCurrentHealth");
+        }
+        //We find the current health text and max health text and initialize them
+        currentHealthText = transform.GetChild(0).GetComponent<Text>();
+        maxHealthText = transform.GetChild(2).GetComponent<Text>();
+        maxHealthText.text = maxHealth.ToString();
+        currentHealthText.text = currentHealth.ToString();
     }
 
     //A function to get the max health
