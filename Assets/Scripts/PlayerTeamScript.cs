@@ -146,7 +146,11 @@ public class PlayerTeamScript : MonoBehaviour
     private void Start()
     {
         if (playerTeamType == 0) playerLife.GetComponent<PlayerLifeScript>().SetUser(0);
-        else companionLife.GetComponent<PlayerLifeScript>().SetUser(playerTeamType);
+        else
+        {
+            companionLife.GetComponent<PlayerLifeScript>().SetUser(playerTeamType);
+            if (IsDead()) GetComponent<Animator>().SetBool("spawnDead", true);
+        }
     }
 
 
@@ -267,7 +271,7 @@ public class PlayerTeamScript : MonoBehaviour
                 {
                     GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                     returnStartPosAlly = false;
-                    battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+                    if(!IsDead()) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
                 }
             }
             else
@@ -285,7 +289,7 @@ public class PlayerTeamScript : MonoBehaviour
                 {
                     GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                     returnStartPosAlly = false;
-                    battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+                    if(!IsDead()) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
                 }
             }
         }
@@ -1167,7 +1171,11 @@ public class PlayerTeamScript : MonoBehaviour
     public void UseRecoverPotion()
     {
         GetComponent<Animator>().SetBool("isDefending", false);
-        if (battleController.GetComponent<BattleController>().UseRecoverPotion()) GetComponent<Animator>().SetBool("isDead", false);
+        if (battleController.GetComponent<BattleController>().UseRecoverPotion())
+        {
+            GetComponent<Animator>().SetBool("isDead", false);
+            if(playerTeamType!=0) GetComponent<Animator>().SetBool("spawnDead", false);
+        }
         else battleController.GetComponent<BattleController>().EndBattle();
     }
 
@@ -1203,10 +1211,19 @@ public class PlayerTeamScript : MonoBehaviour
                     recovered = false; 
                     GetComponent<Animator>().SetBool("isDefending", false);
                     GetComponent<Animator>().SetBool("isDead", true);
-                    if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+                    if (battleController.GetComponent<BattleController>().IsTaunting())
+                    {
+                        if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+                        else if (battleController.GetComponent<BattleController>().IsTaunting())
+                        {
+                            returnStartPosAlly = true;
+                        }
+                        battleController.GetComponent<BattleController>().SetTaunt(false);
+                        GetComponent<Animator>().SetBool("isDefending", false);
+                    }
+                    else if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
                 }
-            }
-            
+            }            
         }        
     }
     //A function to know if the player is dead
@@ -1288,8 +1305,7 @@ public class PlayerTeamScript : MonoBehaviour
             playerLife.GetComponent<PlayerLifeScript>().Heal(10);
         }
         else
-        {
-            
+        {            
             heartImage.GetComponent<DamageImageScript>().SetUser(isPlayer);
             if (full)
             {
@@ -1302,6 +1318,7 @@ public class PlayerTeamScript : MonoBehaviour
                 companionLife.GetComponent<PlayerLifeScript>().Heal(10);
             }
             GetComponent<Animator>().SetBool("isDead", false);
+            if (playerTeamType != 0) GetComponent<Animator>().SetBool("spawnDead", false);
         }
     }
 
