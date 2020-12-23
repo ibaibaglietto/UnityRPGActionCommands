@@ -375,9 +375,9 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
         PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
         PlayerPrefs.SetInt("PlayerCurrentHealth", 10);
-        PlayerPrefs.SetInt("AdventurerLvl",0); //3
+        PlayerPrefs.SetInt("AdventurerLvl",3); //3
         PlayerPrefs.SetInt("AdventurerCurrentHealth", 10);
-        PlayerPrefs.SetInt("WizardLvl", 0); //3
+        PlayerPrefs.SetInt("WizardLvl", 1); //3
         PlayerPrefs.SetInt("WizardCurrentHealth", 15); 
         PlayerPrefs.SetInt("language", 0);
         PlayerPrefs.SetInt("bandit", 0);
@@ -475,7 +475,7 @@ public class BattleController : MonoBehaviour
         SpawnCharacter(1,1);
         SpawnCharacter(2,1);
         SpawnCharacter(3,0);
-        //SpawnCharacter(4,1);
+        SpawnCharacter(4,0);
         //SpawnCharacter(5,0);
         playerTeamTurn = true;
         playerTurn = true;
@@ -2300,9 +2300,9 @@ public class BattleController : MonoBehaviour
                                 usingStyle = menuSelectionPos;
                                 if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Cast a magic ball to hit an enemy.";
                                 else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Protect the player using a magic shield and make the wizard tank the damage.";
-                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hit an enemy as many times as you can with your sword.";
-                                else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use your dragon slayer bow to shoot an arrow to all the grounded enemies.";
-                                else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Shoot five arrows that will hit the first enemy they find in their way.";
+                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use you magical powers to hit an enemy several times.";
+                                else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Create a magical spear and throw it to an enemy.";
+                                else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Cast an enormous magic ball to damage all the enemies.";
                                 if ((menuSelectionPos < PlayerPrefs.GetInt("WizardLvl") + 1) && Input.GetKeyDown(KeyCode.DownArrow))
                                 {
                                     companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
@@ -2319,7 +2319,7 @@ public class BattleController : MonoBehaviour
                                     actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
                                     if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> when they appear.";
                                     else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> in secuence.";
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy until you fail to press it in time.";
+                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=214> and <sprite=246> repeatedly until you fill the bar.";
                                     else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> until <sprite=360> lights up.";
                                     else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the adventurer aims to an objective.";
                                     attackType = 0;
@@ -2339,6 +2339,11 @@ public class BattleController : MonoBehaviour
                                         enemyName.transform.GetChild(4).gameObject.SetActive(false);
                                         selectingCompanion = true;
                                         canSelect = false;
+                                    }
+                                    else if(usingStyle == 2)
+                                    {
+                                        selectingEnemyCompanion = true;
+                                        SelectFirstEnemy();
                                     }
                                     else SelectAllEnemies();
                                 }
@@ -2633,7 +2638,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     if (currentCompanion != 1 || (usingStyle != 0 && currentCompanion == 1))
                                     {
-                                        if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))
+                                        if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
                                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
@@ -2646,7 +2651,7 @@ public class BattleController : MonoBehaviour
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
                                         }
-                                        else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))
+                                        else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
                                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
@@ -2659,7 +2664,7 @@ public class BattleController : MonoBehaviour
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
                                         }
-                                        else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))
+                                        else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
                                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
@@ -2707,7 +2712,7 @@ public class BattleController : MonoBehaviour
                             }
                             else if (enemy2.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
                             {
-                                if (Input.GetKeyDown(KeyCode.LeftArrow) && enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1 || currentCompanion != 0))
+                                if (Input.GetKeyDown(KeyCode.LeftArrow) && enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded())))
                                 {
                                     enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                     enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
@@ -2724,7 +2729,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     if (currentCompanion != 1 || (usingStyle != 0 && currentCompanion == 1))
                                     {
-                                        if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))
+                                        if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
                                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
@@ -2737,7 +2742,7 @@ public class BattleController : MonoBehaviour
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
                                         }
-                                        else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))
+                                        else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
                                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
@@ -2789,7 +2794,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     if(currentCompanion != 1 || (currentCompanion == 1 && usingStyle != 0))
                                     {
-                                        if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))
+                                        if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
                                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
@@ -2802,7 +2807,7 @@ public class BattleController : MonoBehaviour
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
                                         }
-                                        else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))
+                                        else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
                                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
@@ -2838,7 +2843,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     if (currentCompanion != 1 || (currentCompanion == 1 && usingStyle != 0))
                                     {
-                                        if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))
+                                        if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
@@ -2890,7 +2895,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     if (currentCompanion != 1 || (currentCompanion == 1 && usingStyle != 0))
                                     {
-                                        if (enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))
+                                        if (enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
@@ -2903,7 +2908,7 @@ public class BattleController : MonoBehaviour
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
                                         }
-                                        else if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))
+                                        else if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
                                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
@@ -2916,7 +2921,7 @@ public class BattleController : MonoBehaviour
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
                                         }
-                                        else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))
+                                        else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
                                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
@@ -5023,7 +5028,7 @@ public class BattleController : MonoBehaviour
         enemyName.transform.GetChild(2).gameObject.SetActive(false);
         enemyName.transform.GetChild(3).gameObject.SetActive(false);
         enemyName.transform.GetChild(4).gameObject.SetActive(false);
-        if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))))
+        if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && (((usingStyle == 0 || usingStyle == 2) && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle ==2 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded())))))
         {
             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
             if(enemy1.GetComponent<EnemyTeamScript>().enemyType == 0)
@@ -5035,7 +5040,7 @@ public class BattleController : MonoBehaviour
                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
             }
         }
-        else if(enemyNumber > 1 && enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))))
+        else if(enemyNumber > 1 && enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && (((usingStyle == 0 || usingStyle == 2) && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded())))))
         {
             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
             if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0)
@@ -5047,7 +5052,7 @@ public class BattleController : MonoBehaviour
                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
             }
         }
-        else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))))
+        else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && (((usingStyle == 0 || usingStyle == 2) && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded())))))
         {
             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
             if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0)
@@ -5059,7 +5064,7 @@ public class BattleController : MonoBehaviour
                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
             }
         }
-        else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || companion.GetComponent<PlayerTeamScript>().GetPlayerType() != 1))))
+        else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && (((usingStyle == 0 || usingStyle == 2) && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded())))))
         {
             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
             if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0)
@@ -6712,7 +6717,7 @@ public class BattleController : MonoBehaviour
                     {
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).gameObject.SetActive(true);
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().sprite = thirdSkill;
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = "Sword spin";
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = "Pulsing magic";
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = "3 LP";
                         if (!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(3) || GetGroundEnemies() == null)
                         {
@@ -6734,7 +6739,7 @@ public class BattleController : MonoBehaviour
                     {
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(4).gameObject.SetActive(true);
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(4).transform.GetChild(0).GetComponent<Image>().sprite = fourthSkill;
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(4).transform.GetChild(1).GetComponent<Text>().text = "Dragon slayer bow";
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(4).transform.GetChild(1).GetComponent<Text>().text = "Magic spear";
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(4).transform.GetChild(2).GetComponent<Text>().text = "4 LP";
                         if (!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(4) || GetGroundEnemies() == null)
                         {
@@ -6755,9 +6760,9 @@ public class BattleController : MonoBehaviour
                     {
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(5).gameObject.SetActive(true);
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(5).transform.GetChild(0).GetComponent<Image>().sprite = fifthSkill;
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(5).transform.GetChild(1).GetComponent<Text>().text = "BK-47";
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(5).transform.GetChild(2).GetComponent<Text>().text = "7 LP";
-                        if (!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(7))
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(5).transform.GetChild(1).GetComponent<Text>().text = "Energy bomb";
+                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(5).transform.GetChild(2).GetComponent<Text>().text = "9 LP";
+                        if (!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(9))
                         {
                             companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(5).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
                             companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(5).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);

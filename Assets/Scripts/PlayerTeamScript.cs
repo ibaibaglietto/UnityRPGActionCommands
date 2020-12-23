@@ -172,18 +172,20 @@ public class PlayerTeamScript : MonoBehaviour
             else
             {
                 if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.0f);
-                else if (playerTeamType == 1 || playerTeamType == 2)
+                else if (playerTeamType == 1)
                 {
                     GetComponent<Animator>().SetTrigger("Melee1");
                     GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                 }
+                else if (playerTeamType == 2) GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                 movingToEnemy = false;
                 if (playerTeamType == 0 && attackStyle == 1)
                 {
                     gameObject.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("active", true);
                     gameObject.GetComponent<Animator>().SetTrigger("statChargeLightMelee");
                 }
-                battleController.GetComponent<BattleController>().finalAttack = true;
+                else if(playerTeamType == 2) gameObject.GetComponent<Animator>().SetBool("magicBall",true);            
+                if(playerTeamType != 2) battleController.GetComponent<BattleController>().finalAttack = true;
             }
         }
         //The player returns to the start position after attacking
@@ -896,6 +898,12 @@ public class PlayerTeamScript : MonoBehaviour
                     movePos = attackObjective.position.x + 0.9f;
                     movingToAlly = true;
                 }
+                if(style == 2)
+                {
+                    startPos = transform.position.x;
+                    movePos = attackObjective.position.x - 1.5f;
+                    movingToEnemy = true;
+                }
             }
         }
     }
@@ -910,7 +918,8 @@ public class PlayerTeamScript : MonoBehaviour
     public void AppearMagicBallAction()
     {
         battleController.GetComponent<BattleController>().finalAttack = true;
-        transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(true);
+        if (attackStyle == 0) transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(true);
+        else if (attackStyle == 2) Debug.Log("cosa de bola");
     }
     //Function to make the wizard return to the starting position
     public void ReturnStartPos()
