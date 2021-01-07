@@ -6958,6 +6958,7 @@ MonoBehaviour:
   shurikenHit: 0
   shurikenTime: 0
   selectingAction: 0
+  magicPulsePrefab: {fileID: 4556359203388122223, guid: b3d2c87e4b32ef040bcc59f66d173e4a, type: 3}
 --- !u!4 &980658071
 Transform:
   m_ObjectHideFlags: 0

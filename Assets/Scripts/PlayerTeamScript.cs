@@ -193,7 +193,7 @@ public class PlayerTeamScript : MonoBehaviour
         {
             if (transform.position.x > startPos)
             {
-                if (attackStyle == 0 || attackStyle == 2)
+                if ((attackStyle == 0 || attackStyle == 2) && playerTeamType !=2)
                 {
                     attackObjective.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
                     attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
@@ -483,6 +483,11 @@ public class PlayerTeamScript : MonoBehaviour
     public int GetLightUpPower()
     {
         return lightUp;
+    }
+    //Function to make the player return to the start position
+    public void ReturnStartPos()
+    {
+        returnStartPos = true;
     }
     //A function to put a buff or a debuff in the UI. buffDeb = 0 -> Sleep, buffDeb = 1 -> lifesteal, buffDeb = 2 -> invisible
     public void SetBuffDebuff(int buffDeb, int duration)
@@ -904,6 +909,11 @@ public class PlayerTeamScript : MonoBehaviour
                     movePos = attackObjective.position.x - 1.5f;
                     movingToEnemy = true;
                 }
+                if(style == 3)
+                {
+                    GetComponent<Animator>().SetBool("magicBall", true);
+                    shurikenObjective = attackObjective.position;
+                }
             }
         }
     }
@@ -919,12 +929,15 @@ public class PlayerTeamScript : MonoBehaviour
     {
         battleController.GetComponent<BattleController>().finalAttack = true;
         if (attackStyle == 0) transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(true);
-        else if (attackStyle == 2) Debug.Log("cosa de bola");
-    }
-    //Function to make the wizard return to the starting position
-    public void ReturnStartPos()
-    {
-        returnStartPosAlly = true;
+        else if (attackStyle == 2)
+        {
+            transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
+            battleController.GetComponent<BattleController>().shurikenTime = Time.fixedTime;
+        }
+        else if(attackStyle == 3)
+        {
+            Debug.Log("uyshh casi");
+        }
     }
 
     //A function to start the attack action
@@ -1194,6 +1207,27 @@ public class PlayerTeamScript : MonoBehaviour
         recovered = true;
         battleController.GetComponent<BattleController>().ContinueEnemy();
     }
+    //A function to deal pulse damage to the enemy
+    public void PulseDamage(bool last)
+    {
+        if (!last)
+        {
+            battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, false);
+            if (lightUp > 1) lightUp -= 1;
+            else if (lightUp == 1)
+            {
+                EndBuffDebuff(lightUpPos);
+                lightUp = 0;
+            }
+        }
+        else
+        {
+            battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, true);
+            if (lightUp != 0) EndBuffDebuff(lightUpPos);
+            lightUp = 0;
+        }
+    }
+
     //A function to deal damage
     public void DealDamage(int Damage)
     {
