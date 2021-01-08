@@ -13,6 +13,8 @@ public class PlayerTeamScript : MonoBehaviour
     [SerializeField] private Transform fireShurikenPrefab;
     //The prefab of the magic ball
     [SerializeField] private Transform magicBallPrefab;
+    //The prefab of the magic spear
+    [SerializeField] private Transform magicSpearPrefab;    
     //The prefab of the arrow
     [SerializeField] private Transform arrow;
     //The prefab of the damage, heart and light UI
@@ -111,6 +113,9 @@ public class PlayerTeamScript : MonoBehaviour
     private bool companionOut;
     private bool companionIn;
     private int enteringCompanion;
+    //The prefab of the explosion
+    [SerializeField] private Transform explosionPrefab;
+    private Transform explosion;
     void Awake()
     {
         //We find the gameobjects and initialize some variables
@@ -184,7 +189,11 @@ public class PlayerTeamScript : MonoBehaviour
                     gameObject.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("active", true);
                     gameObject.GetComponent<Animator>().SetTrigger("statChargeLightMelee");
                 }
-                else if(playerTeamType == 2) gameObject.GetComponent<Animator>().SetBool("magicBall",true);            
+                else if (playerTeamType == 2)
+                {
+                    if(attackStyle == 2) gameObject.GetComponent<Animator>().SetBool("magicBall", true);
+                    else if(attackStyle == 4) gameObject.GetComponent<Animator>().SetBool("Explode", true);
+                }
                 if(playerTeamType != 2) battleController.GetComponent<BattleController>().finalAttack = true;
             }
         }
@@ -903,16 +912,25 @@ public class PlayerTeamScript : MonoBehaviour
                     movePos = attackObjective.position.x + 0.9f;
                     movingToAlly = true;
                 }
-                if(style == 2)
+                else if(style == 2)
                 {
+                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(3);
                     startPos = transform.position.x;
                     movePos = attackObjective.position.x - 1.5f;
                     movingToEnemy = true;
                 }
-                if(style == 3)
+                else if(style == 3)
                 {
+                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(4);
                     GetComponent<Animator>().SetBool("magicBall", true);
                     shurikenObjective = attackObjective.position;
+                }
+                else if(style == 4)
+                {
+                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(9);
+                    startPos = transform.position.x;
+                    movePos = 3.75f;
+                    movingToEnemy = true;
                 }
             }
         }
@@ -934,10 +952,7 @@ public class PlayerTeamScript : MonoBehaviour
             transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
             battleController.GetComponent<BattleController>().shurikenTime = Time.fixedTime;
         }
-        else if(attackStyle == 3)
-        {
-            Debug.Log("uyshh casi");
-        }
+        else if(attackStyle == 3) transform.GetChild(0).transform.GetChild(6).gameObject.SetActive(true);
     }
 
     //A function to start the attack action
@@ -1105,7 +1120,22 @@ public class PlayerTeamScript : MonoBehaviour
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
+            else if(attackStyle == 3)
+            {
+                battleController.GetComponent<BattleController>().DeactivateActionInstructions();
+                shuriken = Instantiate(magicSpearPrefab, new Vector3(gameObject.transform.position.x + 1.0104f, gameObject.transform.position.y + 0.3781f, gameObject.transform.position.z), Quaternion.identity);
+                shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
+                shuriken.GetComponent<ShurikenScript>().SetMagic();
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+                if (lightUp != 0) EndBuffDebuff(lightUpPos);
+                lightUp = 0;
+            }
         }
+    }
+    //A function to create the explosion
+    public void CreateExplosion()
+    {
+        explosion = Instantiate(explosionPrefab, new Vector3(transform.position.x + 1.11f, transform.position.y + 0.695f, gameObject.transform.position.z), Quaternion.identity);
     }
     
     //A function to activate the shuriken action

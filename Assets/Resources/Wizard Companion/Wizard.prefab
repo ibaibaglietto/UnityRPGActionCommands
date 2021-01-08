@@ -3499,6 +3499,7 @@ MonoBehaviour:
   lightShurikenPrefab: {fileID: 3194789301759182513, guid: 73cc4a4f72a74d843bbec10a835ec816, type: 3}
   fireShurikenPrefab: {fileID: 3194789301759182513, guid: 669c26566875cdc45866f51b03e63d69, type: 3}
   magicBallPrefab: {fileID: 5422074934873732578, guid: 3522d01d79401e54b9a09c31ebcaa98f, type: 3}
+  magicSpearPrefab: {fileID: 7931386939421819552, guid: 0f14a43a65149d545867e0f990f9457f, type: 3}
   arrow: {fileID: 6141410375648263976, guid: bda5095868c886b4895238580d22902f, type: 3}
   damageUI: {fileID: 2003888347808236252, guid: ba485e94df23bb6459b7ed70110d5086, type: 3}
   heartUI: {fileID: 818641258651084142, guid: 5bf8e6463a68aa847a35a51750d1809b, type: 3}
@@ -3510,6 +3511,7 @@ MonoBehaviour:
   disappearSprite: {fileID: 21300000, guid: 26218d2f0e217e540a0eb9539863f1e3, type: 3}
   lightUpSprite: {fileID: 21300000, guid: 837e1859a79bbb64989ce26ca03ffb70, type: 3}
   glanceActionPrefab: {fileID: 8787689694209190932, guid: fbb777c06a55a6948a6c9db5a43b9cbe, type: 3}
+  explosionPrefab: {fileID: 3362361580244239077, guid: 78afbc914acd7a444bd42ba38fc33bd3, type: 3}
 --- !u!95 &5464343460034233807
 Animator:
   serializedVersion: 3
@@ -4221,6 +4223,8 @@ GameObject:
   - component: {fileID: 8190499283935109830}
   - component: {fileID: 6659961894641903903}
   - component: {fileID: 85908195571481342}
+  - component: {fileID: 7588340057919551020}
+  - component: {fileID: 5921749169889528203}
   m_Layer: 5
   m_Name: MagicSpearAction
   m_TagString: Untagged
@@ -4293,6 +4297,41 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &7588340057919551020
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5185733911811972361}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a2caab8ea7a30e040917557095ca5dda, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5921749169889528203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5185733911811972361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e114007dcbc1cc248bd9c1042f20f121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upButton: {fileID: -2165602621528565262, guid: bd6dfd2e3e1f29a49b451520d85962fc, type: 3}
+  downButton: {fileID: -3798998906436529524, guid: bd6dfd2e3e1f29a49b451520d85962fc, type: 3}
+  leftButton: {fileID: 8746342764438225453, guid: bd6dfd2e3e1f29a49b451520d85962fc, type: 3}
+  rightButton: {fileID: -8585493491078291697, guid: bd6dfd2e3e1f29a49b451520d85962fc, type: 3}
 --- !u!1 &5187381531729214060
 GameObject:
   m_ObjectHideFlags: 0

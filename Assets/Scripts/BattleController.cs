@@ -364,6 +364,8 @@ public class BattleController : MonoBehaviour
     [SerializeField] private Transform magicPulsePrefab;
     //The the magic pulse
     private Transform magicPulse;
+    //The number of the magic spear key
+    private int magicSpearKey;
 
 
     private void Awake()
@@ -376,13 +378,13 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
         PlayerPrefs.SetInt("Souls", 6);
         PlayerPrefs.SetInt("PlayerHeartLvl", 0);
-        PlayerPrefs.SetInt("PlayerLightLvl", 0);
+        PlayerPrefs.SetInt("PlayerLightLvl", 1);
         PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
         PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
         PlayerPrefs.SetInt("PlayerCurrentHealth", 10);
         PlayerPrefs.SetInt("AdventurerLvl",3); //3
         PlayerPrefs.SetInt("AdventurerCurrentHealth", 10);
-        PlayerPrefs.SetInt("WizardLvl", 2); //3
+        PlayerPrefs.SetInt("WizardLvl", 3); //3
         PlayerPrefs.SetInt("WizardCurrentHealth", 15); 
         PlayerPrefs.SetInt("language", 0);
         PlayerPrefs.SetInt("bandit", 0);
@@ -2325,7 +2327,7 @@ public class BattleController : MonoBehaviour
                                     if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> when they appear.";
                                     else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> in secuence.";
                                     else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=246> repeatedly until you fill the bar.";
-                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> until <sprite=360> lights up.";
+                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> each time they appear.";
                                     else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the adventurer aims to an objective.";
                                     attackType = 0;
                                     enemyName.SetActive(true);
@@ -2345,7 +2347,11 @@ public class BattleController : MonoBehaviour
                                         selectingCompanion = true;
                                         canSelect = false;
                                     }
-                                    else SelectAllEnemies();
+                                    else
+                                    {
+                                        selectingEnemyCompanion = true;
+                                        SelectAllEnemies();
+                                    }
                                 }
                             }
                         }
@@ -3168,6 +3174,48 @@ public class BattleController : MonoBehaviour
                             if ((Time.fixedTime - shurikenTime) < 5.0f && player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f)
                             {
                                 if (Input.GetKeyDown(KeyCode.RightArrow))companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.06f;
+                            }
+                        }
+                        else if (usingStyle == 3)
+                        {
+                            if (!attackAction && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)))
+                            {
+                                companion.GetChild(0).GetChild(6).gameObject.SetActive(false);
+                                companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                                companion.GetComponent<Animator>().SetBool("magicBall", false);
+                            }
+                            if (attackAction)
+                            {
+                                if (Input.GetKeyDown(magicKey) && !badAttack)
+                                {
+                                    if(magicSpearKey == 3)
+                                    {
+                                        companion.GetChild(0).GetChild(6).gameObject.SetActive(false);
+                                        companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(6);
+                                        companion.GetComponent<Animator>().SetBool("magicBall", false);
+                                        attackAction = false;
+                                    }
+                                    else
+                                    {
+                                        if(magicKey == KeyCode.UpArrow) companion.GetChild(0).GetChild(6).GetChild(magicSpearKey + 4).GetComponent<Image>().sprite = upArrowSpritePressed;
+                                        else if (magicKey == KeyCode.LeftArrow) companion.GetChild(0).GetChild(6).GetChild(magicSpearKey + 4).GetComponent<Image>().sprite = leftArrowSpritePressed;
+                                        else if (magicKey == KeyCode.RightArrow) companion.GetChild(0).GetChild(6).GetChild(magicSpearKey + 4).GetComponent<Image>().sprite = rightArrowSpritePressed;
+                                        else if (magicKey == KeyCode.DownArrow) companion.GetChild(0).GetChild(6).GetChild(magicSpearKey + 4).GetComponent<Image>().sprite = downArrowSpritePressed;
+                                        magicSpearKey = 4;
+                                        attackAction = false;
+                                    }
+                                }
+                            }
+                            if (attackFinished)
+                            {
+                                if(magicSpearKey != 4)
+                                {
+                                    companion.GetChild(0).GetChild(6).gameObject.SetActive(false);
+                                    companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                                    companion.GetComponent<Animator>().SetBool("magicBall", false);
+                                    attackAction = false;
+                                }
+                                else attackFinished = false; 
                             }
                         }
                     }
@@ -5459,6 +5507,11 @@ public class BattleController : MonoBehaviour
     public void SetMagicKey(KeyCode key)
     {
         magicKey = key;
+    }
+    //Function to set the number of the magic spear
+    public void SetMagicSpearNumber(int numb)
+    {
+        magicSpearKey = numb;
     }
 
     //Function to set the talking state
