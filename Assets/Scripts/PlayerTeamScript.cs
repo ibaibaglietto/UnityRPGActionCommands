@@ -1135,9 +1135,24 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to create the explosion
     public void CreateExplosion()
     {
+        transform.GetChild(0).GetChild(7).gameObject.SetActive(true);
         explosion = Instantiate(explosionPrefab, new Vector3(transform.position.x + 1.11f, transform.position.y + 0.695f, gameObject.transform.position.z), Quaternion.identity);
+        explosion.GetComponent<ExplosionScript>().SetExplosionEnemies(battleController.GetComponent<BattleController>().GetAllEnemies());
+        battleController.GetComponent<BattleController>().finalAttack = true;
     }
-    
+    //Function to set the damage of the explosion
+    public void EndExplosion(int damage)
+    {
+        explosion.GetComponent<ExplosionScript>().SetExplosionDamage(damage + lightUp);
+        if (lightUp != 0) EndBuffDebuff(lightUpPos);
+        lightUp = 0;
+        GetComponent<Animator>().SetBool("Explode", false);
+        explosion.GetComponent<Animator>().SetTrigger("explode");
+        transform.GetChild(0).GetChild(7).gameObject.SetActive(false);
+    }
+
+
+
     //A function to activate the shuriken action
     public void ShurikenActionActivate()
     {

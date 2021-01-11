@@ -377,7 +377,7 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("Fire Shuriken", 1);
         PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
         PlayerPrefs.SetInt("Souls", 6);
-        PlayerPrefs.SetInt("PlayerHeartLvl", 0);
+        PlayerPrefs.SetInt("PlayerHeartLvl", 3);
         PlayerPrefs.SetInt("PlayerLightLvl", 1);
         PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
         PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
@@ -2328,7 +2328,7 @@ public class BattleController : MonoBehaviour
                                     else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> in secuence.";
                                     else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=246> repeatedly until you fill the bar.";
                                     else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> each time they appear.";
-                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the adventurer aims to an objective.";
+                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press or release <sprite=336> when you are said so.";
                                     attackType = 0;
                                     enemyName.SetActive(true);
                                     if (usingStyle == 0 || usingStyle == 2 || usingStyle == 3)
@@ -3716,7 +3716,33 @@ public class BattleController : MonoBehaviour
                         actionInstructions.SetActive(false);
                         magicPulse.transform.GetComponent<MagicPulse>().Create(4,companion);
                     }
-                }                
+                }
+                else if (usingStyle == 4)
+                {
+                    if((Time.fixedTime - shurikenTime) < 10.0f)
+                    {
+                        if((Input.GetKey(KeyCode.X) && attackAction) || (!Input.GetKey(KeyCode.X) && !attackAction))
+                        {
+                            companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount += 0.004f;
+                        }
+                        else
+                        {
+                            companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount -= 0.003f;
+                        }
+                        if (companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount < 0.5f) companion.GetChild(0).GetChild(7).GetChild(8).GetChild(0).GetComponent<Text>().text = 3.ToString();
+                        else if(companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount < 0.678f) companion.GetChild(0).GetChild(7).GetChild(8).GetChild(0).GetComponent<Text>().text = 4.ToString();
+                        else if (companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount < 0.81f) companion.GetChild(0).GetChild(7).GetChild(8).GetChild(0).GetComponent<Text>().text = 5.ToString();
+                        else if (companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount < 0.9f) companion.GetChild(0).GetChild(7).GetChild(8).GetChild(0).GetComponent<Text>().text = 6.ToString();
+                        else if (companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount < 0.966f) companion.GetChild(0).GetChild(7).GetChild(8).GetChild(0).GetComponent<Text>().text = 7.ToString();
+                        else companion.GetChild(0).GetChild(7).GetChild(8).GetChild(0).GetComponent<Text>().text = 8.ToString();
+                    }
+                    else
+                    {
+                        actionInstructions.SetActive(false);
+                        finalAttack = false;
+                        companion.GetComponent<PlayerTeamScript>().EndExplosion(int.Parse(companion.GetChild(0).GetChild(7).GetChild(8).GetChild(0).GetComponent<Text>().text));
+                    }
+                }
             }
             
         }
@@ -4568,6 +4594,11 @@ public class BattleController : MonoBehaviour
         }
         else
         {
+            if (currentFightXP == 0)
+            {
+                currentFightXP = 1;
+                ShowCurrentXP();
+            }
             player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
             companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
             canvas.GetComponent<Animator>().SetBool("Hide", false);
@@ -6033,7 +6064,7 @@ public class BattleController : MonoBehaviour
     }
     //Function to save the gained xp
     IEnumerator SaveXP()
-    {        
+    {
         while (currentFightXP > 0)
         {
             if (PlayerPrefs.GetInt("lvlXP") < 99) PlayerPrefs.SetInt("lvlXP", PlayerPrefs.GetInt("lvlXP") + 1);

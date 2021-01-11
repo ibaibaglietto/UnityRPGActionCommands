@@ -465,14 +465,30 @@ public class EnemyTeamScript : MonoBehaviour
         {
             if (PlayerPrefs.GetInt("PlayerLvl") == 1)
             {
-                battleController.GetComponent<BattleController>().AddXPToCurrent(14);
+                battleController.GetComponent<BattleController>().AddXPToCurrent(4);
+            }
+            else if (PlayerPrefs.GetInt("PlayerLvl") == 2)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(2);
+            }
+            else if (PlayerPrefs.GetInt("PlayerLvl") == 3)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(1);
             }
         }
         else if(enemyType == 1)
         {
             if (PlayerPrefs.GetInt("PlayerLvl") == 1)
             {
-                battleController.GetComponent<BattleController>().AddXPToCurrent(15);
+                battleController.GetComponent<BattleController>().AddXPToCurrent(5);
+            }
+            else if (PlayerPrefs.GetInt("PlayerLvl") == 2)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(3);
+            }
+            else if (PlayerPrefs.GetInt("PlayerLvl") == 3)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(1);
             }
         }
     }
