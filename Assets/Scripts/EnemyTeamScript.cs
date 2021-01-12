@@ -101,13 +101,33 @@ public class EnemyTeamScript : MonoBehaviour
                 transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
             }
         }
+        if (enemyType == 2)
+        {
+            grounded = true;
+            if (PlayerPrefs.GetInt("king") == 1)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 1.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 1.0f);
+            }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 0.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
+            }
+        }
     }
 
 
     void FixedUpdate()
     {
         //If the enemy is a bandit or a wizard
-        if(enemyType == 0 || enemyType == 1)
+        if(enemyType == 0 || enemyType == 1 || enemyType == 2)
         {
             //We move the enemy to the move position if it has to move towards it
             if (movingToEnemy)
@@ -178,6 +198,16 @@ public class EnemyTeamScript : MonoBehaviour
                     if (transform.eulerAngles.x >= 90.0f) Destroy(dust.gameObject);
                 }
             }
+            if (enemyType == 2)
+            {
+                if (transform.eulerAngles.x == 0.0f) dust = Instantiate(dustObject, new Vector3(transform.position.x + 0.5f, -1.57f, -0.3f), Quaternion.identity);
+                if (transform.eulerAngles.x < 90.0f)
+                {
+                    transform.rotation = Quaternion.Euler(transform.eulerAngles.x + 1.8f, transform.eulerAngles.y, transform.eulerAngles.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y - 0.04f, transform.position.z);
+                    if (transform.eulerAngles.x >= 90.0f) Destroy(dust.gameObject);
+                }
+            }
         }
     }
     //Function to check if the player knows the health of the enemy
@@ -202,9 +232,28 @@ public class EnemyTeamScript : MonoBehaviour
                 transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
             }
         }
-        if(enemyType == 1)
+        else if(enemyType == 1)
         {
             if (PlayerPrefs.GetInt("wizard") == 1)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 1.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 1.0f);
+            }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 0.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
+            }
+        }
+        else if (enemyType == 2)
+        {
+            if (PlayerPrefs.GetInt("king") == 1)
             {
                 for (int i = 0; i < 3; i++)
                 {
@@ -249,6 +298,12 @@ public class EnemyTeamScript : MonoBehaviour
         {
             duration = Mathf.FloorToInt((lvl-1) / 2.0f);
             rand = ((lvl-1) / 2.0f) - Mathf.FloorToInt((lvl - 1) / 2.0f);
+            if (rand >= Random.Range(0.0f, 1.0f)) duration += 1;
+        }
+        else if(enemyType == 2)
+        {
+            duration = Mathf.FloorToInt((lvl - 1) / 3.0f);
+            rand = ((lvl - 1) / 3.0f) - Mathf.FloorToInt((lvl - 1) / 3.0f);
             if (rand >= Random.Range(0.0f, 1.0f)) duration += 1;
         }
         if(duration > 0) SetBuffDebuff(0, duration);
@@ -365,6 +420,16 @@ public class EnemyTeamScript : MonoBehaviour
                 movePos = attackObjective.position.x + 1.1f;
                 movingToEnemy = true;
             }
+            else if(enemyType == 2)
+            {
+                if (Random.Range(0.0f, 1.0f) < 1.0f)
+                {
+                    startPos = transform.position.x;
+                    movePos = attackObjective.position.x + 2.05f; 
+                    movingToEnemy = true;
+                }
+                else TeleportAttack();
+            }
         }
         else
         {            
@@ -400,6 +465,35 @@ public class EnemyTeamScript : MonoBehaviour
             defended = 0;
         }  
     }
+    //A function for a not final attack
+    public void MidMeleeAttack()
+    {
+        attacking = false;
+        attackObjective.GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+        if (!attackObjective.GetComponent<PlayerTeamScript>().IsInvisible() && !attackObjective.GetComponent<PlayerTeamScript>().IsDead())
+        {
+            if (!battleController.GetComponent<BattleController>().IsTaunting())
+            {
+                if (defended == 0) attackObjective.GetComponent<Animator>().SetTrigger("takeDamage");
+                else attackObjective.GetComponent<Animator>().SetBool("isDefending", false);
+            }
+        }
+        defended = 0;
+    }
+    //Funtion to return to the start pos
+    public void ReturnStartPos()
+    {
+        gameObject.GetComponent<Animator>().SetBool("IsAttacking", false);
+        movingToEnemy = false;
+        returnStartPos = true;
+    }
+
+    //A function to do the telepor attack
+    public void TeleportAttack()
+    {
+
+    }
+
 
     //A function to end the melee attack and start moving back to the start position
     public void EndMeleeAttack()

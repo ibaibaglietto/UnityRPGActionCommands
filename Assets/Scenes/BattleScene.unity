@@ -6900,6 +6900,7 @@ MonoBehaviour:
   companionWizardBattle: {fileID: 4486233812575140428, guid: 6233991c119b967419c28b5a53912582, type: 3}
   banditBattle: {fileID: 3877302658384341422, guid: 5d8eb0b2f1de23c46ba3ea7b614f4dd8, type: 3}
   wizardBattle: {fileID: 6119504698528858195, guid: 83986c8c45739944ea4460a458413eec, type: 3}
+  kingBattle: {fileID: 5865716693940188595, guid: 5afa77bc54af49e4aba403227e5ad0a6, type: 3}
   damageUI: {fileID: 2003888347808236252, guid: ba485e94df23bb6459b7ed70110d5086, type: 3}
   normalSword: {fileID: 21300000, guid: 016fa064988a4ad409e0708b60a94625, type: 3}
   lightSword: {fileID: 21300000, guid: c8c7a5f5e1930be4dae588b05dab6a64, type: 3}

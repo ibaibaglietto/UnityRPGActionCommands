@@ -13,6 +13,7 @@ public class BattleController : MonoBehaviour
     [SerializeField] private Transform companionWizardBattle;
     [SerializeField] private Transform banditBattle;
     [SerializeField] private Transform wizardBattle;
+    [SerializeField] private Transform kingBattle;
     //The prefabs of the damage UI, heart and light
     [SerializeField] private Transform damageUI;
     //The main camera
@@ -389,6 +390,7 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("language", 0);
         PlayerPrefs.SetInt("bandit", 0);
         PlayerPrefs.SetInt("wizard", 0);
+        PlayerPrefs.SetInt("king", 0);
         PlayerPrefs.SetInt("lvlXP", 90);
         PlayerPrefs.SetInt("UnlockedCompanions", 2);
         //Find the gameobjects
@@ -480,9 +482,9 @@ public class BattleController : MonoBehaviour
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
         SpawnCharacter(1,1);
-        SpawnCharacter(2,1);
-        SpawnCharacter(3,0);
-        SpawnCharacter(4,0);
+        SpawnCharacter(2,2);
+        //SpawnCharacter(3,0);
+        //SpawnCharacter(4,0);
         //SpawnCharacter(5,1);
         playerTeamTurn = true;
         playerTurn = true;
@@ -1130,6 +1132,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                         else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
@@ -1143,6 +1149,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                         else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
@@ -1155,6 +1165,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }
@@ -1172,6 +1186,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }
@@ -1204,6 +1222,10 @@ public class BattleController : MonoBehaviour
                                     {
                                         enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                     }
+                                    else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                    {
+                                        enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                    }
                                 }
                                 if (Input.GetKeyDown(KeyCode.RightArrow))
                                 {
@@ -1221,6 +1243,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                         else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
@@ -1233,6 +1259,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }
@@ -1250,6 +1280,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }                                    
@@ -1286,6 +1320,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                         else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
@@ -1298,6 +1336,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }
@@ -1315,6 +1357,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }
@@ -1335,6 +1381,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                     }
                                     else if (!enemy1.GetComponent<EnemyTeamScript>().IsAlive() && !enemy2.GetComponent<EnemyTeamScript>().IsAlive())
@@ -1351,6 +1401,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }
@@ -1387,6 +1441,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                         else if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
@@ -1400,6 +1458,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                         else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
@@ -1412,6 +1474,10 @@ public class BattleController : MonoBehaviour
                                             if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }
@@ -1429,6 +1495,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }
@@ -2656,6 +2726,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                         else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
@@ -2669,6 +2743,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                         else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
@@ -2681,6 +2759,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }                                        
@@ -2698,6 +2780,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }
@@ -2730,6 +2816,10 @@ public class BattleController : MonoBehaviour
                                     {
                                         enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                     }
+                                    else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                    {
+                                        enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                    }
                                 }
                                 if (Input.GetKeyDown(KeyCode.RightArrow))
                                 {
@@ -2747,6 +2837,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                         else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
@@ -2759,6 +2853,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }                                    
@@ -2776,6 +2874,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }
@@ -2812,6 +2914,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                         else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
@@ -2824,6 +2930,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }                                    
@@ -2841,6 +2951,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }
@@ -2861,6 +2975,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                     }                                        
                                     else if (!enemy1.GetComponent<EnemyTeamScript>().IsAlive() && !enemy2.GetComponent<EnemyTeamScript>().IsAlive())
@@ -2877,6 +2995,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }
@@ -2913,6 +3035,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                         else if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
@@ -2926,6 +3052,10 @@ public class BattleController : MonoBehaviour
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
                                             }
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+                                            }
                                         }
                                         else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
@@ -2938,6 +3068,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }                                        
@@ -2955,6 +3089,10 @@ public class BattleController : MonoBehaviour
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1)
                                             {
                                                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                                            }
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2)
+                                            {
+                                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
                                             }
                                         }
                                     }
@@ -3244,6 +3382,7 @@ public class BattleController : MonoBehaviour
                     if (companion.GetComponent<PlayerTeamScript>().IsDead())
                     {
                         enemy1.GetComponent<EnemyTeamScript>().Attack(player);
+                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
                         enemy1Turn = false;
                     }
                     else
@@ -3252,16 +3391,36 @@ public class BattleController : MonoBehaviour
                         {
                             if (Random.Range(0.0f, 1.0f) < 0.75f)
                             {
-                                if (firstPosPlayer) enemy1.GetComponent<EnemyTeamScript>().Attack(player);
-                                else enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                                if (firstPosPlayer)
+                                {
+                                    enemy1.GetComponent<EnemyTeamScript>().Attack(player);
+                                    companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                }
+                                else
+                                {
+                                    enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                                    player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                }
                             }
                             else
                             {
-                                if (firstPosPlayer) enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
-                                else enemy1.GetComponent<EnemyTeamScript>().Attack(player);
+                                if (firstPosPlayer)
+                                {
+                                    enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                                    player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                }
+                                else
+                                {
+                                    enemy1.GetComponent<EnemyTeamScript>().Attack(player);
+                                    companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                }
                             }
                         }
-                        else enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                        else
+                        {
+                            enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                            player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                        }
                         enemy1Turn = false;
                     }                    
                 }
@@ -3275,6 +3434,7 @@ public class BattleController : MonoBehaviour
             //We check that the enemy is attacking and that it is in the defense zone. If the player presses X correctly they will defend, receiveing 1 less damage
             else if (enemy1.GetComponent<EnemyTeamScript>().IsAttacking())
             {
+                Debug.Log(defenseZone);
                 if (Input.GetKeyDown(KeyCode.X))
                 {
                     if (defenseZone)
@@ -3294,6 +3454,7 @@ public class BattleController : MonoBehaviour
                         if (companion.GetComponent<PlayerTeamScript>().IsDead())
                         {
                             enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                            companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
                             enemy2Turn = false;
                         }
                         else
@@ -3302,16 +3463,36 @@ public class BattleController : MonoBehaviour
                             {
                                 if (Random.Range(0.0f, 1.0f) < 0.75f)
                                 {
-                                    if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(player);
-                                    else enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                                    if (firstPosPlayer)
+                                    {
+                                        enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    }
+                                    else
+                                    {
+                                        enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    }
                                 }
                                 else
                                 {
-                                    if (firstPosPlayer) enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
-                                    else enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                                    if (firstPosPlayer)
+                                    {
+                                        enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    }
+                                    else
+                                    {
+                                        enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    }
                                 }
                             }
-                            else enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                            else
+                            {
+                                enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                                player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                            }
                             enemy2Turn = false;
                         }
                     }
@@ -3343,6 +3524,7 @@ public class BattleController : MonoBehaviour
                         if (companion.GetComponent<PlayerTeamScript>().IsDead())
                         {
                             enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                            companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
                             enemy3Turn = false;
                         }
                         else
@@ -3351,16 +3533,36 @@ public class BattleController : MonoBehaviour
                             {
                                 if (Random.Range(0.0f, 1.0f) < 0.75f)
                                 {
-                                    if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(player);
-                                    else enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                                    if (firstPosPlayer)
+                                    {
+                                        enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    }
+                                    else
+                                    {
+                                        enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    }
                                 }
                                 else
                                 {
-                                    if (firstPosPlayer) enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
-                                    else enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                                    if (firstPosPlayer)
+                                    {
+                                        enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    }
+                                    else
+                                    {
+                                        enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    }
                                 }
                             }
-                            else enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                            else
+                            {
+                                enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                                player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                            }
                             enemy3Turn = false;
                         }
                     }
@@ -3392,6 +3594,7 @@ public class BattleController : MonoBehaviour
                         if (companion.GetComponent<PlayerTeamScript>().IsDead())
                         {
                             enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                            companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
                             enemy4Turn = false;
                         }
                         else
@@ -3400,16 +3603,36 @@ public class BattleController : MonoBehaviour
                             {
                                 if (Random.Range(0.0f, 1.0f) < 0.75f)
                                 {
-                                    if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(player);
-                                    else enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                                    if (firstPosPlayer)
+                                    {
+                                        enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    }
+                                    else
+                                    {
+                                        enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    }
                                 }
                                 else
                                 {
-                                    if (firstPosPlayer) enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
-                                    else enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                                    if (firstPosPlayer)
+                                    {
+                                        enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    }
+                                    else
+                                    {
+                                        enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    }
                                 }
                             }
-                            else enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                            else
+                            {
+                                enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                                player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                            }
                             enemy4Turn = false;
                         }
                     }
@@ -3849,6 +4072,13 @@ public class BattleController : MonoBehaviour
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
             }
             else if (type == 1) enemy1 = Instantiate(wizardBattle, new Vector3(2.5f, 1.0f, -2.03f), Quaternion.identity);
+            else if (type == 2)
+            {
+                enemy1 = Instantiate(kingBattle, new Vector3(2.5f, -0.43f, -2.03f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+            }
             enemyNumber += 1;
             enemy1.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
@@ -3862,6 +4092,13 @@ public class BattleController : MonoBehaviour
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
             }
             else if (type == 1) enemy2 = Instantiate(wizardBattle, new Vector3(4.0f, 1.0f, -2.02f), Quaternion.identity);
+            else if (type == 2)
+            {
+                enemy2 = Instantiate(kingBattle, new Vector3(4.0f, -0.43f, -2.02f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+            }
             enemyNumber += 1;
             enemy2.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
@@ -3875,6 +4112,13 @@ public class BattleController : MonoBehaviour
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
             }
             else if (type == 1) enemy3 = Instantiate(wizardBattle, new Vector3(5.5f, 1.0f, -2.01f), Quaternion.identity);
+            else if (type == 2)
+            {
+                enemy3 = Instantiate(kingBattle, new Vector3(5.5f, -0.43f, -2.01f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+            }
             enemyNumber += 1;
             enemy3.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
@@ -3888,6 +4132,13 @@ public class BattleController : MonoBehaviour
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
             }
             else if (type == 1) enemy4 = Instantiate(wizardBattle, new Vector3(7.0f, 1.0f, -2.0f), Quaternion.identity);
+            else if (type == 2)
+            {
+                enemy4 = Instantiate(kingBattle, new Vector3(7.0f, -0.43f, -2.0f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+            }
             enemyNumber += 1;
             enemy4.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
@@ -4622,6 +4873,8 @@ public class BattleController : MonoBehaviour
     //A function to end enemy turn
     public void EndEnemyTurn()
     {
+        player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         if (player.GetComponent<PlayerTeamScript>().IsDead()) killerEnemy = 5;
         else
         {
@@ -4687,6 +4940,8 @@ public class BattleController : MonoBehaviour
     //A function to pass the turn to the next enemy
     public void NextEnemy(int numb)
     {
+        player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         if (player.GetComponent<PlayerTeamScript>().IsDead())
         {
             killerEnemy = numb;
@@ -5162,6 +5417,10 @@ public class BattleController : MonoBehaviour
             {
                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
             }
+            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2)
+            {
+                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+            }
         }
         else if(enemyNumber > 1 && enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && (((usingStyle == 0 || usingStyle == 2) && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && ((usingStyle == 2 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || usingStyle == 0 || usingStyle == 3))))))
         {
@@ -5173,6 +5432,10 @@ public class BattleController : MonoBehaviour
             else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1)
             {
                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+            }
+            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2)
+            {
+                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
             }
         }
         else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && (((usingStyle == 0 || usingStyle == 2) && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && ((usingStyle == 2 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || usingStyle == 0 || usingStyle == 3))))))
@@ -5186,6 +5449,10 @@ public class BattleController : MonoBehaviour
             {
                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
             }
+            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2)
+            {
+                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
+            }
         }
         else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && (((usingStyle == 0 || usingStyle == 2) && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && ((usingStyle == 2 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || usingStyle == 0 || usingStyle == 3))))))
         {
@@ -5197,6 +5464,10 @@ public class BattleController : MonoBehaviour
             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1)
             {
                 enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+            }
+            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2)
+            {
+                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
             }
         }
         canSelect = true;
@@ -5220,6 +5491,13 @@ public class BattleController : MonoBehaviour
                 groundEnemies[i].GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                 enemyName.transform.GetChild(i).gameObject.SetActive(true);
                 enemyName.transform.GetChild(i).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                lastI = i;
+            }
+            else if (groundEnemies[i].GetComponent<EnemyTeamScript>().enemyType == 2)
+            {
+                groundEnemies[i].GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                enemyName.transform.GetChild(i).gameObject.SetActive(true);
+                enemyName.transform.GetChild(i).transform.GetChild(0).GetComponent<Text>().text = "King";
                 lastI = i;
             }
         }
@@ -5251,6 +5529,13 @@ public class BattleController : MonoBehaviour
                 groundEnemies[i].GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                 enemyName.transform.GetChild(i).gameObject.SetActive(true);
                 enemyName.transform.GetChild(i).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
+                lastI = i;
+            }
+            else if (groundEnemies[i].GetComponent<EnemyTeamScript>().enemyType == 2)
+            {
+                groundEnemies[i].GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                enemyName.transform.GetChild(i).gameObject.SetActive(true);
+                enemyName.transform.GetChild(i).transform.GetChild(0).GetComponent<Text>().text = "King";
                 lastI = i;
             }
         }
