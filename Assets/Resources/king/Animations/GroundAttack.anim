@@ -154,28 +154,28 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 1.2666667
-    functionName: GroundAttackAppear
+    functionName: StartDefenseZone
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.3333334
-    functionName: spawnGroundAttackFase2
+  - time: 1.5333333
+    functionName: EndDefenseZone
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.4666667
-    functionName: GroundAttackDisappear
+  - time: 1.6
+    functionName: TeamAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.9333333
-    functionName: endGroundAttack
+    functionName: StartTeleportReturn
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

@@ -367,6 +367,8 @@ public class BattleController : MonoBehaviour
     private Transform magicPulse;
     //The number of the magic spear key
     private int magicSpearKey;
+    //The attack objectives
+    private Transform[] attackObjectives;
 
 
     private void Awake()
@@ -482,9 +484,9 @@ public class BattleController : MonoBehaviour
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
         SpawnCharacter(1,1);
-        SpawnCharacter(2,2);
-        //SpawnCharacter(3,0);
-        //SpawnCharacter(4,0);
+        SpawnCharacter(2,1);
+        SpawnCharacter(3,0);
+        SpawnCharacter(4,2);
         //SpawnCharacter(5,1);
         playerTeamTurn = true;
         playerTurn = true;
@@ -3381,8 +3383,10 @@ public class BattleController : MonoBehaviour
                 {
                     if (companion.GetComponent<PlayerTeamScript>().IsDead())
                     {
-                        enemy1.GetComponent<EnemyTeamScript>().Attack(player);
+                        attackObjectives = new Transform[1];
+                        attackObjectives[0] = player;
                         companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                        enemy1.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                         enemy1Turn = false;
                     }
                     else
@@ -3393,33 +3397,47 @@ public class BattleController : MonoBehaviour
                             {
                                 if (firstPosPlayer)
                                 {
-                                    enemy1.GetComponent<EnemyTeamScript>().Attack(player);
+                                    attackObjectives = new Transform[2];
+                                    attackObjectives[0] = player;
+                                    attackObjectives[1] = companion;
                                     companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    enemy1.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                 }
                                 else
                                 {
-                                    enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                                    attackObjectives = new Transform[2];
+                                    attackObjectives[0] = companion;
+                                    attackObjectives[1] = player;
                                     player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    enemy1.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                 }
                             }
                             else
                             {
                                 if (firstPosPlayer)
                                 {
-                                    enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                                    attackObjectives = new Transform[2];
+                                    attackObjectives[0] = companion;
+                                    attackObjectives[1] = player;
                                     player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    enemy1.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                 }
                                 else
                                 {
-                                    enemy1.GetComponent<EnemyTeamScript>().Attack(player);
+                                    attackObjectives = new Transform[2];
+                                    attackObjectives[0] = player;
+                                    attackObjectives[1] = companion;
                                     companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    enemy1.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                 }
                             }
                         }
                         else
                         {
-                            enemy1.GetComponent<EnemyTeamScript>().Attack(companion);
+                            attackObjectives = new Transform[1];
+                            attackObjectives[0] = companion;
                             player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                            enemy1.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                         }
                         enemy1Turn = false;
                     }                    
@@ -3434,7 +3452,6 @@ public class BattleController : MonoBehaviour
             //We check that the enemy is attacking and that it is in the defense zone. If the player presses X correctly they will defend, receiveing 1 less damage
             else if (enemy1.GetComponent<EnemyTeamScript>().IsAttacking())
             {
-                Debug.Log(defenseZone);
                 if (Input.GetKeyDown(KeyCode.X))
                 {
                     if (defenseZone)
@@ -3453,8 +3470,10 @@ public class BattleController : MonoBehaviour
                     {
                         if (companion.GetComponent<PlayerTeamScript>().IsDead())
                         {
-                            enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                            attackObjectives = new Transform[1];
+                            attackObjectives[0] = player;
                             companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                            enemy2.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                             enemy2Turn = false;
                         }
                         else
@@ -3465,33 +3484,47 @@ public class BattleController : MonoBehaviour
                                 {
                                     if (firstPosPlayer)
                                     {
-                                        enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                                        attackObjectives = new Transform[2];
+                                        attackObjectives[0] = player;
+                                        attackObjectives[1] = companion;
                                         companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        enemy2.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                     else
                                     {
-                                        enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                                        attackObjectives = new Transform[2];
+                                        attackObjectives[0] = companion;
+                                        attackObjectives[1] = player;
                                         player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        enemy2.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                 }
                                 else
                                 {
                                     if (firstPosPlayer)
                                     {
-                                        enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                                        attackObjectives = new Transform[2];
+                                        attackObjectives[0] = companion;
+                                        attackObjectives[1] = player;
                                         player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        enemy2.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                     else
                                     {
-                                        enemy2.GetComponent<EnemyTeamScript>().Attack(player);
+                                        attackObjectives = new Transform[2];
+                                        attackObjectives[0] = player;
+                                        attackObjectives[1] = companion;
                                         companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        enemy2.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                 }
                             }
                             else
                             {
-                                enemy2.GetComponent<EnemyTeamScript>().Attack(companion);
+                                attackObjectives = new Transform[1];
+                                attackObjectives[0] = companion;
                                 player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                enemy2.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                             }
                             enemy2Turn = false;
                         }
@@ -3523,8 +3556,10 @@ public class BattleController : MonoBehaviour
                     {
                         if (companion.GetComponent<PlayerTeamScript>().IsDead())
                         {
-                            enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                            attackObjectives = new Transform[1];
+                            attackObjectives[0] = player;
                             companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                            enemy3.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                             enemy3Turn = false;
                         }
                         else
@@ -3535,33 +3570,47 @@ public class BattleController : MonoBehaviour
                                 {
                                     if (firstPosPlayer)
                                     {
-                                        enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                                        attackObjectives = new Transform[2];
+                                        attackObjectives[0] = player;
+                                        attackObjectives[1] = companion;
                                         companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        enemy3.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                     else
                                     {
-                                        enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                                        attackObjectives = new Transform[2];
+                                        attackObjectives[0] = companion;
+                                        attackObjectives[1] = player;
                                         player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        enemy3.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                 }
                                 else
                                 {
                                     if (firstPosPlayer)
                                     {
-                                        enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                                        attackObjectives = new Transform[2];
+                                        attackObjectives[0] = companion;
+                                        attackObjectives[1] = player;
                                         player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        enemy3.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                     else
                                     {
-                                        enemy3.GetComponent<EnemyTeamScript>().Attack(player);
+                                        attackObjectives = new Transform[2];
+                                        attackObjectives[0] = player;
+                                        attackObjectives[1] = companion;
                                         companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        enemy3.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                 }
                             }
                             else
                             {
-                                enemy3.GetComponent<EnemyTeamScript>().Attack(companion);
+                                attackObjectives = new Transform[1];
+                                attackObjectives[0] = companion;
                                 player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                enemy3.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                             }
                             enemy3Turn = false;
                         }
@@ -3593,8 +3642,10 @@ public class BattleController : MonoBehaviour
                     {
                         if (companion.GetComponent<PlayerTeamScript>().IsDead())
                         {
-                            enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                            attackObjectives = new Transform[1];
+                            attackObjectives[0] = player;
                             companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                            enemy4.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                             enemy4Turn = false;
                         }
                         else
@@ -3605,33 +3656,47 @@ public class BattleController : MonoBehaviour
                                 {
                                     if (firstPosPlayer)
                                     {
-                                        enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                                        attackObjectives = new Transform[2];
+                                        attackObjectives[0] = player;
+                                        attackObjectives[1] = companion;
                                         companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        enemy4.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                     else
                                     {
-                                        enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                                        attackObjectives = new Transform[2];
+                                        attackObjectives[0] = companion;
+                                        attackObjectives[1] = player;
                                         player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        enemy4.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                 }
                                 else
                                 {
                                     if (firstPosPlayer)
                                     {
-                                        enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                                        attackObjectives = new Transform[2];
+                                        attackObjectives[0] = companion;
+                                        attackObjectives[1] = player;
                                         player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        enemy4.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                     else
                                     {
-                                        enemy4.GetComponent<EnemyTeamScript>().Attack(player);
+                                        attackObjectives = new Transform[2];
+                                        attackObjectives[0] = player;
+                                        attackObjectives[1] = companion;
                                         companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        enemy4.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                 }
                             }
                             else
                             {
-                                enemy4.GetComponent<EnemyTeamScript>().Attack(companion);
+                                attackObjectives = new Transform[1];
+                                attackObjectives[0] = companion;
                                 player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                enemy4.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                             }
                             enemy4Turn = false;
                         }

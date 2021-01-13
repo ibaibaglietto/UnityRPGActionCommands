@@ -9,6 +9,8 @@ public class EnemyTeamScript : MonoBehaviour
     public int enemyType; 
     //The objective of the attack
     private Transform attackObjective;
+    //The objective of the attack when it hits all the team
+    private Transform[] attackTeam;
     //The starting position
     private float startPos;
     //The movement position
@@ -46,6 +48,10 @@ public class EnemyTeamScript : MonoBehaviour
     private Transform dust;
     //The dialogue of the glance action
     public Dialogue dialogue;
+    //A float to save the x of the teleportation
+    private float teleportPos;
+    //A bool to know that the next attack is a ground attack
+    private bool groundAttack;
 
     void Start()
     {
@@ -61,6 +67,8 @@ public class EnemyTeamScript : MonoBehaviour
         alive = true;
         idle = true;
         asleep = 0;
+        groundAttack = false;
+        attackTeam = new Transform[1];
         if (enemyType == 0)
         {
             grounded = true;
@@ -160,11 +168,18 @@ public class EnemyTeamScript : MonoBehaviour
                     GetComponent<Animator>().SetFloat("Speed", 0.0f);
                     returnStartPos = false;
                     transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
-                    if (enemyNumber < battleController.GetComponent<BattleController>().GetNumberOfEnemies())
+                    if(enemyType == 2 && Random.Range(0.0f,1.0f)<1.0f)
                     {
-                        battleController.GetComponent<BattleController>().NextEnemy(enemyNumber);
+                        GetComponent<Animator>().SetBool("EnterFase2", true);
                     }
-                    else battleController.GetComponent<BattleController>().EndEnemyTurn();
+                    else
+                    {
+                        if (enemyNumber < battleController.GetComponent<BattleController>().GetNumberOfEnemies())
+                        {
+                            battleController.GetComponent<BattleController>().NextEnemy(enemyNumber);
+                        }
+                        else battleController.GetComponent<BattleController>().EndEnemyTurn();
+                    }
                 }
             }
         }
@@ -407,11 +422,11 @@ public class EnemyTeamScript : MonoBehaviour
     }
 
     //Function to attack an objective
-    public void Attack(Transform objective)
+    public void Attack(Transform[] objective)
     {
         if (asleep == 0)
         {
-            attackObjective = objective;
+            attackObjective = objective[0];
             transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
             //If the enemy is a bandit we make it move towards the player
             if (enemyType == 0 || enemyType == 1)
@@ -422,13 +437,22 @@ public class EnemyTeamScript : MonoBehaviour
             }
             else if(enemyType == 2)
             {
-                if (Random.Range(0.0f, 1.0f) < 1.0f)
+                if (!groundAttack)
                 {
                     startPos = transform.position.x;
-                    movePos = attackObjective.position.x + 2.05f; 
+                    movePos = attackObjective.position.x + 2.05f;
                     movingToEnemy = true;
                 }
-                else TeleportAttack();
+                else
+                {
+                    attackTeam = objective;
+                    if (attackTeam.Length > 1)
+                    {
+                        attackTeam[0].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                        attackTeam[1].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                    }
+                    StartTeleportAttack();
+                }
             }
         }
         else
@@ -454,11 +478,15 @@ public class EnemyTeamScript : MonoBehaviour
     //A function to save if the player has defended or not
     public void IsDefended(bool defense)
     {
-        attacking = false;
         if (defense)
         {
             defended = 1;
-            if (!attackObjective.GetComponent<PlayerTeamScript>().IsInvisible()) attackObjective.GetComponent<Animator>().SetBool("isDefending", true);
+            if (attackTeam.Length > 1)
+            {
+                if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible()) attackTeam[0].GetComponent<Animator>().SetBool("isDefending", true);
+                if (!attackTeam[1].GetComponent<PlayerTeamScript>().IsInvisible()) attackTeam[1].GetComponent<Animator>().SetBool("isDefending", true);
+            }
+            else if (!attackObjective.GetComponent<PlayerTeamScript>().IsInvisible()) attackObjective.GetComponent<Animator>().SetBool("isDefending", true);
         }
         else
         {
@@ -468,7 +496,6 @@ public class EnemyTeamScript : MonoBehaviour
     //A function for a not final attack
     public void MidMeleeAttack()
     {
-        attacking = false;
         attackObjective.GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
         if (!attackObjective.GetComponent<PlayerTeamScript>().IsInvisible() && !attackObjective.GetComponent<PlayerTeamScript>().IsDead())
         {
@@ -483,15 +510,93 @@ public class EnemyTeamScript : MonoBehaviour
     //Funtion to return to the start pos
     public void ReturnStartPos()
     {
+        attacking = false;
         gameObject.GetComponent<Animator>().SetBool("IsAttacking", false);
         movingToEnemy = false;
         returnStartPos = true;
     }
 
-    //A function to do the telepor attack
-    public void TeleportAttack()
+    //A function to do the teleport attack
+    public void StartTeleportAttack()
     {
+        GetComponent<Animator>().SetBool("StartTeleport", true);
+        startPos = transform.position.x;
+        teleportPos = -5.7f;
+    }
 
+    //A function to do the teleport return
+    public void StartTeleportReturn()
+    {
+        GetComponent<Animator>().SetBool("IsGroundAttacking", false);
+        GetComponent<Animator>().SetBool("StartTeleport", true);
+        teleportPos = startPos;
+    }
+
+    //A function to teleport to the attack position
+    public void Teleport()
+    {
+        GetComponent<Animator>().SetBool("StartTeleport", false);
+        GetComponent<Animator>().SetTrigger("EndTeleport");
+        transform.position = new Vector3(teleportPos, transform.position.y, transform.position.z);
+    }
+    //A function to start the ground attack or end turn
+    public void EndTeleport()
+    {
+        if(transform.position.x != startPos)
+        {
+            attacking = true;
+            GetComponent<Animator>().SetBool("IsGroundAttacking", true);
+        }
+        else
+        {
+            transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
+            if (enemyNumber < battleController.GetComponent<BattleController>().GetNumberOfEnemies())
+            {
+                battleController.GetComponent<BattleController>().NextEnemy(enemyNumber);
+            }
+            else battleController.GetComponent<BattleController>().EndEnemyTurn();
+        }
+    }
+    //Function to end the power up
+    public void EndPowerUp()
+    {
+        GetComponent<Animator>().SetBool("EnterFase2", false);
+        groundAttack = true;
+        if (enemyNumber < battleController.GetComponent<BattleController>().GetNumberOfEnemies())
+        {
+            battleController.GetComponent<BattleController>().NextEnemy(enemyNumber);
+        }
+        else battleController.GetComponent<BattleController>().EndEnemyTurn();
+    }
+    
+    //A function to attack all the player team
+    public void TeamAttack()
+    {
+        attacking = false;
+        groundAttack = false;
+        if (attackTeam.Length > 1)
+        {
+            attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+            attackTeam[1].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+        }
+        else attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+        if (!attackObjective.GetComponent<PlayerTeamScript>().IsInvisible() && !attackObjective.GetComponent<PlayerTeamScript>().IsDead())
+        {
+            if (!battleController.GetComponent<BattleController>().IsTaunting())
+            {
+                if (defended == 0)
+                {
+                    attackTeam[0].GetComponent<Animator>().SetTrigger("takeDamage");
+                    attackTeam[1].GetComponent<Animator>().SetTrigger("takeDamage");
+                }
+                else
+                {
+                    attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
+                    attackTeam[1].GetComponent<Animator>().SetBool("isDefending", false);
+                }
+            }
+        }
+        defended = 0;
     }
 
 
