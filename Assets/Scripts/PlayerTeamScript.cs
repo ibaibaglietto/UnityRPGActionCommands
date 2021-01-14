@@ -21,6 +21,8 @@ public class PlayerTeamScript : MonoBehaviour
     [SerializeField] private Transform damageUI;
     [SerializeField] private Transform heartUI;
     [SerializeField] private Transform lightUI;
+    [SerializeField] private Material shadowMaterial;
+    [SerializeField] private Material transparentMaterial;
 
     //The canvas
     private GameObject canvas;
@@ -176,6 +178,7 @@ public class PlayerTeamScript : MonoBehaviour
             }
             else
             {
+                transform.position = new Vector3(movePos, transform.position.y, transform.position.z);
                 if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.0f);
                 else if (playerTeamType == 1)
                 {
@@ -213,6 +216,7 @@ public class PlayerTeamScript : MonoBehaviour
             }
             else
             {
+                transform.position = new Vector3(startPos, transform.position.y, transform.position.z);
                 battleController.GetComponent<BattleController>().attackFinished = false;
                 if (playerTeamType == 0) GetComponent<Animator>().SetFloat("Speed", 0.0f);
                 else if (playerTeamType == 1 || playerTeamType == 2) GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
@@ -236,6 +240,7 @@ public class PlayerTeamScript : MonoBehaviour
                 }
                 else
                 {
+                    transform.position = new Vector3(movePos, transform.position.y, transform.position.z);
                     GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                     movingToAlly = false;
                     if (playerTeamType == 2 && attackStyle == 1) GetComponent<Animator>().SetBool("isDefending", true);                    
@@ -256,6 +261,7 @@ public class PlayerTeamScript : MonoBehaviour
                 }
                 else
                 {
+                    transform.position = new Vector3(movePos, transform.position.y, transform.position.z);
                     GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                     movingToAlly = false;
                     if(playerTeamType == 2 && attackStyle == 1) GetComponent<Animator>().SetBool("isDefending", true);
@@ -280,6 +286,7 @@ public class PlayerTeamScript : MonoBehaviour
                 }
                 else
                 {
+                    transform.position = new Vector3(startPos, transform.position.y, transform.position.z);
                     GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                     returnStartPosAlly = false;
                     if(!IsDead()) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
@@ -298,6 +305,7 @@ public class PlayerTeamScript : MonoBehaviour
                 }
                 else
                 {
+                    transform.position = new Vector3(startPos, transform.position.y, transform.position.z);
                     GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
                     returnStartPosAlly = false;
                     if(!IsDead()) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
@@ -472,6 +480,7 @@ public class PlayerTeamScript : MonoBehaviour
     public void SetDisappearTime(float alpha)
     {
         attackObjective.GetComponent<SpriteRenderer>().color = new Color(attackObjective.GetComponent<SpriteRenderer>().color.r, attackObjective.GetComponent<SpriteRenderer>().color.g, attackObjective.GetComponent<SpriteRenderer>().color.b, 0.5f);
+        attackObjective.GetComponent<SpriteRenderer>().material = transparentMaterial;
         int duration;
         if (alpha > 0.5f) duration = 1;
         else if (alpha > 0.05f) duration = 2;
@@ -493,6 +502,13 @@ public class PlayerTeamScript : MonoBehaviour
     {
         return lightUp;
     }
+
+    //Function to make the wizard return to the start position after
+    public void ReturnStartPosWizard()
+    {
+        returnStartPosAlly = true;
+    }
+
     //Function to make the player return to the start position
     public void ReturnStartPos()
     {
@@ -593,6 +609,7 @@ public class PlayerTeamScript : MonoBehaviour
             if (disappear == 0)
             {
                 GetComponent<SpriteRenderer>().color = new Color(GetComponent<SpriteRenderer>().color.r, GetComponent<SpriteRenderer>().color.g, GetComponent<SpriteRenderer>().color.b, 1.0f);
+                GetComponent<SpriteRenderer>().material = shadowMaterial;
                 EndBuffDebuff(disappearPos);
             }
         }
@@ -1337,6 +1354,7 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<DialogueManager>().StartDialogue(attackObjective.GetComponent<EnemyTeamScript>().dialogue);
                 if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 0) PlayerPrefs.SetInt("bandit", 1);
                 else if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 1) PlayerPrefs.SetInt("wizard", 1);
+                else if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 2) PlayerPrefs.SetInt("king", 1);
                 battleController.GetComponent<BattleController>().KnowHealth();
             }
             else

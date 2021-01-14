@@ -384,11 +384,11 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("PlayerLightLvl", 1);
         PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
         PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
-        PlayerPrefs.SetInt("PlayerCurrentHealth", 10);
-        PlayerPrefs.SetInt("AdventurerLvl",3); //3
-        PlayerPrefs.SetInt("AdventurerCurrentHealth", 10);
-        PlayerPrefs.SetInt("WizardLvl", 3); //3
-        PlayerPrefs.SetInt("WizardCurrentHealth", 15); 
+        PlayerPrefs.SetInt("PlayerCurrentHealth", 25);
+        PlayerPrefs.SetInt("AdventurerLvl",1); //3
+        PlayerPrefs.SetInt("AdventurerCurrentHealth", 20);
+        PlayerPrefs.SetInt("WizardLvl", 1); //3
+        PlayerPrefs.SetInt("WizardCurrentHealth", 25); 
         PlayerPrefs.SetInt("language", 0);
         PlayerPrefs.SetInt("bandit", 0);
         PlayerPrefs.SetInt("wizard", 0);
@@ -483,7 +483,7 @@ public class BattleController : MonoBehaviour
         player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
-        SpawnCharacter(1,1);
+        SpawnCharacter(1,0);
         SpawnCharacter(2,1);
         SpawnCharacter(3,0);
         SpawnCharacter(4,2);
@@ -3385,7 +3385,7 @@ public class BattleController : MonoBehaviour
                     {
                         attackObjectives = new Transform[1];
                         attackObjectives[0] = player;
-                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
                         enemy1.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                         enemy1Turn = false;
                     }
@@ -3400,7 +3400,7 @@ public class BattleController : MonoBehaviour
                                     attackObjectives = new Transform[2];
                                     attackObjectives[0] = player;
                                     attackObjectives[1] = companion;
-                                    companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
                                     enemy1.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                 }
                                 else
@@ -3408,7 +3408,7 @@ public class BattleController : MonoBehaviour
                                     attackObjectives = new Transform[2];
                                     attackObjectives[0] = companion;
                                     attackObjectives[1] = player;
-                                    player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
                                     enemy1.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                 }
                             }
@@ -3419,7 +3419,7 @@ public class BattleController : MonoBehaviour
                                     attackObjectives = new Transform[2];
                                     attackObjectives[0] = companion;
                                     attackObjectives[1] = player;
-                                    player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
                                     enemy1.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                 }
                                 else
@@ -3427,7 +3427,7 @@ public class BattleController : MonoBehaviour
                                     attackObjectives = new Transform[2];
                                     attackObjectives[0] = player;
                                     attackObjectives[1] = companion;
-                                    companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                    companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
                                     enemy1.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                 }
                             }
@@ -3436,7 +3436,7 @@ public class BattleController : MonoBehaviour
                         {
                             attackObjectives = new Transform[1];
                             attackObjectives[0] = companion;
-                            player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                            player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
                             enemy1.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                         }
                         enemy1Turn = false;
@@ -3445,7 +3445,10 @@ public class BattleController : MonoBehaviour
                 else
                 {
                     enemy1Turn = false;
-                    if (enemyNumber > 1) NextEnemy(1);
+                    if (enemyNumber > 1)
+                    {
+                        NextEnemy(1);
+                    }
                     else EndEnemyTurn();
                 }
             }
@@ -3472,7 +3475,7 @@ public class BattleController : MonoBehaviour
                         {
                             attackObjectives = new Transform[1];
                             attackObjectives[0] = player;
-                            companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                            companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
                             enemy2.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                             enemy2Turn = false;
                         }
@@ -3487,7 +3490,7 @@ public class BattleController : MonoBehaviour
                                         attackObjectives = new Transform[2];
                                         attackObjectives[0] = player;
                                         attackObjectives[1] = companion;
-                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
                                         enemy2.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                     else
@@ -3495,7 +3498,7 @@ public class BattleController : MonoBehaviour
                                         attackObjectives = new Transform[2];
                                         attackObjectives[0] = companion;
                                         attackObjectives[1] = player;
-                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
                                         enemy2.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                 }
@@ -3506,7 +3509,7 @@ public class BattleController : MonoBehaviour
                                         attackObjectives = new Transform[2];
                                         attackObjectives[0] = companion;
                                         attackObjectives[1] = player;
-                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
                                         enemy2.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                     else
@@ -3514,7 +3517,7 @@ public class BattleController : MonoBehaviour
                                         attackObjectives = new Transform[2];
                                         attackObjectives[0] = player;
                                         attackObjectives[1] = companion;
-                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
                                         enemy2.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                 }
@@ -3523,7 +3526,7 @@ public class BattleController : MonoBehaviour
                             {
                                 attackObjectives = new Transform[1];
                                 attackObjectives[0] = companion;
-                                player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
                                 enemy2.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                             }
                             enemy2Turn = false;
@@ -3532,7 +3535,10 @@ public class BattleController : MonoBehaviour
                     else
                     {
                         enemy2Turn = false;
-                        if (enemyNumber > 2) NextEnemy(2);
+                        if (enemyNumber > 2)
+                        {
+                            NextEnemy(2);
+                        }
                         else EndEnemyTurn();
                     }
                 }
@@ -3558,7 +3564,7 @@ public class BattleController : MonoBehaviour
                         {
                             attackObjectives = new Transform[1];
                             attackObjectives[0] = player;
-                            companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                            companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
                             enemy3.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                             enemy3Turn = false;
                         }
@@ -3573,7 +3579,7 @@ public class BattleController : MonoBehaviour
                                         attackObjectives = new Transform[2];
                                         attackObjectives[0] = player;
                                         attackObjectives[1] = companion;
-                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
                                         enemy3.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                     else
@@ -3581,7 +3587,7 @@ public class BattleController : MonoBehaviour
                                         attackObjectives = new Transform[2];
                                         attackObjectives[0] = companion;
                                         attackObjectives[1] = player;
-                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
                                         enemy3.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                 }
@@ -3592,7 +3598,7 @@ public class BattleController : MonoBehaviour
                                         attackObjectives = new Transform[2];
                                         attackObjectives[0] = companion;
                                         attackObjectives[1] = player;
-                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
                                         enemy3.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                     else
@@ -3600,7 +3606,7 @@ public class BattleController : MonoBehaviour
                                         attackObjectives = new Transform[2];
                                         attackObjectives[0] = player;
                                         attackObjectives[1] = companion;
-                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
                                         enemy3.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                 }
@@ -3609,7 +3615,7 @@ public class BattleController : MonoBehaviour
                             {
                                 attackObjectives = new Transform[1];
                                 attackObjectives[0] = companion;
-                                player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
                                 enemy3.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                             }
                             enemy3Turn = false;
@@ -3644,7 +3650,7 @@ public class BattleController : MonoBehaviour
                         {
                             attackObjectives = new Transform[1];
                             attackObjectives[0] = player;
-                            companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                            companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
                             enemy4.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                             enemy4Turn = false;
                         }
@@ -3659,7 +3665,7 @@ public class BattleController : MonoBehaviour
                                         attackObjectives = new Transform[2];
                                         attackObjectives[0] = player;
                                         attackObjectives[1] = companion;
-                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
                                         enemy4.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                     else
@@ -3667,7 +3673,7 @@ public class BattleController : MonoBehaviour
                                         attackObjectives = new Transform[2];
                                         attackObjectives[0] = companion;
                                         attackObjectives[1] = player;
-                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
                                         enemy4.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                 }
@@ -3678,7 +3684,7 @@ public class BattleController : MonoBehaviour
                                         attackObjectives = new Transform[2];
                                         attackObjectives[0] = companion;
                                         attackObjectives[1] = player;
-                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
                                         enemy4.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                     else
@@ -3686,7 +3692,7 @@ public class BattleController : MonoBehaviour
                                         attackObjectives = new Transform[2];
                                         attackObjectives[0] = player;
                                         attackObjectives[1] = companion;
-                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                        companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
                                         enemy4.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                                     }
                                 }
@@ -3695,7 +3701,7 @@ public class BattleController : MonoBehaviour
                             {
                                 attackObjectives = new Transform[1];
                                 attackObjectives[0] = companion;
-                                player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                                player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
                                 enemy4.GetComponent<EnemyTeamScript>().Attack(attackObjectives);
                             }
                             enemy4Turn = false;
@@ -4096,6 +4102,7 @@ public class BattleController : MonoBehaviour
             else
             {
                 Debug.Log("Se termino xd");
+                Application.Quit();
             }
         }
     }
@@ -4938,8 +4945,8 @@ public class BattleController : MonoBehaviour
     //A function to end enemy turn
     public void EndEnemyTurn()
     {
-        player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-        companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
+        companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
         if (player.GetComponent<PlayerTeamScript>().IsDead()) killerEnemy = 5;
         else
         {
@@ -4954,7 +4961,7 @@ public class BattleController : MonoBehaviour
                 playerTurn = false;
                 playerChoosingAction = false;
                 companionTurn = true;
-                companion.GetComponent<PlayerTeamScript>().ReturnStartPos();
+                companion.GetComponent<PlayerTeamScript>().ReturnStartPosWizard();
             }
             else
             {
@@ -5005,8 +5012,8 @@ public class BattleController : MonoBehaviour
     //A function to pass the turn to the next enemy
     public void NextEnemy(int numb)
     {
-        player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-        companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
+        companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
         if (player.GetComponent<PlayerTeamScript>().IsDead())
         {
             killerEnemy = numb;

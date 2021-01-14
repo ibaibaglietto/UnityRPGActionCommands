@@ -9536,6 +9536,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1862078758}
     m_Modifications:
+    - target: {fileID: 1058432325201483513, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058432325993556212, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.414917
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058432325993556212, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0.82990265
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058432325993556212, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.93900007
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058432325993556213, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 35
+      objectReference: {fileID: 0}
     - target: {fileID: 1058432326124774134, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
       propertyPath: m_Name
       value: DialogueBox
@@ -9626,10 +9646,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1058432326862383692, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
       propertyPath: m_FontData.m_BestFit
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1058432326862383692, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
       propertyPath: m_FontData.m_FontSize
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058432326862383692, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
+      propertyPath: m_FontData.m_MaxSize
       value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 1058432326862383695, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}

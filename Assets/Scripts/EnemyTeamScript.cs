@@ -7,8 +7,6 @@ public class EnemyTeamScript : MonoBehaviour
 {
     //The enemy type. 0-> Bandit, 1-> EvilWizard
     public int enemyType; 
-    //The objective of the attack
-    private Transform attackObjective;
     //The objective of the attack when it hits all the team
     private Transform[] attackTeam;
     //The starting position
@@ -168,7 +166,7 @@ public class EnemyTeamScript : MonoBehaviour
                     GetComponent<Animator>().SetFloat("Speed", 0.0f);
                     returnStartPos = false;
                     transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
-                    if(enemyType == 2 && Random.Range(0.0f,1.0f)<1.0f)
+                    if(enemyType == 2 && Random.Range(0.0f,1.0f)<0.4f)
                     {
                         GetComponent<Animator>().SetBool("EnterFase2", true);
                     }
@@ -426,13 +424,14 @@ public class EnemyTeamScript : MonoBehaviour
     {
         if (asleep == 0)
         {
-            attackObjective = objective[0];
+            attackTeam = new Transform[1];
+            attackTeam[0] = objective[0];
             transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
             //If the enemy is a bandit we make it move towards the player
             if (enemyType == 0 || enemyType == 1)
             {
                 startPos = transform.position.x;
-                movePos = attackObjective.position.x + 1.1f;
+                movePos = attackTeam[0].position.x + 1.1f;
                 movingToEnemy = true;
             }
             else if(enemyType == 2)
@@ -440,11 +439,12 @@ public class EnemyTeamScript : MonoBehaviour
                 if (!groundAttack)
                 {
                     startPos = transform.position.x;
-                    movePos = attackObjective.position.x + 2.05f;
+                    movePos = attackTeam[0].position.x + 2.05f;
                     movingToEnemy = true;
                 }
                 else
                 {
+                    attackTeam = new Transform[2];
                     attackTeam = objective;
                     if (attackTeam.Length > 1)
                     {
@@ -486,7 +486,7 @@ public class EnemyTeamScript : MonoBehaviour
                 if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible()) attackTeam[0].GetComponent<Animator>().SetBool("isDefending", true);
                 if (!attackTeam[1].GetComponent<PlayerTeamScript>().IsInvisible()) attackTeam[1].GetComponent<Animator>().SetBool("isDefending", true);
             }
-            else if (!attackObjective.GetComponent<PlayerTeamScript>().IsInvisible()) attackObjective.GetComponent<Animator>().SetBool("isDefending", true);
+            else if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible()) attackTeam[0].GetComponent<Animator>().SetBool("isDefending", true);
         }
         else
         {
@@ -496,13 +496,13 @@ public class EnemyTeamScript : MonoBehaviour
     //A function for a not final attack
     public void MidMeleeAttack()
     {
-        attackObjective.GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
-        if (!attackObjective.GetComponent<PlayerTeamScript>().IsInvisible() && !attackObjective.GetComponent<PlayerTeamScript>().IsDead())
+        attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+        if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
         {
             if (!battleController.GetComponent<BattleController>().IsTaunting())
             {
-                if (defended == 0) attackObjective.GetComponent<Animator>().SetTrigger("takeDamage");
-                else attackObjective.GetComponent<Animator>().SetBool("isDefending", false);
+                if (defended == 0) attackTeam[0].GetComponent<Animator>().SetTrigger("takeDamage");
+                else attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
             }
         }
         defended = 0;
@@ -578,24 +578,36 @@ public class EnemyTeamScript : MonoBehaviour
         {
             attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
             attackTeam[1].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
-        }
-        else attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
-        if (!attackObjective.GetComponent<PlayerTeamScript>().IsInvisible() && !attackObjective.GetComponent<PlayerTeamScript>().IsDead())
-        {
-            if (!battleController.GetComponent<BattleController>().IsTaunting())
+            if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
             {
-                if (defended == 0)
+                if (!battleController.GetComponent<BattleController>().IsTaunting())
                 {
-                    attackTeam[0].GetComponent<Animator>().SetTrigger("takeDamage");
-                    attackTeam[1].GetComponent<Animator>().SetTrigger("takeDamage");
+                    if (defended == 0) attackTeam[0].GetComponent<Animator>().SetTrigger("takeDamage");
+                    else attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
                 }
-                else
+            }
+            if (!attackTeam[1].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[1].GetComponent<PlayerTeamScript>().IsDead())
+            {
+                if (!battleController.GetComponent<BattleController>().IsTaunting())
                 {
-                    attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
-                    attackTeam[1].GetComponent<Animator>().SetBool("isDefending", false);
+                    if (defended == 0) attackTeam[1].GetComponent<Animator>().SetTrigger("takeDamage");
+                    else attackTeam[1].GetComponent<Animator>().SetBool("isDefending", false);
                 }
             }
         }
+        else
+        {
+            attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+            if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
+            {
+                if (!battleController.GetComponent<BattleController>().IsTaunting())
+                {
+                    if (defended == 0) attackTeam[0].GetComponent<Animator>().SetTrigger("takeDamage");
+                    else attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
+                }
+            }
+        }
+        
         defended = 0;
     }
 
@@ -604,13 +616,13 @@ public class EnemyTeamScript : MonoBehaviour
     public void EndMeleeAttack()
     {
         attacking = false;
-        attackObjective.GetComponent<PlayerTeamScript>().DealDamage(2-defended);
-        if (!attackObjective.GetComponent<PlayerTeamScript>().IsInvisible() && !attackObjective.GetComponent<PlayerTeamScript>().IsDead())
+        attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(2-defended);
+        if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
         {
             if (!battleController.GetComponent<BattleController>().IsTaunting())
             {
-                if (defended == 0) attackObjective.GetComponent<Animator>().SetTrigger("takeDamage");
-                else attackObjective.GetComponent<Animator>().SetBool("isDefending", false);
+                if (defended == 0) attackTeam[0].GetComponent<Animator>().SetTrigger("takeDamage");
+                else attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
             }            
         }        
         defended = 0;
@@ -686,6 +698,41 @@ public class EnemyTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().AddXPToCurrent(3);
             }
             else if (PlayerPrefs.GetInt("PlayerLvl") == 3)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(1);
+            }
+        }
+        else if (enemyType == 2)
+        {
+            if (PlayerPrefs.GetInt("PlayerLvl") == 1)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(50);
+            }
+            else if (PlayerPrefs.GetInt("PlayerLvl") == 2)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(40);
+            }
+            else if (PlayerPrefs.GetInt("PlayerLvl") == 3)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(30);
+            }
+            else if (PlayerPrefs.GetInt("PlayerLvl") == 4)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(23);
+            }
+            else if (PlayerPrefs.GetInt("PlayerLvl") == 5)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(16);
+            }
+            else if (PlayerPrefs.GetInt("PlayerLvl") == 6)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(8);
+            }
+            else if (PlayerPrefs.GetInt("PlayerLvl") == 7)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(4);
+            }
+            else if (PlayerPrefs.GetInt("PlayerLvl") == 8)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(1);
             }

@@ -1924,10 +1924,14 @@ MonoBehaviour:
   shurikenPrefab: {fileID: 3194789301759182513, guid: 4ee8b18b587ebbe4dac8ed2fba6f9c0b, type: 3}
   lightShurikenPrefab: {fileID: 3194789301759182513, guid: 73cc4a4f72a74d843bbec10a835ec816, type: 3}
   fireShurikenPrefab: {fileID: 3194789301759182513, guid: 669c26566875cdc45866f51b03e63d69, type: 3}
+  magicBallPrefab: {fileID: 0}
+  magicSpearPrefab: {fileID: 0}
   arrow: {fileID: 6141410375648263976, guid: bda5095868c886b4895238580d22902f, type: 3}
   damageUI: {fileID: 2003888347808236252, guid: ba485e94df23bb6459b7ed70110d5086, type: 3}
   heartUI: {fileID: 818641258651084142, guid: 5bf8e6463a68aa847a35a51750d1809b, type: 3}
   lightUI: {fileID: 2510748878334399226, guid: 76b82cdca63c3864f813a3b75e9427e0, type: 3}
+  shadowMaterial: {fileID: 2100000, guid: bde19a1b6e49cf346a3470389a181f3a, type: 2}
+  transparentMaterial: {fileID: 2100000, guid: fb0b3ef489abb5a439a5984c39fdda61, type: 2}
   shurikenObjective: {x: 0, y: 0, z: 0}
   playerTeamType: 1
   sleepSprite: {fileID: -3877204253021290591, guid: 9b361e3522856904390736bcbc9aa048, type: 3}
@@ -1935,6 +1939,7 @@ MonoBehaviour:
   disappearSprite: {fileID: 21300000, guid: 26218d2f0e217e540a0eb9539863f1e3, type: 3}
   lightUpSprite: {fileID: 21300000, guid: 837e1859a79bbb64989ce26ca03ffb70, type: 3}
   glanceActionPrefab: {fileID: 8787689694209190932, guid: fbb777c06a55a6948a6c9db5a43b9cbe, type: 3}
+  explosionPrefab: {fileID: 0}
 --- !u!95 &2404544259860478106
 Animator:
   serializedVersion: 3

@@ -968,8 +968,9 @@ MonoBehaviour:
   dialogue:
     name: King
     sentencesEnglish:
-    - The king attacks using his maze and his teleportation powers. When you reduce
-      his health to the half he will start doing more powerfull attacks.
+    - The king attacks using his maze and his teleportation powers. Be careful about
+      his teleportation attack, he'll have to prepare before doing it so watch him
+      carefully.
     - 'HP: 40
 
       Damage: 3
