@@ -759,6 +759,7 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to attack the enemy.type: 0-> melee, 1-> ranged. style: style of melee or ranged attack
     public void Attack(int type, int style, Transform objective)
     {
+        transform.position = new Vector3(transform.position.x, transform.position.y, -2.06f);
         HideBuffDebuff();
         canvas.GetComponent<Animator>().SetBool("Hide", true);
         attackStyle = style;

@@ -486,8 +486,8 @@ public class BattleController : MonoBehaviour
         SpawnCharacter(1,0);
         SpawnCharacter(2,1);
         SpawnCharacter(3,0);
-        SpawnCharacter(4,2);
-        //SpawnCharacter(5,1);
+        SpawnCharacter(4,0);
+        SpawnCharacter(5,2);
         playerTeamTurn = true;
         playerTurn = true;
         playerTurnCompleted = false;
@@ -3300,7 +3300,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     actionInstructions.SetActive(false);
                                     barrierNumber = 0;
-                                    defenseCompanion = 2;
+                                    defenseCompanion = 1;
                                     taunting = true;
                                     companion.GetChild(0).Find("BarrierAction").gameObject.SetActive(false);
                                     finalAttack = false;
@@ -4849,6 +4849,8 @@ public class BattleController : MonoBehaviour
     //A function to end players turn. User-->1 player, User-->2 companion
     public void EndPlayerTurn(int user)
     {
+        player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -2.05f);
+        companion.transform.position = new Vector3(companion.transform.position.x, companion.transform.position.y, -2.04f);
         attackAction = false;
         finalAttack = false;
         if (user == 1 && playerTurnCompleted) user = 2;

@@ -166,7 +166,11 @@ public class EnemyTeamScript : MonoBehaviour
                     GetComponent<Animator>().SetFloat("Speed", 0.0f);
                     returnStartPos = false;
                     transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
-                    if(enemyType == 2 && Random.Range(0.0f,1.0f)<0.4f)
+                    if (enemyNumber == 1) transform.position = new Vector3(transform.position.x, transform.position.y, -2.03f);
+                    else if (enemyNumber == 2) transform.position = new Vector3(transform.position.x, transform.position.y, -2.02f);
+                    else if (enemyNumber == 3) transform.position = new Vector3(transform.position.x, transform.position.y, -2.01f);
+                    else if (enemyNumber == 4) transform.position = new Vector3(transform.position.x, transform.position.y, -2.00f);
+                    if (enemyType == 2 && Random.Range(0.0f,1.0f)<0.4f)
                     {
                         GetComponent<Animator>().SetBool("EnterFase2", true);
                     }
@@ -208,16 +212,6 @@ public class EnemyTeamScript : MonoBehaviour
                 {
                     transform.rotation = Quaternion.Euler(transform.eulerAngles.x +1.8f, transform.eulerAngles.y, transform.eulerAngles.z);
                     transform.position = new Vector3(transform.position.x, transform.position.y-0.03f, transform.position.z);
-                    if (transform.eulerAngles.x >= 90.0f) Destroy(dust.gameObject);
-                }
-            }
-            if (enemyType == 2)
-            {
-                if (transform.eulerAngles.x == 0.0f) dust = Instantiate(dustObject, new Vector3(transform.position.x + 0.5f, -1.57f, -0.3f), Quaternion.identity);
-                if (transform.eulerAngles.x < 90.0f)
-                {
-                    transform.rotation = Quaternion.Euler(transform.eulerAngles.x + 1.8f, transform.eulerAngles.y, transform.eulerAngles.z);
-                    transform.position = new Vector3(transform.position.x, transform.position.y - 0.04f, transform.position.z);
                     if (transform.eulerAngles.x >= 90.0f) Destroy(dust.gameObject);
                 }
             }
@@ -424,6 +418,7 @@ public class EnemyTeamScript : MonoBehaviour
     {
         if (asleep == 0)
         {
+            transform.position = new Vector3(transform.position.x, transform.position.y, -2.06f);
             attackTeam = new Transform[1];
             attackTeam[0] = objective[0];
             transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
@@ -478,6 +473,7 @@ public class EnemyTeamScript : MonoBehaviour
     //A function to save if the player has defended or not
     public void IsDefended(bool defense)
     {
+        attacking = false;
         if (defense)
         {
             defended = 1;
@@ -491,12 +487,22 @@ public class EnemyTeamScript : MonoBehaviour
         else
         {
             defended = 0;
-        }  
+        }
+    }
+
+    //Function to prepare a second defense
+    public void SecondAttack()
+    {
+        attacking = true;
     }
     //A function for a not final attack
     public void MidMeleeAttack()
     {
-        attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+        if(battleController.GetComponent<BattleController>().IsTaunting() && battleController.GetComponent<BattleController>().GetDefense(1) == 1.0f && defended == 1.0f)
+        {
+            attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(0);
+        }
+        else attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
         if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
         {
             if (!battleController.GetComponent<BattleController>().IsTaunting())
@@ -549,6 +555,10 @@ public class EnemyTeamScript : MonoBehaviour
         }
         else
         {
+            if (enemyNumber == 1) transform.position = new Vector3(transform.position.x, transform.position.y, -2.03f);
+            else if (enemyNumber == 2) transform.position = new Vector3(transform.position.x, transform.position.y, -2.02f);
+            else if (enemyNumber == 3) transform.position = new Vector3(transform.position.x, transform.position.y, -2.01f);
+            else if (enemyNumber == 4) transform.position = new Vector3(transform.position.x, transform.position.y, -2.00f);
             transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
             if (enemyNumber < battleController.GetComponent<BattleController>().GetNumberOfEnemies())
             {
@@ -576,8 +586,16 @@ public class EnemyTeamScript : MonoBehaviour
         groundAttack = false;
         if (attackTeam.Length > 1)
         {
-            attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
-            attackTeam[1].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+            if (battleController.GetComponent<BattleController>().IsTaunting() && battleController.GetComponent<BattleController>().GetDefense(1) == 1.0f && defended == 1.0f)
+            {
+                attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(0);
+            }
+            else attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(10 - defended);
+            if (battleController.GetComponent<BattleController>().IsTaunting() && battleController.GetComponent<BattleController>().GetDefense(1) == 1.0f && defended == 1.0f)
+            {
+                attackTeam[1].GetComponent<PlayerTeamScript>().DealDamage(0);
+            }
+            else attackTeam[1].GetComponent<PlayerTeamScript>().DealDamage(10 - defended);
             if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
             {
                 if (!battleController.GetComponent<BattleController>().IsTaunting())
@@ -597,7 +615,11 @@ public class EnemyTeamScript : MonoBehaviour
         }
         else
         {
-            attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+            if (battleController.GetComponent<BattleController>().IsTaunting() && battleController.GetComponent<BattleController>().GetDefense(1) == 1.0f && defended == 1.0f)
+            {
+                attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(0);
+            }
+            else attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(5 - defended);
             if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
             {
                 if (!battleController.GetComponent<BattleController>().IsTaunting())
@@ -615,8 +637,12 @@ public class EnemyTeamScript : MonoBehaviour
     //A function to end the melee attack and start moving back to the start position
     public void EndMeleeAttack()
     {
-        attacking = false;
-        attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(2-defended);
+        attacking = false; 
+        if (battleController.GetComponent<BattleController>().IsTaunting() && battleController.GetComponent<BattleController>().GetDefense(1) == 1.0f && defended == 1.0f)
+        {
+            attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(0);
+        }
+        else attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(2 - defended);
         if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
         {
             if (!battleController.GetComponent<BattleController>().IsTaunting())
