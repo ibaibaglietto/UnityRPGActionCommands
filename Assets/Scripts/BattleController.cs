@@ -369,7 +369,12 @@ public class BattleController : MonoBehaviour
     private int magicSpearKey;
     //The attack objectives
     private Transform[] attackObjectives;
+    //A boolean to know if the boss has finished the death animation
+    private bool bossDieAnimationEnded;
+    //A boolean to know if all the enemies are dead;
+    private bool allEnemiesDead;
 
+    //lo de tapar teclas del mago
 
     private void Awake()
     {
@@ -380,15 +385,15 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("Fire Shuriken", 1);
         PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
         PlayerPrefs.SetInt("Souls", 6);
-        PlayerPrefs.SetInt("PlayerHeartLvl", 3);
-        PlayerPrefs.SetInt("PlayerLightLvl", 1);
+        PlayerPrefs.SetInt("PlayerHeartLvl", 5);
+        PlayerPrefs.SetInt("PlayerLightLvl", 4);
         PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
         PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
-        PlayerPrefs.SetInt("PlayerCurrentHealth", 25);
-        PlayerPrefs.SetInt("AdventurerLvl",1); //3
-        PlayerPrefs.SetInt("AdventurerCurrentHealth", 20);
-        PlayerPrefs.SetInt("WizardLvl", 1); //3
-        PlayerPrefs.SetInt("WizardCurrentHealth", 25); 
+        PlayerPrefs.SetInt("PlayerCurrentHealth", 35);
+        PlayerPrefs.SetInt("AdventurerLvl",3); //3
+        PlayerPrefs.SetInt("AdventurerCurrentHealth", 40);
+        PlayerPrefs.SetInt("WizardLvl", 3); //3
+        PlayerPrefs.SetInt("WizardCurrentHealth", 45);
         PlayerPrefs.SetInt("language", 0);
         PlayerPrefs.SetInt("bandit", 0);
         PlayerPrefs.SetInt("wizard", 0);
@@ -479,15 +484,16 @@ public class BattleController : MonoBehaviour
         ring7 = new Transform[2];
         ring8 = new Transform[2];
         enemyNumber = 0;
+        bossDieAnimationEnded = true;
         SpawnCharacter(0,0);
         player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
         SpawnCharacter(1,0);
-        SpawnCharacter(2,1);
-        SpawnCharacter(3,0);
-        SpawnCharacter(4,0);
-        SpawnCharacter(5,2);
+        SpawnCharacter(2,2);
+        //SpawnCharacter(3,0);
+        //SpawnCharacter(4,0);
+        //SpawnCharacter(5,2);
         playerTeamTurn = true;
         playerTurn = true;
         playerTurnCompleted = false;
@@ -580,6 +586,7 @@ public class BattleController : MonoBehaviour
         barrierKeys = new KeyCode[5];
         taunting = false;
         changeCompanion = false;
+        allEnemiesDead = false;
     }
 
     private void Update()
@@ -3177,13 +3184,16 @@ public class BattleController : MonoBehaviour
                                 {
                                     badAttack = true;
                                     companion.GetComponent<PlayerTeamScript>().EndGlance();
+                                    badAttack = false;
                                 }
                                 if (attackAction)
                                 {
                                     if (Input.GetKeyDown(KeyCode.X) && !badAttack)
                                     {
                                         goodAttack = true;
+                                        attackAction = false;
                                         companion.GetComponent<PlayerTeamScript>().EndGlance();
+                                        goodAttack = false;
                                     }
                                 }
                             }
@@ -3726,6 +3736,32 @@ public class BattleController : MonoBehaviour
                 }
             }                
         }
+        if (bossDieAnimationEnded && allEnemiesDead)
+        {
+            bossDieAnimationEnded = false;
+            if (currentFightXP == 0)
+            {
+                currentFightXP = 1;
+                ShowCurrentXP();
+            }
+            player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
+            companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
+            canvas.GetComponent<Animator>().SetBool("Hide", false);
+            mainCamera.GetComponent<CameraScript>().ChangeCameraState(1);
+            xpObject.SetActive(false);
+            victoryXP.transform.GetChild(18).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
+            victoryXP.transform.GetChild(19).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(20).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(21).gameObject.SetActive(true);
+            victoryXP.transform.GetChild(21).GetComponent<Text>().text = currentFightXP.ToString();
+            playerTeamTurn = false;
+            playerTurnCompleted = false;
+            companionTurnCompleted = false;
+            victory = true;
+            ShowVictoryXP();
+            player.GetComponent<Animator>().SetTrigger("Victory");
+            if (!companion.GetComponent<PlayerTeamScript>().IsDead()) companion.GetComponent<Animator>().SetTrigger("Victory");
+        }
         if (victory)
         {
             if (!lvlUpMenu.activeSelf && Input.GetKeyDown(KeyCode.X)) StartCoroutine(SaveXP());
@@ -3735,6 +3771,7 @@ public class BattleController : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space) && lvlUpSelected> -1) LvlUpPlayer(lvlUpSelected);
                 else if (Input.GetKeyDown(KeyCode.RightArrow) && lvlUpSelected != 2)
                 {
+                    actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
                     lvlUpMenu.GetComponent<Animator>().SetTrigger("Right");
                     if (lvlUpSelected == -1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Increase your HP by 5! Great to tank more damage.";
                     else if (lvlUpSelected == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Increase your LP by 5! Perfect if you love to use abilities often.";
@@ -3742,6 +3779,7 @@ public class BattleController : MonoBehaviour
                 }
                 else if (Input.GetKeyDown(KeyCode.LeftArrow) && lvlUpSelected != 0)
                 {
+                    actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
                     lvlUpMenu.GetComponent<Animator>().SetTrigger("Left");
                     if (lvlUpSelected == -1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Increase your GP by 3! Ideal if you want to use more gems.";
                     else if (lvlUpSelected == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Increase your HP by 5! Great to tank more damage.";
@@ -4146,6 +4184,7 @@ public class BattleController : MonoBehaviour
             else if (type == 1) enemy1 = Instantiate(wizardBattle, new Vector3(2.5f, 1.0f, -2.03f), Quaternion.identity);
             else if (type == 2)
             {
+                bossDieAnimationEnded = false;
                 enemy1 = Instantiate(kingBattle, new Vector3(2.5f, -0.43f, -2.03f), Quaternion.identity);
                 player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
@@ -4166,6 +4205,7 @@ public class BattleController : MonoBehaviour
             else if (type == 1) enemy2 = Instantiate(wizardBattle, new Vector3(4.0f, 1.0f, -2.02f), Quaternion.identity);
             else if (type == 2)
             {
+                bossDieAnimationEnded = false;
                 enemy2 = Instantiate(kingBattle, new Vector3(4.0f, -0.43f, -2.02f), Quaternion.identity);
                 player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
@@ -4186,6 +4226,7 @@ public class BattleController : MonoBehaviour
             else if (type == 1) enemy3 = Instantiate(wizardBattle, new Vector3(5.5f, 1.0f, -2.01f), Quaternion.identity);
             else if (type == 2)
             {
+                bossDieAnimationEnded = false;
                 enemy3 = Instantiate(kingBattle, new Vector3(5.5f, -0.43f, -2.01f), Quaternion.identity);
                 player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
@@ -4206,6 +4247,7 @@ public class BattleController : MonoBehaviour
             else if (type == 1) enemy4 = Instantiate(wizardBattle, new Vector3(7.0f, 1.0f, -2.0f), Quaternion.identity);
             else if (type == 2)
             {
+                bossDieAnimationEnded = false;
                 enemy4 = Instantiate(kingBattle, new Vector3(7.0f, -0.43f, -2.0f), Quaternion.identity);
                 player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
@@ -4865,7 +4907,8 @@ public class BattleController : MonoBehaviour
             }
 
             if (user == 1) playerTurnCompleted = true;
-            if (user == 2 || companion.GetComponent<PlayerTeamScript>().IsDead()) companionTurnCompleted = true; 
+            if (user == 2 || companion.GetComponent<PlayerTeamScript>().IsDead()) companionTurnCompleted = true;
+            if (playerTurn && !firstPosPlayer && attackType == 2) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x - 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
             if (playerTurnCompleted && companionTurnCompleted)
             {
                 player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
@@ -4881,7 +4924,6 @@ public class BattleController : MonoBehaviour
                 companionTurnCompleted = false;
                 if (playerTurn)
                 {
-                    if (!firstPosPlayer && attackType == 2) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x - 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
                     playerTurn = false;
                     companionTurn = true;
                 }
@@ -4895,7 +4937,6 @@ public class BattleController : MonoBehaviour
             }
             else if (playerTurnCompleted && !companionTurnCompleted)
             {
-                if (!firstPosPlayer && attackType == 2) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x - 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
                 player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
                 canvas.GetComponent<Animator>().SetBool("Hide", false);
                 player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
@@ -4919,29 +4960,38 @@ public class BattleController : MonoBehaviour
         }
         else
         {
-            if (currentFightXP == 0)
+            allEnemiesDead = true;
+            if (bossDieAnimationEnded)
             {
-                currentFightXP = 1;
-                ShowCurrentXP();
-            }
-            player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
-            companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
-            canvas.GetComponent<Animator>().SetBool("Hide", false);
-            mainCamera.GetComponent<CameraScript>().ChangeCameraState(1);
-            xpObject.SetActive(false);
-            victoryXP.transform.GetChild(18).GetComponent<Image>().color = new Color(1.0f,1.0f,1.0f,0.4f);
-            victoryXP.transform.GetChild(19).gameObject.SetActive(true);
-            victoryXP.transform.GetChild(20).gameObject.SetActive(true);
-            victoryXP.transform.GetChild(21).gameObject.SetActive(true);
-            victoryXP.transform.GetChild(21).GetComponent<Text>().text = currentFightXP.ToString();
-            playerTeamTurn = false;
-            playerTurnCompleted = false;
-            companionTurnCompleted = false;
-            victory = true;
-            ShowVictoryXP();
-            player.GetComponent<Animator>().SetTrigger("Victory");
-            if(!companion.GetComponent<PlayerTeamScript>().IsDead()) companion.GetComponent<Animator>().SetTrigger("Victory");
+                if (currentFightXP == 0)
+                {
+                    currentFightXP = 1;
+                    ShowCurrentXP();
+                }
+                player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
+                companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
+                canvas.GetComponent<Animator>().SetBool("Hide", false);
+                mainCamera.GetComponent<CameraScript>().ChangeCameraState(1);
+                xpObject.SetActive(false);
+                victoryXP.transform.GetChild(18).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
+                victoryXP.transform.GetChild(19).gameObject.SetActive(true);
+                victoryXP.transform.GetChild(20).gameObject.SetActive(true);
+                victoryXP.transform.GetChild(21).gameObject.SetActive(true);
+                victoryXP.transform.GetChild(21).GetComponent<Text>().text = currentFightXP.ToString();
+                playerTeamTurn = false;
+                playerTurnCompleted = false;
+                companionTurnCompleted = false;
+                victory = true;
+                ShowVictoryXP();
+                player.GetComponent<Animator>().SetTrigger("Victory");
+                if (!companion.GetComponent<PlayerTeamScript>().IsDead()) companion.GetComponent<Animator>().SetTrigger("Victory");
+            }            
         }
+    }
+    //A function to set the bossDieAnimationEnded boolean
+    public void SetBossDieAnimationEnded(bool end)
+    {
+        bossDieAnimationEnded = end;
     }
 
     //A function to end enemy turn
@@ -5417,7 +5467,7 @@ public class BattleController : MonoBehaviour
     //Functions to end the light up attack
     public void EndLightUpAttack()
     {
-        player.GetComponent<PlayerTeamScript>().SetLightUpPower(minFogScale);
+        if(minFogScale>1.0f) player.GetComponent<PlayerTeamScript>().SetLightUpPower(minFogScale);
         player.GetComponent<PlayerTeamScript>().HideBuffDebuff();
         magentaSoulMovUp = false;
         magentaSoulMovLeft = false;

@@ -162,7 +162,8 @@ public class EnemyTeamScript : MonoBehaviour
                     GetComponent<Animator>().SetFloat("Speed", -0.5f);
                 }
                 else
-                {                    
+                {
+                    transform.position = new Vector3(startPos, transform.position.y, transform.position.z);
                     GetComponent<Animator>().SetFloat("Speed", 0.0f);
                     returnStartPos = false;
                     transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
@@ -495,6 +496,13 @@ public class EnemyTeamScript : MonoBehaviour
     {
         attacking = true;
     }
+
+    //Function to set the boss die animation boolean to true
+    public void SetBossDieAnimationEnded()
+    {
+        battleController.GetComponent<BattleController>().SetBossDieAnimationEnded(true);
+    }
+
     //A function for a not final attack
     public void MidMeleeAttack()
     {
@@ -619,7 +627,7 @@ public class EnemyTeamScript : MonoBehaviour
             {
                 attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(0);
             }
-            else attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(5 - defended);
+            else attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(10 - defended);
             if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
             {
                 if (!battleController.GetComponent<BattleController>().IsTaunting())
@@ -761,6 +769,10 @@ public class EnemyTeamScript : MonoBehaviour
             else if (PlayerPrefs.GetInt("PlayerLvl") == 8)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(1);
+            }
+            else
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(10);
             }
         }
     }
