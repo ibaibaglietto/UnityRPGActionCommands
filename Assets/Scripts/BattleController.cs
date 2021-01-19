@@ -490,10 +490,10 @@ public class BattleController : MonoBehaviour
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
         SpawnCharacter(1,0);
-        SpawnCharacter(2,2);
-        //SpawnCharacter(3,0);
-        //SpawnCharacter(4,0);
-        //SpawnCharacter(5,2);
+        SpawnCharacter(2,1);
+        SpawnCharacter(3,0);
+        SpawnCharacter(4,0);
+        SpawnCharacter(5,2);
         playerTeamTurn = true;
         playerTurn = true;
         playerTurnCompleted = false;
@@ -3330,6 +3330,7 @@ public class BattleController : MonoBehaviour
                         {
                             if (!attackAction && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)))
                             {
+                                companion.GetChild(0).GetChild(6).GetComponent<Animator>().SetBool("charge", false);
                                 companion.GetChild(0).GetChild(6).gameObject.SetActive(false);
                                 companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
                                 companion.GetComponent<Animator>().SetBool("magicBall", false);
@@ -3340,6 +3341,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     if(magicSpearKey == 3)
                                     {
+                                        companion.GetChild(0).GetChild(6).GetComponent<Animator>().SetBool("charge", false);
                                         companion.GetChild(0).GetChild(6).gameObject.SetActive(false);
                                         companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(6);
                                         companion.GetComponent<Animator>().SetBool("magicBall", false);
@@ -3360,10 +3362,12 @@ public class BattleController : MonoBehaviour
                             {
                                 if(magicSpearKey != 4)
                                 {
+                                    companion.GetChild(0).GetChild(6).GetComponent<Animator>().SetBool("charge", false);
                                     companion.GetChild(0).GetChild(6).gameObject.SetActive(false);
                                     companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
                                     companion.GetComponent<Animator>().SetBool("magicBall", false);
                                     attackAction = false;
+                                    attackFinished = false;
                                 }
                                 else attackFinished = false; 
                             }
@@ -4711,7 +4715,7 @@ public class BattleController : MonoBehaviour
         //if the enemy is dead and it is the last attack we play the die animation, else we play the damage animation
         if(objective.transform.GetChild(0).transform.GetChild(2).GetComponent<EnemyLifeControllerScript>().GetHealth() <= 0 && last)
         {
-            if(!objective.GetComponent<EnemyTeamScript>().IsGrounded()) objective.GetComponent<EnemyTeamScript>().EnemyDied();
+            //if(!objective.GetComponent<EnemyTeamScript>().IsGrounded()) objective.GetComponent<EnemyTeamScript>().EnemyDied();
             objective.GetComponent<Animator>().SetBool("IsDead", true);
             objective.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
         }

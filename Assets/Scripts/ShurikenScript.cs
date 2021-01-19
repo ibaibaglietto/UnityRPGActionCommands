@@ -80,6 +80,7 @@ public class ShurikenScript : MonoBehaviour
     {
         if(BK47 && collision.tag.Equals("enemy") && collision.GetComponent<EnemyTeamScript>().IsAlive())
         {
+            battleController.GetComponent<BattleController>().FillSouls(0.1f);
             battleController.GetComponent<BattleController>().DealDamage(collision.transform, shurikenDamage, true);
             Destroy(gameObject);
         }

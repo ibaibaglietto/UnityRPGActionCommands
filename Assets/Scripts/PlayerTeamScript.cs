@@ -970,7 +970,11 @@ public class PlayerTeamScript : MonoBehaviour
             transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
             battleController.GetComponent<BattleController>().shurikenTime = Time.fixedTime;
         }
-        else if(attackStyle == 3) transform.GetChild(0).transform.GetChild(6).gameObject.SetActive(true);
+        else if (attackStyle == 3)
+        {
+            transform.GetChild(0).GetChild(6).gameObject.SetActive(true);
+            transform.GetChild(0).GetChild(6).GetComponent<Animator>().SetBool("charge", true);
+        }
     }
 
     //A function to start the attack action
@@ -1161,6 +1165,7 @@ public class PlayerTeamScript : MonoBehaviour
     //Function to set the damage of the explosion
     public void EndExplosion(int damage)
     {
+        battleController.GetComponent<BattleController>().FillSouls(damage*0.5f);
         explosion.GetComponent<ExplosionScript>().SetExplosionDamage(damage + lightUp);
         if (lightUp != 0) EndBuffDebuff(lightUpPos);
         lightUp = 0;
@@ -1273,6 +1278,7 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to deal pulse damage to the enemy
     public void PulseDamage(bool last)
     {
+        battleController.GetComponent<BattleController>().FillSouls(0.1f);
         if (!last)
         {
             battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, false);
