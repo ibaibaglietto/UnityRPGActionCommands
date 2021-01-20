@@ -118,6 +118,8 @@ public class PlayerTeamScript : MonoBehaviour
     //The prefab of the explosion
     [SerializeField] private Transform explosionPrefab;
     private Transform explosion;
+    //An int to know the current extra damage of the repeating attack (player or adventurer)
+    private int repeatingDamage;
     void Awake()
     {
         //We find the gameobjects and initialize some variables
@@ -149,6 +151,7 @@ public class PlayerTeamScript : MonoBehaviour
         recovered = true;
         companionOut = false;
         companionIn = false;
+        repeatingDamage = 0;
     }
     private void Start()
     {
@@ -793,6 +796,7 @@ public class PlayerTeamScript : MonoBehaviour
                     startPos = transform.position.x;
                     movePos = attackObjective.position.x - 1.1f;
                     movingToEnemy = true;
+                    repeatingDamage = PlayerPrefs.GetInt("SwordLvl") - 1;
                 }
             }
             //The shuriken attack
@@ -895,6 +899,7 @@ public class PlayerTeamScript : MonoBehaviour
                     startPos = transform.position.x;
                     movePos = attackObjective.position.x - 1.1f;
                     movingToEnemy = true;
+                    repeatingDamage = PlayerPrefs.GetInt("AdventurerLvl") - 1;
                 }
                 else if(style == 3)
                 {
@@ -936,6 +941,7 @@ public class PlayerTeamScript : MonoBehaviour
                     startPos = transform.position.x;
                     movePos = attackObjective.position.x - 1.5f;
                     movingToEnemy = true;
+                    repeatingDamage = PlayerPrefs.GetInt("WizardLvl") - 1;
                 }
                 else if(style == 3)
                 {
@@ -996,8 +1002,8 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().FillSouls(0.15f);
                 lastAttack = true;
                 battleController.GetComponent<BattleController>().attackAction = false;
-                if (playerTeamType == 0) battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, false);
-                else if (playerTeamType == 1) battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, false);
+                if (playerTeamType == 0) battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("SwordLvl") - 1), false);
+                else if (playerTeamType == 1) battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("AdventurerLvl") - 1), false);
             }
             //else we end the attack and the player goes to the starting position
             else
@@ -1007,11 +1013,18 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().badAttack = false;
                 battleController.GetComponent<BattleController>().goodAttack = false;
                 battleController.GetComponent<BattleController>().attackAction = false;
-                if(playerTeamType == 0) gameObject.GetComponent<Animator>().SetBool("isAttacking", false);
-                else if (playerTeamType == 1) gameObject.GetComponent<Animator>().SetBool("Melee2", false);
+                if (playerTeamType == 0)
+                {
+                    gameObject.GetComponent<Animator>().SetBool("isAttacking", false);
+                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("SwordLvl") - 1), true);
+                }
+                else if (playerTeamType == 1)
+                {
+                    gameObject.GetComponent<Animator>().SetBool("Melee2", false);
+                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("AdventurerLvl") - 1), true);
+                }
                 battleController.GetComponent<BattleController>().finalAttack = false;
                 returnStartPos = true;
-                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, true);
                 if (lightUp!=0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;                
             }
@@ -1026,13 +1039,17 @@ public class PlayerTeamScript : MonoBehaviour
                 gameObject.GetComponent<Animator>().SetFloat("attackSpeed", attackSpeed);
                 battleController.GetComponent<BattleController>().goodAttack = false;
                 battleController.GetComponent<BattleController>().attackAction = false;
-                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, false);
-                if (lightUp > 1) lightUp -= 1;
-                else if (lightUp == 1)
+                battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + repeatingDamage, false);
+                if (repeatingDamage > 0) repeatingDamage -= 1;
+                else
                 {
-                    EndBuffDebuff(lightUpPos);
-                    lightUp = 0;
-                }
+                    if (lightUp > 1) lightUp -= 1;
+                    else if (lightUp == 1)
+                    {
+                        EndBuffDebuff(lightUpPos);
+                        lightUp = 0;
+                    }
+                }                
             }
             //else we end the attack and the player goes to the starting position
             else
@@ -1060,7 +1077,7 @@ public class PlayerTeamScript : MonoBehaviour
     {
         battleController.GetComponent<BattleController>().FillSouls(0.4f);
         returnStartPos = true;
-        battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), damage + lightUp, true);
+        battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), damage * PlayerPrefs.GetInt("SwordLvl") + lightUp + 2, true);
         if (lightUp != 0) EndBuffDebuff(lightUpPos);
         lightUp = 0;
     }
@@ -1075,7 +1092,7 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().DeactivateActionInstructions();
                 shuriken = Instantiate(shurikenPrefab, gameObject.transform.position, Quaternion.identity);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
-                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp + (PlayerPrefs.GetInt("ShurikenLvl") - 1) * 2);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
@@ -1085,7 +1102,7 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().DeactivateActionInstructions();
                 shuriken = Instantiate(lightShurikenPrefab, gameObject.transform.position, Quaternion.identity);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
-                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage * PlayerPrefs.GetInt("ShurikenLvl") + lightUp + 2);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
@@ -1097,7 +1114,7 @@ public class PlayerTeamScript : MonoBehaviour
                 shuriken.GetComponent<ShurikenScript>().SetFireObjectives(battleController.GetComponent<BattleController>().GetGroundEnemies());
                 shuriken.GetComponent<ShurikenScript>().OnFireShuriken(true);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
-                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp + (PlayerPrefs.GetInt("ShurikenLvl") - 1) * 2);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
@@ -1111,7 +1128,7 @@ public class PlayerTeamScript : MonoBehaviour
                 shuriken.GetComponent<ShurikenScript>().SetFireObjectives(battleController.GetComponent<BattleController>().GetGroundEnemies());
                 shuriken.GetComponent<ShurikenScript>().OnFireShuriken(true);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
-                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage * PlayerPrefs.GetInt("AdventurerLvl") + lightUp);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
@@ -1138,7 +1155,7 @@ public class PlayerTeamScript : MonoBehaviour
                 shuriken = Instantiate(magicBallPrefab, new Vector3(gameObject.transform.position.x + 1.0104f, gameObject.transform.position.y + 0.3781f, gameObject.transform.position.z), Quaternion.identity);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
                 shuriken.GetComponent<ShurikenScript>().SetMagic();
-                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp + (PlayerPrefs.GetInt("WizardLvl") - 1) * 2);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
@@ -1148,7 +1165,7 @@ public class PlayerTeamScript : MonoBehaviour
                 shuriken = Instantiate(magicSpearPrefab, new Vector3(gameObject.transform.position.x + 1.0104f, gameObject.transform.position.y + 0.3781f, gameObject.transform.position.z), Quaternion.identity);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
                 shuriken.GetComponent<ShurikenScript>().SetMagic();
-                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage * PlayerPrefs.GetInt("WizardLvl") + lightUp);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }

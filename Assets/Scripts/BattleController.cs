@@ -394,6 +394,8 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("AdventurerCurrentHealth", 40);
         PlayerPrefs.SetInt("WizardLvl", 3); //3
         PlayerPrefs.SetInt("WizardCurrentHealth", 45);
+        PlayerPrefs.SetInt("SwordLvl", 3); //3
+        PlayerPrefs.SetInt("ShurikenLvl", 1); //3
         PlayerPrefs.SetInt("language", 0);
         PlayerPrefs.SetInt("bandit", 0);
         PlayerPrefs.SetInt("wizard", 0);
@@ -3206,9 +3208,8 @@ public class BattleController : MonoBehaviour
                                 }
                                 if (Input.GetKeyUp(KeyCode.X) && attackAction)
                                 {
-                                    companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(3);
+                                    companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
                                     companion.GetComponent<Animator>().SetTrigger("ShootArrow");
-                                    companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
                                     companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
                                     attackAction = false;
                                     finalAttack = false;
@@ -3217,7 +3218,6 @@ public class BattleController : MonoBehaviour
                                 {
                                     companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
                                     companion.GetComponent<Animator>().SetTrigger("ShootArrow");
-                                    companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
                                     companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
                                     finalAttack = false;
                                 }
@@ -3225,7 +3225,6 @@ public class BattleController : MonoBehaviour
                                 {
                                     companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
                                     companion.GetComponent<Animator>().SetTrigger("ShootArrow");
-                                    companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
                                     companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
                                     finalAttack = false;
                                 }
@@ -3237,7 +3236,7 @@ public class BattleController : MonoBehaviour
                                     if (readyShoot && Input.GetKeyDown(KeyCode.X))
                                     {
                                         DeactivateActionInstructions();
-                                        companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
+                                        companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(3);
                                         companion.GetComponent<Animator>().SetTrigger("ShootArrow");
                                     }
                                 }
@@ -3820,7 +3819,7 @@ public class BattleController : MonoBehaviour
                 player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(2).GetComponent<Image>().sprite = emptyIcon;
                 player.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
                 player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
-                player.GetComponent<PlayerTeamScript>().SetShurikenDamage(4);
+                player.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
                 player.GetComponent<Animator>().SetBool("isSpinning", false);
             }
         }
