@@ -373,6 +373,11 @@ public class BattleController : MonoBehaviour
     private bool bossDieAnimationEnded;
     //A boolean to know if all the enemies are dead;
     private bool allEnemiesDead;
+    //The UI effects source and clips
+    private AudioSource UISource;
+    [SerializeField] private AudioClip correctCommandAudio;
+    [SerializeField] private AudioClip incorrectCommandAudio;
+
 
     //lo de tapar teclas del mago
 
@@ -422,6 +427,7 @@ public class BattleController : MonoBehaviour
         xpText.text = PlayerPrefs.GetInt("lvlXP").ToString();
         xpObject = GameObject.Find("EXP");
         endBattleImage = GameObject.Find("EndBattleImage");
+        UISource = GameObject.Find("UISource").GetComponent<AudioSource>();
         //Initialize variables
         if (PlayerPrefs.GetInt("Souls") == 1)
         {
@@ -1597,6 +1603,7 @@ public class BattleController : MonoBehaviour
                             }
                             if (Input.GetKeyUp(KeyCode.X) && attackAction)
                             {
+                                GoodCommand();
                                 player.GetComponent<Animator>().SetTrigger("goodChargeMelee");
                                 player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("charging", false);
                                 player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("active", false);
@@ -1605,6 +1612,7 @@ public class BattleController : MonoBehaviour
                             }
                             else if (Input.GetKeyUp(KeyCode.X) && !attackAction && !attackFinished)
                             {
+                                BadCommand();
                                 player.GetComponent<Animator>().SetTrigger("badChargeMelee");
                                 player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("charging", false);
                                 player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("active", false);
@@ -1612,6 +1620,7 @@ public class BattleController : MonoBehaviour
                             }
                             else if (attackFinished)
                             {
+                                BadCommand();
                                 player.GetComponent<Animator>().SetTrigger("badChargeMelee");
                                 player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("charging", false);
                                 player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("active", false);
@@ -1648,10 +1657,12 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).transform.GetChild(1).GetComponent<Animator>().SetBool("Active", false);
                                 if (attackAction)
                                 {
+                                    GoodCommand();
                                     player.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
                                 }
                                 else
                                 {
+                                    BadCommand();
                                     player.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
                                 }
                                 player.GetComponent<Animator>().SetBool("isSpinning", false);
@@ -2205,6 +2216,7 @@ public class BattleController : MonoBehaviour
                     }
                     else if (failMusic)
                     {
+                        BadCommand();
                         actionInstructions.SetActive(false);
                         failMusic = false;
                         if (soulMusic >= 1)
@@ -3184,6 +3196,7 @@ public class BattleController : MonoBehaviour
                             {
                                 if (!attackAction && Input.GetKeyDown(KeyCode.X))
                                 {
+                                    BadCommand();
                                     badAttack = true;
                                     companion.GetComponent<PlayerTeamScript>().EndGlance();
                                     badAttack = false;
@@ -3208,6 +3221,7 @@ public class BattleController : MonoBehaviour
                                 }
                                 if (Input.GetKeyUp(KeyCode.X) && attackAction)
                                 {
+                                    GoodCommand();
                                     companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
                                     companion.GetComponent<Animator>().SetTrigger("ShootArrow");
                                     companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
@@ -3216,6 +3230,7 @@ public class BattleController : MonoBehaviour
                                 }
                                 else if (Input.GetKeyUp(KeyCode.X) && !attackAction && !attackFinished)
                                 {
+                                    BadCommand();
                                     companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
                                     companion.GetComponent<Animator>().SetTrigger("ShootArrow");
                                     companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
@@ -3223,6 +3238,7 @@ public class BattleController : MonoBehaviour
                                 }
                                 else if (attackFinished)
                                 {
+                                    BadCommand();
                                     companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
                                     companion.GetComponent<Animator>().SetTrigger("ShootArrow");
                                     companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
@@ -3250,6 +3266,7 @@ public class BattleController : MonoBehaviour
                         {
                             if (!attackAction && (Input.GetKeyDown(KeyCode.UpArrow)|| Input.GetKeyDown(KeyCode.DownArrow)|| Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)))
                             {
+                                BadCommand();
                                 companion.transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
                                 companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
                                 companion.GetComponent<Animator>().SetBool("magicBall", false);
@@ -3258,6 +3275,7 @@ public class BattleController : MonoBehaviour
                             {
                                 if (Input.GetKeyDown(magicKey) && !badAttack)
                                 {
+                                    GoodCommand();
                                     companion.transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
                                     companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
                                     companion.GetComponent<Animator>().SetBool("magicBall", false);
@@ -3266,6 +3284,7 @@ public class BattleController : MonoBehaviour
                             }
                             if (attackFinished)
                             {
+                                BadCommand();
                                 companion.transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
                                 companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
                                 companion.GetComponent<Animator>().SetBool("magicBall", false);
@@ -3286,6 +3305,7 @@ public class BattleController : MonoBehaviour
                                 }
                                 else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
                                 {
+                                    BadCommand();
                                     actionInstructions.SetActive(false);
                                     barrierNumber = 0;
                                     taunting = true;
@@ -3298,6 +3318,7 @@ public class BattleController : MonoBehaviour
                             {
                                 if (barrierNumber < 5)
                                 {
+                                    BadCommand();
                                     actionInstructions.SetActive(false);
                                     barrierNumber = 0;
                                     taunting = true;
@@ -3307,12 +3328,14 @@ public class BattleController : MonoBehaviour
                                 }
                                 else
                                 {
+                                    GoodCommand();
                                     actionInstructions.SetActive(false);
                                     barrierNumber = 0;
                                     defenseCompanion = 1;
                                     taunting = true;
                                     companion.GetChild(0).Find("BarrierAction").gameObject.SetActive(false);
                                     finalAttack = false;
+                                    companion.GetComponent<PlayerTeamScript>().BarrierSound();
                                     companion.GetChild(1).GetComponent<SpriteRenderer>().color = new Color(companion.GetChild(1).GetComponent<SpriteRenderer>().color.r, companion.GetChild(1).GetComponent<SpriteRenderer>().color.g, companion.GetChild(1).GetComponent<SpriteRenderer>().color.b, 1.0f);
                                     EndPlayerTurn(2);
                                 }
@@ -3329,9 +3352,10 @@ public class BattleController : MonoBehaviour
                         {
                             if (!attackAction && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)))
                             {
+                                BadCommand();
                                 companion.GetChild(0).GetChild(6).GetComponent<Animator>().SetBool("charge", false);
                                 companion.GetChild(0).GetChild(6).gameObject.SetActive(false);
-                                companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                                companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
                                 companion.GetComponent<Animator>().SetBool("magicBall", false);
                             }
                             if (attackAction)
@@ -3340,9 +3364,10 @@ public class BattleController : MonoBehaviour
                                 {
                                     if(magicSpearKey == 3)
                                     {
+                                        GoodCommand();
                                         companion.GetChild(0).GetChild(6).GetComponent<Animator>().SetBool("charge", false);
                                         companion.GetChild(0).GetChild(6).gameObject.SetActive(false);
-                                        companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(6);
+                                        companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(3);
                                         companion.GetComponent<Animator>().SetBool("magicBall", false);
                                         attackAction = false;
                                     }
@@ -3361,9 +3386,10 @@ public class BattleController : MonoBehaviour
                             {
                                 if(magicSpearKey != 4)
                                 {
+                                    BadCommand();
                                     companion.GetChild(0).GetChild(6).GetComponent<Animator>().SetBool("charge", false);
                                     companion.GetChild(0).GetChild(6).gameObject.SetActive(false);
-                                    companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                                    companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
                                     companion.GetComponent<Animator>().SetBool("magicBall", false);
                                     attackAction = false;
                                     attackFinished = false;
@@ -3806,6 +3832,7 @@ public class BattleController : MonoBehaviour
             }
             else if (player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f)
             {
+                BadCommand();
                 finalAttack = false;
                 player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(2).GetComponent<Image>().sprite = emptyIcon;
                 player.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
@@ -3815,6 +3842,7 @@ public class BattleController : MonoBehaviour
             }
             else if (player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
             {
+                GoodCommand();
                 finalAttack = false;
                 player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(2).GetComponent<Image>().sprite = emptyIcon;
                 player.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
@@ -3836,6 +3864,7 @@ public class BattleController : MonoBehaviour
             }
             else if (player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f)
             {
+                BadCommand();
                 finalAttack = false;
                 player.GetComponent<Animator>().SetFloat("attackSpeed", 1.0f);
                 player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(2).GetComponent<Image>().sprite = emptyIcon;
@@ -3846,6 +3875,7 @@ public class BattleController : MonoBehaviour
             }
             else if (player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
             {
+                GoodCommand();
                 finalAttack = false;
                 player.GetComponent<Animator>().SetFloat("attackSpeed", 1.0f);
                 player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(2).GetComponent<Image>().sprite = emptyIcon;
@@ -3955,7 +3985,11 @@ public class BattleController : MonoBehaviour
                 wall4.GetComponent<RectTransform>().anchoredPosition = new Vector2(wall4.GetComponent<RectTransform>().anchoredPosition.x - 0.045f, wall4.GetComponent<RectTransform>().anchoredPosition.y);
                 wall5.GetComponent<RectTransform>().anchoredPosition = new Vector2(wall5.GetComponent<RectTransform>().anchoredPosition.x - 0.045f, wall5.GetComponent<RectTransform>().anchoredPosition.y);
                 if (blueSoul.GetComponent<Image>().color.a > 0.05) blueSoul.GetComponent<Image>().color = new Color(blueSoul.GetComponent<Image>().color.r, blueSoul.GetComponent<Image>().color.g, blueSoul.GetComponent<Image>().color.b, blueSoul.GetComponent<Image>().color.a - 0.0006f);
-                else EndDisappearAttack();
+                else
+                {
+                    GoodCommand();
+                    EndDisappearAttack();
+                }
             }
             if (soulLightUp)
             {
@@ -4033,23 +4067,25 @@ public class BattleController : MonoBehaviour
                     }
                     else if (companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f)
                     {
+                        BadCommand();
                         finalAttack = false;
                         companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Animator>().SetBool("pulse", false);
                         companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
                         companion.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                         magicPulse = Instantiate(magicPulsePrefab, companion.transform.position, Quaternion.identity);
                         actionInstructions.SetActive(false);
-                        magicPulse.transform.GetComponent<MagicPulse>().Create(1, companion);
+                        magicPulse.transform.GetComponent<MagicPulse>().Create(2 + PlayerPrefs.GetInt("WizardLvl") - 1, companion);
                     }
                     else if (companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
                     {
+                        GoodCommand();
                         finalAttack = false;
                         companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Animator>().SetBool("pulse", false);
                         companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
                         companion.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                         magicPulse = Instantiate(magicPulsePrefab, new Vector3(companion.transform.position.x + 1.0104f, companion.transform.position.y + 0.3781f, companion.transform.position.z), Quaternion.identity);
                         actionInstructions.SetActive(false);
-                        magicPulse.transform.GetComponent<MagicPulse>().Create(4,companion);
+                        magicPulse.transform.GetComponent<MagicPulse>().Create(4 + PlayerPrefs.GetInt("WizardLvl") - 1, companion);
                     }
                 }
                 else if (usingStyle == 4)
@@ -4753,6 +4789,7 @@ public class BattleController : MonoBehaviour
     //Functions to end the regeneration attack
     public void EndRegenerationAttack()
     {
+        BadCommand();
         soulRegenMovUp = false;
         soulRegenMovLeft = false;
         soulRegenMovRight = false;
@@ -5748,7 +5785,6 @@ public class BattleController : MonoBehaviour
             return true;
         }
         else return false;
-
     }
 
     //Function to fill the souls
@@ -5808,6 +5844,20 @@ public class BattleController : MonoBehaviour
             else soul6.GetComponent<Image>().fillAmount += soul;
         }
     }
+    //Function to make the good command action sound
+    public void GoodCommand()
+    {
+        UISource.clip = correctCommandAudio;
+        UISource.Play();
+    }
+
+    //Function to make the bad command action sound
+    public void BadCommand()
+    {
+        UISource.clip = incorrectCommandAudio;
+        UISource.Play();
+    }
+
     //Function to create the barrier action
     public void CreateBarrierAction()
     {

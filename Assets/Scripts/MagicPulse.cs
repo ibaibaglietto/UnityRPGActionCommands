@@ -17,6 +17,7 @@ public class MagicPulse : MonoBehaviour
 
     public void DealDamage()
     {
+        wizard.GetComponent<PlayerTeamScript>().MagicSound();
         pulseNumb -= 1;
         if (pulseNumb != 0)
         {

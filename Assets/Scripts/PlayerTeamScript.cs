@@ -120,6 +120,31 @@ public class PlayerTeamScript : MonoBehaviour
     private Transform explosion;
     //An int to know the current extra damage of the repeating attack (player or adventurer)
     private int repeatingDamage;
+    //The audio source
+    private AudioSource source;
+    //The audios of the player
+    [SerializeField] private AudioClip playerNormalSwordAudio;
+    [SerializeField] private AudioClip playerSwordLightAudio;
+    [SerializeField] private AudioClip playerTakeDamageAudio;
+    [SerializeField] private AudioClip playerDefendDamageAudio;
+    [SerializeField] private AudioClip playerDieAudio;
+    [SerializeField] private AudioClip playerShurikenAudio;
+    [SerializeField] private AudioClip playerSoulAudio;
+    //The audios of the adventurer
+    [SerializeField] private AudioClip adventurerNormalSwordAudio;
+    [SerializeField] private AudioClip adventurerGlanceAudio;
+    [SerializeField] private AudioClip adventurerBowAudio;
+    [SerializeField] private AudioClip adventurerTakeDamageAudio;
+    [SerializeField] private AudioClip adventurerDefendDamageAudio;
+    [SerializeField] private AudioClip adventurerDieAudio;
+    //The audios of the wizard
+    [SerializeField] private AudioClip wizardMagicAudio;
+    [SerializeField] private AudioClip wizardBarrierAudio;
+    [SerializeField] private AudioClip wizardLaserAudio;
+    [SerializeField] private AudioClip wizardExplosionAudio;
+    [SerializeField] private AudioClip wizardTakeDamageAudio;
+    [SerializeField] private AudioClip wizardDefendDamageAudio;
+    [SerializeField] private AudioClip wizardDieAudio;
     void Awake()
     {
         //We find the gameobjects and initialize some variables
@@ -152,6 +177,7 @@ public class PlayerTeamScript : MonoBehaviour
         companionOut = false;
         companionIn = false;
         repeatingDamage = 0;
+        source = transform.Find("partyAudio").GetComponent<AudioSource>();
     }
     private void Start()
     {
@@ -407,10 +433,23 @@ public class PlayerTeamScript : MonoBehaviour
             else if (attackStyle == 5) battleController.GetComponent<BattleController>().EndSoulLightUpAttack();
         }
     }
-
+    //A function to make the barrier sound
+    public void BarrierSound()
+    {
+        source.clip = wizardBarrierAudio;
+        source.Play();
+    }
+    //A function to make the magic sound
+    public void MagicSound()
+    {
+        source.clip = wizardMagicAudio;
+        source.Play();
+    }
     //A function to end the soul attack
     public void EndSoulAttack(int lvl)
     {
+        source.clip = playerSoulAudio;
+        source.Play();
         soulMusicAction.SetActive(false);
         soulLightDown = true;
         soulLvl = lvl;
@@ -418,27 +457,37 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to end the regeneration attack
     public void EndRegenerationAttack()
     {
+        source.clip = playerSoulAudio;
+        source.Play();
         soulLightDown = true;
     }
     //A function to end the lightning attack
     public void EndLightningAttack()
     {
+        source.clip = playerSoulAudio;
+        source.Play();
         soulLightDown = true;
     }
 
     //A function to end the lifesteal attack
     public void EndLifestealAttack()
     {
+        source.clip = playerSoulAudio;
+        source.Play();
         soulLightDown = true;
     }
     //A function to end the disappear attack
     public void EndDisappearAttack()
     {
+        source.clip = playerSoulAudio;
+        source.Play();
         soulLightDown = true;
     }
     //A function to end the light up attack
     public void EndLightUpAttack()
     {
+        source.clip = playerSoulAudio;
+        source.Play();
         soulLightDown = true;
     }
     //A function to change the companion
@@ -827,6 +876,8 @@ public class PlayerTeamScript : MonoBehaviour
             //Soul attack
             if (type == 2)
             {
+                source.clip = playerSoulAudio;
+                source.Play();
                 //Soul music attack
                 if (style == 0)
                 {
@@ -1002,8 +1053,18 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().FillSouls(0.15f);
                 lastAttack = true;
                 battleController.GetComponent<BattleController>().attackAction = false;
-                if (playerTeamType == 0) battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("SwordLvl") - 1), false);
-                else if (playerTeamType == 1) battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("AdventurerLvl") - 1), false);
+                if (playerTeamType == 0)
+                {
+                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("SwordLvl") - 1), false);
+                    source.clip = playerNormalSwordAudio;
+                    source.Play();
+                }
+                else if (playerTeamType == 1)
+                {
+                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("AdventurerLvl") - 1), false);
+                    source.clip = adventurerNormalSwordAudio;
+                    source.Play();
+                }
             }
             //else we end the attack and the player goes to the starting position
             else
@@ -1016,12 +1077,16 @@ public class PlayerTeamScript : MonoBehaviour
                 if (playerTeamType == 0)
                 {
                     gameObject.GetComponent<Animator>().SetBool("isAttacking", false);
-                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("SwordLvl") - 1), true);
+                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("SwordLvl") - 1), true); 
+                    source.clip = playerNormalSwordAudio;
+                    source.Play();
                 }
                 else if (playerTeamType == 1)
                 {
                     gameObject.GetComponent<Animator>().SetBool("Melee2", false);
                     battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("AdventurerLvl") - 1), true);
+                    source.clip = adventurerNormalSwordAudio;
+                    source.Play();
                 }
                 battleController.GetComponent<BattleController>().finalAttack = false;
                 returnStartPos = true;
@@ -1033,7 +1098,17 @@ public class PlayerTeamScript : MonoBehaviour
         {
             if (battleController.GetComponent<BattleController>().goodAttack == true)
             {
-                if (playerTeamType == 1) gameObject.GetComponent<Animator>().SetBool("Melee3", true);
+                if (playerTeamType == 0)
+                {
+                    source.clip = playerNormalSwordAudio;
+                    source.Play();
+                }
+                else if (playerTeamType == 1)
+                {
+                    gameObject.GetComponent<Animator>().SetBool("Melee3", true);
+                    source.clip = adventurerNormalSwordAudio;
+                    source.Play();
+                }
                 battleController.GetComponent<BattleController>().FillSouls(0.1f);
                 if (attackSpeed < 1.80f) attackSpeed += 0.20f;
                 gameObject.GetComponent<Animator>().SetFloat("attackSpeed", attackSpeed);
@@ -1060,8 +1135,18 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().badAttack = false;
                 battleController.GetComponent<BattleController>().goodAttack = false;
                 battleController.GetComponent<BattleController>().attackAction = false;
-                if (playerTeamType == 0) gameObject.GetComponent<Animator>().SetBool("isAttacking", false);
-                else if (playerTeamType == 1) gameObject.GetComponent<Animator>().SetBool("Melee3", false);
+                if (playerTeamType == 0)
+                {
+                    gameObject.GetComponent<Animator>().SetBool("isAttacking", false);
+                    source.clip = playerNormalSwordAudio;
+                    source.Play();
+                }
+                else if (playerTeamType == 1)
+                {
+                    gameObject.GetComponent<Animator>().SetBool("Melee3", false);
+                    source.clip = adventurerNormalSwordAudio;
+                    source.Play();
+                }
                 battleController.GetComponent<BattleController>().finalAttack = false;
                 returnStartPos = true;
                 battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp, true);
@@ -1075,7 +1160,9 @@ public class PlayerTeamScript : MonoBehaviour
     //Function to en the light melee attack
     public void EndLightMeleeAttack(int damage)
     {
-        battleController.GetComponent<BattleController>().FillSouls(0.4f);
+        source.clip = playerSwordLightAudio;
+        source.Play();
+        battleController.GetComponent<BattleController>().FillSouls(0.2f * damage);
         returnStartPos = true;
         battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), damage * PlayerPrefs.GetInt("SwordLvl") + lightUp + 2, true);
         if (lightUp != 0) EndBuffDebuff(lightUpPos);
@@ -1087,6 +1174,8 @@ public class PlayerTeamScript : MonoBehaviour
     {
         if(playerTeamType == 0)
         {
+            source.clip = playerShurikenAudio;
+            source.Play();
             if (attackStyle == 0)
             {
                 battleController.GetComponent<BattleController>().DeactivateActionInstructions();
@@ -1121,6 +1210,8 @@ public class PlayerTeamScript : MonoBehaviour
         }
         else if(playerTeamType == 1)
         {
+            source.clip = adventurerBowAudio;
+            source.Play();
             if (attackStyle == 3)
             {
                 battleController.GetComponent<BattleController>().DeactivateActionInstructions();
@@ -1151,6 +1242,8 @@ public class PlayerTeamScript : MonoBehaviour
         {
             if(attackStyle == 0)
             {
+                source.clip = wizardMagicAudio;
+                source.Play();
                 battleController.GetComponent<BattleController>().DeactivateActionInstructions();
                 shuriken = Instantiate(magicBallPrefab, new Vector3(gameObject.transform.position.x + 1.0104f, gameObject.transform.position.y + 0.3781f, gameObject.transform.position.z), Quaternion.identity);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
@@ -1161,6 +1254,8 @@ public class PlayerTeamScript : MonoBehaviour
             }
             else if(attackStyle == 3)
             {
+                source.clip = wizardLaserAudio;
+                source.Play();
                 battleController.GetComponent<BattleController>().DeactivateActionInstructions();
                 shuriken = Instantiate(magicSpearPrefab, new Vector3(gameObject.transform.position.x + 1.0104f, gameObject.transform.position.y + 0.3781f, gameObject.transform.position.z), Quaternion.identity);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
@@ -1182,6 +1277,8 @@ public class PlayerTeamScript : MonoBehaviour
     //Function to set the damage of the explosion
     public void EndExplosion(int damage)
     {
+        source.clip = wizardExplosionAudio;
+        source.Play();
         battleController.GetComponent<BattleController>().FillSouls(damage*0.5f);
         explosion.GetComponent<ExplosionScript>().SetExplosionDamage(damage + lightUp);
         if (lightUp != 0) EndBuffDebuff(lightUpPos);
@@ -1328,8 +1425,16 @@ public class PlayerTeamScript : MonoBehaviour
                 playerLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
                 if (playerLife.GetComponent<PlayerLifeScript>().IsDead())
                 {
+                    source.clip = playerDieAudio;
+                    source.Play();
                     recovered = false;
                     GetComponent<Animator>().SetBool("isDead", true);
+                }
+                else
+                {
+                    if (GetComponent<Animator>().GetBool("isDefending")) source.clip = playerDefendDamageAudio;
+                    else source.clip = playerTakeDamageAudio;
+                    source.Play();
                 }
             }
             else
@@ -1337,6 +1442,16 @@ public class PlayerTeamScript : MonoBehaviour
                 companionLife.GetComponent<PlayerLifeScript>().DealDamage(Damage);
                 if (companionLife.GetComponent<PlayerLifeScript>().IsDead())
                 {
+                    if(playerTeamType == 1)
+                    {
+                        source.clip = adventurerDieAudio;
+                        source.Play();
+                    }
+                    else if(playerTeamType == 2)
+                    {
+                        source.clip = wizardDieAudio;
+                        source.Play();
+                    }
                     recovered = false; 
                     GetComponent<Animator>().SetBool("isDefending", false);
                     GetComponent<Animator>().SetBool("isDead", true);
@@ -1351,6 +1466,20 @@ public class PlayerTeamScript : MonoBehaviour
                         GetComponent<Animator>().SetBool("isDefending", false);
                     }
                     else if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+                }
+                else
+                {
+                    if(playerTeamType == 1)
+                    {
+                        if (GetComponent<Animator>().GetBool("isDefending")) source.clip = adventurerDefendDamageAudio;
+                        else source.clip = adventurerTakeDamageAudio;                        
+                    }
+                    else if(playerTeamType == 2)
+                    {
+                        if (GetComponent<Animator>().GetBool("isDefending")) source.clip = wizardDefendDamageAudio;
+                        else source.clip = wizardTakeDamageAudio;
+                    }
+                    source.Play();
                 }
             }            
         }        
@@ -1375,6 +1504,9 @@ public class PlayerTeamScript : MonoBehaviour
         {
             if (battleController.GetComponent<BattleController>().goodAttack == true)
             {
+                battleController.GetComponent<BattleController>().GoodCommand();
+                source.clip = adventurerGlanceAudio;
+                source.Play();
                 battleController.GetComponent<DialogueManager>().StartDialogue(attackObjective.GetComponent<EnemyTeamScript>().dialogue);
                 if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 0) PlayerPrefs.SetInt("bandit", 1);
                 else if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 1) PlayerPrefs.SetInt("wizard", 1);

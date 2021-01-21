@@ -29,6 +29,7 @@ public class WallScript : MonoBehaviour
     {
         if(collision.tag.Equals("blueSoul"))
         {
+            battleController.GetComponent<BattleController>().BadCommand();
             battleController.GetComponent<BattleController>().EndDisappearAttack();
         }
     }
