@@ -50,12 +50,24 @@ public class EnemyTeamScript : MonoBehaviour
     private float teleportPos;
     //A bool to know that the next attack is a ground attack
     private bool groundAttack;
+    //The audio source of the enemy
+    private AudioSource enemySource;
+    //The main audios
+    [SerializeField] private AudioClip attackAudio;
+    [SerializeField] private AudioClip hitAudio;
+    [SerializeField] private AudioClip dieAudio;
+    [SerializeField] private AudioClip bossSecondAttackAudio;
+    [SerializeField] private AudioClip bossChargeGroundAttackAudio;
+    [SerializeField] private AudioClip bossGroundAttackAudio;
+    [SerializeField] private AudioClip bossTeleportAudio;
+    [SerializeField] private AudioClip bossPowerUpAudio;
 
     void Start()
     {
         //We find the battle controller and initialize the variables
         battleController = GameObject.Find("BattleController");
         buffDebuffUI = transform.GetChild(0).Find("BuffsDebuffs").gameObject;
+        enemySource = transform.Find("EnemySource").GetComponent<AudioSource>();
         buffDebuffUI.transform.GetChild(0).gameObject.SetActive(false);
         buffDebuffUI.transform.GetChild(1).gameObject.SetActive(false);
         buffDebuffUI.transform.GetChild(2).gameObject.SetActive(false);
@@ -146,6 +158,11 @@ public class EnemyTeamScript : MonoBehaviour
                 }
                 else
                 {
+                    if(enemyType != 2)
+                    {
+                        enemySource.clip = attackAudio;
+                        enemySource.Play();
+                    }
                     attacking = true;
                     GetComponent<Animator>().SetFloat("Speed", 0.0f);
                     movingToEnemy = false;
@@ -173,6 +190,8 @@ public class EnemyTeamScript : MonoBehaviour
                     else if (enemyNumber == 4) transform.position = new Vector3(transform.position.x, transform.position.y, -2.00f);
                     if (enemyType == 2 && Random.Range(0.0f,1.0f)<0.4f)
                     {
+                        enemySource.clip = bossPowerUpAudio;
+                        enemySource.Play();
                         GetComponent<Animator>().SetBool("EnterFase2", true);
                     }
                     else
@@ -521,6 +540,31 @@ public class EnemyTeamScript : MonoBehaviour
         }
         defended = 0;
     }
+    //Function to make the sound of the first attack
+    public void FirstAttackSound()
+    {
+        enemySource.clip = attackAudio;
+        enemySource.Play();
+    }
+    //Function to make the sound of the second attack
+    public void SecondAttackSound()
+    {
+        enemySource.clip = bossSecondAttackAudio;
+        enemySource.Play();
+    }
+    //Function to make the sound of the charging of the ground attack
+    public void ChargeGroundAttackSound()
+    {
+        enemySource.clip = bossChargeGroundAttackAudio;
+        enemySource.Play();
+    }
+    //Function to make the sound of the ground attack
+    public void GroundAttackSound()
+    {
+        enemySource.clip = bossGroundAttackAudio;
+        enemySource.Play();
+    }
+
     //Funtion to return to the start pos
     public void ReturnStartPos()
     {
@@ -533,6 +577,8 @@ public class EnemyTeamScript : MonoBehaviour
     //A function to do the teleport attack
     public void StartTeleportAttack()
     {
+        enemySource.clip = bossTeleportAudio;
+        enemySource.Play();
         GetComponent<Animator>().SetBool("StartTeleport", true);
         startPos = transform.position.x;
         teleportPos = -5.7f;
@@ -541,6 +587,8 @@ public class EnemyTeamScript : MonoBehaviour
     //A function to do the teleport return
     public void StartTeleportReturn()
     {
+        enemySource.clip = bossTeleportAudio;
+        enemySource.Play();
         GetComponent<Animator>().SetBool("IsGroundAttacking", false);
         GetComponent<Animator>().SetBool("StartTeleport", true);
         teleportPos = startPos;
@@ -668,6 +716,8 @@ public class EnemyTeamScript : MonoBehaviour
     //A function to put the idle boolean false
     public void ReceiveDamage()
     {
+        enemySource.clip = hitAudio;
+        enemySource.Play();
         idle = false;
         if (asleep > 0)
         {
@@ -698,6 +748,8 @@ public class EnemyTeamScript : MonoBehaviour
     //A function to save that an enemy is dead
     public void EnemyDied()
     {
+        enemySource.clip = dieAudio;
+        enemySource.Play();
         idle = true;
         alive = false;
         GiveXP();
