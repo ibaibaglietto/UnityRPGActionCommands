@@ -7089,6 +7089,9 @@ MonoBehaviour:
   magicPulsePrefab: {fileID: 4556359203388122223, guid: b3d2c87e4b32ef040bcc59f66d173e4a, type: 3}
   correctCommandAudio: {fileID: 8300000, guid: 206eb0c4499a9724e86c51e234318956, type: 3}
   incorrectCommandAudio: {fileID: 8300000, guid: bdaa80b846e74b44994a72085ea0e83e, type: 3}
+  healClip: {fileID: 8300000, guid: 4dbf94165a0491643983b2b2a1f142be, type: 3}
+  lightClip: {fileID: 8300000, guid: 77310ae2a337bcc49b45f88559e66068, type: 3}
+  recoverClip: {fileID: 8300000, guid: 9b6f5f1addfa6c4499e5a1d63c2bdad6, type: 3}
 --- !u!4 &980658071
 Transform:
   m_ObjectHideFlags: 0
@@ -8397,7 +8400,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 7bc63de7e26e02141ac49e8af4789f0d, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.508
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0

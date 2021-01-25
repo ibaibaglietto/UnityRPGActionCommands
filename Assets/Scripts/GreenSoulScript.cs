@@ -17,11 +17,13 @@ public class GreenSoulScript : MonoBehaviour
         {
             if (other.GetComponent<RingScript>().GetColor() && !other.GetComponent<RingScript>().IsCrossed())
             {
+                transform.GetChild(0).GetComponent<AudioSource>().Play();
                 other.GetComponent<RingScript>().Cross();
                 battleController.GetComponent<BattleController>().IncreaseRegenerationHeal();
             }
             if (!other.GetComponent<RingScript>().GetColor() && !other.GetComponent<RingScript>().IsCrossed())
             {
+                transform.GetChild(0).GetComponent<AudioSource>().Play();
                 other.GetComponent<RingScript>().Cross();
                 battleController.GetComponent<BattleController>().IncreaseRegenerationLight();
             }

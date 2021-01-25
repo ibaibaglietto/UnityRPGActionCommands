@@ -377,6 +377,9 @@ public class BattleController : MonoBehaviour
     private AudioSource UISource;
     [SerializeField] private AudioClip correctCommandAudio;
     [SerializeField] private AudioClip incorrectCommandAudio;
+    [SerializeField] private AudioClip healClip;
+    [SerializeField] private AudioClip lightClip;
+    [SerializeField] private AudioClip recoverClip;
 
 
     //lo de tapar teclas del mago
@@ -394,11 +397,11 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("PlayerLightLvl", 4);
         PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
         PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
-        PlayerPrefs.SetInt("PlayerCurrentHealth", 35);
+        PlayerPrefs.SetInt("PlayerCurrentHealth", 20);
         PlayerPrefs.SetInt("AdventurerLvl",3); //3
-        PlayerPrefs.SetInt("AdventurerCurrentHealth", 40);
+        PlayerPrefs.SetInt("AdventurerCurrentHealth", 1);
         PlayerPrefs.SetInt("WizardLvl", 3); //3
-        PlayerPrefs.SetInt("WizardCurrentHealth", 45);
+        PlayerPrefs.SetInt("WizardCurrentHealth", 1);
         PlayerPrefs.SetInt("SwordLvl", 3); //3
         PlayerPrefs.SetInt("ShurikenLvl", 1); //3
         PlayerPrefs.SetInt("language", 0);
@@ -1009,9 +1012,24 @@ public class BattleController : MonoBehaviour
                                 selectingPlayer = false;
                                 if (selectingAction == 2)
                                 {
-                                    if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5, false, true, true, false);
-                                    else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, true, false);
-                                    else if (items[menuSelectionPos + scroll] == 3) player.GetComponent<PlayerTeamScript>().Recover(true, false);
+                                    if (items[menuSelectionPos + scroll] == 1)
+                                    {
+                                        UISource.clip = healClip;
+                                        UISource.Play();
+                                        player.GetComponent<PlayerTeamScript>().Heal(5, false, true, true, false);
+                                    }
+                                    else if (items[menuSelectionPos + scroll] == 2)
+                                    {
+                                        UISource.clip = lightClip;
+                                        UISource.Play();
+                                        player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, true, false);
+                                    }
+                                    else if (items[menuSelectionPos + scroll] == 3)
+                                    {
+                                        UISource.clip = recoverClip;
+                                        UISource.Play();
+                                        player.GetComponent<PlayerTeamScript>().Recover(true, false);
+                                    }
                                     DeleteItem(menuSelectionPos + scroll);
                                     scroll = 0;
                                     actionInstructions.SetActive(false);
@@ -1056,9 +1074,24 @@ public class BattleController : MonoBehaviour
                                 enemyName.SetActive(false);
                                 if (selectingAction == 2)
                                 {
-                                    if (items[menuSelectionPos + scroll] == 1) companion.GetComponent<PlayerTeamScript>().Heal(5, false, true, true, false);
-                                    else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, true, false);
-                                    else if (items[menuSelectionPos + scroll] == 3) companion.GetComponent<PlayerTeamScript>().Recover(true, false);
+                                    if (items[menuSelectionPos + scroll] == 1)
+                                    {
+                                        UISource.clip = healClip;
+                                        UISource.Play();
+                                        companion.GetComponent<PlayerTeamScript>().Heal(5, false, true, true, false);
+                                    }
+                                    else if (items[menuSelectionPos + scroll] == 2)
+                                    {
+                                        UISource.clip = lightClip;
+                                        UISource.Play();
+                                        player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, true, false);
+                                    }
+                                    else if (items[menuSelectionPos + scroll] == 3)
+                                    {
+                                        UISource.clip = recoverClip;
+                                        UISource.Play();
+                                        companion.GetComponent<PlayerTeamScript>().Recover(true, false);
+                                    }
                                     DeleteItem(menuSelectionPos + scroll);
                                     scroll = 0;
                                     actionInstructions.SetActive(false);
@@ -2130,6 +2163,8 @@ public class BattleController : MonoBehaviour
                                         }
                                         else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
                                         {
+                                            UISource.clip = correctCommandAudio;
+                                            UISource.Play();
                                             Destroy(key1.gameObject);
                                             Destroy(key2.gameObject);
                                             Destroy(key3.gameObject);
@@ -2154,6 +2189,8 @@ public class BattleController : MonoBehaviour
                                     }
                                     else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
                                     {
+                                        UISource.clip = correctCommandAudio;
+                                        UISource.Play();
                                         Destroy(key1.gameObject);
                                         Destroy(key2.gameObject);
                                         Destroy(key3.gameObject);
@@ -2176,6 +2213,8 @@ public class BattleController : MonoBehaviour
                                 }
                                 else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
                                 {
+                                    UISource.clip = correctCommandAudio;
+                                    UISource.Play();
                                     Destroy(key1.gameObject);
                                     Destroy(key2.gameObject);
                                     Destroy(key3.gameObject);
@@ -2196,6 +2235,8 @@ public class BattleController : MonoBehaviour
                             }
                             else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
                             {
+                                UISource.clip = correctCommandAudio;
+                                UISource.Play();
                                 Destroy(key1.gameObject);
                                 Destroy(key2.gameObject);
                                 Destroy(key3.gameObject);
@@ -2630,9 +2671,24 @@ public class BattleController : MonoBehaviour
                             if (Input.GetKeyDown(KeyCode.Space))
                             {
                                 player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
-                                if (items[menuSelectionPos + scroll] == 1) player.GetComponent<PlayerTeamScript>().Heal(5, false, true, false, false);
-                                else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, false, false);
-                                else if (items[menuSelectionPos + scroll] == 3) player.GetComponent<PlayerTeamScript>().Recover(false, false);
+                                if (items[menuSelectionPos + scroll] == 1)
+                                {
+                                    UISource.clip = healClip;
+                                    UISource.Play();
+                                    player.GetComponent<PlayerTeamScript>().Heal(5, false, true, false, false);
+                                }
+                                else if (items[menuSelectionPos + scroll] == 2)
+                                {
+                                    UISource.clip = lightClip;
+                                    UISource.Play();
+                                    player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, false, false);
+                                }
+                                else if (items[menuSelectionPos + scroll] == 3)
+                                {
+                                    UISource.clip = recoverClip;
+                                    UISource.Play();
+                                    player.GetComponent<PlayerTeamScript>().Recover(false, false);
+                                }
                                 DeleteItem(menuSelectionPos + scroll);
                                 scroll = 0;
                                 actionInstructions.SetActive(false);
@@ -2666,9 +2722,24 @@ public class BattleController : MonoBehaviour
                             if (Input.GetKeyDown(KeyCode.Space))
                             {
                                 companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
-                                if (items[menuSelectionPos + scroll] == 1) companion.GetComponent<PlayerTeamScript>().Heal(5, false, true, false, false);
-                                else if (items[menuSelectionPos + scroll] == 2) player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, false, false);
-                                else if (items[menuSelectionPos + scroll] == 3) companion.GetComponent<PlayerTeamScript>().Recover(false, false);
+                                if (items[menuSelectionPos + scroll] == 1)
+                                {
+                                    UISource.clip = healClip;
+                                    UISource.Play();
+                                    companion.GetComponent<PlayerTeamScript>().Heal(5, false, true, false, false);
+                                }
+                                else if (items[menuSelectionPos + scroll] == 2)
+                                {
+                                    UISource.clip = lightClip;
+                                    UISource.Play();
+                                    player.GetComponent<PlayerTeamScript>().IncreaseLight(5, false, false, false);
+                                }
+                                else if (items[menuSelectionPos + scroll] == 3)
+                                {
+                                    UISource.clip = recoverClip;
+                                    UISource.Play();
+                                    companion.GetComponent<PlayerTeamScript>().Recover(false, false);
+                                }
                                 DeleteItem(menuSelectionPos + scroll);
                                 scroll = 0;
                                 actionInstructions.SetActive(false);

@@ -15,6 +15,7 @@ public class MagentaSoulScript : MonoBehaviour
     {
         if (collision.tag.Equals("magentaShard"))
         {
+            transform.GetChild(0).GetComponent<AudioSource>().Play();
             battleController.GetComponent<BattleController>().CreateMagentaShard();
             battleController.GetComponent<BattleController>().IncrementFogSize();
             Destroy(collision.gameObject);

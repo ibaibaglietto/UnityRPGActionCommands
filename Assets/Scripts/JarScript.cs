@@ -26,6 +26,7 @@ public class JarScript : MonoBehaviour
     {
         if (other.tag.Equals("redSoul"))
         {
+            transform.GetChild(4).GetComponent<AudioSource>().Play();
             battleController.GetComponent<BattleController>().GatherRedSoul();
             fill += 0.1f;
             Destroy(other.gameObject);

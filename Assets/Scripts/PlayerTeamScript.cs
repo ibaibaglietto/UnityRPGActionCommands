@@ -1414,7 +1414,7 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to deal damage
     public void DealDamage(int Damage)
     {
-        if(disappear == 0)
+        if(disappear == 0 && ((playerTeamType == 0 && !playerLife.GetComponent<PlayerLifeScript>().IsDead()) || (playerTeamType != 0 && !companionLife.GetComponent<PlayerLifeScript>().IsDead())))
         {
             Damage -= battleController.GetComponent<BattleController>().GetDefense(playerTeamType);
             if (Damage < 0) Damage = 0;
@@ -1562,7 +1562,8 @@ public class PlayerTeamScript : MonoBehaviour
         heartImage.GetChild(0).GetComponent<Text>().text = 10.ToString();
         if (playerTeamType == 0)
         {
-            heartImage.GetComponent<DamageImageScript>().SetDamage(true);
+            if(playerLife.GetComponent<PlayerLifeScript>().IsDead()) heartImage.GetComponent<DamageImageScript>().SetDamage(true);
+            else heartImage.GetComponent<DamageImageScript>().SetDamage(false);
             heartImage.GetComponent<DamageImageScript>().SetUser(isPlayer);
             playerLife.GetComponent<PlayerLifeScript>().Heal(10);
         }

@@ -180,6 +180,12 @@ public class EnemyTeamScript : MonoBehaviour
                 }
                 else
                 {
+                    if (attackTeam.Length > 1)
+                    {
+                        if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+                        else if (attackTeam[1].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[1].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[1].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+                    }
+                    else if(attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
                     transform.position = new Vector3(startPos, transform.position.y, transform.position.z);
                     GetComponent<Animator>().SetFloat("Speed", 0.0f);
                     returnStartPos = false;
@@ -611,6 +617,12 @@ public class EnemyTeamScript : MonoBehaviour
         }
         else
         {
+            if (attackTeam.Length > 1)
+            {
+                if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+                else if (attackTeam[1].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[1].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[1].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+            }
+            else if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
             if (enemyNumber == 1) transform.position = new Vector3(transform.position.x, transform.position.y, -2.03f);
             else if (enemyNumber == 2) transform.position = new Vector3(transform.position.x, transform.position.y, -2.02f);
             else if (enemyNumber == 3) transform.position = new Vector3(transform.position.x, transform.position.y, -2.01f);
