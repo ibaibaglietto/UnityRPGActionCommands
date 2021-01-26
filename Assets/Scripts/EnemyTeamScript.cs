@@ -180,12 +180,7 @@ public class EnemyTeamScript : MonoBehaviour
                 }
                 else
                 {
-                    if (attackTeam.Length > 1)
-                    {
-                        if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
-                        else if (attackTeam[1].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[1].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[1].GetComponent<PlayerTeamScript>().UseRecoverPotion();
-                    }
-                    else if(attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+                    
                     transform.position = new Vector3(startPos, transform.position.y, transform.position.z);
                     GetComponent<Animator>().SetFloat("Speed", 0.0f);
                     returnStartPos = false;
@@ -578,6 +573,72 @@ public class EnemyTeamScript : MonoBehaviour
         gameObject.GetComponent<Animator>().SetBool("IsAttacking", false);
         movingToEnemy = false;
         returnStartPos = true;
+        if (attackTeam.Length > 1)
+        {
+            if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+            else if (attackTeam[1].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[1].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[1].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+            if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType != 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
+            {
+                if (battleController.GetComponent<BattleController>().IsTaunting())
+                {
+                    if (!battleController.GetComponent<BattleController>().IsPlayerFirst())
+                    {
+                        battleController.GetComponent<BattleController>().StartChangePosition(2);
+                        attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                    }
+                    else if (battleController.GetComponent<BattleController>().IsTaunting())
+                    {
+                        attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                        attackTeam[0].GetComponent<PlayerTeamScript>().ReturnStartPosWizard();
+                    }
+                    battleController.GetComponent<BattleController>().SetTaunt(false);
+                    attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
+                }
+                else if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+            }
+            else if (attackTeam[1].GetComponent<PlayerTeamScript>().playerTeamType != 0 && attackTeam[1].GetComponent<PlayerTeamScript>().IsDead())
+            {
+                if (battleController.GetComponent<BattleController>().IsTaunting())
+                {
+                    if (!battleController.GetComponent<BattleController>().IsPlayerFirst())
+                    {
+                        battleController.GetComponent<BattleController>().StartChangePosition(2);
+                        attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                    }
+                    else if (battleController.GetComponent<BattleController>().IsTaunting())
+                    {
+                        attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                        attackTeam[1].GetComponent<PlayerTeamScript>().ReturnStartPosWizard();
+                    }
+                    battleController.GetComponent<BattleController>().SetTaunt(false);
+                    attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
+                }
+                else if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+            }
+        }
+        else if (attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
+        {
+            if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+            if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType != 0)
+            {
+                if (battleController.GetComponent<BattleController>().IsTaunting())
+                {
+                    if (!battleController.GetComponent<BattleController>().IsPlayerFirst())
+                    {
+                        battleController.GetComponent<BattleController>().StartChangePosition(2);
+                        attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                    }
+                    else if (battleController.GetComponent<BattleController>().IsTaunting())
+                    {
+                        attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                        attackTeam[0].GetComponent<PlayerTeamScript>().ReturnStartPosWizard();
+                    }
+                    battleController.GetComponent<BattleController>().SetTaunt(false);
+                    attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
+                }
+                else if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+            }
+        }
     }
 
     //A function to do the teleport attack
@@ -598,6 +659,72 @@ public class EnemyTeamScript : MonoBehaviour
         GetComponent<Animator>().SetBool("IsGroundAttacking", false);
         GetComponent<Animator>().SetBool("StartTeleport", true);
         teleportPos = startPos;
+        if (attackTeam.Length > 1)
+        {
+            if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+            else if (attackTeam[1].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[1].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[1].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+            if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType != 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
+            {
+                if (battleController.GetComponent<BattleController>().IsTaunting())
+                {
+                    if (!battleController.GetComponent<BattleController>().IsPlayerFirst())
+                    {
+                        battleController.GetComponent<BattleController>().StartChangePosition(2);
+                        attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                    }
+                    else if (battleController.GetComponent<BattleController>().IsTaunting())
+                    {
+                        attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                        attackTeam[0].GetComponent<PlayerTeamScript>().ReturnStartPosWizard();
+                    }
+                    battleController.GetComponent<BattleController>().SetTaunt(false);
+                    attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
+                }
+                else if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+            }
+            else if (attackTeam[1].GetComponent<PlayerTeamScript>().playerTeamType != 0 && attackTeam[1].GetComponent<PlayerTeamScript>().IsDead())
+            {
+                if (battleController.GetComponent<BattleController>().IsTaunting())
+                {
+                    if (!battleController.GetComponent<BattleController>().IsPlayerFirst())
+                    {
+                        battleController.GetComponent<BattleController>().StartChangePosition(2);
+                        attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                    }
+                    else if (battleController.GetComponent<BattleController>().IsTaunting())
+                    {
+                        attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                        attackTeam[1].GetComponent<PlayerTeamScript>().ReturnStartPosWizard();
+                    }
+                    battleController.GetComponent<BattleController>().SetTaunt(false);
+                    attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
+                }
+                else if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+            }
+        }
+        else if (attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
+        {
+            if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+            if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType != 0)
+            {
+                if (battleController.GetComponent<BattleController>().IsTaunting())
+                {
+                    if (!battleController.GetComponent<BattleController>().IsPlayerFirst())
+                    {
+                        battleController.GetComponent<BattleController>().StartChangePosition(2);
+                        attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                    }
+                    else if (battleController.GetComponent<BattleController>().IsTaunting())
+                    {
+                        attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                        attackTeam[0].GetComponent<PlayerTeamScript>().ReturnStartPosWizard();
+                    }
+                    battleController.GetComponent<BattleController>().SetTaunt(false);
+                    attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
+                }
+                else if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+            }
+        }
     }
 
     //A function to teleport to the attack position
@@ -616,13 +743,7 @@ public class EnemyTeamScript : MonoBehaviour
             GetComponent<Animator>().SetBool("IsGroundAttacking", true);
         }
         else
-        {
-            if (attackTeam.Length > 1)
-            {
-                if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
-                else if (attackTeam[1].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[1].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[1].GetComponent<PlayerTeamScript>().UseRecoverPotion();
-            }
-            else if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+        {            
             if (enemyNumber == 1) transform.position = new Vector3(transform.position.x, transform.position.y, -2.03f);
             else if (enemyNumber == 2) transform.position = new Vector3(transform.position.x, transform.position.y, -2.02f);
             else if (enemyNumber == 3) transform.position = new Vector3(transform.position.x, transform.position.y, -2.01f);
@@ -723,6 +844,72 @@ public class EnemyTeamScript : MonoBehaviour
         gameObject.GetComponent<Animator>().SetBool("IsAttacking", false);
         movingToEnemy = false;
         returnStartPos = true;
+        if (attackTeam.Length > 1)
+        {
+            if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+            else if (attackTeam[1].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[1].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[1].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+            if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType != 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
+            {
+                if (battleController.GetComponent<BattleController>().IsTaunting())
+                {
+                    if (!battleController.GetComponent<BattleController>().IsPlayerFirst())
+                    {
+                        battleController.GetComponent<BattleController>().StartChangePosition(2);
+                        attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                    }
+                    else if (battleController.GetComponent<BattleController>().IsTaunting())
+                    {
+                        attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                        attackTeam[0].GetComponent<PlayerTeamScript>().ReturnStartPosWizard();
+                    }
+                    battleController.GetComponent<BattleController>().SetTaunt(false);
+                    attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
+                }
+                else if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+            }
+            else if (attackTeam[1].GetComponent<PlayerTeamScript>().playerTeamType != 0 && attackTeam[1].GetComponent<PlayerTeamScript>().IsDead())
+            {
+                if (battleController.GetComponent<BattleController>().IsTaunting())
+                {
+                    if (!battleController.GetComponent<BattleController>().IsPlayerFirst())
+                    {
+                        battleController.GetComponent<BattleController>().StartChangePosition(2);
+                        attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                    }
+                    else if (battleController.GetComponent<BattleController>().IsTaunting())
+                    {
+                        attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[1].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                        attackTeam[1].GetComponent<PlayerTeamScript>().ReturnStartPosWizard();
+                    }
+                    battleController.GetComponent<BattleController>().SetTaunt(false);
+                    attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
+                }
+                else if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+            }
+        }
+        else if (attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
+        {
+            if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
+            if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType != 0)
+            {
+                if (battleController.GetComponent<BattleController>().IsTaunting())
+                {
+                    if (!battleController.GetComponent<BattleController>().IsPlayerFirst())
+                    {
+                        battleController.GetComponent<BattleController>().StartChangePosition(2);
+                        attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                    }
+                    else if (battleController.GetComponent<BattleController>().IsTaunting())
+                    {
+                        attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color = new Color(attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.r, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.g, attackTeam[0].GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                        attackTeam[0].GetComponent<PlayerTeamScript>().ReturnStartPosWizard();
+                    }
+                    battleController.GetComponent<BattleController>().SetTaunt(false);
+                    attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
+                }
+                else if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
+            }
+        }
     }
 
     //A function to put the idle boolean false

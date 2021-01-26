@@ -864,7 +864,7 @@ AudioSource:
   m_GameObject: {fileID: 2330830776303920069}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2540230335296502361, guid: 8259ccf1b917395498fe7d90cc754422, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -3503,6 +3503,19 @@ MonoBehaviour:
   playerDieAudio: {fileID: 8300000, guid: a2b62d199d73e5543a1a6e34814b2994, type: 3}
   playerShurikenAudio: {fileID: 8300000, guid: 2a490e1339aa23345975aa7f1c6ebe30, type: 3}
   playerSoulAudio: {fileID: 8300000, guid: 7055b0001b6380944ae5a7206cd1f0b5, type: 3}
+  adventurerNormalSwordAudio: {fileID: 0}
+  adventurerGlanceAudio: {fileID: 0}
+  adventurerBowAudio: {fileID: 0}
+  adventurerTakeDamageAudio: {fileID: 0}
+  adventurerDefendDamageAudio: {fileID: 0}
+  adventurerDieAudio: {fileID: 0}
+  wizardMagicAudio: {fileID: 0}
+  wizardBarrierAudio: {fileID: 0}
+  wizardLaserAudio: {fileID: 0}
+  wizardExplosionAudio: {fileID: 0}
+  wizardTakeDamageAudio: {fileID: 0}
+  wizardDefendDamageAudio: {fileID: 0}
+  wizardDieAudio: {fileID: 0}
 --- !u!1 &5352649904939885479
 GameObject:
   m_ObjectHideFlags: 0

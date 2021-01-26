@@ -386,7 +386,7 @@ public class BattleController : MonoBehaviour
 
     private void Awake()
     {
-        PlayerPrefs.SetInt("Light Sword", 1);
+        /*PlayerPrefs.SetInt("Light Sword", 1);
         PlayerPrefs.SetInt("Multistrike Sword", 1);
         PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
         PlayerPrefs.SetInt("Light Shuriken", 1);
@@ -409,7 +409,7 @@ public class BattleController : MonoBehaviour
         PlayerPrefs.SetInt("wizard", 0);
         PlayerPrefs.SetInt("king", 0);
         PlayerPrefs.SetInt("lvlXP", 90);
-        PlayerPrefs.SetInt("UnlockedCompanions", 2);
+        PlayerPrefs.SetInt("UnlockedCompanions", 2);*/
         //Find the gameobjects
         victoryXP = GameObject.Find("VictoryEXP");
         mainCamera = GameObject.Find("Main Camera");

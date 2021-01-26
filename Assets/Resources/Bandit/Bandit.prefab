@@ -638,7 +638,7 @@ AudioSource:
   m_GameObject: {fileID: 3151104782615575094}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2540230335296502361, guid: 8259ccf1b917395498fe7d90cc754422, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -860,6 +860,11 @@ MonoBehaviour:
   attackAudio: {fileID: 8300000, guid: fa931e2f5823a5248b806057f1d4f309, type: 3}
   hitAudio: {fileID: 8300000, guid: c346d38432a045e49a699616d460d7b9, type: 3}
   dieAudio: {fileID: 8300000, guid: 495c2cff734db314eb229d71040a1fae, type: 3}
+  bossSecondAttackAudio: {fileID: 0}
+  bossChargeGroundAttackAudio: {fileID: 0}
+  bossGroundAttackAudio: {fileID: 0}
+  bossTeleportAudio: {fileID: 0}
+  bossPowerUpAudio: {fileID: 0}
 --- !u!61 &3432786895357854636
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -29,7 +29,6 @@ public class DamageImageScript : MonoBehaviour
     {
         if (!isDamage)
         {
-            Debug.Log("Se termino");
             battleController.GetComponent<BattleController>().EndPlayerTurn(user);
         }
         Destroy(gameObject);

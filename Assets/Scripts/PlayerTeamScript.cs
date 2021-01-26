@@ -1455,17 +1455,6 @@ public class PlayerTeamScript : MonoBehaviour
                     recovered = false; 
                     GetComponent<Animator>().SetBool("isDefending", false);
                     GetComponent<Animator>().SetBool("isDead", true);
-                    if (battleController.GetComponent<BattleController>().IsTaunting())
-                    {
-                        if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
-                        else if (battleController.GetComponent<BattleController>().IsTaunting())
-                        {
-                            returnStartPosAlly = true;
-                        }
-                        battleController.GetComponent<BattleController>().SetTaunt(false);
-                        GetComponent<Animator>().SetBool("isDefending", false);
-                    }
-                    else if (!battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().StartChangePosition(2);
                 }
                 else
                 {
