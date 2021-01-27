@@ -500,11 +500,11 @@ public class BattleController : MonoBehaviour
         player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
-        SpawnCharacter(1,0);
-        SpawnCharacter(2,1);
-        SpawnCharacter(3,0);
-        SpawnCharacter(4,0);
-        SpawnCharacter(5,2);
+        SpawnCharacter(1,0);        
+        SpawnCharacter(2, PlayerPrefs.GetInt("Enemy1"));
+        if (PlayerPrefs.GetInt("Enemy2") > 0) SpawnCharacter(3, PlayerPrefs.GetInt("Enemy2") - 1);
+        if (PlayerPrefs.GetInt("Enemy3") > 0) SpawnCharacter(4, PlayerPrefs.GetInt("Enemy3") - 1);
+        if (PlayerPrefs.GetInt("Enemy4") > 0) SpawnCharacter(5, PlayerPrefs.GetInt("Enemy4") - 1);
         playerTeamTurn = true;
         playerTurn = true;
         playerTurnCompleted = false;
@@ -3294,6 +3294,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     GoodCommand();
                                     companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
+                                    companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
                                     companion.GetComponent<Animator>().SetTrigger("ShootArrow");
                                     companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
                                     attackAction = false;
@@ -3304,6 +3305,7 @@ public class BattleController : MonoBehaviour
                                     BadCommand();
                                     companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
                                     companion.GetComponent<Animator>().SetTrigger("ShootArrow");
+                                    companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
                                     companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
                                     finalAttack = false;
                                 }
@@ -3312,6 +3314,7 @@ public class BattleController : MonoBehaviour
                                     BadCommand();
                                     companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
                                     companion.GetComponent<Animator>().SetTrigger("ShootArrow");
+                                    companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
                                     companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
                                     finalAttack = false;
                                 }
