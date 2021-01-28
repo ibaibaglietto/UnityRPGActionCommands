@@ -3,76 +3,146 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class MainMenuScript : MonoBehaviour
 {
+    [SerializeField] private AudioMixer mixer;
     private GameObject mainMenu;
     private GameObject settings;
     private GameObject battleSettings;
-    private Dropdown LifeLvl;
-    private Dropdown LightLvl;
-    private Dropdown SwordLvl;
-    private Dropdown ShurikenLvl;
-    private Dropdown AdventurerLvl;
-    private Dropdown WizardLvl;
-    private Dropdown Enemy1;
-    private Dropdown Enemy2;
-    private Dropdown Enemy3;
-    private Dropdown Enemy4;
+    private GameObject confirmResolution;
+    private Dropdown resolution;
+    private Toggle fullscreen; 
+    private Dropdown lifeLvl;
+    private Dropdown lightLvl;
+    private Dropdown swordLvl;
+    private Dropdown shurikenLvl;
+    private Dropdown adventurerLvl;
+    private Dropdown wizardLvl;
+    private Dropdown enemy1;
+    private Dropdown enemy2;
+    private Dropdown enemy3;
+    private Dropdown enemy4;
     private Text explanationText;
+    private float confirmTime;
+    private Text confirmTimeNumb;
+    private Button saveResolutionButton;
+
 
     void Start()
     {
+        //PlayerPrefs.DeleteAll();
         //We initialize the playerprefs
-        PlayerPrefs.SetInt("Light Sword", 1);
-        PlayerPrefs.SetInt("Multistrike Sword", 1);
-        PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
-        PlayerPrefs.SetInt("Light Shuriken", 1);
-        PlayerPrefs.SetInt("Fire Shuriken", 1);
-        PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
-        PlayerPrefs.SetInt("Souls", 6);
-        PlayerPrefs.SetInt("PlayerHeartLvl", 5);
-        PlayerPrefs.SetInt("PlayerLightLvl", 4);
-        PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
-        PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
-        PlayerPrefs.SetInt("PlayerCurrentHealth", 20);
-        PlayerPrefs.SetInt("AdventurerLvl", 3); //3
-        PlayerPrefs.SetInt("AdventurerCurrentHealth", 1);
-        PlayerPrefs.SetInt("WizardLvl", 3); //3
-        PlayerPrefs.SetInt("WizardCurrentHealth", 1);
-        PlayerPrefs.SetInt("SwordLvl", 3); //3
-        PlayerPrefs.SetInt("ShurikenLvl", 1); //3
-        PlayerPrefs.SetInt("language", 0);
-        PlayerPrefs.SetInt("bandit", 0);
-        PlayerPrefs.SetInt("wizard", 0);
-        PlayerPrefs.SetInt("king", 0);
-        PlayerPrefs.SetInt("lvlXP", 90);
-        PlayerPrefs.SetInt("Enemy1", 0);
-        PlayerPrefs.SetInt("Enemy2", -1);
-        PlayerPrefs.SetInt("Enemy3", -1);
-        PlayerPrefs.SetInt("Enemy4", -1);
-        PlayerPrefs.SetInt("UnlockedCompanions", 2);
+        if (!PlayerPrefs.HasKey("First"))
+        {
+            Debug.Log("buenas");
+            PlayerPrefs.SetInt("Light Sword", 1);
+            PlayerPrefs.SetInt("Multistrike Sword", 1);
+            PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
+            PlayerPrefs.SetInt("Light Shuriken", 1);
+            PlayerPrefs.SetInt("Fire Shuriken", 1);
+            PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
+            PlayerPrefs.SetInt("Souls", 6);
+            PlayerPrefs.SetInt("PlayerHeartLvl", 0);
+            PlayerPrefs.SetInt("PlayerLightLvl", 0);
+            PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
+            PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
+            PlayerPrefs.SetInt("PlayerCurrentHealth", 10);
+            PlayerPrefs.SetInt("AdventurerLvl", 1); //3
+            PlayerPrefs.SetInt("AdventurerCurrentHealth", 20);
+            PlayerPrefs.SetInt("WizardLvl", 1); //3
+            PlayerPrefs.SetInt("WizardCurrentHealth", 25);
+            PlayerPrefs.SetInt("SwordLvl", 1); //3
+            PlayerPrefs.SetInt("ShurikenLvl", 1); //3
+            PlayerPrefs.SetInt("language", 0);
+            PlayerPrefs.SetInt("bandit", 0);
+            PlayerPrefs.SetInt("wizard", 0);
+            PlayerPrefs.SetInt("king", 0);
+            PlayerPrefs.SetInt("lvlXP", 90);
+            PlayerPrefs.SetInt("Enemy1", 0);
+            PlayerPrefs.SetInt("Enemy2", -1);
+            PlayerPrefs.SetInt("Enemy3", -1);
+            PlayerPrefs.SetInt("Enemy4", -1);
+            PlayerPrefs.SetFloat("Master", 1.0f);
+            PlayerPrefs.SetFloat("Music", 1.0f);
+            PlayerPrefs.SetFloat("Effects", 1.0f);
+            PlayerPrefs.SetInt("UnlockedCompanions", 2);
+            PlayerPrefs.SetInt("FullScreen", 1);
+            PlayerPrefs.SetInt("Resolutionx", 1280);
+            PlayerPrefs.SetInt("Resolutiony", 720);
+            PlayerPrefs.SetInt("First", 1);
+        }
+        mixer.SetFloat("Master", Mathf.Log10(PlayerPrefs.GetFloat("Master")) * 20);
+        mixer.SetFloat("Music", Mathf.Log10(PlayerPrefs.GetFloat("Music")) * 20);
+        mixer.SetFloat("Effects", Mathf.Log10(PlayerPrefs.GetFloat("Effects")) * 20);
         //We find the gameobjects
         mainMenu = transform.GetChild(1).gameObject;
         settings = transform.GetChild(2).gameObject;
+        saveResolutionButton = settings.transform.Find("SaveResolution").GetComponent<Button>();
         battleSettings = transform.GetChild(3).gameObject;
-        LifeLvl = battleSettings.transform.Find("LifeLvlDropdown").GetComponent<Dropdown>();
-        LightLvl = battleSettings.transform.Find("LightLvlDropdown").GetComponent<Dropdown>();
-        SwordLvl = battleSettings.transform.Find("SwordLvlDropdown").GetComponent<Dropdown>();
-        ShurikenLvl = battleSettings.transform.Find("ShurikenLvlDropdown").GetComponent<Dropdown>();
-        AdventurerLvl = battleSettings.transform.Find("AdventurerDropdown").GetComponent<Dropdown>();
-        WizardLvl = battleSettings.transform.Find("WizardDropdown").GetComponent<Dropdown>();
-        Enemy1 = battleSettings.transform.Find("Enemy1Dropdown").GetComponent<Dropdown>();
-        Enemy2 = battleSettings.transform.Find("Enemy2Dropdown").GetComponent<Dropdown>();
-        Enemy3 = battleSettings.transform.Find("Enemy3Dropdown").GetComponent<Dropdown>();
-        Enemy4 = battleSettings.transform.Find("Enemy4Dropdown").GetComponent<Dropdown>();
+        confirmResolution = settings.transform.Find("ConfirmResolutionChange").gameObject;
+        confirmTimeNumb = confirmResolution.transform.Find("TimeNumb").GetComponent<Text>();
+        fullscreen = settings.transform.Find("FullScreenToggle").GetComponent<Toggle>();
+        resolution = settings.transform.Find("ResolutionDropdown").GetComponent<Dropdown>();
+        lifeLvl = battleSettings.transform.Find("LifeLvlDropdown").GetComponent<Dropdown>();
+        lightLvl = battleSettings.transform.Find("LightLvlDropdown").GetComponent<Dropdown>();
+        swordLvl = battleSettings.transform.Find("SwordLvlDropdown").GetComponent<Dropdown>();
+        shurikenLvl = battleSettings.transform.Find("ShurikenLvlDropdown").GetComponent<Dropdown>();
+        adventurerLvl = battleSettings.transform.Find("AdventurerDropdown").GetComponent<Dropdown>();
+        wizardLvl = battleSettings.transform.Find("WizardDropdown").GetComponent<Dropdown>();
+        enemy1 = battleSettings.transform.Find("Enemy1Dropdown").GetComponent<Dropdown>();
+        enemy2 = battleSettings.transform.Find("Enemy2Dropdown").GetComponent<Dropdown>();
+        enemy3 = battleSettings.transform.Find("Enemy3Dropdown").GetComponent<Dropdown>();
+        enemy4 = battleSettings.transform.Find("Enemy4Dropdown").GetComponent<Dropdown>();
         explanationText = battleSettings.transform.Find("ExplanationText").GetComponent<Text>();
+        //We initialize the settings
+        fullscreen.isOn = (PlayerPrefs.GetInt("FullScreen") == 1);
+        if (PlayerPrefs.GetInt("Resolutiony") == 360) resolution.value = 0;
+        else if (PlayerPrefs.GetInt("Resolutiony") == 480) resolution.value = 1;
+        else if (PlayerPrefs.GetInt("Resolutiony") == 720) resolution.value = 2;
+        else if (PlayerPrefs.GetInt("Resolutiony") == 1080) resolution.value = 3;
+        else if (PlayerPrefs.GetInt("Resolutiony") == 1440) resolution.value = 4;
+        else if (PlayerPrefs.GetInt("Resolutiony") == 2160) resolution.value = 5;
+        confirmTime = -1.0f;
+        //We initialize the battle settings
+        lifeLvl.value = PlayerPrefs.GetInt("PlayerHeartLvl");
+        lightLvl.value = PlayerPrefs.GetInt("PlayerLightLvl");
+        adventurerLvl.value = PlayerPrefs.GetInt("AdventurerLvl") - 1;
+        wizardLvl.value = PlayerPrefs.GetInt("WizardLvl") - 1;
+        swordLvl.value = PlayerPrefs.GetInt("SwordLvl") - 1;
+        shurikenLvl.value = PlayerPrefs.GetInt("ShurikenLvl") - 1;
+        enemy1.value = PlayerPrefs.GetInt("Enemy1");
+        enemy2.value = PlayerPrefs.GetInt("Enemy2");
+        enemy3.value = PlayerPrefs.GetInt("Enemy3");
+        enemy4.value = PlayerPrefs.GetInt("Enemy4");
+        settings.SetActive(false);
+        battleSettings.SetActive(false);
+        confirmResolution.SetActive(false);
     }
 
 
     void Update()
     {
-        
+        if(confirmTime != -1.0f)
+        {
+            confirmTimeNumb.text = (5 - (int)(Time.fixedTime - confirmTime)).ToString();
+            if ((Time.fixedTime - confirmTime) > 5.0f)
+            {
+                Screen.SetResolution(PlayerPrefs.GetInt("Resolutionx"), PlayerPrefs.GetInt("Resolutiony"), PlayerPrefs.GetInt("FullScreen") == 1);
+                confirmResolution.SetActive(false);
+                settings.SetActive(true);
+                fullscreen.isOn = (PlayerPrefs.GetInt("FullScreen") == 1);
+                if (PlayerPrefs.GetInt("Resolutiony") == 360) resolution.value = 0;
+                else if (PlayerPrefs.GetInt("Resolutiony") == 480) resolution.value = 1;
+                else if (PlayerPrefs.GetInt("Resolutiony") == 720) resolution.value = 2;
+                else if (PlayerPrefs.GetInt("Resolutiony") == 1080) resolution.value = 3;
+                else if (PlayerPrefs.GetInt("Resolutiony") == 1440) resolution.value = 4;
+                else if (PlayerPrefs.GetInt("Resolutiony") == 2160) resolution.value = 5;
+                confirmTime = -1.0f;
+                saveResolutionButton.interactable = false;
+            }
+        }
     }
 
     //Function to start the game
@@ -91,20 +161,133 @@ public class MainMenuScript : MonoBehaviour
     //Function to make active the enemy3 and enemy4 dropdowns
     public void ActivateEnemyDropdown()
     {
-        if (Enemy2.value > 0) Enemy3.interactable = true;
-        if (Enemy3.value > 0) Enemy4.interactable = true;
-        if (Enemy2.value == 0)
+        if (enemy2.value > 0) enemy3.interactable = true;
+        if (enemy3.value > 0) enemy4.interactable = true;
+        if (enemy2.value == 0)
         {
-            Enemy3.value = 0;
-            Enemy3.interactable = false;
-            Enemy4.value = 0;
-            Enemy4.interactable = false;
+            enemy3.value = 0;
+            enemy3.interactable = false;
+            enemy4.value = 0;
+            enemy4.interactable = false;
         }
-        if (Enemy3.value == 0)
+        if (enemy3.value == 0)
         {
-            Enemy4.value = 0;
-            Enemy4.interactable = false;
+            enemy4.value = 0;
+            enemy4.interactable = false;
         }
+    }
+
+    //Function to open the settings
+    public void OpenSettings()
+    {
+        mainMenu.SetActive(false);
+        settings.SetActive(true);
+    }
+
+    //Function to close the settings
+    public void CloseSettings()
+    {
+        mainMenu.SetActive(true);
+        settings.SetActive(false);
+        fullscreen.isOn = (PlayerPrefs.GetInt("FullScreen") == 1);
+        if (PlayerPrefs.GetInt("Resolutiony") == 360) resolution.value = 0;
+        else if (PlayerPrefs.GetInt("Resolutiony") == 480) resolution.value = 1;
+        else if (PlayerPrefs.GetInt("Resolutiony") == 720) resolution.value = 2;
+        else if (PlayerPrefs.GetInt("Resolutiony") == 1080) resolution.value = 3;
+        else if (PlayerPrefs.GetInt("Resolutiony") == 1440) resolution.value = 4;
+        else if (PlayerPrefs.GetInt("Resolutiony") == 2160) resolution.value = 5;
+    }
+
+    //Function to make the save resolution button interactable
+    public void ResolutionChanged()
+    {
+        if (fullscreen.isOn != (PlayerPrefs.GetInt("FullScreen") == 1))
+        {
+            saveResolutionButton.interactable = true;
+        }
+        else 
+        {
+            if (PlayerPrefs.GetInt("Resolutiony") == 360 && resolution.value == 0) 
+            {
+                saveResolutionButton.interactable = false;
+            }
+            else if (PlayerPrefs.GetInt("Resolutiony") == 480 && resolution.value == 1)
+            {
+                saveResolutionButton.interactable = false;
+            }
+            else if (PlayerPrefs.GetInt("Resolutiony") == 720 && resolution.value == 2)
+            {
+                saveResolutionButton.interactable = false;
+            }
+            else if (PlayerPrefs.GetInt("Resolutiony") == 1080 && resolution.value == 3)
+            {
+                saveResolutionButton.interactable = false;
+            }
+            else if (PlayerPrefs.GetInt("Resolutiony") == 1440 && resolution.value == 4)
+            {
+                saveResolutionButton.interactable = false;
+            }
+            else if (PlayerPrefs.GetInt("Resolutiony") == 2160 && resolution.value == 5)
+            {
+                saveResolutionButton.interactable = false;
+            }
+            else
+            {
+                saveResolutionButton.interactable = true;
+            }
+        }
+    }
+
+    //Function to save the resolution settings
+    public void SaveResolution()
+    {
+        if (resolution.value == 0) Screen.SetResolution(640,360,fullscreen.isOn);
+        else if (resolution.value == 1) Screen.SetResolution(854, 480, fullscreen.isOn);
+        else if (resolution.value == 2) Screen.SetResolution(1280, 720, fullscreen.isOn);
+        else if (resolution.value == 3) Screen.SetResolution(1920, 1080, fullscreen.isOn);
+        else if (resolution.value == 4) Screen.SetResolution(2560, 1440, fullscreen.isOn);
+        else if (resolution.value == 5) Screen.SetResolution(3840, 2160, fullscreen.isOn);
+        confirmTime = Time.fixedTime;
+        confirmResolution.SetActive(true);
+    }
+    //Function to confirm the resolution settings
+    public void ConfirmResolution()
+    {
+        if (resolution.value == 0)
+        {
+            PlayerPrefs.SetInt("Resolutionx", 640);
+            PlayerPrefs.SetInt("Resolutiony", 360);
+        }
+        else if (resolution.value == 1)
+        {
+            PlayerPrefs.SetInt("Resolutionx", 854);
+            PlayerPrefs.SetInt("Resolutiony", 480);
+        }
+        else if (resolution.value == 2)
+        {
+            PlayerPrefs.SetInt("Resolutionx", 1280);
+            PlayerPrefs.SetInt("Resolutiony", 720);
+        }
+        else if (resolution.value == 3)
+        {
+            PlayerPrefs.SetInt("Resolutionx", 1920);
+            PlayerPrefs.SetInt("Resolutiony", 1080);
+        }
+        else if (resolution.value == 4)
+        {
+            PlayerPrefs.SetInt("Resolutionx", 2560);
+            PlayerPrefs.SetInt("Resolutiony", 1440);
+        }
+        else if (resolution.value == 5)
+        {
+            PlayerPrefs.SetInt("Resolutionx", 3840);
+            PlayerPrefs.SetInt("Resolutiony", 2160);
+        }
+        if (fullscreen.isOn) PlayerPrefs.SetInt("FullScreen", 1);
+        else PlayerPrefs.SetInt("FullScreen", 0);
+        confirmTime = -1.0f;
+        confirmResolution.SetActive(false); 
+        saveResolutionButton.interactable = false;
     }
 
     //Function to change the explanation text
@@ -126,20 +309,20 @@ public class MainMenuScript : MonoBehaviour
     //Function to close the battle settings
     public void CloseBattleSettings()
     {
-        PlayerPrefs.SetInt("PlayerHeartLvl", LifeLvl.value);
-        PlayerPrefs.SetInt("PlayerLightLvl", LightLvl.value);
+        PlayerPrefs.SetInt("PlayerHeartLvl", lifeLvl.value);
+        PlayerPrefs.SetInt("PlayerLightLvl", lightLvl.value);
         PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
-        PlayerPrefs.SetInt("PlayerCurrentHealth", 10 + LifeLvl.value*5);
-        PlayerPrefs.SetInt("AdventurerLvl", AdventurerLvl.value + 1); 
-        PlayerPrefs.SetInt("AdventurerCurrentHealth", 10 + (AdventurerLvl.value + 1) * 10);
-        PlayerPrefs.SetInt("WizardLvl", WizardLvl.value + 1); 
-        PlayerPrefs.SetInt("WizardCurrentHealth", 15 + (WizardLvl.value + 1) * 10);
-        PlayerPrefs.SetInt("SwordLvl", SwordLvl.value + 1); 
-        PlayerPrefs.SetInt("ShurikenLvl", ShurikenLvl.value + 1); 
-        PlayerPrefs.SetInt("Enemy1", Enemy1.value);
-        PlayerPrefs.SetInt("Enemy2", Enemy2.value);
-        PlayerPrefs.SetInt("Enemy3", Enemy3.value);
-        PlayerPrefs.SetInt("Enemy4", Enemy4.value);
+        PlayerPrefs.SetInt("PlayerCurrentHealth", 10 + lifeLvl.value*5);
+        PlayerPrefs.SetInt("AdventurerLvl", adventurerLvl.value + 1); 
+        PlayerPrefs.SetInt("AdventurerCurrentHealth", 10 + (adventurerLvl.value + 1) * 10);
+        PlayerPrefs.SetInt("WizardLvl", wizardLvl.value + 1); 
+        PlayerPrefs.SetInt("WizardCurrentHealth", 15 + (wizardLvl.value + 1) * 10);
+        PlayerPrefs.SetInt("SwordLvl", swordLvl.value + 1); 
+        PlayerPrefs.SetInt("ShurikenLvl", shurikenLvl.value + 1); 
+        PlayerPrefs.SetInt("Enemy1", enemy1.value);
+        PlayerPrefs.SetInt("Enemy2", enemy2.value);
+        PlayerPrefs.SetInt("Enemy3", enemy3.value);
+        PlayerPrefs.SetInt("Enemy4", enemy4.value);
         mainMenu.SetActive(true);
         battleSettings.SetActive(false);
     }
