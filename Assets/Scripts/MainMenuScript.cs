@@ -12,6 +12,7 @@ public class MainMenuScript : MonoBehaviour
     private GameObject settings;
     private GameObject battleSettings;
     private GameObject confirmResolution;
+    private GameObject howToPlay;
     private Dropdown resolution;
     private Toggle fullscreen; 
     private Dropdown lifeLvl;
@@ -28,6 +29,8 @@ public class MainMenuScript : MonoBehaviour
     private float confirmTime;
     private Text confirmTimeNumb;
     private Button saveResolutionButton;
+    //Int to know the actual explanation
+    private int explanation;
 
 
     void Start()
@@ -36,7 +39,6 @@ public class MainMenuScript : MonoBehaviour
         //We initialize the playerprefs
         if (!PlayerPrefs.HasKey("First"))
         {
-            Debug.Log("buenas");
             PlayerPrefs.SetInt("Light Sword", 1);
             PlayerPrefs.SetInt("Multistrike Sword", 1);
             PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
@@ -61,9 +63,9 @@ public class MainMenuScript : MonoBehaviour
             PlayerPrefs.SetInt("king", 0);
             PlayerPrefs.SetInt("lvlXP", 90);
             PlayerPrefs.SetInt("Enemy1", 0);
-            PlayerPrefs.SetInt("Enemy2", -1);
-            PlayerPrefs.SetInt("Enemy3", -1);
-            PlayerPrefs.SetInt("Enemy4", -1);
+            PlayerPrefs.SetInt("Enemy2", 0);
+            PlayerPrefs.SetInt("Enemy3", 0);
+            PlayerPrefs.SetInt("Enemy4", 0);
             PlayerPrefs.SetFloat("Master", 1.0f);
             PlayerPrefs.SetFloat("Music", 1.0f);
             PlayerPrefs.SetFloat("Effects", 1.0f);
@@ -81,6 +83,7 @@ public class MainMenuScript : MonoBehaviour
         settings = transform.GetChild(2).gameObject;
         saveResolutionButton = settings.transform.Find("SaveResolution").GetComponent<Button>();
         battleSettings = transform.GetChild(3).gameObject;
+        howToPlay = transform.GetChild(4).gameObject;
         confirmResolution = settings.transform.Find("ConfirmResolutionChange").gameObject;
         confirmTimeNumb = confirmResolution.transform.Find("TimeNumb").GetComponent<Text>();
         fullscreen = settings.transform.Find("FullScreenToggle").GetComponent<Toggle>();
@@ -119,6 +122,8 @@ public class MainMenuScript : MonoBehaviour
         settings.SetActive(false);
         battleSettings.SetActive(false);
         confirmResolution.SetActive(false);
+        howToPlay.SetActive(false);
+        explanation = 1;
     }
 
 
@@ -326,6 +331,46 @@ public class MainMenuScript : MonoBehaviour
         mainMenu.SetActive(true);
         battleSettings.SetActive(false);
     }
+
+    //Function to open the how to play tutorial
+    public void OpenHowToPlay()
+    {
+        mainMenu.SetActive(false);
+        howToPlay.SetActive(true);
+    }
+
+    //Function to close the how to play tutorial
+    public void CloseHowToPlay()
+    {
+        howToPlay.transform.GetChild(1 + explanation).gameObject.SetActive(false);
+        explanation = 1;
+        howToPlay.transform.GetChild(1 + explanation).gameObject.SetActive(true);
+        howToPlay.transform.GetChild(8).GetComponent<Button>().interactable = false;
+        howToPlay.transform.GetChild(9).GetComponent<Button>().interactable = true;
+        mainMenu.SetActive(true);
+        howToPlay.SetActive(false);
+    }
+
+    public void NextExplanation()
+    {
+        howToPlay.transform.GetChild(1+explanation).gameObject.SetActive(false);
+        explanation += 1;
+        howToPlay.transform.GetChild(1 + explanation).gameObject.SetActive(true);
+        if (explanation == 6) howToPlay.transform.GetChild(9).GetComponent<Button>().interactable = false;
+        else howToPlay.transform.GetChild(9).GetComponent<Button>().interactable = true;
+        howToPlay.transform.GetChild(8).GetComponent<Button>().interactable = true;
+    }
+
+    public void PrevExplanation()
+    {
+        howToPlay.transform.GetChild(1 + explanation).gameObject.SetActive(false);
+        explanation -= 1;
+        howToPlay.transform.GetChild(1 + explanation).gameObject.SetActive(true);
+        if (explanation == 1) howToPlay.transform.GetChild(8).GetComponent<Button>().interactable = false;
+        else howToPlay.transform.GetChild(8).GetComponent<Button>().interactable = true;
+        howToPlay.transform.GetChild(9).GetComponent<Button>().interactable = true;
+    }
+
 
     //Function to close the game
     public void CloseGame()

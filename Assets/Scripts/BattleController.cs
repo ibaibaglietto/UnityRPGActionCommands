@@ -4,6 +4,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BattleController : MonoBehaviour
 {
@@ -602,6 +603,7 @@ public class BattleController : MonoBehaviour
 
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Escape)) SceneManager.LoadScene(0);
         //When its player teams turn
         if (playerTeamTurn)
         {
@@ -4252,8 +4254,7 @@ public class BattleController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Se termino xd");
-                Application.Quit();
+                SceneManager.LoadScene(0);
             }
         }
     }
