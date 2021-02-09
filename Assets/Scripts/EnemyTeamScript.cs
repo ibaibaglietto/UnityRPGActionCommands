@@ -52,6 +52,8 @@ public class EnemyTeamScript : MonoBehaviour
     private bool groundAttack;
     //The audio source of the enemy
     private AudioSource enemySource;
+    //A boolean to know if the die animation has finished
+    private bool dieAnimationFinished;
     //The main audios
     [SerializeField] private AudioClip attackAudio;
     [SerializeField] private AudioClip hitAudio;
@@ -77,6 +79,7 @@ public class EnemyTeamScript : MonoBehaviour
         alive = true;
         idle = true;
         asleep = 0;
+        dieAnimationFinished = false;
         groundAttack = false;
         attackTeam = new Transform[1];
         if (enemyType == 0)
@@ -215,7 +218,7 @@ public class EnemyTeamScript : MonoBehaviour
                 dust = Instantiate(dustObject, new Vector3(transform.position.x + 0.5f, -1.57f, -0.3f), Quaternion.identity);
             }
         }
-        if (!alive && grounded)
+        if (!alive && grounded && dieAnimationFinished)
         {
             if (enemyType == 0)
             {
@@ -952,6 +955,12 @@ public class EnemyTeamScript : MonoBehaviour
         idle = true;
         alive = false;
         GiveXP();
+    }
+
+    //A function to save that the die animation has finished
+    public void EnemyDieAnimationFinished()
+    {
+        dieAnimationFinished = true;
     }
 
     //A function to give XP

@@ -13,6 +13,9 @@ public class MainMenuScript : MonoBehaviour
     private GameObject battleSettings;
     private GameObject confirmResolution;
     private GameObject howToPlay;
+    private Slider masterSlider;
+    private Slider musicSlider;
+    private Slider effectsSlider;
     private Dropdown resolution;
     private Toggle fullscreen; 
     private Dropdown lifeLvl;
@@ -29,6 +32,7 @@ public class MainMenuScript : MonoBehaviour
     private float confirmTime;
     private Text confirmTimeNumb;
     private Button saveResolutionButton;
+    private AudioSource effectsSource;
     //Int to know the actual explanation
     private int explanation;
 
@@ -58,9 +62,6 @@ public class MainMenuScript : MonoBehaviour
             PlayerPrefs.SetInt("SwordLvl", 1); //3
             PlayerPrefs.SetInt("ShurikenLvl", 1); //3
             PlayerPrefs.SetInt("language", 0);
-            PlayerPrefs.SetInt("bandit", 0);
-            PlayerPrefs.SetInt("wizard", 0);
-            PlayerPrefs.SetInt("king", 0);
             PlayerPrefs.SetInt("lvlXP", 90);
             PlayerPrefs.SetInt("Enemy1", 0);
             PlayerPrefs.SetInt("Enemy2", 0);
@@ -75,6 +76,9 @@ public class MainMenuScript : MonoBehaviour
             PlayerPrefs.SetInt("Resolutiony", 720);
             PlayerPrefs.SetInt("First", 1);
         }
+        PlayerPrefs.SetInt("bandit", 0);
+        PlayerPrefs.SetInt("wizard", 0);
+        PlayerPrefs.SetInt("king", 0);
         mixer.SetFloat("Master", Mathf.Log10(PlayerPrefs.GetFloat("Master")) * 20);
         mixer.SetFloat("Music", Mathf.Log10(PlayerPrefs.GetFloat("Music")) * 20);
         mixer.SetFloat("Effects", Mathf.Log10(PlayerPrefs.GetFloat("Effects")) * 20);
@@ -86,6 +90,9 @@ public class MainMenuScript : MonoBehaviour
         howToPlay = transform.GetChild(4).gameObject;
         confirmResolution = settings.transform.Find("ConfirmResolutionChange").gameObject;
         confirmTimeNumb = confirmResolution.transform.Find("TimeNumb").GetComponent<Text>();
+        masterSlider = settings.transform.Find("MainVolumeSlider").GetComponent<Slider>();
+        musicSlider = settings.transform.Find("MusicVolumeSlider").GetComponent<Slider>();
+        effectsSlider = settings.transform.Find("EffectsVolumeSlider").GetComponent<Slider>();
         fullscreen = settings.transform.Find("FullScreenToggle").GetComponent<Toggle>();
         resolution = settings.transform.Find("ResolutionDropdown").GetComponent<Dropdown>();
         lifeLvl = battleSettings.transform.Find("LifeLvlDropdown").GetComponent<Dropdown>();
@@ -99,7 +106,11 @@ public class MainMenuScript : MonoBehaviour
         enemy3 = battleSettings.transform.Find("Enemy3Dropdown").GetComponent<Dropdown>();
         enemy4 = battleSettings.transform.Find("Enemy4Dropdown").GetComponent<Dropdown>();
         explanationText = battleSettings.transform.Find("ExplanationText").GetComponent<Text>();
+        effectsSource = GameObject.Find("EffectsSource").GetComponent<AudioSource>();
         //We initialize the settings
+        masterSlider.value = PlayerPrefs.GetFloat("Master");
+        musicSlider.value = PlayerPrefs.GetFloat("Music");
+        effectsSlider.value = PlayerPrefs.GetFloat("Effects");
         fullscreen.isOn = (PlayerPrefs.GetInt("FullScreen") == 1);
         if (PlayerPrefs.GetInt("Resolutiony") == 360) resolution.value = 0;
         else if (PlayerPrefs.GetInt("Resolutiony") == 480) resolution.value = 1;
@@ -135,8 +146,6 @@ public class MainMenuScript : MonoBehaviour
             if ((Time.fixedTime - confirmTime) > 5.0f)
             {
                 Screen.SetResolution(PlayerPrefs.GetInt("Resolutionx"), PlayerPrefs.GetInt("Resolutiony"), PlayerPrefs.GetInt("FullScreen") == 1);
-                confirmResolution.SetActive(false);
-                settings.SetActive(true);
                 fullscreen.isOn = (PlayerPrefs.GetInt("FullScreen") == 1);
                 if (PlayerPrefs.GetInt("Resolutiony") == 360) resolution.value = 0;
                 else if (PlayerPrefs.GetInt("Resolutiony") == 480) resolution.value = 1;
@@ -144,6 +153,8 @@ public class MainMenuScript : MonoBehaviour
                 else if (PlayerPrefs.GetInt("Resolutiony") == 1080) resolution.value = 3;
                 else if (PlayerPrefs.GetInt("Resolutiony") == 1440) resolution.value = 4;
                 else if (PlayerPrefs.GetInt("Resolutiony") == 2160) resolution.value = 5;
+                confirmResolution.SetActive(false);
+                settings.SetActive(true);
                 confirmTime = -1.0f;
                 saveResolutionButton.interactable = false;
             }
@@ -153,19 +164,28 @@ public class MainMenuScript : MonoBehaviour
     //Function to start the game
     public void StartGame()
     {
+        effectsSource.Play();
         SceneManager.LoadScene(1);
     }
 
     //Function to open the battle settings
     public void OpenBattleSettings()
     {
+        effectsSource.Play();
         mainMenu.SetActive(false);
         battleSettings.SetActive(true);
+    }
+
+    //Function to make the effect play
+    public void UIEffect()
+    {
+        if(!mainMenu.activeSelf) effectsSource.Play();
     }
 
     //Function to make active the enemy3 and enemy4 dropdowns
     public void ActivateEnemyDropdown()
     {
+        if (!mainMenu.activeSelf) effectsSource.Play();
         if (enemy2.value > 0) enemy3.interactable = true;
         if (enemy3.value > 0) enemy4.interactable = true;
         if (enemy2.value == 0)
@@ -185,6 +205,7 @@ public class MainMenuScript : MonoBehaviour
     //Function to open the settings
     public void OpenSettings()
     {
+        effectsSource.Play();
         mainMenu.SetActive(false);
         settings.SetActive(true);
     }
@@ -192,6 +213,7 @@ public class MainMenuScript : MonoBehaviour
     //Function to close the settings
     public void CloseSettings()
     {
+        effectsSource.Play();
         mainMenu.SetActive(true);
         settings.SetActive(false);
         fullscreen.isOn = (PlayerPrefs.GetInt("FullScreen") == 1);
@@ -206,6 +228,7 @@ public class MainMenuScript : MonoBehaviour
     //Function to make the save resolution button interactable
     public void ResolutionChanged()
     {
+        if (!mainMenu.activeSelf && !confirmResolution.activeSelf) effectsSource.Play();
         if (fullscreen.isOn != (PlayerPrefs.GetInt("FullScreen") == 1))
         {
             saveResolutionButton.interactable = true;
@@ -246,6 +269,7 @@ public class MainMenuScript : MonoBehaviour
     //Function to save the resolution settings
     public void SaveResolution()
     {
+        effectsSource.Play();
         if (resolution.value == 0) Screen.SetResolution(640,360,fullscreen.isOn);
         else if (resolution.value == 1) Screen.SetResolution(854, 480, fullscreen.isOn);
         else if (resolution.value == 2) Screen.SetResolution(1280, 720, fullscreen.isOn);
@@ -258,6 +282,7 @@ public class MainMenuScript : MonoBehaviour
     //Function to confirm the resolution settings
     public void ConfirmResolution()
     {
+        effectsSource.Play();
         if (resolution.value == 0)
         {
             PlayerPrefs.SetInt("Resolutionx", 640);
@@ -314,6 +339,7 @@ public class MainMenuScript : MonoBehaviour
     //Function to close the battle settings
     public void CloseBattleSettings()
     {
+        effectsSource.Play();
         PlayerPrefs.SetInt("PlayerHeartLvl", lifeLvl.value);
         PlayerPrefs.SetInt("PlayerLightLvl", lightLvl.value);
         PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
@@ -335,6 +361,7 @@ public class MainMenuScript : MonoBehaviour
     //Function to open the how to play tutorial
     public void OpenHowToPlay()
     {
+        effectsSource.Play();
         mainMenu.SetActive(false);
         howToPlay.SetActive(true);
     }
@@ -342,6 +369,7 @@ public class MainMenuScript : MonoBehaviour
     //Function to close the how to play tutorial
     public void CloseHowToPlay()
     {
+        effectsSource.Play();
         howToPlay.transform.GetChild(1 + explanation).gameObject.SetActive(false);
         explanation = 1;
         howToPlay.transform.GetChild(1 + explanation).gameObject.SetActive(true);
@@ -353,6 +381,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void NextExplanation()
     {
+        effectsSource.Play();
         howToPlay.transform.GetChild(1+explanation).gameObject.SetActive(false);
         explanation += 1;
         howToPlay.transform.GetChild(1 + explanation).gameObject.SetActive(true);
@@ -363,6 +392,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void PrevExplanation()
     {
+        effectsSource.Play();
         howToPlay.transform.GetChild(1 + explanation).gameObject.SetActive(false);
         explanation -= 1;
         howToPlay.transform.GetChild(1 + explanation).gameObject.SetActive(true);
@@ -375,6 +405,7 @@ public class MainMenuScript : MonoBehaviour
     //Function to close the game
     public void CloseGame()
     {
+        effectsSource.Play();
         Debug.Log("Closing...");
         Application.Quit();
     }

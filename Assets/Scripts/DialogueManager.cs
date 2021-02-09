@@ -15,7 +15,7 @@ public class DialogueManager : MonoBehaviour
     //The player
     private GameObject battleController;
     //The speak sound source
-    //private AudioSource speak;
+    private AudioSource speak;
     //The sentences
     private Queue<string> sentences;
 
@@ -31,7 +31,7 @@ public class DialogueManager : MonoBehaviour
         next.GetComponent<Image>().color = new Color(next.GetComponent<Image>().color.r, next.GetComponent<Image>().color.g, next.GetComponent<Image>().color.b, 0.0f);
         nameText.enabled = false;
         dialogueText.enabled = false;
-        //speak = GameObject.Find("ConversationSource").GetComponent<AudioSource>();
+        speak = GameObject.Find("SpeakSource").GetComponent<AudioSource>();
     }
 
     //Function to start the dialogue
@@ -95,7 +95,7 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray())
         {
-            //speak.Play();
+            speak.Play();
             dialogueText.text += letter;
             yield return new WaitForFixedUpdate();
         }
