@@ -382,8 +382,9 @@ public class BattleController : MonoBehaviour
     [SerializeField] private AudioClip lightClip;
     [SerializeField] private AudioClip recoverClip;
 
-
-    //lo de tapar teclas del mago
+    //The texts we are going to translate
+    private Text sa;
+    
 
     private void Awake()
     {
