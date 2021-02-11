@@ -40,28 +40,33 @@ public class DialogueManager : MonoBehaviour
         //We put the talking state
         battleController.GetComponent<BattleController>().SetTalking(true);
         //We open the dialogue box
-        animator.SetBool("Open", true);
-        //Set the name of the speaker
-        nameText.text = dialogue.name;
+        animator.SetBool("Open", true);       
+        
         //Clear the previous sentences
         sentences.Clear();
         //Check the language and enqueue the sentences
-        if (PlayerPrefs.GetInt("language") == 0)
+        if (PlayerPrefs.GetInt("Language") == 1)
         {
+            //Set the name of the speaker
+            nameText.text = dialogue.nameEnglish;
             foreach (string sentence in dialogue.sentencesEnglish)
             {
                 sentences.Enqueue(sentence);
             }
         }
-        else if (PlayerPrefs.GetInt("language") == 1)
+        else if (PlayerPrefs.GetInt("Language") == 2)
         {
+            //Set the name of the speaker
+            nameText.text = dialogue.nameSpanish;
             foreach (string sentence in dialogue.sentencesSpanish)
             {
                 sentences.Enqueue(sentence);
             }
         }
-        else if (PlayerPrefs.GetInt("language") == 2)
+        else if (PlayerPrefs.GetInt("Language") == 3)
         {
+            //Set the name of the speaker
+            nameText.text = dialogue.nameBasque;
             foreach (string sentence in dialogue.sentencesBasque)
             {
                 sentences.Enqueue(sentence);
