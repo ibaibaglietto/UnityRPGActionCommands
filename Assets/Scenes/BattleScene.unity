@@ -2137,7 +2137,7 @@ GameObject:
   - component: {fileID: 223688714}
   - component: {fileID: 223688713}
   m_Layer: 5
-  m_Name: Text
+  m_Name: LvlUpText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

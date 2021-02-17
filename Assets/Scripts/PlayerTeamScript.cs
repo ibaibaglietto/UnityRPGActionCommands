@@ -145,6 +145,17 @@ public class PlayerTeamScript : MonoBehaviour
     [SerializeField] private AudioClip wizardTakeDamageAudio;
     [SerializeField] private AudioClip wizardDefendDamageAudio;
     [SerializeField] private AudioClip wizardDieAudio;
+
+    //The text of the UI that we are going to translate
+    private Text playerSwordText;
+    private Text playerShurikenText;
+    private Text playerItemsText;
+    private Text playerSpecialText;
+    private Text playerOtherText;
+    private Text companionAttackText;
+    private Text companionItemsText;
+    private Text companionOtherText;
+
     void Awake()
     {
         //We find the gameobjects and initialize some variables
@@ -178,6 +189,73 @@ public class PlayerTeamScript : MonoBehaviour
         companionIn = false;
         repeatingDamage = 0;
         source = transform.Find("partyAudio").GetComponent<AudioSource>();
+        //We find the texts
+        if(playerTeamType == 0)
+        {
+            playerSwordText = GameObject.Find("SwordActionImageText").GetComponent<Text>();
+            playerShurikenText = GameObject.Find("ShurikenActionImageText").GetComponent<Text>();
+            playerItemsText = GameObject.Find("ConsumablesActionImageText").GetComponent<Text>();
+            playerSpecialText = GameObject.Find("SpecialActionImageText").GetComponent<Text>();
+            playerOtherText = GameObject.Find("OtherActionImageText").GetComponent<Text>();
+        }
+        else
+        {
+            companionAttackText = GameObject.Find("AttackActionImageText").GetComponent<Text>();
+            companionItemsText = GameObject.Find("ConsumablesActionImageText").GetComponent<Text>();
+            companionOtherText = GameObject.Find("OtherActionImageText").GetComponent<Text>();
+        }        
+        //We translate the texts
+        if (PlayerPrefs.GetInt("Language") == 1)
+        {
+            if (playerTeamType == 0)
+            {
+                playerSwordText.text = "Sword";
+                playerShurikenText.text = "Shuriken";
+                playerItemsText.text = "Items";
+                playerSpecialText.text = "Special";
+                playerOtherText.text = "Other";
+            }
+            else
+            {
+                companionAttackText.text = "Attack";
+                companionItemsText.text = "Items";
+                companionOtherText.text = "Other";
+            }
+        }
+        else if (PlayerPrefs.GetInt("Language") == 2)
+        {
+            if (playerTeamType == 0)
+            {
+                playerSwordText.text = "Espada";
+                playerShurikenText.text = "Shuriken";
+                playerItemsText.text = "Objetos";
+                playerSpecialText.text = "Especial";
+                playerOtherText.text = "Otros";
+            }
+            else
+            {
+                companionAttackText.text = "Atacar";
+                companionItemsText.text = "Objetos";
+                companionOtherText.text = "Otros";
+            }
+        }
+        else
+        {
+            if (playerTeamType == 0)
+            {
+                playerSwordText.text = "Ezpata";
+                playerShurikenText.text = "Shuriken";
+                playerItemsText.text = "Objektuak";
+                playerSpecialText.text = "Berezia";
+                playerOtherText.text = "Bestelakoak";
+            }
+            else
+            {
+                companionAttackText.text = "Eraso";
+                companionItemsText.text = "Objektuak";
+                companionOtherText.text = "Bestelakoak";
+            }
+        }
     }
     private void Start()
     {
