@@ -13,6 +13,8 @@ public class MainMenuScript : MonoBehaviour
     private GameObject battleSettings;
     private GameObject confirmResolution;
     private GameObject howToPlay;
+    private GameObject chooseLanguage;
+    private GameObject credits;
     private Slider masterSlider;
     private Slider musicSlider;
     private Slider effectsSlider;
@@ -33,6 +35,7 @@ public class MainMenuScript : MonoBehaviour
     private Button saveResolutionButton;
     private AudioSource effectsSource;
     private Dropdown language;
+    private Dropdown chooseLanguageDropdown;
     //Int to know the actual explanation
     private int explanation;
     //The text we are going to change depending on the language
@@ -41,6 +44,7 @@ public class MainMenuScript : MonoBehaviour
     private Text mainMenuBattleSetting;
     private Text mainMenuHowToPlay;
     private Text mainMenuExit;
+    private Text mainMenuCredits;
     private Text settingsTitle;
     private Text settingsMasterVolume;
     private Text settingsMusicVolume;
@@ -78,62 +82,24 @@ public class MainMenuScript : MonoBehaviour
     private Text howToPlayPrev;
     private Text howToPlayNext;
     private Text howToPlayClose;
+    private Text chooseLanguageText;
+    private Text chooseLanguageConfirm;
+    private Text creditsTitle;
+    private Text creditsReturn;
 
 
 
 
     void Start()
-    {
-        PlayerPrefs.DeleteAll();
-        //We initialize the playerprefs
-        if (!PlayerPrefs.HasKey("First"))
-        {
-            PlayerPrefs.SetInt("Light Sword", 1);
-            PlayerPrefs.SetInt("Multistrike Sword", 1);
-            PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
-            PlayerPrefs.SetInt("Light Shuriken", 1);
-            PlayerPrefs.SetInt("Fire Shuriken", 1);
-            PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
-            PlayerPrefs.SetInt("Souls", 6);
-            PlayerPrefs.SetInt("PlayerHeartLvl", 0);
-            PlayerPrefs.SetInt("PlayerLightLvl", 0);
-            PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
-            PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
-            PlayerPrefs.SetInt("PlayerCurrentHealth", 10);
-            PlayerPrefs.SetInt("AdventurerLvl", 1); //3
-            PlayerPrefs.SetInt("AdventurerCurrentHealth", 20);
-            PlayerPrefs.SetInt("WizardLvl", 1); //3
-            PlayerPrefs.SetInt("WizardCurrentHealth", 25);
-            PlayerPrefs.SetInt("SwordLvl", 1); //3
-            PlayerPrefs.SetInt("ShurikenLvl", 1); //3
-            PlayerPrefs.SetInt("language", 0);
-            PlayerPrefs.SetInt("lvlXP", 90);
-            PlayerPrefs.SetInt("Enemy1", 0);
-            PlayerPrefs.SetInt("Enemy2", 0);
-            PlayerPrefs.SetInt("Enemy3", 0);
-            PlayerPrefs.SetInt("Enemy4", 0);
-            PlayerPrefs.SetFloat("Master", 1.0f);
-            PlayerPrefs.SetFloat("Music", 1.0f);
-            PlayerPrefs.SetFloat("Effects", 1.0f);
-            PlayerPrefs.SetInt("UnlockedCompanions", 2);
-            PlayerPrefs.SetInt("FullScreen", 1);
-            PlayerPrefs.SetInt("Resolutionx", 1280);
-            PlayerPrefs.SetInt("Resolutiony", 720);
-            PlayerPrefs.SetInt("Language", 1);//1 -> english, 2 -> español, 3 -> euskera
-            PlayerPrefs.SetInt("First", 1);
-        }
-        PlayerPrefs.SetInt("bandit", 0);
-        PlayerPrefs.SetInt("wizard", 0);
-        PlayerPrefs.SetInt("king", 0);
-        mixer.SetFloat("Master", Mathf.Log10(PlayerPrefs.GetFloat("Master")) * 20);
-        mixer.SetFloat("Music", Mathf.Log10(PlayerPrefs.GetFloat("Music")) * 20);
-        mixer.SetFloat("Effects", Mathf.Log10(PlayerPrefs.GetFloat("Effects")) * 20);
+    {        
         //We find the gameobjects
         mainMenu = transform.GetChild(1).gameObject;
         settings = transform.GetChild(2).gameObject;
         saveResolutionButton = settings.transform.Find("SaveResolution").GetComponent<Button>();
         battleSettings = transform.GetChild(3).gameObject;
         howToPlay = transform.GetChild(4).gameObject;
+        chooseLanguage = transform.GetChild(5).gameObject;
+        credits = transform.GetChild(6).gameObject;
         confirmResolution = settings.transform.Find("ConfirmResolutionChange").gameObject;
         confirmTimeNumb = confirmResolution.transform.Find("TimeNumb").GetComponent<Text>();
         masterSlider = settings.transform.Find("MainVolumeSlider").GetComponent<Slider>();
@@ -152,12 +118,14 @@ public class MainMenuScript : MonoBehaviour
         enemy2 = battleSettings.transform.Find("Enemy2Dropdown").GetComponent<Dropdown>();
         enemy3 = battleSettings.transform.Find("Enemy3Dropdown").GetComponent<Dropdown>();
         enemy4 = battleSettings.transform.Find("Enemy4Dropdown").GetComponent<Dropdown>();
+        chooseLanguageDropdown = chooseLanguage.transform.GetChild(1).GetComponent<Dropdown>();
 
         mainMenuStart = mainMenu.transform.GetChild(1).GetChild(0).GetComponent<Text>();
         mainMenuSettings = mainMenu.transform.GetChild(2).GetChild(0).GetComponent<Text>();
         mainMenuBattleSetting = mainMenu.transform.GetChild(3).GetChild(0).GetComponent<Text>();
         mainMenuHowToPlay = mainMenu.transform.GetChild(4).GetChild(0).GetComponent<Text>();
         mainMenuExit = mainMenu.transform.GetChild(5).GetChild(0).GetComponent<Text>();
+        mainMenuCredits = mainMenu.transform.GetChild(6).GetChild(0).GetComponent<Text>();
         settingsTitle = settings.transform.GetChild(0).GetChild(0).GetComponent<Text>();
         settingsMasterVolume = settings.transform.Find("MainVolumeText").GetComponent<Text>();
         settingsMusicVolume = settings.transform.Find("MusicVolumeText").GetComponent<Text>();
@@ -195,14 +163,65 @@ public class MainMenuScript : MonoBehaviour
         howToPlayPrev = howToPlay.transform.GetChild(8).GetChild(0).GetComponent<Text>();
         howToPlayNext = howToPlay.transform.GetChild(9).GetChild(0).GetComponent<Text>();
         howToPlayClose = howToPlay.transform.GetChild(10).GetChild(0).GetComponent<Text>();
+        chooseLanguageText = chooseLanguage.transform.GetChild(0).GetComponent<Text>();
+        chooseLanguageConfirm = chooseLanguage.transform.GetChild(2).GetChild(0).GetComponent<Text>();
+        creditsTitle = credits.transform.GetChild(0).GetChild(0).GetComponent<Text>();
+        creditsReturn = credits.transform.GetChild(2).GetChild(0).GetComponent<Text>();
+        //PlayerPrefs.DeleteAll();
+        //We initialize the playerprefs
+        if (!PlayerPrefs.HasKey("First"))
+        {
+            PlayerPrefs.SetInt("Light Sword", 1);
+            PlayerPrefs.SetInt("Multistrike Sword", 1);
+            PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
+            PlayerPrefs.SetInt("Light Shuriken", 1);
+            PlayerPrefs.SetInt("Fire Shuriken", 1);
+            PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
+            PlayerPrefs.SetInt("Souls", 6);
+            PlayerPrefs.SetInt("PlayerHeartLvl", 0);
+            PlayerPrefs.SetInt("PlayerLightLvl", 0);
+            PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
+            PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
+            PlayerPrefs.SetInt("PlayerCurrentHealth", 10);
+            PlayerPrefs.SetInt("AdventurerLvl", 1); //3
+            PlayerPrefs.SetInt("AdventurerCurrentHealth", 20);
+            PlayerPrefs.SetInt("WizardLvl", 1); //3
+            PlayerPrefs.SetInt("WizardCurrentHealth", 25);
+            PlayerPrefs.SetInt("SwordLvl", 1); //3
+            PlayerPrefs.SetInt("ShurikenLvl", 1); //3
+            PlayerPrefs.SetInt("language", 0);
+            PlayerPrefs.SetInt("lvlXP", 90);
+            PlayerPrefs.SetInt("Enemy1", 0);
+            PlayerPrefs.SetInt("Enemy2", 0);
+            PlayerPrefs.SetInt("Enemy3", 0);
+            PlayerPrefs.SetInt("Enemy4", 0);
+            PlayerPrefs.SetFloat("Master", 1.0f);
+            PlayerPrefs.SetFloat("Music", 1.0f);
+            PlayerPrefs.SetFloat("Effects", 1.0f);
+            PlayerPrefs.SetInt("UnlockedCompanions", 2);
+            PlayerPrefs.SetInt("FullScreen", 1);
+            PlayerPrefs.SetInt("Resolutionx", 1280);
+            PlayerPrefs.SetInt("Resolutiony", 720);
+            PlayerPrefs.SetInt("Language", 1);//1 -> english, 2 -> español, 3 -> euskera
+            PlayerPrefs.SetInt("First", 1);
+        }
+        else chooseLanguage.SetActive(false);
+        PlayerPrefs.SetInt("bandit", 0);
+        PlayerPrefs.SetInt("wizard", 0);
+        PlayerPrefs.SetInt("king", 0); 
+        mixer.SetFloat("Master", Mathf.Log10(PlayerPrefs.GetFloat("Master")) * 20);
+        mixer.SetFloat("Music", Mathf.Log10(PlayerPrefs.GetFloat("Music")) * 20);
+        mixer.SetFloat("Effects", Mathf.Log10(PlayerPrefs.GetFloat("Effects")) * 20);
+
         //We change the text depending on the selected language
-        if(PlayerPrefs.GetInt("Language") == 1)
+        if (PlayerPrefs.GetInt("Language") == 1)
         {
             mainMenuStart.text = "Play";
             mainMenuSettings.text = "Settings";
             mainMenuBattleSetting.text = "Battle settings";
             mainMenuHowToPlay.text = "How to play";
             mainMenuExit.text = "Exit";
+            mainMenuCredits.text = "Credits";
             settingsTitle.text = "Settings";
             settingsMasterVolume.text = "Master volume:";
             settingsMusicVolume.text = "Music volume:";
@@ -259,6 +278,10 @@ public class MainMenuScript : MonoBehaviour
             howToPlayPrev.text = "Prev";
             howToPlayNext.text = "Next";
             howToPlayClose.text = "Close";
+            chooseLanguageText.text = "Choose the language.\n You can change it whenever you like on the settings.";
+            chooseLanguageConfirm.text = "Confirm";
+            creditsTitle.text = "Credits";
+            creditsReturn.text = "Return";
         }
         else if(PlayerPrefs.GetInt("Language") == 2)
         {
@@ -267,6 +290,7 @@ public class MainMenuScript : MonoBehaviour
             mainMenuBattleSetting.text = "Ajustes de combate";
             mainMenuHowToPlay.text = "Cómo jugar";
             mainMenuExit.text = "Salir";
+            mainMenuCredits.text = "Créditos";
             settingsTitle.text = "Ajustes";
             settingsMasterVolume.text = "Volumen maestro:";
             settingsMusicVolume.text = "Volumen de la música:";
@@ -323,6 +347,10 @@ public class MainMenuScript : MonoBehaviour
             howToPlayPrev.text = "Prev";
             howToPlayNext.text = "Sig";
             howToPlayClose.text = "Cerrar ";
+            chooseLanguageText.text = "Selecciona el idioma.\n Puedes cambiarlo cuando quieras en los ajustes.";
+            chooseLanguageConfirm.text = "Confirmar";
+            creditsTitle.text = "Créditos";
+            creditsReturn.text = "Volver";
         }
         else
         {
@@ -331,6 +359,7 @@ public class MainMenuScript : MonoBehaviour
             mainMenuBattleSetting.text = "Borroka ezarpenak";
             mainMenuHowToPlay.text = "Nola jolastu";
             mainMenuExit.text = "Irten";
+            mainMenuCredits.text = "Kredituak";
             settingsTitle.text = "Ezarpenak";
             settingsMasterVolume.text = "Bolumen nagusia:";
             settingsMusicVolume.text = "Musikaren bolumena:";
@@ -387,6 +416,10 @@ public class MainMenuScript : MonoBehaviour
             howToPlayPrev.text = "Aur";
             howToPlayNext.text = "Hur";
             howToPlayClose.text = "Itxi";
+            chooseLanguageText.text = "Hizkuntza erabaki.\n Nahi duzunean alda dezakezu ezarpenetan.";
+            chooseLanguageConfirm.text = "Konfirmatu";
+            creditsTitle.text = "Kredituak";
+            creditsReturn.text = "Itzuli";
         }
 
         effectsSource = GameObject.Find("EffectsSource").GetComponent<AudioSource>();
@@ -418,6 +451,7 @@ public class MainMenuScript : MonoBehaviour
         battleSettings.SetActive(false);
         confirmResolution.SetActive(false);
         howToPlay.SetActive(false);
+        credits.SetActive(false);
         explanation = 1;
     }
 
@@ -469,8 +503,13 @@ public class MainMenuScript : MonoBehaviour
     //Function to change the language
     public void ChangeLanguage()
     {
-        if (!mainMenu.activeSelf) effectsSource.Play();
-        PlayerPrefs.SetInt("Language", language.value+1);
+        if (!mainMenu.activeSelf || chooseLanguage.activeSelf) effectsSource.Play();
+        if (!chooseLanguage.activeSelf) PlayerPrefs.SetInt("Language", language.value + 1);
+        else
+        {
+            PlayerPrefs.SetInt("Language", chooseLanguageDropdown.value + 1);
+            language.value = chooseLanguageDropdown.value;
+        }
         if (PlayerPrefs.GetInt("Language") == 1)
         {
             mainMenuStart.text = "Play";
@@ -478,6 +517,7 @@ public class MainMenuScript : MonoBehaviour
             mainMenuBattleSetting.text = "Battle settings";
             mainMenuHowToPlay.text = "How to play";
             mainMenuExit.text = "Exit";
+            mainMenuCredits.text = "Credits";
             settingsTitle.text = "Settings";
             settingsMasterVolume.text = "Master volume:";
             settingsMusicVolume.text = "Music volume:";
@@ -534,6 +574,10 @@ public class MainMenuScript : MonoBehaviour
             howToPlayPrev.text = "Prev";
             howToPlayNext.text = "Next";
             howToPlayClose.text = "Close";
+            chooseLanguageText.text = "Choose the language.\n You can change it whenever you like on the settings.";
+            chooseLanguageConfirm.text = "Confirm";
+            creditsTitle.text = "Credits";
+            creditsReturn.text = "Return";
         }
         else if (PlayerPrefs.GetInt("Language") == 2)
         {
@@ -542,6 +586,7 @@ public class MainMenuScript : MonoBehaviour
             mainMenuBattleSetting.text = "Ajustes de combate";
             mainMenuHowToPlay.text = "Cómo jugar";
             mainMenuExit.text = "Salir";
+            mainMenuCredits.text = "Créditos";
             settingsTitle.text = "Ajustes";
             settingsMasterVolume.text = "Volumen maestro:";
             settingsMusicVolume.text = "Volumen de la música:";
@@ -598,6 +643,10 @@ public class MainMenuScript : MonoBehaviour
             howToPlayPrev.text = "Prev";
             howToPlayNext.text = "Sig";
             howToPlayClose.text = "Cerrar ";
+            chooseLanguageText.text = "Selecciona el idioma.\n Puedes cambiarlo cuando quieras en los ajustes.";
+            chooseLanguageConfirm.text = "Confirmar";
+            creditsTitle.text = "Créditos";
+            creditsReturn.text = "Volver";
         }
         else
         {
@@ -606,6 +655,7 @@ public class MainMenuScript : MonoBehaviour
             mainMenuBattleSetting.text = "Borroka ezarpenak";
             mainMenuHowToPlay.text = "Nola jolastu";
             mainMenuExit.text = "Irten";
+            mainMenuCredits.text = "Kredituak";
             settingsTitle.text = "Ezarpenak";
             settingsMasterVolume.text = "Bolumen nagusia:";
             settingsMusicVolume.text = "Musikaren bolumena:";
@@ -662,11 +712,22 @@ public class MainMenuScript : MonoBehaviour
             howToPlayPrev.text = "Aur";
             howToPlayNext.text = "Hur";
             howToPlayClose.text = "Itxi";
+            chooseLanguageText.text = "Hizkuntza erabaki.\n Nahi duzunean alda dezakezu ezarpenetan.";
+            chooseLanguageConfirm.text = "Konfirmatu";
+            creditsTitle.text = "Kredituak";
+            creditsReturn.text = "Itzuli";
         }
         enemy1.transform.GetChild(0).GetComponent<Text>().text = enemy1.options[enemy1.value].text;
         enemy2.transform.GetChild(0).GetComponent<Text>().text = enemy2.options[enemy2.value].text;
         enemy3.transform.GetChild(0).GetComponent<Text>().text = enemy3.options[enemy3.value].text;
         enemy4.transform.GetChild(0).GetComponent<Text>().text = enemy4.options[enemy4.value].text;
+    }
+
+    //Function to close the choose language window
+    public void CloseChooseLanguage()
+    {
+        effectsSource.Play();
+        chooseLanguage.SetActive(false);
     }
 
     //Function to make active the enemy3 and enemy4 dropdowns
@@ -919,6 +980,19 @@ public class MainMenuScript : MonoBehaviour
         howToPlay.transform.GetChild(9).GetComponent<Button>().interactable = true;
     }
 
+    //Functions to open and close the credits
+    public void OpenCredits()
+    {
+        effectsSource.Play();
+        mainMenu.SetActive(false);
+        credits.SetActive(true);
+    }
+    public void CloseCredits()
+    {
+        effectsSource.Play();
+        mainMenu.SetActive(true);
+        credits.SetActive(false);
+    }
 
     //Function to close the game
     public void CloseGame()

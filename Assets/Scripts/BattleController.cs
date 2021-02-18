@@ -2818,7 +2818,7 @@ public class BattleController : MonoBehaviour
                                 else if (PlayerPrefs.GetInt("Language") == 2)
                                 {
                                     if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Genera una bola mágica para golpear a un enemigo.";
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Protege al jugador usando un escudo mágico y haz que todo el daño vaya al mago. Si completas el comando de acción correctamente puedes bloquear todo el daño si te defiendes correctamente.";
+                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Protege al jugador usando un escudo mágico y haz que todo el daño vaya al mago. Si completas el comando de acción puedes bloquear todo el daño si te defiendes correctamente.";
                                     else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Usa tus poderes mágicos para golpear a un enemigo varias veces.";
                                     else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Crea una lanza mágica y lánzasela a un enemigo.";
                                     else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Genera una bola mágica enorme que dañará a todos los enemigos.";
