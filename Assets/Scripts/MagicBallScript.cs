@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class MagicBallScript : MonoBehaviour
 {
-    //The battle controller
+    //The battle controller and the buttons
     private GameObject battleController;
     [SerializeField] private Sprite upButton;
     [SerializeField] private Sprite downButton;
@@ -18,7 +18,7 @@ public class MagicBallScript : MonoBehaviour
         //We find the battle controller
         battleController = GameObject.Find("BattleController");
     }
-    //Function to set the arrow
+    //Function to set the arrow randomly
     public void SetArrow()
     {
         float r = Random.Range(0.0f, 4.0f);

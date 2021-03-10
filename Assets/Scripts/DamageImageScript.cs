@@ -27,6 +27,7 @@ public class DamageImageScript : MonoBehaviour
     //Function to self Destroy
     public void SelfDestroy()
     {
+        //We end the turn if it is the last damage the player will deal
         if (!isDamage)
         {
             battleController.GetComponent<BattleController>().EndPlayerTurn(user);

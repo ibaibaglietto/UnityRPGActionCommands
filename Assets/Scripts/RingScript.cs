@@ -36,8 +36,10 @@ public class RingScript : MonoBehaviour
     }
     private void Update()
     {
+        //If the ring reaches the end of the screen 
         if (GetComponent<RectTransform>().anchoredPosition.y > 3.0f) 
         {
+            //If the soul crossed it we generate another ring at the top
             if (crossed)
             {
                 prevX = prevRing.GetComponent<RectTransform>().anchoredPosition.x;
@@ -61,27 +63,31 @@ public class RingScript : MonoBehaviour
                 GetComponent<RectTransform>().anchoredPosition = new Vector2(newX, -5.0f + 0.009f);
                 crossed = false;
             }
+            //If not we end the regeneration attack
             else
             {
                 battleController.GetComponent<BattleController>().EndRegenerationAttack();
             }
         }
     }
-
+    //Function to cross a ring
     public void Cross()
     {
         topRing.GetComponent<Image>().sprite = greenRingTop;
         GetComponent<Image>().sprite = greenRingFront;
         crossed = true;
     }
+    //Function to know if a ring is crossed
     public bool IsCrossed()
     {
         return crossed;
     }
+    //Function to set the top ring
     public void SetTopRing(Transform top)
     {
         topRing = top;
     }
+    //Function to find the previous ring
     public void SetPrevRing(Transform ring)
     {
         prevRing = ring;

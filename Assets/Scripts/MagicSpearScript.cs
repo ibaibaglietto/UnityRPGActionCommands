@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class MagicSpearScript : MonoBehaviour
 {
-    //The battle controller
+    //The battle controller and the buttons
     private GameObject battleController;
     [SerializeField] private Sprite upButton;
     [SerializeField] private Sprite downButton;
@@ -18,7 +18,7 @@ public class MagicSpearScript : MonoBehaviour
         //We find the battle controller
         battleController = GameObject.Find("BattleController");
     }
-    //Function to set the arrow
+    //Function to set the arrow randomly
     public void SetArrow(int pos)
     {
         float r = Random.Range(0.0f, 4.0f);
@@ -44,14 +44,14 @@ public class MagicSpearScript : MonoBehaviour
         }
     }
 
-    //A function to start the magic ball action
+    //A function to start the magic spear action
     public void StartMagicSpearAction(int pos)
     {
         battleController.GetComponent<BattleController>().attackAction = true;
         battleController.GetComponent<BattleController>().SetMagicSpearNumber(pos);
     }
 
-    //A function to end the magic ball action
+    //A function to end the magic spear action
     public void EndMagicSpearAction()
     {
         battleController.GetComponent<BattleController>().attackAction = false;

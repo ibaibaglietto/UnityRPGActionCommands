@@ -228,6 +228,7 @@ public class BattleController : MonoBehaviour
     private int soulLifestealNumb;
     //The red soul
     [SerializeField] private Transform redSoulPrefab;
+    //The positions of the red soul
     private Transform redSoul1;
     private Transform redSoul2;
     private Transform redSoul3;
@@ -381,38 +382,13 @@ public class BattleController : MonoBehaviour
     [SerializeField] private AudioClip healClip;
     [SerializeField] private AudioClip lightClip;
     [SerializeField] private AudioClip recoverClip;
-
-    //The texts we are going to translate
+    //The level up text
     private Text lvlUpText;
     
 
     private void Awake()
     {
-        /*PlayerPrefs.SetInt("Light Sword", 1);
-        PlayerPrefs.SetInt("Multistrike Sword", 1);
-        PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
-        PlayerPrefs.SetInt("Light Shuriken", 1);
-        PlayerPrefs.SetInt("Fire Shuriken", 1);
-        PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
-        PlayerPrefs.SetInt("Souls", 6);
-        PlayerPrefs.SetInt("PlayerHeartLvl", 5);
-        PlayerPrefs.SetInt("PlayerLightLvl", 4);
-        PlayerPrefs.SetInt("PlayerBadgeLvl", 0);
-        PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("PlayerBadgeLvl"));
-        PlayerPrefs.SetInt("PlayerCurrentHealth", 20);
-        PlayerPrefs.SetInt("AdventurerLvl",3); //3
-        PlayerPrefs.SetInt("AdventurerCurrentHealth", 1);
-        PlayerPrefs.SetInt("WizardLvl", 3); //3
-        PlayerPrefs.SetInt("WizardCurrentHealth", 1);
-        PlayerPrefs.SetInt("SwordLvl", 3); //3
-        PlayerPrefs.SetInt("ShurikenLvl", 1); //3
-        PlayerPrefs.SetInt("language", 0);
-        PlayerPrefs.SetInt("bandit", 0);
-        PlayerPrefs.SetInt("wizard", 0);
-        PlayerPrefs.SetInt("king", 0);
-        PlayerPrefs.SetInt("lvlXP", 90);
-        PlayerPrefs.SetInt("UnlockedCompanions", 2);*/
-        //Find the gameobjects
+        //Find the gameobjects and others
         victoryXP = GameObject.Find("VictoryEXP");
         mainCamera = GameObject.Find("Main Camera");
         lightPointsUI = GameObject.Find("LightBckImage");
@@ -499,15 +475,19 @@ public class BattleController : MonoBehaviour
         ring8 = new Transform[2];
         enemyNumber = 0;
         bossDieAnimationEnded = true;
+        //Spawn the player
         SpawnCharacter(0,0);
         player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
-        SpawnCharacter(1,0);        
+        //Spawn the companion
+        SpawnCharacter(1,0);  
+        //Spawn the enemies
         SpawnCharacter(2, PlayerPrefs.GetInt("Enemy1"));
         if (PlayerPrefs.GetInt("Enemy2") > 0) SpawnCharacter(3, PlayerPrefs.GetInt("Enemy2") - 1);
         if (PlayerPrefs.GetInt("Enemy3") > 0) SpawnCharacter(4, PlayerPrefs.GetInt("Enemy3") - 1);
         if (PlayerPrefs.GetInt("Enemy4") > 0) SpawnCharacter(5, PlayerPrefs.GetInt("Enemy4") - 1);
+        //Put the game in the correct state
         playerTeamTurn = true;
         playerTurn = true;
         playerTurnCompleted = false;
@@ -534,6 +514,7 @@ public class BattleController : MonoBehaviour
         canSelect = false;
         fleeing = false;
         fled = false;
+        //Initialize all the variables
         swordStyles = new int[6];
         shurikenStyles = new int[6];
         defensePlayer = 0;
@@ -576,7 +557,21 @@ public class BattleController : MonoBehaviour
         soulRegenLight = 0;
         soulLightning = false;
         yellowSoulRight = true;
+        aimRotation = 0.0f;
+        aimUp = true;
+        currentFightXP = 0;
+        readyShoot = false;
+        lvlUp = false;
+        lvlUpSelected = 0;
+        victory = false;
+        endBattle = false;
+        killerEnemy = -1;
         menuCanUse = new bool[6];
+        barrierKeys = new KeyCode[5];
+        taunting = false;
+        changeCompanion = false;
+        allEnemiesDead = false;
+        //We put the UI on the correct state
         actionInstructions.SetActive(false);
         enemyName.SetActive(false);
         player.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
@@ -587,20 +582,7 @@ public class BattleController : MonoBehaviour
         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.b, 0.0f);
         player.GetChild(0).transform.GetChild(6).gameObject.SetActive(false);
         fleeAction.SetActive(false);
-        aimRotation = 0.0f;
-        aimUp = true;
-        readyShoot = false;
-        currentFightXP = 0;
-        lvlUp = false;
         lvlUpMenu.SetActive(false);
-        lvlUpSelected = 0;
-        victory = false;
-        endBattle = false;
-        killerEnemy = -1;
-        barrierKeys = new KeyCode[5];
-        taunting = false;
-        changeCompanion = false;
-        allEnemiesDead = false;
         //We translate the lvl up text
         if (PlayerPrefs.GetInt("Language") == 1) lvlUpText.text = "LEVEL UP!";
         else if (PlayerPrefs.GetInt("Language") == 2) lvlUpText.text = "¡SUBES DE NIVEL!";
@@ -609,15 +591,18 @@ public class BattleController : MonoBehaviour
 
     private void Update()
     {
+        //Press escape to return to the main menu
         if(Input.GetKeyDown(KeyCode.Escape)) SceneManager.LoadScene(0);
         //When its player teams turn
         if (playerTeamTurn)
         {
+            //When its players turn
             if (playerTurn)
             {
                 //The fase when the player chooses what action to do
                 if (playerChoosingAction)
                 {
+                    //When we are on the action selection menu
                     if (!player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().GetBool("MenuOpened"))
                     {
                         //We use left and right arrows to move in the action menu
@@ -632,7 +617,7 @@ public class BattleController : MonoBehaviour
                         //We press space to select the action we want to perform
                         if (selectingAction == 0 && Input.GetKeyDown(KeyCode.Space) && GetGroundEnemies() != null)
                         {
-                            //if nothing is unlocked
+                            //if nothing is unlocked we change the UI state and open the first sword attack
                             if (PlayerPrefs.GetInt("Sword Styles") == 0)
                             {
                                 changePosAction.SetActive(false);
@@ -649,6 +634,7 @@ public class BattleController : MonoBehaviour
                                 enemyName.SetActive(true);
                                 SelectFirstEnemy();
                             }
+                            //Else we open the sword menu
                             else
                             {
                                 changePosAction.SetActive(false);
@@ -659,7 +645,7 @@ public class BattleController : MonoBehaviour
                         }
                         else if (selectingAction == 1 && Input.GetKeyDown(KeyCode.Space))
                         {
-                            //if nothing is unlocked
+                            //if nothing is unlocked we change the UI state and open the first shuriken attack
                             if (PlayerPrefs.GetInt("Shuriken Styles") == 0)
                             {
                                 changePosAction.SetActive(false);
@@ -676,6 +662,7 @@ public class BattleController : MonoBehaviour
                                 enemyName.SetActive(true);
                                 SelectFirstEnemy();
                             }
+                            //Else we open the shuriken menu
                             else
                             {
                                 changePosAction.SetActive(false);
@@ -684,6 +671,7 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                             }
                         }
+                        //We open the Objects menu
                         else if (selectingAction == 2 && Input.GetKeyDown(KeyCode.Space))
                         {
                             changePosAction.SetActive(false);
@@ -691,6 +679,7 @@ public class BattleController : MonoBehaviour
                             actionInstructions.SetActive(true);
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                         }
+                        //We open the Special menu
                         else if (selectingAction == 3 && Input.GetKeyDown(KeyCode.Space))
                         {
                             changePosAction.SetActive(false);
@@ -698,6 +687,7 @@ public class BattleController : MonoBehaviour
                             actionInstructions.SetActive(true);
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                         }
+                        //We open the Others menu
                         else if (selectingAction == 4 && Input.GetKeyDown(KeyCode.Space))
                         {
                             changePosAction.SetActive(false);
@@ -705,10 +695,12 @@ public class BattleController : MonoBehaviour
                             actionInstructions.SetActive(true);
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                         }
+                        //We change the party order
                         if (!companionTurnCompleted && Input.GetKeyDown(KeyCode.Z) && !companion.GetComponent<PlayerTeamScript>().IsDead()) StartChangePosition(1);
                     }
                     else
                     {
+                        //When we open the sword action we can select the attack using up or down and accept using space
                         if (selectingAction == 0)
                         {
                             if (menuSelectionPos == 0) usingStyle = 0;
@@ -740,6 +732,7 @@ public class BattleController : MonoBehaviour
                             {
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
                             }
+                            //When we press space we change to the attack state
                             if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
                             {
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
@@ -770,6 +763,7 @@ public class BattleController : MonoBehaviour
                                 SelectFirstEnemy();
                             }
                         }
+                        //When we open the shuriken action we can select the attack using up or down and accept using space
                         else if (selectingAction == 1)
                         {
                             if (menuSelectionPos == 0) usingStyle = 0;
@@ -793,7 +787,6 @@ public class BattleController : MonoBehaviour
                                 else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Zure argi botereak erabili etsai bat zure argi shurikenarekin jotzeko.";
                                 else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Jaurti suzko shuriken bat lurrean dauden etsai guztiei.";
                             }
-
                             if ((menuSelectionPos < PlayerPrefs.GetInt("Shuriken Styles")) && Input.GetKeyDown(KeyCode.DownArrow))
                             {
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
@@ -802,6 +795,7 @@ public class BattleController : MonoBehaviour
                             {
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
                             }
+                            //When we press space we change to the attack state
                             if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
                             {
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
@@ -833,6 +827,7 @@ public class BattleController : MonoBehaviour
                                 else SelectGroundEnemies();
                             }
                         }
+                        //When we open the Objects action we can select the object using up or down and accept using space
                         else if (selectingAction == 2)
                         {
                             if (PlayerPrefs.GetInt("Language") == 1)
@@ -871,6 +866,7 @@ public class BattleController : MonoBehaviour
                                     CreateMenu();
                                 }
                             }
+                            //When we press space we change to the object state
                             if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
                             {
                                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
@@ -909,6 +905,7 @@ public class BattleController : MonoBehaviour
                                 enemyName.SetActive(true);
                             }
                         }
+                        //When we open the Special action we can select the attack using up or down and accept using space
                         else if (selectingAction == 3)
                         {
                             usingStyle = menuSelectionPos;
@@ -939,8 +936,6 @@ public class BattleController : MonoBehaviour
                                 else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Etsaien eraso guztiak saihestu turno batzuetan.";
                                 else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Eraso baterako boterea bildu. Behin baino gehiagotan erabili ahal da jarraieran.";
                             }
-
-
                             if ((menuSelectionPos < (PlayerPrefs.GetInt("Souls") - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
                             {
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
@@ -949,6 +944,7 @@ public class BattleController : MonoBehaviour
                             {
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
                             }
+                            //When we press space we change to the attack state or the select player state, depending on the attack
                             if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
                             {
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
@@ -1028,6 +1024,7 @@ public class BattleController : MonoBehaviour
                                 }
                             }
                         }
+                        //When we open the Other action we can select the action using up or down and accept using space
                         else if (selectingAction == 4)
                         {
                             if (!changeCompanion)
@@ -1059,6 +1056,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
                                 }
+                                //Depending on the action we open the party menu, end the player turn adding 1 to the defense or start the flee action
                                 if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
                                 {
                                     if (menuSelectionPos == 0)
@@ -1098,6 +1096,7 @@ public class BattleController : MonoBehaviour
                                     }
                                 }
                             }
+                            //When we open the change action menu we select the companion using up or down and accept using space
                             else
                             {
                                 if (PlayerPrefs.GetInt("Language") == 1)
@@ -1123,6 +1122,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
                                 }
+                                //We start the changing companion state
                                 if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
                                 {
                                     if (menuSelectionPos == 0)
@@ -1142,6 +1142,7 @@ public class BattleController : MonoBehaviour
                                 }
                             }
                         }
+                        //We can press Q to return to the previous menu
                         if (Input.GetKeyDown(KeyCode.Q))
                         {
                             if (!changeCompanion)
@@ -1160,9 +1161,10 @@ public class BattleController : MonoBehaviour
                         }
                     }
                 }
-                //When we select a frindly object we give it to a partner
+                //When we select a frindly action we give it to a party member
                 else if (selectingPlayer)
                 {
+                    //We can press Q to return to the previous menu
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
                         CreateMenu();
@@ -1175,10 +1177,13 @@ public class BattleController : MonoBehaviour
                         player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                         companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
                     }
+                    //If we can select 
                     if (canSelect)
                     {
+                        //If the player is the one being selected we can only change the selection to the other active party member
                         if (player.GetChild(0).transform.GetChild(5).gameObject.activeSelf)
                         {
+                            //Depending on the position of the player we press left or right to change the selection
                             if (firstPosPlayer)
                             {
                                 if (Input.GetKeyDown(KeyCode.LeftArrow) && ((companion.GetComponent<PlayerTeamScript>().IsDead() && items[menuSelectionPos] == 3) || !companion.GetComponent<PlayerTeamScript>().IsDead()))
@@ -1225,6 +1230,7 @@ public class BattleController : MonoBehaviour
                                     }
                                 }
                             }
+                            //We accept pressing space starting the friendly action we previously selected
                             if (Input.GetKeyDown(KeyCode.Space))
                             {
                                 player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
@@ -1267,6 +1273,7 @@ public class BattleController : MonoBehaviour
                                 }
                             }
                         }
+                        //If the companion is the one being selected we can only change to the player
                         else if (companion.GetChild(0).transform.GetChild(1).gameObject.activeSelf)
                         {
                             if (firstPosPlayer)
@@ -1291,6 +1298,7 @@ public class BattleController : MonoBehaviour
                                     else enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Jokalaria";
                                 }
                             }
+                            //We accept pressing space starting the friendly action we previously selected
                             if (Input.GetKeyDown(KeyCode.Space))
                             {
                                 companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
@@ -1334,6 +1342,7 @@ public class BattleController : MonoBehaviour
                             }
                         }
                     }
+                    //If we cant select we will start the friendly action pressing space
                     else
                     {
                         if (Input.GetKeyDown(KeyCode.Space))
@@ -1389,6 +1398,8 @@ public class BattleController : MonoBehaviour
                     if (canSelect)
                     {
                         //When we have 2 or more enemies we decide which enemy to attack using the arrows and we select it using space and the attack starts
+                        //When we use a sword attack we can only select grounded enemies
+                        //When we use a shuriken attack we can only select the first flying enemy and the first grounded enemy
                         if (enemyNumber > 1)
                         {
                             if (enemy1.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
@@ -1911,6 +1922,7 @@ public class BattleController : MonoBehaviour
                             player.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                         }
                     }
+                    //If we cant select we start the attack pressing space
                     else if (Input.GetKeyDown(KeyCode.Space))
                     {
                         Transform[] allEnemies = GetAllEnemies();
@@ -1937,6 +1949,7 @@ public class BattleController : MonoBehaviour
                     //If it is a melee attack
                     if (attackType == 0)
                     {
+                        //Normal sword attack
                         if (usingStyle == 0)
                         {
                             //We check if the player presses the button when it is asked to be pressed
@@ -1955,8 +1968,10 @@ public class BattleController : MonoBehaviour
                             }
                             player.GetComponent<Animator>().SetBool("isAttacking", true);
                         }
+                        //Light sword
                         else if (usingStyle == 1)
                         {
+                            //We check that the player releases the x button when they have to do it
                             if (Input.GetKey(KeyCode.X) && !player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().GetBool("charging"))
                             {
                                 DeactivateActionInstructions();
@@ -1989,6 +2004,7 @@ public class BattleController : MonoBehaviour
                                 finalAttack = false;
                             }
                         }
+                        //Multistrike sword
                         else if (usingStyle == 2)
                         {
                             //We check if the player presses the button when it is asked to be pressed
@@ -2011,6 +2027,7 @@ public class BattleController : MonoBehaviour
                     //If it is a shuriken attack
                     else if (attackType == 1)
                     {
+                        //Normal shuriken attack
                         if (usingStyle == 0)
                         {
                             //We check if the button is pressed correctly and we wait the shuriken to hit
@@ -2031,8 +2048,10 @@ public class BattleController : MonoBehaviour
                                 finalAttack = false;
                             }
                         }
+                        //Light shuriken
                         else if (usingStyle == 1)
                         {
+                            //We check that the fill amount is 1 at the end of the action
                             if (Time.fixedTime - shurikenTime < 2.5f && player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f && Input.GetKeyDown(KeyCode.X))
                             {
                                 player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.12f;
@@ -2043,8 +2062,10 @@ public class BattleController : MonoBehaviour
                                 }
                             }
                         }
+                        //Fire shuriken
                         else if (usingStyle == 2)
                         {
+                            //We check that the fill amount is 1 at the end of the action
                             if (Time.fixedTime - shurikenTime < 2.5f && player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f)
                             {
                                 if (Input.GetKeyDown(KeyCode.LeftArrow) && !lastLeft)
@@ -2070,9 +2091,13 @@ public class BattleController : MonoBehaviour
                             }
                         }
                     }
+                    //Soul music attack
                     else if (soulMusic > 0 && !failMusic)
                     {
+                        //We put the white soul at the starting position
                         player.GetChild(0).transform.GetChild(7).transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition = new Vector3(player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount * 10.9f - 5.45f, player.GetChild(0).transform.GetChild(7).transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition.y, 0.0f);
+                        //When the bar is filling we check the position of the keys and that the player is pressing the buttons correctly
+                        //Each time the player fills the bar correctly 1 key will be added until there are 7 keys in total. The speed will increase too.
                         if (soulMusicFilling)
                         {
                             if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount < (((key1.gameObject.GetComponent<RectTransform>().anchoredPosition.x + 5.45f) * 0.5f / 5.45f) - 0.023f))
@@ -2577,6 +2602,7 @@ public class BattleController : MonoBehaviour
                                 soulMusicFilling = false;
                             }
                         }
+                        //When the soul returns the starting position we add 1 to the difficulty level and start again
                         else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 0.0f)
                         {
                             soulMusic += 1;
@@ -2584,6 +2610,7 @@ public class BattleController : MonoBehaviour
                             soulMusicFilling = true;
                         }
                     }
+                    //When the player fails the action command we check the level they died on and en the attack
                     else if (failMusic)
                     {
                         BadCommand();
@@ -2619,6 +2646,7 @@ public class BattleController : MonoBehaviour
                         player.GetComponent<PlayerTeamScript>().EndSoulAttack(soulMusic);
                         soulMusic = 0;
                     }
+                    //We initialize the soul regeneration attack
                     else if (soulRegen)
                     {
                         if (Input.GetKey(KeyCode.UpArrow)) soulRegenMovUp = true;
@@ -2630,10 +2658,12 @@ public class BattleController : MonoBehaviour
                         if (Input.GetKeyUp(KeyCode.RightArrow)) soulRegenMovRight = false;
                         if (Input.GetKeyUp(KeyCode.DownArrow)) soulRegenMovDown = false;
                     }
+                    //We initialize the soul lightning attack
                     else if (soulLightning)
                     {
                         if (Input.GetKeyDown(KeyCode.X)) Instantiate(lightningPrefab, new Vector3(yellowSoul.position.x, 1.5f, enemy1.position.z), Quaternion.identity);
                     }
+                    //We initialize the soul lifesteal attack
                     else if (soulLifesteal)
                     {
                         if (Input.GetKey(KeyCode.UpArrow)) jarMovUp = true;
@@ -2645,6 +2675,7 @@ public class BattleController : MonoBehaviour
                         if (Input.GetKeyUp(KeyCode.RightArrow)) jarMovRight = false;
                         if (Input.GetKeyUp(KeyCode.DownArrow)) jarMovDown = false;
                     }
+                    //We initialize the soul disappear attack
                     else if (soulDisappear)
                     {
                         if (Input.GetKey(KeyCode.UpArrow)) blueSoulMovUp = true;
@@ -2656,8 +2687,10 @@ public class BattleController : MonoBehaviour
                         if (Input.GetKeyUp(KeyCode.RightArrow)) blueSoulMovRight = false;
                         if (Input.GetKeyUp(KeyCode.DownArrow)) blueSoulMovDown = false;
                     }
+                    //We initialize the soul Light up attack
                     else if (soulLightUp)
                     {
+                        //We wait until the fog has scaled to the starting scale
                         if (fogScaled)
                         {
                             if (Input.GetKeyDown(KeyCode.X)) fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x + 0.075f, fog.GetComponent<RectTransform>().localScale.y + 0.075f, fog.GetComponent<RectTransform>().localScale.z);
@@ -2678,6 +2711,7 @@ public class BattleController : MonoBehaviour
                     shurikenHit = false;
                     EndPlayerTurn(1);
                 }
+                //We check if the player presses the x button while they are trying to flee, if so we add 0.02 to the fill amount
                 else if (fleeing && (Time.fixedTime - fleeTime) < 10.0f)
                 {
                     if (Input.GetKeyDown(KeyCode.X))
@@ -2686,10 +2720,13 @@ public class BattleController : MonoBehaviour
                     }
                 }
             }
+            //Companion turn
             else if (companionTurn)
             {
+                //Choosing action
                 if (companionChoosingAction)
                 {
+                    //When the companion is choosing the main action
                     if (!companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().GetBool("MenuOpened"))
                     {
                         //We use left and right arrows to move in the action menu
@@ -2702,6 +2739,7 @@ public class BattleController : MonoBehaviour
                             companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Right");
                         }
                         //We press space to select the action we want to perform
+                        //Attack
                         if (selectingAction == 0 && Input.GetKeyDown(KeyCode.Space))
                         {
                             changePosAction.SetActive(false);
@@ -2709,6 +2747,7 @@ public class BattleController : MonoBehaviour
                             actionInstructions.SetActive(true);
                             companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                         }
+                        //Item
                         else if (selectingAction == 1 && Input.GetKeyDown(KeyCode.Space))
                         {
                             changePosAction.SetActive(false);
@@ -2716,6 +2755,7 @@ public class BattleController : MonoBehaviour
                             actionInstructions.SetActive(true);
                             companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                         }
+                        //Others
                         else if (selectingAction == 2 && Input.GetKeyDown(KeyCode.Space))
                         {
                             changePosAction.SetActive(false);
@@ -2723,13 +2763,17 @@ public class BattleController : MonoBehaviour
                             actionInstructions.SetActive(true);
                             companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                         }
-
+                        //We swap team position pressing Z
                         if (!playerTurnCompleted && Input.GetKeyDown(KeyCode.Z)) StartChangePosition(2);
                     }
+                    //When the action is already choosen
                     else
                     {
+                        //Attack
                         if (selectingAction == 0)
                         {
+                            //Adventurer
+                            //We change the attack using the arrows and accept pressing space
                             if(currentCompanion == 0)
                             {
                                 usingStyle = menuSelectionPos;
@@ -2757,7 +2801,6 @@ public class BattleController : MonoBehaviour
                                     else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Erabili zure dragon hiltzaile arkua lurrean dauden etsai guztiei gezi bat jaurtitzeko.";
                                     else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Aurkituko duten lehen etsaia joko duten bost gezi jaurti.";
                                 }
-
                                 if ((menuSelectionPos < PlayerPrefs.GetInt("AdventurerLvl") + 1) && Input.GetKeyDown(KeyCode.DownArrow))
                                 {
                                     companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
@@ -2803,7 +2846,9 @@ public class BattleController : MonoBehaviour
                                     else if (usingStyle == 3) SelectGroundEnemies();
                                     else SelectAllEnemies();
                                 }
-                            }   
+                            }
+                            //Wizard
+                            //We change the attack using the arrows and accept pressing space
                             else if (currentCompanion == 1)
                             {
                                 usingStyle = menuSelectionPos;
@@ -2899,6 +2944,8 @@ public class BattleController : MonoBehaviour
                                 }
                             }
                         }
+                        //Items
+                        //We change the item using the arrows and accept pressing space
                         else if (selectingAction == 1)
                         {
                             if (PlayerPrefs.GetInt("Language") == 1)
@@ -2989,6 +3036,8 @@ public class BattleController : MonoBehaviour
                                 enemyName.SetActive(true);
                             }
                         }
+                        //Other
+                        //We change the action using the arrows and accept pressing space
                         else if (selectingAction == 2)
                         {
                             if (!changeCompanion)
@@ -3057,6 +3106,7 @@ public class BattleController : MonoBehaviour
                                     }
                                 }
                             }
+                            //If we select the change companion action we can choose using the arrows and accept pressing the space
                             else
                             {
                                 if (PlayerPrefs.GetInt("Language") == 1)
@@ -3102,6 +3152,7 @@ public class BattleController : MonoBehaviour
                                 }
                             }
                         }
+                        //We can return to the previous menu pressing Q
                         if (Input.GetKeyDown(KeyCode.Q))
                         {
                             if (!changeCompanion)
@@ -3120,8 +3171,10 @@ public class BattleController : MonoBehaviour
                         }
                     }
                 }
+                //When we select a frindly action we give it to a party member
                 else if (selectingCompanion)
                 {
+                    //We can return to the previous menu pressing q
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
                         CreateMenu();
@@ -3134,8 +3187,10 @@ public class BattleController : MonoBehaviour
                         companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
                         player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                     }
+                    //If we can select
                     if (canSelect)
                     {
+                        //If the player is the one being selected we only can change to a partner usign the arrows and space to accept
                         if (player.GetChild(0).transform.GetChild(5).gameObject.activeSelf)
                         {
                             if (firstPosPlayer)
@@ -3216,6 +3271,7 @@ public class BattleController : MonoBehaviour
                                 selectingCompanion = false;
                             }
                         }
+                        //If the companion is the one being selected we only can change to the player usign the arrows and space to accept
                         else if (companion.GetChild(0).transform.GetChild(1).gameObject.activeSelf)
                         {
                             if (firstPosPlayer)
@@ -3240,6 +3296,7 @@ public class BattleController : MonoBehaviour
                                     else enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Jokalaria";
                                 }
                             }
+                            //When a companion can select a team mate it can only be because they are using an item
                             if (Input.GetKeyDown(KeyCode.Space))
                             {
                                 companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
@@ -3272,6 +3329,7 @@ public class BattleController : MonoBehaviour
                             }
                         }
                     }
+                    //When we cant select we start an attack when we press space
                     else if (Input.GetKeyDown(KeyCode.Space))
                     {
                         player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
@@ -3284,8 +3342,8 @@ public class BattleController : MonoBehaviour
                         actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
                         companion.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, player);
                     }
-
                 }
+                //Selecting enemy
                 else if (selectingEnemyCompanion)
                 {
                     //Press Q to return to start fase
@@ -3321,6 +3379,8 @@ public class BattleController : MonoBehaviour
                     if (canSelect)
                     {
                         //When we have 2 or more enemies we decide which enemy to attack using the arrows and we select it using space and the attack starts
+                        //When we use the adventurer we can only select grounded enemies, unless we are using the glance being able to target all the enemies
+                        //When we use the wizard we can only select the first flying enemy and the first grounded enemy, unless we are using the pulsing magic targeting the grounded enemies only
                         if (enemyNumber > 1)
                         {
                             if (enemy1.GetChild(0).transform.GetChild(0).gameObject.activeSelf)
@@ -3845,6 +3905,7 @@ public class BattleController : MonoBehaviour
                             companion.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                         }
                     }
+                    //If we cant select we press space and the attack starts
                     else if (Input.GetKeyDown(KeyCode.Space))
                     {
                         Transform[] allEnemies = GetAllEnemies();
@@ -3864,12 +3925,16 @@ public class BattleController : MonoBehaviour
                         companion.GetComponent<PlayerTeamScript>().Attack(attackType, usingStyle, selectedEnemy);
                     }
                 }
+                //The fase where the companion deals the attack
                 else if (finalAttack)
                 {
+                    //Adventurer
                     if(currentCompanion == 0)
                     {
+                        //Attack
                         if (attackType == 0)
                         {
+                            //Normal sword or Multi strike sword
                             if (usingStyle == 0 || usingStyle == 2)
                             {
                                 //We check if the player presses the button when it is asked to be pressed
@@ -3887,8 +3952,10 @@ public class BattleController : MonoBehaviour
                                     selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
                                 }
                             }
+                            //Glance
                             else if (usingStyle == 1)
                             {
+                                //We check that the player presses X when it is said so
                                 if (!attackAction && Input.GetKeyDown(KeyCode.X))
                                 {
                                     BadCommand();
@@ -3907,8 +3974,10 @@ public class BattleController : MonoBehaviour
                                     }
                                 }
                             }
+                            //Dragonslayer bow
                             else if (usingStyle == 3)
                             {
+                                //We check that the player releases the X button when it is said so
                                 if (Input.GetKey(KeyCode.X) && !companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().GetBool("charging"))
                                 {
                                     DeactivateActionInstructions();
@@ -3943,8 +4012,10 @@ public class BattleController : MonoBehaviour
                                     finalAttack = false;
                                 }
                             }
+                            //BK-47
                             else if (usingStyle == 4)
                             {
+                                //We shot an arrow when the player presses X
                                 if (GetAllEnemies() != null)
                                 {
                                     if (readyShoot && Input.GetKeyDown(KeyCode.X))
@@ -3958,10 +4029,13 @@ public class BattleController : MonoBehaviour
                             }
                         }
                     }
+                    //Wizard
                     else if(currentCompanion == 1)
                     {
+                        //Magic ball
                         if(usingStyle == 0)
                         {
+                            //We check that the player presses the correct button
                             if (!attackAction && (Input.GetKeyDown(KeyCode.UpArrow)|| Input.GetKeyDown(KeyCode.DownArrow)|| Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)))
                             {
                                 BadCommand();
@@ -3989,8 +4063,10 @@ public class BattleController : MonoBehaviour
                                 attackAction = false;
                             }
                         }
+                        //Barrier
                         else if(usingStyle == 1)
                         {
+                            //We check that the player presses the button sequence in time
                             if ((Time.fixedTime - barrierTime) < 2.0f && barrierNumber < 5)
                             {
                                 if (Input.GetKeyDown(barrierKeys[barrierNumber]))
@@ -4039,15 +4115,19 @@ public class BattleController : MonoBehaviour
                                 }
                             }
                         }
+                        //Pulsing magic
                         else if (usingStyle == 2)
                         {
+                            //We check that the player fills the bar
                             if ((Time.fixedTime - shurikenTime) < 5.0f && player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f)
                             {
                                 if (Input.GetKeyDown(KeyCode.RightArrow))companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.06f;
                             }
                         }
+                        //Magic spear
                         else if (usingStyle == 3)
                         {
+                            //We check that the player presses the correct buttons when they are said so
                             if (!attackAction && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)))
                             {
                                 BadCommand();
@@ -4097,10 +4177,12 @@ public class BattleController : MonoBehaviour
                         }
                     }
                 }
+                //When the adventurer is talking we display the next sentece pressing X
                 else if (talking)
                 {
                     if (Input.GetKeyDown(KeyCode.X)) GetComponent<DialogueManager>().DisplayNextSentence();
                 }
+                //We check if the player presses the x button while they are trying to flee, if so we add 0.02 to the fill amount
                 else if (fleeing && (Time.fixedTime - fleeTime) < 10.0f)
                 {
                     if (Input.GetKeyDown(KeyCode.X))
@@ -4118,6 +4200,7 @@ public class BattleController : MonoBehaviour
             {
                 if (enemy1.GetComponent<EnemyTeamScript>().IsAlive())
                 {
+                    //If the companion is dead the enemy can only attack the player
                     if (companion.GetComponent<PlayerTeamScript>().IsDead())
                     {
                         attackObjectives = new Transform[1];
@@ -4128,6 +4211,7 @@ public class BattleController : MonoBehaviour
                     }
                     else
                     {
+                        //If the wizard is not using the barrier the enemy will attack the team mate in the first position 3/4 times and 1/4 times the second one will be attacked
                         if (!taunting)
                         {
                             if (Random.Range(0.0f, 1.0f) < 0.75f)
@@ -4169,6 +4253,7 @@ public class BattleController : MonoBehaviour
                                 }
                             }
                         }
+                        //If the wizard is using the barrier the enemy can only attack the player
                         else
                         {
                             attackObjectives = new Transform[1];
@@ -4179,6 +4264,7 @@ public class BattleController : MonoBehaviour
                         enemy1Turn = false;
                     }                    
                 }
+                //If the first enemy isnt alive the next enemy will attack
                 else
                 {
                     enemy1Turn = false;
@@ -4463,6 +4549,7 @@ public class BattleController : MonoBehaviour
                 }
             }                
         }
+        //When all the enemies are dead and the boss has ended the dieing animation the battle ends
         if (bossDieAnimationEnded && allEnemiesDead)
         {
             bossDieAnimationEnded = false;
@@ -4489,8 +4576,10 @@ public class BattleController : MonoBehaviour
             player.GetComponent<Animator>().SetTrigger("Victory");
             if (!companion.GetComponent<PlayerTeamScript>().IsDead()) companion.GetComponent<Animator>().SetTrigger("Victory");
         }
+        //When the victory is achieved
         if (victory)
         {
+            //We save the xp and activate the lvl up menu when the camera returns from the victory position, only when the player levels up.
             if (!lvlUpMenu.activeSelf && Input.GetKeyDown(KeyCode.X)) StartCoroutine(SaveXP());
             if (!lvlUpMenu.activeSelf && mainCamera.GetComponent<CameraScript>().GetCameraState() == 0) lvlUpMenu.SetActive(true);
             if (lvlUpMenu.activeSelf && lvlUpSelected != -2)
@@ -4548,8 +4637,10 @@ public class BattleController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //The player light shuriken attack
         if (playerTurn && finalAttack && attackType == 1 && usingStyle == 1)
         {
+            //We decrease slowly the fill amount only if it hasnt been filled yet
             if (Time.fixedTime - shurikenTime < 2.5f)
             {
                 if (player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f)
@@ -4558,6 +4649,7 @@ public class BattleController : MonoBehaviour
                     player.transform.GetChild(2).GetComponent<Light>().intensity = player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount * 4.0f;
                 }
             }
+            //We check if the player has correctly filled the bar
             else if (player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f)
             {
                 BadCommand();
@@ -4579,8 +4671,10 @@ public class BattleController : MonoBehaviour
                 player.GetComponent<Animator>().SetBool("isSpinning", false);
             }
         }
+        //The player fire shuriken attack
         if (playerTurn && finalAttack && attackType == 1 && usingStyle == 2)
         {
+            //We decrease slowly the fill amount only if it hasnt been filled yet
             if (Time.fixedTime - shurikenTime < 2.5f)
             {
                 if (player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f)
@@ -4590,6 +4684,7 @@ public class BattleController : MonoBehaviour
                     player.transform.GetChild(2).GetComponent<Light>().intensity = player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount * 4.0f;
                 }
             }
+            //We check if the player has correctly filled the bar
             else if (player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f)
             {
                 BadCommand();
@@ -4613,6 +4708,7 @@ public class BattleController : MonoBehaviour
                 player.GetComponent<Animator>().SetBool("isSpinning", false);
             }
         }
+        //We change the position of the two active party members
         if (changePos)
         {
             if (playerTurn)
@@ -4646,19 +4742,26 @@ public class BattleController : MonoBehaviour
         }
         if (playerTurn && finalAttack)
         {
+            //Soul music attack
             if (soulMusic > 0 && !failMusic)
             {
+                //We fill the bar depending on the soul music level
                 if (soulMusicFilling) player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount += 0.0005f + 0.0005f * soulMusic;
+                //We decrease the fill to return to the starting position
                 else player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount -= 0.015f;
             }
+            //Soul Regeneration attack
             if (soulRegen)
             {
+                //We increase the ring speed
                 soulRegenRingSpeed += 0.00005f;
                 soulRegenGreenSpeed += 0.00005f;
+                //We move the green soul using the arrows
                 if (soulRegenMovUp && greenSoul.GetComponent<RectTransform>().anchoredPosition.y < 2.0f) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x, greenSoul.GetComponent<RectTransform>().anchoredPosition.y + soulRegenGreenSpeed);
                 if (soulRegenMovLeft && greenSoul.GetComponent<RectTransform>().anchoredPosition.x > -5.45f) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x - soulRegenGreenSpeed, greenSoul.GetComponent<RectTransform>().anchoredPosition.y);
                 if (soulRegenMovRight && greenSoul.GetComponent<RectTransform>().anchoredPosition.x < 5.45f) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x + soulRegenGreenSpeed, greenSoul.GetComponent<RectTransform>().anchoredPosition.y);
                 if (soulRegenMovDown && greenSoul.GetComponent<RectTransform>().anchoredPosition.y > -1.8f) greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(greenSoul.GetComponent<RectTransform>().anchoredPosition.x, greenSoul.GetComponent<RectTransform>().anchoredPosition.y - soulRegenGreenSpeed);
+                //We move the rings depending on the ring speed
                 ring1[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring1[0].GetComponent<RectTransform>().anchoredPosition.x, ring1[0].GetComponent<RectTransform>().anchoredPosition.y + soulRegenRingSpeed);
                 ring1[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring1[1].GetComponent<RectTransform>().anchoredPosition.x, ring1[1].GetComponent<RectTransform>().anchoredPosition.y + soulRegenRingSpeed);
                 ring2[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring2[0].GetComponent<RectTransform>().anchoredPosition.x, ring2[0].GetComponent<RectTransform>().anchoredPosition.y + soulRegenRingSpeed);
@@ -4676,19 +4779,24 @@ public class BattleController : MonoBehaviour
                 ring8[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring8[0].GetComponent<RectTransform>().anchoredPosition.x, ring8[0].GetComponent<RectTransform>().anchoredPosition.y + soulRegenRingSpeed);
                 ring8[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring8[1].GetComponent<RectTransform>().anchoredPosition.x, ring8[1].GetComponent<RectTransform>().anchoredPosition.y + soulRegenRingSpeed);
             }
+            //Soul lightning attack
             if (soulLightning)
             {
+                //We move the yellow soul to the right and when it arrives to the end it returns to the starting pos
                 if (yellowSoul.position.x < 7.0f && yellowSoulRight) yellowSoul.position = new Vector3(yellowSoul.position.x + 0.05f, yellowSoul.position.y, yellowSoul.position.z);
                 else if (yellowSoul.position.x >= 7.0f && yellowSoulRight) yellowSoulRight = false;
                 else if (yellowSoul.position.x > player.position.x && !yellowSoulRight) yellowSoul.position = new Vector3(yellowSoul.position.x - 0.05f, yellowSoul.position.y, yellowSoul.position.z);
                 else EndLightningAttack();
             }
+            //Soul lifesteal attack
             if (soulLifesteal)
             {
+                //We move the jar using the arrows
                 if (jarMovUp && jar.GetComponent<RectTransform>().anchoredPosition.y < 2.0f) jar.GetComponent<RectTransform>().anchoredPosition = new Vector2(jar.GetComponent<RectTransform>().anchoredPosition.x, jar.GetComponent<RectTransform>().anchoredPosition.y + 0.09f);
                 if (jarMovLeft && jar.GetComponent<RectTransform>().anchoredPosition.x > -5.45f) jar.GetComponent<RectTransform>().anchoredPosition = new Vector2(jar.GetComponent<RectTransform>().anchoredPosition.x - 0.09f, jar.GetComponent<RectTransform>().anchoredPosition.y);
                 if (jarMovRight && jar.GetComponent<RectTransform>().anchoredPosition.x < 5.45f) jar.GetComponent<RectTransform>().anchoredPosition = new Vector2(jar.GetComponent<RectTransform>().anchoredPosition.x + 0.09f, jar.GetComponent<RectTransform>().anchoredPosition.y);
                 if (jarMovDown && jar.GetComponent<RectTransform>().anchoredPosition.y > -1.70f) jar.GetComponent<RectTransform>().anchoredPosition = new Vector2(jar.GetComponent<RectTransform>().anchoredPosition.x, jar.GetComponent<RectTransform>().anchoredPosition.y - 0.09f);
+                //We change the red soul positions
                 if (redSoul1 != null) redSoul1.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul1.GetComponent<RectTransform>().anchoredPosition.x, redSoul1.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
                 if (redSoul2 != null) redSoul2.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul2.GetComponent<RectTransform>().anchoredPosition.x, redSoul2.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
                 if (redSoul3 != null) redSoul3.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul3.GetComponent<RectTransform>().anchoredPosition.x, redSoul3.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
@@ -4699,19 +4807,24 @@ public class BattleController : MonoBehaviour
                 if (redSoul8 != null) redSoul8.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul8.GetComponent<RectTransform>().anchoredPosition.x, redSoul8.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
                 if (redSoul9 != null) redSoul9.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul9.GetComponent<RectTransform>().anchoredPosition.x, redSoul9.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
                 if (redSoul10 != null) redSoul10.GetComponent<RectTransform>().anchoredPosition = new Vector2(redSoul10.GetComponent<RectTransform>().anchoredPosition.x, redSoul10.GetComponent<RectTransform>().anchoredPosition.y - 0.045f);
+                //When all the red souls are collected or despawned the attack ends
                 if (redSoul1 == null && redSoul2 == null && redSoul2 == null && redSoul3 == null && redSoul4 == null && redSoul5 == null && redSoul6 == null && redSoul7 == null && redSoul8 == null && redSoul9 == null && redSoul10 == null) EndLifestealAttack();
             }
+            //The soul disappear attack
             if (soulDisappear)
             {
+                //We move the soul using the arrows
                 if (blueSoulMovUp && blueSoul.GetComponent<RectTransform>().anchoredPosition.y < 2.0f) blueSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(blueSoul.GetComponent<RectTransform>().anchoredPosition.x, blueSoul.GetComponent<RectTransform>().anchoredPosition.y + 0.075f);
                 if (blueSoulMovLeft && blueSoul.GetComponent<RectTransform>().anchoredPosition.x > -5.45f) blueSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(blueSoul.GetComponent<RectTransform>().anchoredPosition.x - 0.075f, blueSoul.GetComponent<RectTransform>().anchoredPosition.y);
                 if (blueSoulMovRight && blueSoul.GetComponent<RectTransform>().anchoredPosition.x < 5.45f) blueSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(blueSoul.GetComponent<RectTransform>().anchoredPosition.x + 0.075f, blueSoul.GetComponent<RectTransform>().anchoredPosition.y);
                 if (blueSoulMovDown && blueSoul.GetComponent<RectTransform>().anchoredPosition.y > -2.10f) blueSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(blueSoul.GetComponent<RectTransform>().anchoredPosition.x, blueSoul.GetComponent<RectTransform>().anchoredPosition.y - 0.075f);
+                //We move the walls to the left
                 wall1.GetComponent<RectTransform>().anchoredPosition = new Vector2(wall1.GetComponent<RectTransform>().anchoredPosition.x - 0.045f, wall1.GetComponent<RectTransform>().anchoredPosition.y);
                 wall2.GetComponent<RectTransform>().anchoredPosition = new Vector2(wall2.GetComponent<RectTransform>().anchoredPosition.x - 0.045f, wall2.GetComponent<RectTransform>().anchoredPosition.y);
                 wall3.GetComponent<RectTransform>().anchoredPosition = new Vector2(wall3.GetComponent<RectTransform>().anchoredPosition.x - 0.045f, wall3.GetComponent<RectTransform>().anchoredPosition.y);
                 wall4.GetComponent<RectTransform>().anchoredPosition = new Vector2(wall4.GetComponent<RectTransform>().anchoredPosition.x - 0.045f, wall4.GetComponent<RectTransform>().anchoredPosition.y);
                 wall5.GetComponent<RectTransform>().anchoredPosition = new Vector2(wall5.GetComponent<RectTransform>().anchoredPosition.x - 0.045f, wall5.GetComponent<RectTransform>().anchoredPosition.y);
+                //We decrease the soul alpha, if it arrives to 0.05 the attack ends
                 if (blueSoul.GetComponent<Image>().color.a > 0.05) blueSoul.GetComponent<Image>().color = new Color(blueSoul.GetComponent<Image>().color.r, blueSoul.GetComponent<Image>().color.g, blueSoul.GetComponent<Image>().color.b, blueSoul.GetComponent<Image>().color.a - 0.0006f);
                 else
                 {
@@ -4719,8 +4832,10 @@ public class BattleController : MonoBehaviour
                     EndDisappearAttack();
                 }
             }
+            //The soul light up attack
             if (soulLightUp)
             {
+                //We sacle the fog to the start scale
                 if (!fogScaled)
                 {
                     if (fog.GetComponent<RectTransform>().localScale.x > 1.0f) fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x - 0.1f, fog.GetComponent<RectTransform>().localScale.y - 0.1f, fog.GetComponent<RectTransform>().localScale.z);
@@ -4732,9 +4847,13 @@ public class BattleController : MonoBehaviour
                 }
                 else
                 {
+                    //When the time ends the attack is finished
                     if ((Time.fixedTime - lightUpTime) > 10.0f) EndLightUpAttack();
+                    //If the fog scale is bigger than the min scale the scale decreases slowly
                     if (fog.GetComponent<RectTransform>().localScale.x >= minFogScale) fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x - 0.004f, fog.GetComponent<RectTransform>().localScale.y - 0.004f, fog.GetComponent<RectTransform>().localScale.z);
+                    //If it is smaller it increases slowly
                     else fog.GetComponent<RectTransform>().localScale = new Vector3(fog.GetComponent<RectTransform>().localScale.x + 0.004f, fog.GetComponent<RectTransform>().localScale.y + 0.004f, fog.GetComponent<RectTransform>().localScale.z);
+                    //We move the magenta soul using the arrows
                     if (magentaSoulMovUp && magentaSoul.GetComponent<RectTransform>().anchoredPosition.y < 2.0f)
                     {
                         magentaSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(magentaSoul.GetComponent<RectTransform>().anchoredPosition.x, magentaSoul.GetComponent<RectTransform>().anchoredPosition.y + 0.05f);
@@ -4760,10 +4879,13 @@ public class BattleController : MonoBehaviour
         }
         if (companionTurn && finalAttack)
         { 
+            //Adventurer
             if(currentCompanion == 0)
             {
+                //BK-47
                 if (usingStyle == 4)
                 {
+                    //We aim up and down slowly
                     if (aimRotation < 40.0f && aimUp)
                     {
                         aimRotation += 0.5f;
@@ -4784,15 +4906,19 @@ public class BattleController : MonoBehaviour
                     }
                 }
             }
+            //Adventurer
             else if(currentCompanion == 1)
             {
+                //Pulsing magic
                 if(usingStyle == 2)
                 {
+                    //We decrease the fill amount until it fills. When it fills we activate an animation.
                     if ((Time.fixedTime - shurikenTime) < 5.0f)
                     {
                         if (companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f) companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Image>().fillAmount -= 0.002f;
                         else companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Animator>().SetBool("pulse", true);
                     }
+                    //We check if the player fills the bar correctly
                     else if (companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Image>().fillAmount < 1.0f)
                     {
                         BadCommand();
@@ -4816,18 +4942,16 @@ public class BattleController : MonoBehaviour
                         magicPulse.transform.GetComponent<MagicPulse>().Create(4 + PlayerPrefs.GetInt("WizardLvl") - 1, companion);
                     }
                 }
+                //Explode
                 else if (usingStyle == 4)
-                {
+                {                    
                     if((Time.fixedTime - shurikenTime) < 10.0f)
                     {
-                        if((Input.GetKey(KeyCode.X) && attackAction) || (!Input.GetKey(KeyCode.X) && !attackAction))
-                        {
-                            companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount += 0.004f;
-                        }
-                        else
-                        {
-                            companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount -= 0.003f;
-                        }
+                        //We fill the bar if the player presses or releases the X button when it is said so
+                        if((Input.GetKey(KeyCode.X) && attackAction) || (!Input.GetKey(KeyCode.X) && !attackAction)) companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount += 0.004f; 
+                        //If the command is incorrect we decrease the bar fill
+                        else companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount -= 0.003f; 
+                        //We save the damage depending on the bar fill
                         if (companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount < 0.5f) companion.GetChild(0).GetChild(7).GetChild(8).GetChild(0).GetComponent<Text>().text = 3.ToString();
                         else if(companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount < 0.678f) companion.GetChild(0).GetChild(7).GetChild(8).GetChild(0).GetComponent<Text>().text = 4.ToString();
                         else if (companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount < 0.81f) companion.GetChild(0).GetChild(7).GetChild(8).GetChild(0).GetComponent<Text>().text = 5.ToString();
@@ -4835,6 +4959,7 @@ public class BattleController : MonoBehaviour
                         else if (companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount < 0.966f) companion.GetChild(0).GetChild(7).GetChild(8).GetChild(0).GetComponent<Text>().text = 7.ToString();
                         else companion.GetChild(0).GetChild(7).GetChild(8).GetChild(0).GetComponent<Text>().text = 8.ToString();
                     }
+                    //When the time arrives 10 we end the attack
                     else
                     {
                         actionInstructions.SetActive(false);
@@ -4845,12 +4970,14 @@ public class BattleController : MonoBehaviour
             }
             
         }
-
+        //Flee action
         if (fleeing)
         {
             if ((Time.fixedTime - fleeTime) < 10.0f)
             {
+                //We decrease the bar fill if it is not completely filled
                 if (fleeAction.transform.GetChild(1).GetComponent<Image>().fillAmount != 1.0f) fleeAction.transform.GetChild(1).GetComponent<Image>().fillAmount -= 0.001f;
+                //We move the little bar left and right
                 if (fleeRight)
                 {
                     if (fleeAction.transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition.x < 1.425f)
@@ -4870,6 +4997,7 @@ public class BattleController : MonoBehaviour
             }
             else
             {
+                //When the countdown ends we check if the little bar is inside the fill amount, if so the player flees. If not the players turn ends.
                 actionInstructions.SetActive(false);
                 fleeAction.gameObject.SetActive(false);
                 if (fleeAction.transform.GetChild(1).GetComponent<Image>().fillAmount > ((fleeAction.transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition.x + 1.425f) / 3.86f))
@@ -4889,15 +5017,15 @@ public class BattleController : MonoBehaviour
                     else if(companionTurn) EndPlayerTurn(2);
                 }
             }
-            
         }
+        //When the player flees we move the player and the companion out of the camera view and finish the battle
         else if (fled)
         {
             if(player.transform.position.x > -10.0f) player.transform.position = new Vector3(player.transform.position.x - 0.2f, player.transform.position.y, player.transform.position.z);
             if(companion.transform.position.x > -10.0f) companion.transform.position = new Vector3(companion.transform.position.x - 0.2f, companion.transform.position.y, companion.transform.position.z);
             else endBattle = true;
         }
-
+        //When the battle ends we increase the alpha of a black image until it is completely opaque, then we load the main menu
         if (endBattle)
         {
             if(endBattleImage.GetComponent<Image>().color.a < 1.0f)
@@ -4914,6 +5042,7 @@ public class BattleController : MonoBehaviour
     //Function to spawn the characters. 0 -> Player, 1-> companion, 2-> Enemy1, 3-> Enemy2, 4-> Enemy3, 5-> Enemy4. type-> 0 adventurer and bandit, 1-> wizard
     public void SpawnCharacter(int battlePos, int type)
     {
+        //We use this position to spawn the companion when we are changing companion
         if(battlePos == -1)
         {
             if (type == 0) companion = Instantiate(adventurerBattle, new Vector3(-9.0f, -0.713f, -2.04f), Quaternion.identity); 
@@ -4923,6 +5052,7 @@ public class BattleController : MonoBehaviour
             companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.b, 0.0f);
             companion.GetComponent<PlayerTeamScript>().SetEnter();
         }
+        //The player is the only one that can be spawned here
         if (battlePos == 0)
         {
             player = Instantiate(playerBattle, new Vector3(-5, -1, -2.05f), Quaternion.identity);
@@ -4932,12 +5062,14 @@ public class BattleController : MonoBehaviour
             disappearAction = player.GetChild(0).GetChild(11).gameObject;
             lightUpAction = player.GetChild(0).GetChild(12).gameObject;
         }
+        //We can spawn two different companions: the adventurer or the wizard
         else if (battlePos == 1)
         {
             currentCompanion = type;
             if(type == 0) companion = Instantiate(adventurerBattle, new Vector3(-6.4f, -0.713f, -2.04f), Quaternion.identity);
             else if(type == 1) companion = Instantiate(companionWizardBattle, new Vector3(-6.4f, -0.72f, -2.04f), Quaternion.identity);
         }
+        //We can spawn 3 different enemies: the bandit, the evil wizard and the king
         else if (battlePos == 2)
         {
             if (type == 0)
@@ -5033,11 +5165,13 @@ public class BattleController : MonoBehaviour
     {
         Transform[] grounded;
         grounded = null;
+        //If we have only 1 enemy we only have two options, it is grounded or not
         if (enemyNumber == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded() && enemy1.GetComponent<EnemyTeamScript>().IsAlive())
         {
             grounded = new Transform[1];
             grounded[0] = enemy1;
         }
+        //When we have 2 enemies there are more options
         else if (enemyNumber == 2)
         {
             if (enemy1.GetComponent<EnemyTeamScript>().IsGrounded() && enemy1.GetComponent<EnemyTeamScript>().IsAlive())
@@ -5060,6 +5194,7 @@ public class BattleController : MonoBehaviour
                 grounded[0] = enemy2;
             }
         }
+        //When we have 2 enemies there are even more options
         else if (enemyNumber == 3)
         {
             if (enemy1.GetComponent<EnemyTeamScript>().IsGrounded() && enemy1.GetComponent<EnemyTeamScript>().IsAlive())
@@ -5115,7 +5250,8 @@ public class BattleController : MonoBehaviour
                 grounded[0] = enemy3;
             }
         }
-        else if(enemyNumber == 4)
+        //When we have 2 enemies there are a lot of options
+        else if (enemyNumber == 4)
         {
             if (enemy1.GetComponent<EnemyTeamScript>().IsGrounded() && enemy1.GetComponent<EnemyTeamScript>().IsAlive())
             {
@@ -5247,7 +5383,7 @@ public class BattleController : MonoBehaviour
         return grounded;
     }
 
-    //Function to get all enemies
+    //Function to get all enemies. Very similar to the previous function, but now we dont have to look if the enemy is grounded or not
     public Transform[] GetAllEnemies()
     {
         Transform[] enemies = null;
@@ -5477,7 +5613,6 @@ public class BattleController : MonoBehaviour
         //if the enemy is dead and it is the last attack we play the die animation, else we play the damage animation
         if(objective.transform.GetChild(0).transform.GetChild(2).GetComponent<EnemyLifeControllerScript>().GetHealth() <= 0 && last)
         {
-            //if(!objective.GetComponent<EnemyTeamScript>().IsGrounded()) objective.GetComponent<EnemyTeamScript>().EnemyDied();
             objective.GetComponent<Animator>().SetBool("IsDead", true);
             objective.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
         }
@@ -5523,6 +5658,7 @@ public class BattleController : MonoBehaviour
         soulRegenMovDown = false;
         soulRegenRingSpeed = 0.03f;
         soulRegenGreenSpeed = 0.075f;
+        //We heal and increase light depending on the number of rings the soul has crossed
         player.GetComponent<PlayerTeamScript>().Heal(soulRegenHeal/2, true, firstPosPlayer, true, true);
         if(!companion.GetComponent<PlayerTeamScript>().IsDead()) companion.GetComponent<PlayerTeamScript>().Heal(soulRegenHeal / 2, false, !firstPosPlayer, false, true);
         player.GetComponent<PlayerTeamScript>().IncreaseLight(soulRegenLight/2, true, true, true);
@@ -5574,6 +5710,7 @@ public class BattleController : MonoBehaviour
     //Functions to end the disappear attack
     public void EndDisappearAttack()
     {
+        //We set the disappear time depending on the alpha of the blue soul
         player.GetComponent<PlayerTeamScript>().SetDisappearTime(blueSoul.GetComponent<Image>().color.a);
         player.GetComponent<PlayerTeamScript>().HideBuffDebuff();
         actionInstructions.SetActive(false);
@@ -5595,6 +5732,7 @@ public class BattleController : MonoBehaviour
     public void StartChangePosition(int user)
     {
         changePosAction.SetActive(false);
+        //We change some animation variables depending on the movement position
         if (user == 1)
         {
             player.GetComponent<Animator>().SetFloat("Speed", 0.5f);
@@ -5616,10 +5754,12 @@ public class BattleController : MonoBehaviour
             companion.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", false);
         }
     }
-
+    //Function to end the change position action
     private void EndChangePosition(int user)
     {
+        //if the companion isnt dead we reactivate the change position action
         if(!companion.GetComponent<PlayerTeamScript>().IsDead()) changePosAction.SetActive(true);
+        //We put the default values of the animation variables and ensure that the team members are in the correct position.
         if (user == 1)
         {
             player.GetComponent<Animator>().SetFloat("Speed", 0.0f);
@@ -5654,37 +5794,47 @@ public class BattleController : MonoBehaviour
             companion.position = new Vector3(-6.4f, companion.position.y, -2.04f);
         }
     }
-
     //A function to end players turn. User-->1 player, User-->2 companion
     public void EndPlayerTurn(int user)
     {
+        //We confirm that the player and the companion are in the correct position
         player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -2.05f);
         companion.transform.position = new Vector3(companion.transform.position.x, companion.transform.position.y, -2.04f);
+        //We end the attack 
         attackAction = false;
         finalAttack = false;
+        //We check if the user has already copleted their turn, if so we change the user
         if (user == 1 && playerTurnCompleted) user = 2;
         if (user == 2 && companionTurnCompleted) user = 1;
+        //If there are still enemies allive
         if(GetAllEnemies() != null)
         {
+            //If there arent any grounded enemies we deactivate the sword attacks
             if (GetGroundEnemies() == null)
             {
                 player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
             }
-
+            //We end the player or the companion turn if they are the users or if they are dead in case of the companion
             if (user == 1) playerTurnCompleted = true;
             if (user == 2 || companion.GetComponent<PlayerTeamScript>().IsDead()) companionTurnCompleted = true;
+            //We change the UI pos
             if (playerTurn && !firstPosPlayer && attackType == 2) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x - 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
+            //If both team mates completed their turn 
             if (playerTurnCompleted && companionTurnCompleted)
             {
+                //We put the color back to normal
                 player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
                 companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
+                //We make the buff/debuff decrease
                 player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
                 player.GetComponent<PlayerTeamScript>().RestBuffDebuff();
                 companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
                 companion.GetComponent<PlayerTeamScript>().RestBuffDebuff();
+                //We hide the canvas
                 canvas.GetComponent<Animator>().SetBool("Hide", false);
+                //We prepare the next player turn
                 playerChoosingAction = true;
                 playerTeamTurn = false;
                 playerTurnCompleted = false;
@@ -5699,57 +5849,78 @@ public class BattleController : MonoBehaviour
                     playerTurn = true;
                     companionTurn = false;
                 }
+                //We start the enemy turn
                 enemyTeamTurn = true;
                 enemy1Turn = true;
             }
+            //If only the player has completed their turn
             else if (playerTurnCompleted && !companionTurnCompleted)
             {
+                //We put a darker color on the player 
                 player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
+                //We hide the canvas
                 canvas.GetComponent<Animator>().SetBool("Hide", false);
+                //We make the buff/debuff decrease
                 player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
                 companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+                //We start the companion turn
                 playerTurn = false;
                 companionTurn = true;
                 companionChoosingAction = true;
                 companion.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
             }
+            //If only the companion has completed their turn
             else if (!playerTurnCompleted && companionTurnCompleted)
             {
+                //We put a darker color on the companion 
                 companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
+                //We hide the canvas
                 canvas.GetComponent<Animator>().SetBool("Hide", false);
+                //We make the buff/debuff decrease
                 player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
                 companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+                //We start the player turn
                 playerTurn = true;
                 playerChoosingAction = true;
                 companionTurn = false;
                 player.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
             }
         }
+        //If all enemies are dead
         else
         {
             allEnemiesDead = true;
+            //We check that the animation of the boss has ended
             if (bossDieAnimationEnded)
             {
+                //If the player didnt earn any xp we give them 1
                 if (currentFightXP == 0)
                 {
                     currentFightXP = 1;
                     ShowCurrentXP();
                 }
+                //We put the color back to normal
                 player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
                 companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
+                //We hide the canvas
                 canvas.GetComponent<Animator>().SetBool("Hide", false);
+                //We put the camera on the victory position
                 mainCamera.GetComponent<CameraScript>().ChangeCameraState(1);
+                //We deactivate the actual xp and activate the victory xp
                 xpObject.SetActive(false);
                 victoryXP.transform.GetChild(18).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
                 victoryXP.transform.GetChild(19).gameObject.SetActive(true);
                 victoryXP.transform.GetChild(20).gameObject.SetActive(true);
                 victoryXP.transform.GetChild(21).gameObject.SetActive(true);
                 victoryXP.transform.GetChild(21).GetComponent<Text>().text = currentFightXP.ToString();
+                //We end the player turn and enter the victory state
                 playerTeamTurn = false;
                 playerTurnCompleted = false;
                 companionTurnCompleted = false;
                 victory = true;
+                //We show the victory xp
                 ShowVictoryXP();
+                //We activate the vitory animations
                 player.GetComponent<Animator>().SetTrigger("Victory");
                 if (!companion.GetComponent<PlayerTeamScript>().IsDead()) companion.GetComponent<Animator>().SetTrigger("Victory");
             }            
@@ -5764,19 +5935,27 @@ public class BattleController : MonoBehaviour
     //A function to end enemy turn
     public void EndEnemyTurn()
     {
+        //We put the color back to normal
         player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
         companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
+        //If the player is dead we save that the last enemie killed them
         if (player.GetComponent<PlayerTeamScript>().IsDead()) killerEnemy = 5;
         else
         {
+            //We restart the defense ints
             defensePlayer = 0;
             defenseCompanion = 0;
+            //We start player turn
             playerTeamTurn = true;
+            //If the wizard was using the barrier
             if (taunting)
             {
+                //We end the taunt
                 taunting = false;
+                //We end the defending animation and make the barrier disappear
                 companion.GetComponent<Animator>().SetBool("isDefending", false);
                 companion.GetChild(1).GetComponent<SpriteRenderer>().color = new Color(companion.GetChild(1).GetComponent<SpriteRenderer>().color.r, companion.GetChild(1).GetComponent<SpriteRenderer>().color.g, companion.GetChild(1).GetComponent<SpriteRenderer>().color.b, 0.0f);
+                //We make the companion return to their position
                 playerTurn = false;
                 playerChoosingAction = false;
                 companionTurn = true;
@@ -5784,7 +5963,9 @@ public class BattleController : MonoBehaviour
             }
             else
             {
+                //IF the companion isnt dead we activate the change position action
                 if (!companion.GetComponent<PlayerTeamScript>().IsDead()) changePosAction.SetActive(true);
+                //If they are dead we start the player turn
                 if (companion.GetComponent<PlayerTeamScript>().IsDead())
                 {
                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
@@ -5795,6 +5976,7 @@ public class BattleController : MonoBehaviour
                 }
                 else
                 {
+                    //If the player is in the first position we start the player turn
                     if (firstPosPlayer)
                     {
                         player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
@@ -5803,6 +5985,7 @@ public class BattleController : MonoBehaviour
                         playerTurn = true;
                         playerChoosingAction = true;
                     }
+                    //Else we start the companion turn
                     else
                     {
                         companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
@@ -5831,14 +6014,17 @@ public class BattleController : MonoBehaviour
     //A function to pass the turn to the next enemy
     public void NextEnemy(int numb)
     {
+        //We put the color back to normal
         player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
         companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
+        //If the player dies we save what enemy will attack when they revive
         if (player.GetComponent<PlayerTeamScript>().IsDead())
         {
             killerEnemy = numb;
         }
         else
         {
+            //We activate the next enemy turn
             if (numb == 1)
             {
                 enemy2Turn = true;
@@ -5856,6 +6042,7 @@ public class BattleController : MonoBehaviour
     //Function to restart the enemy attack when the player dies
     public void ContinueEnemy()
     {
+        //We restart the enemy attack or end the enemy attack fase
         if (killerEnemy != 5) NextEnemy(killerEnemy);
         else EndEnemyTurn();
     }
@@ -5881,20 +6068,27 @@ public class BattleController : MonoBehaviour
     //Function to start a soul attack
     public void StartSoulMusicAttack(int lvl)
     {
+        //We save the lvl with a max of 4
         int actualLvl = lvl;
         if (actualLvl > 4) actualLvl = 4;
+        //We put the fill at the starting pos
         player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
+        //We start putting the keys at random positions depending on the lvl
         float key1pos = Random.Range(-4.75f, -4.75f + (10.0f/(actualLvl + 3)));
         key1 = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
         key1.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key1pos, 0.0f, 0.0f);
+        //We put a random key and save it in the previously selected position
         key1Input = Random.Range(0, 4);
         if(key1Input == 0) key1.GetComponent<Image>().sprite = upArrowSprite;
         if (key1Input == 1) key1.GetComponent<Image>().sprite = leftArrowSprite;
         if (key1Input == 2) key1.GetComponent<Image>().sprite = rightArrowSprite;
         if (key1Input == 3) key1.GetComponent<Image>().sprite = downArrowSprite;
+        //We change the key color
         key1.GetComponent<Image>().color = new Vector4(0.4f, 0.4f, 0.4f, 1.0f);
+        //We instantiate a key cover that we will remove when the soul arrives
         key1Cover = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
         key1Cover.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key1pos, 0.0f, 0.0f);
+        //We repeat this with every key
         float key2pos = Random.Range(key1pos + 1.0f, -5.0f + (10.0f / (actualLvl + 3)) * 2);
         key2 = Instantiate(keyPrefab, new Vector3(0.0f, player.GetChild(0).transform.GetChild(7).transform.position.y, player.GetChild(0).transform.GetChild(7).transform.position.z), Quaternion.identity, player.GetChild(0).transform.GetChild(7).transform);
         key2.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(key2pos, 0.0f, 0.0f);
@@ -5970,7 +6164,7 @@ public class BattleController : MonoBehaviour
                 }
             }            
         }
-
+        //We save the real level and start the attack
         soulMusic = lvl;
         finalAttack = true;
     }
@@ -5978,11 +6172,13 @@ public class BattleController : MonoBehaviour
     //Function to end the soul music attack
     public void EndSoulAttack(int lvl)
     {
+        //We sleep the enemies depending on the final level of the attack
         Transform[] enemies = GetAllEnemies();
         for(int i = 0; i < enemies.Length; i++)
         {
             enemies[i].GetComponent<EnemyTeamScript>().SetAsleepTime(lvl);
         }
+        //We end the attack and end the player turn
         soulMusic = 0;
         finalAttack = false;
         EndPlayerTurn(1);
@@ -5991,11 +6187,15 @@ public class BattleController : MonoBehaviour
     //Function to start the regeneration attack
     public void StartRegenerationAttack()
     {
+        //We put a random position and a random color to the first ring
         float randx = Random.Range(-5.0f,5.0f);
         float randc = Random.Range(0.0f, 1.0f);
+        //We instantiate the correct ring
         if (randc < 0.5f) ring1[0] = Instantiate(redRingBck, regenerationAction.transform);
         else ring1[0] = Instantiate(yellowRingBck, regenerationAction.transform);
+        //We put the ring on the correct position
         ring1[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -5.0f);
+        //We generate a new position depending on the last position and a new color
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx-3.0f, randx+3.0f);
@@ -6003,6 +6203,7 @@ public class BattleController : MonoBehaviour
         if(randc < 0.5f) ring2[0] = Instantiate(redRingBck, regenerationAction.transform);
         else ring2[0] = Instantiate(yellowRingBck, regenerationAction.transform);
         ring2[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -6.0f);
+        //We generate a new position depending on the last position and a new color
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
@@ -6010,6 +6211,7 @@ public class BattleController : MonoBehaviour
         if(randc < 0.5f) ring3[0] = Instantiate(redRingBck, regenerationAction.transform);
         else ring3[0] = Instantiate(yellowRingBck, regenerationAction.transform);
         ring3[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -7.0f);
+        //We generate a new position depending on the last position and a new color
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
@@ -6017,6 +6219,7 @@ public class BattleController : MonoBehaviour
         if(randc < 0.5f) ring4[0] = Instantiate(redRingBck, regenerationAction.transform);
         else ring4[0] = Instantiate(yellowRingBck, regenerationAction.transform);
         ring4[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -8.0f);
+        //We generate a new position depending on the last position and a new color
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
@@ -6024,6 +6227,7 @@ public class BattleController : MonoBehaviour
         if(randc < 0.5f) ring5[0] = Instantiate(redRingBck, regenerationAction.transform);
         else ring5[0] = Instantiate(yellowRingBck, regenerationAction.transform);
         ring5[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -9.0f);
+        //We generate a new position depending on the last position and a new color
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
@@ -6031,6 +6235,7 @@ public class BattleController : MonoBehaviour
         if(randc < 0.5f) ring6[0] = Instantiate(redRingBck, regenerationAction.transform);
         else ring6[0] = Instantiate(yellowRingBck, regenerationAction.transform);
         ring6[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -10.0f);
+        //We generate a new position depending on the last position and a new color
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
@@ -6038,6 +6243,7 @@ public class BattleController : MonoBehaviour
         if(randc < 0.5f) ring7[0] = Instantiate(redRingBck, regenerationAction.transform);
         else ring7[0] = Instantiate(yellowRingBck, regenerationAction.transform);
         ring7[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -11.0f);
+        //We generate a new position depending on the last position and a new color
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
@@ -6045,8 +6251,10 @@ public class BattleController : MonoBehaviour
         if (randc < 0.5f) ring8[0] = Instantiate(redRingBck, regenerationAction.transform);
         else ring8[0] = Instantiate(yellowRingBck, regenerationAction.transform);
         ring8[0].GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, -12.0f);
+        //We instantiate the green soul
         greenSoul = Instantiate(greenSoulPrefab, regenerationAction.transform);
         greenSoul.GetComponent<RectTransform>().anchoredPosition = new Vector2(0.0f, 0.0f);
+        //We instantiate the top parts of the previously instantiated rings
         ring1[1] = Instantiate(RingFront, regenerationAction.transform);
         if (ring1[0].tag.Equals("RedRing")) ring1[1].GetComponent<RingScript>().SetColor(true);
         else ring1[1].GetComponent<RingScript>().SetColor(false);
@@ -6095,12 +6303,14 @@ public class BattleController : MonoBehaviour
         ring8[1].GetComponent<RingScript>().SetTopRing(ring8[0]);
         ring8[1].GetComponent<RingScript>().SetPrevRing(ring7[0]);
         ring8[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(ring8[0].GetComponent<RectTransform>().anchoredPosition.x, ring8[0].GetComponent<RectTransform>().anchoredPosition.y + 0.009f);
+        //We start the soul attack
         finalAttack = true;
         soulRegen = true;
     }
     //A function to start the lightning attack
     public void StartLightningAttack()
     {
+        //We instantiate the yellow soul and start the soul attack
         yellowSoul = Instantiate(yellowSoulPrefab, lightningAction.transform);
         yellowSoul.position = new Vector3(player.position.x, 3.5f, player.position.z);
         finalAttack = true;
@@ -6109,54 +6319,65 @@ public class BattleController : MonoBehaviour
     //A function to start the lifesteal attack
     public void StartLifestealAttack()
     {
+        //We instantiate a red soul in a random position
         float randx = Random.Range(-5.0f, 5.0f);
         redSoul1 = Instantiate(redSoulPrefab, lifestealAction.transform);
         redSoul1.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 3.0f);
+        //We instantiate the next red soul depending on the last position
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
         redSoul2 = Instantiate(redSoulPrefab, lifestealAction.transform);
         redSoul2.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 4.1f);
+        //We instantiate the next red soul depending on the last position
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
         redSoul3 = Instantiate(redSoulPrefab, lifestealAction.transform);
         redSoul3.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 5.2f);
+        //We instantiate the next red soul depending on the last position
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
         redSoul4 = Instantiate(redSoulPrefab, lifestealAction.transform);
         redSoul4.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 6.3f);
+        //We instantiate the next red soul depending on the last position
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
         redSoul5 = Instantiate(redSoulPrefab, lifestealAction.transform);
         redSoul5.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 7.4f);
+        //We instantiate the next red soul depending on the last position
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
         redSoul6 = Instantiate(redSoulPrefab, lifestealAction.transform);
         redSoul6.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 8.5f);
+        //We instantiate the next red soul depending on the last position
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
         redSoul7 = Instantiate(redSoulPrefab, lifestealAction.transform);
         redSoul7.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 9.6f);
+        //We instantiate the next red soul depending on the last position
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
         redSoul8 = Instantiate(redSoulPrefab, lifestealAction.transform);
         redSoul8.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 10.7f);
+        //We instantiate the next red soul depending on the last position
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
         redSoul9 = Instantiate(redSoulPrefab, lifestealAction.transform);
         redSoul9.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 11.8f);
+        //We instantiate the next red soul depending on the last position
         if (randx < -2.0f) randx = -2.0f;
         else if (randx > 2.0f) randx = 2.0f;
         randx = Random.Range(randx - 3.0f, randx + 3.0f);
         redSoul10 = Instantiate(redSoulPrefab, lifestealAction.transform);
         redSoul10.GetComponent<RectTransform>().anchoredPosition = new Vector2(randx, 12.9f);
+        //We instantiate the jar and start the attack
         jar = Instantiate(jarPrefab, lifestealAction.transform);
         finalAttack = true;
         soulLifesteal = true;
@@ -6170,12 +6391,15 @@ public class BattleController : MonoBehaviour
     //Functions to end the lifsteal attack
     public void EndLifestealAttack()
     {
+        //We put the lifsteal buff
         player.GetComponent<PlayerTeamScript>().SetLifestealTime(soulLifestealNumb);
         player.GetComponent<PlayerTeamScript>().HideBuffDebuff();
         companion.GetComponent<PlayerTeamScript>().HideBuffDebuff();
+        //we reset the lifesteal variables
         soulLifestealNumb = 0;
         soulLifesteal = false;
         actionInstructions.SetActive(false);
+        //We destroy the jar and end the lifsteal attack
         Destroy(jar.gameObject);
         player.GetComponent<PlayerTeamScript>().EndLifestealAttack();
     }
@@ -6193,49 +6417,66 @@ public class BattleController : MonoBehaviour
     //A function to start the disappear attack
     public void StartDisappearAttack()
     {
+        //We instantiate the blue soul
         blueSoul = Instantiate(blueSoulPrefab, disappearAction.transform);
+        //We instantiate the wall on a random position
         float randy = Random.Range(-1.5f, 1.5f);
         wall1 = Instantiate(wallPrefab, disappearAction.transform);
         wall1.GetComponent<RectTransform>().anchoredPosition = new Vector2(6.5f, randy);
+        //We instantiate the wall on a random position
         randy = Random.Range(-1.5f, 1.5f);
         wall2 = Instantiate(wallPrefab, disappearAction.transform);
         wall2.GetComponent<RectTransform>().anchoredPosition = new Vector2(9.5f, randy);
+        //We save the precious wall
         wall2.GetComponent<WallScript>().SetPreviousWall(wall1);
+        //We instantiate the wall on a random position
         randy = Random.Range(-1.5f, 1.5f);
         wall3 = Instantiate(wallPrefab, disappearAction.transform);
         wall3.GetComponent<RectTransform>().anchoredPosition = new Vector2(12.5f, randy);
+        //We save the precious wall
         wall3.GetComponent<WallScript>().SetPreviousWall(wall2);
+        //We instantiate the wall on a random position
         randy = Random.Range(-1.5f, 1.5f);
         wall4 = Instantiate(wallPrefab, disappearAction.transform);
         wall4.GetComponent<RectTransform>().anchoredPosition = new Vector2(15.5f, randy);
+        //We save the precious wall
         wall4.GetComponent<WallScript>().SetPreviousWall(wall3);
+        //We instantiate the wall on a random position
         randy = Random.Range(-1.5f, 1.5f);
         wall5 = Instantiate(wallPrefab, disappearAction.transform);
         wall5.GetComponent<RectTransform>().anchoredPosition = new Vector2(18.5f, randy);
+        //We save the precious wall
         wall5.GetComponent<WallScript>().SetPreviousWall(wall4);
+        //We save the previous wall of the first wall
         wall1.GetComponent<WallScript>().SetPreviousWall(wall5);
+        //We start the attack
         finalAttack = true;
         soulDisappear = true;
     }
     //Function to start the light up attack
     public void StartLightUpAttack()
     {
+        //We instantiate the magenta soul, the fog and the first shard
         magentaSoul = Instantiate(magentaSoulPrefab, lightUpAction.transform);
         fog = Instantiate(fogPrefab, lightUpAction.transform);
         magentaShard = Instantiate(magentaShardPrefab, lightUpAction.transform);
+        //We scale the shard, set the shard as the first sibling and put it in a random position
         magentaShard.GetComponent<RectTransform>().localScale = new Vector3(0.2f, 0.2f, 1.0f);
         magentaShard.transform.SetAsFirstSibling();
         float posx = Random.Range(-5.45f,5.45f);
         float posy = Random.Range(-1.75f,2.0f);
         magentaShard.GetComponent<RectTransform>().anchoredPosition = new Vector2(posx, posy);
+        //We start the attack
         finalAttack = true;
         soulLightUp = true;
     }
     //Functions to end the light up attack
     public void EndLightUpAttack()
     {
+        //We set the buff depending on the minimun fog scale
         if(minFogScale>1.0f) player.GetComponent<PlayerTeamScript>().SetLightUpPower(minFogScale);
         player.GetComponent<PlayerTeamScript>().HideBuffDebuff();
+        //We reset the variables
         magentaSoulMovUp = false;
         magentaSoulMovLeft = false;
         magentaSoulMovRight = false;
@@ -6244,9 +6485,11 @@ public class BattleController : MonoBehaviour
         minFogScale = 1.0f;
         fogScaled = false;
         soulLightUp = false;
+        //We destroy the objects
         Destroy(magentaSoul.gameObject);
         Destroy(magentaShard.gameObject);
         Destroy(fog.gameObject);
+        //We end the light up attack
         player.GetComponent<PlayerTeamScript>().EndLightUpAttack();
     }
     public void EndSoulLightUpAttack()
@@ -6257,7 +6500,9 @@ public class BattleController : MonoBehaviour
     //Function to create a magenta shard
     public void CreateMagentaShard()
     {
+        //We instantiate the magenta shard
         magentaShard = Instantiate(magentaShardPrefab, lightUpAction.transform);
+        //We scale the shard, set the shard as the first sibling and put it in a random position
         magentaShard.GetComponent<RectTransform>().localScale = new Vector3(0.2f, 0.2f, 1.0f);
         magentaShard.transform.SetAsFirstSibling();
         float posx = Random.Range(-5.45f, 5.45f);
@@ -6275,6 +6520,7 @@ public class BattleController : MonoBehaviour
         Transform[] enemies = GetAllEnemies();
         int i = 0;
         bool found = false;
+        //We look for the first grounded or flying enemy and return it
         while (i < enemies.Length && !found)
         {
             if(grounded)
@@ -6297,6 +6543,7 @@ public class BattleController : MonoBehaviour
         enemyName.transform.GetChild(2).gameObject.SetActive(false);
         enemyName.transform.GetChild(3).gameObject.SetActive(false);
         enemyName.transform.GetChild(4).gameObject.SetActive(false);
+        //If the first enemy is alive we save the name
         if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && (((usingStyle == 0 || usingStyle == 2) && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && ((usingStyle ==2 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded())|| usingStyle==0 || usingStyle == 3))))))
         {
             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
@@ -6319,6 +6566,7 @@ public class BattleController : MonoBehaviour
                 else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
             }
         }
+        //if not we look all the other enemies unitl we find one that isnt dead
         else if(enemyNumber > 1 && enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((playerTurn && (selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction != 0) || (companionTurn && (((usingStyle == 0 || usingStyle == 2) && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && ((usingStyle == 2 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || usingStyle == 0 || usingStyle == 3))))))
         {
             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
@@ -6392,6 +6640,7 @@ public class BattleController : MonoBehaviour
     {
         int lastI = -1;
         Transform[] groundEnemies = GetGroundEnemies();
+        //We write the name of all the gorunded enemies
         for (int i = 0; i < groundEnemies.Length; i++) 
         { 
             if(groundEnemies[i].GetComponent<EnemyTeamScript>().enemyType == 0)
@@ -6436,6 +6685,7 @@ public class BattleController : MonoBehaviour
     {
         int lastI = -1;
         Transform[] groundEnemies = GetAllEnemies();
+        //We write the name of all the enemies
         for (int i = 0; i < groundEnemies.Length; i++)
         {
             if (groundEnemies[i].GetComponent<EnemyTeamScript>().enemyType == 0)
@@ -6553,6 +6803,7 @@ public class BattleController : MonoBehaviour
     //Function to fill the souls
     public void FillSouls(float soul)
     {
+        //We fill the souls in order and start filling the next one when the previous one is already completely filled
         if(soul1.GetComponent<Image>().fillAmount != 1.0f)
         {
             if ((soul1.GetComponent<Image>().fillAmount + soul) > 1.0f)
@@ -6627,7 +6878,8 @@ public class BattleController : MonoBehaviour
         barrierNumber = 0;
         companion.transform.GetChild(0).GetChild(4).gameObject.SetActive(true);
         float r;
-        for(int i = 0; i<5; i++)
+        //We instantiate the keys randomly
+        for (int i = 0; i<5; i++)
         {
             r = Random.Range(0.0f, 4.0f);
             if (r < 1.0f)
@@ -6651,12 +6903,14 @@ public class BattleController : MonoBehaviour
                 companion.transform.GetChild(0).GetChild(4).GetChild(i).GetComponent<Image>().sprite = rightArrowSprite;
             }
         }
+        //We save the starting time to set the timer
         barrierTime = Time.fixedTime;
     }
 
     //Function to spend souls
     public void SpendSouls(int amount)
     {
+        //We spend the souls starting from the last
         if(soul6.GetComponent<Image>().fillAmount > 0.0f)
         {
             if(amount == 3)
@@ -6779,6 +7033,7 @@ public class BattleController : MonoBehaviour
     //Function to get the soul points
     private bool CanUseSoulPoints(int usingSouls)
     {
+        //We look the amount of souls that are completely filled and return if there are more than the asked amount
         int soulPoints = 0;
         if (soul1.GetComponent<Image>().fillAmount == 1.0f) soulPoints += 1;
         if (PlayerPrefs.GetInt("Souls") > 1 && soul2.GetComponent<Image>().fillAmount == 1.0f) soulPoints += 1;
@@ -6797,6 +7052,7 @@ public class BattleController : MonoBehaviour
     //Function to show the current xp
     private void ShowCurrentXP()
     {
+        //We save the units and the tens separatedly to make it easier to know the exact amount
         int rest = currentFightXP % 10;
         int quotient = currentFightXP / 10;
         if (rest == 0)
@@ -7044,6 +7300,7 @@ public class BattleController : MonoBehaviour
     //Function to show the victory xp
     private void ShowVictoryXP()
     {
+        //We save the units and the tens separatedly to make it easier to know the exact amount
         int rest = currentFightXP % 10;
         int quotient = currentFightXP / 10;
         if (rest == 0)
@@ -7292,6 +7549,7 @@ public class BattleController : MonoBehaviour
     {
         while (currentFightXP > 0)
         {
+            //We save the gained xp and save if the player level ups
             if (PlayerPrefs.GetInt("lvlXP") < 99) PlayerPrefs.SetInt("lvlXP", PlayerPrefs.GetInt("lvlXP") + 1);
             else
             {
@@ -7303,6 +7561,7 @@ public class BattleController : MonoBehaviour
             xpText.text = PlayerPrefs.GetInt("lvlXP").ToString();
             yield return new WaitForFixedUpdate();
         }
+        //If the player level ups we start the level up action
         if (lvlUp)
         {
             lvlUpMenu.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().text = (PlayerPrefs.GetInt("PlayerHeartLvl") * 5 + 10).ToString();
@@ -7322,6 +7581,7 @@ public class BattleController : MonoBehaviour
             victoryXP.transform.GetChild(21).gameObject.SetActive(false);
             mainCamera.GetComponent<CameraScript>().ChangeCameraState(0);
         }
+        //If not we end the battle
         else
         {
             victoryXP.transform.GetChild(18).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -7339,6 +7599,7 @@ public class BattleController : MonoBehaviour
     //Function to lvl up the player
     private void LvlUpPlayer(int selection)
     {
+        //The player will choose what to upgrade
         if(selection == 0)
         {
             PlayerPrefs.SetInt("PlayerHeartLvl", PlayerPrefs.GetInt("PlayerHeartLvl") + 1);
@@ -7355,12 +7616,14 @@ public class BattleController : MonoBehaviour
             PlayerPrefs.SetInt("PlayerBadgeLvl", PlayerPrefs.GetInt("PlayerBadgeLvl") + 1);
             PlayerPrefs.SetInt("PlayerLvl", 1 + PlayerPrefs.GetInt("PlayerLvl"));
         }
+        //We heal and recover all the light points
         player.GetComponent<PlayerTeamScript>().Heal(player.GetComponent<PlayerTeamScript>().GetMaxHealth(), true, firstPosPlayer, true, true);
         player.GetComponent<PlayerTeamScript>().IncreaseLight(player.GetComponent<PlayerTeamScript>().GetMaxLight() , true, true, true);
         if (companion.GetComponent<PlayerTeamScript>().IsDead()) companion.GetComponent<PlayerTeamScript>().Recover(false, true);
         else companion.GetComponent<PlayerTeamScript>().Heal(companion.GetComponent<PlayerTeamScript>().GetMaxHealth(), true, !firstPosPlayer, false, true);
         lvlUpMenu.transform.GetChild(selection).GetComponent<Animator>().SetTrigger("Selected");
         lvlUpSelected = -3;
+        //We end the battle
         victory = false;
         endBattle = true;
     }
@@ -7368,10 +7631,13 @@ public class BattleController : MonoBehaviour
     private void CreateMenu()
     {
         int number;
+        //Player
         if (playerTurn)
         {
+            //Sword
             if (selectingAction == 0)
             {
+                //We put the default attack
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -7381,10 +7647,12 @@ public class BattleController : MonoBehaviour
                 else player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Ezpata normala";
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = "";
                 menuCanUse[0] = true;
+                //We see how many attack have we 
                 number = PlayerPrefs.GetInt("Sword Styles");
                 if (number == 1)
                 {
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
+                    //We put the unlocked one on the second position and we look if we can use it or not, depending on the light points
                     if (PlayerPrefs.GetInt("Light Sword") == 1)
                     {
                         swordStyles[0] = 1;
@@ -7455,6 +7723,7 @@ public class BattleController : MonoBehaviour
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(false);
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).gameObject.SetActive(false);
                 }
+                //We repeat the same 
                 else if (number == 2)
                 {
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).gameObject.SetActive(true);
@@ -7564,6 +7833,7 @@ public class BattleController : MonoBehaviour
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).gameObject.SetActive(true);
                 }
             }
+            //Shuriken. We do the same as we did with the sword
             else if (selectingAction == 1)
             {
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
@@ -7757,14 +8027,17 @@ public class BattleController : MonoBehaviour
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).gameObject.SetActive(true);
                 }
             }
+            //Items
             else if (selectingAction == 2)
             {
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                //We can have more than 6 items so we save the scroll to know which items we need to show. When we are at the top or at the bot of the list we make the arrows disappear
                 if (scroll > 0) player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 1.0f);
                 else player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
                 if ((scroll + 6) == itemSize()) player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
                 else player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 1.0f);
+                //We use the scroll variable when we have 6 items or more
                 if (itemSize() > 5)
                 {
                     for (int i = 1; i < 7; i++)
@@ -7801,6 +8074,7 @@ public class BattleController : MonoBehaviour
                         }
                     }
                 }
+                //We dont need to use the scroll when we have less items
                 else
                 {
                     for (int i = 1; i < 7; i++)
@@ -7845,8 +8119,10 @@ public class BattleController : MonoBehaviour
                     }
                 }
             }
+            //Special
             else if (selectingAction == 3)
             {
+                //We put the different attacks depending on the number of souls we have unlocked
                 if (PlayerPrefs.GetInt("Souls") > 0)
                 {
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
@@ -8069,10 +8345,13 @@ public class BattleController : MonoBehaviour
                     }
                 }
             }
+            //other
             else if (selectingAction == 4)
             {
+                //If we arent changing companions
                 if (!changeCompanion)
                 {
+                    //We have 3 different actions: change partner, defend or flee. We can only change partner if we have more than one partner unlocked
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = partnerChange;
                     if (PlayerPrefs.GetInt("Language") == 1) player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Change partner";
@@ -8113,8 +8392,10 @@ public class BattleController : MonoBehaviour
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(5).gameObject.SetActive(false);
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(6).gameObject.SetActive(false);
                 }
+                //If we are changing partners
                 else
                 {
+                    //We only have 2 partners so we are using one or the other. The one that is being used cant be selected. We can see the current health of all the companions here
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).gameObject.SetActive(true);
                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = adventurerIcon;
                     if (PlayerPrefs.GetInt("Language") == 1) player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Adventurer";
@@ -8157,12 +8438,16 @@ public class BattleController : MonoBehaviour
                 }
             }
         }
+        //Companion
         else if (companionTurn)
         {
+            //Attack
             if(selectingAction == 0)
             {
+                //Adventurer
                 if(currentCompanion == 0)
                 {
+                    //We unlock attacks depending on the level of the companion so we will look at it to know if an attack is unlocked or not. The rest works like on the players attacks.
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).gameObject.SetActive(true);
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = firstSkill;
                     if (PlayerPrefs.GetInt("Language") == 1) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Sword";
@@ -8301,8 +8586,10 @@ public class BattleController : MonoBehaviour
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(6).gameObject.SetActive(false);
                     }
                 }
+                //Wizard
                 else if(currentCompanion == 1)
                 {
+                    //We unlock attacks depending on the level of the companion so we will look at it to know if an attack is unlocked or not. The rest works like on the players attacks.
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).gameObject.SetActive(true);
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = firstSkill;
                     if (PlayerPrefs.GetInt("Language") == 1) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = "Magic ball";
@@ -8454,8 +8741,10 @@ public class BattleController : MonoBehaviour
                     }
                 }
             }
+            //Items
             else if (selectingAction == 1)
             {
+                //All the team members have the same items, so it is the same as the players items.
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 if (scroll > 0) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 1.0f);
@@ -8542,6 +8831,7 @@ public class BattleController : MonoBehaviour
                     }
                 }
             }
+            //change companion. Identical to the players version.
             else if (selectingAction == 2)
             {
                 if (!changeCompanion)

@@ -12,6 +12,7 @@ public class JarScript : MonoBehaviour
 
     void Start()
     {
+        //We find the battle controller and initialize the fill
         battleController = GameObject.Find("BattleController");
         fill = 0.0f;
     }
@@ -19,9 +20,11 @@ public class JarScript : MonoBehaviour
 
     void FixedUpdate()
     {
+        //We slowly fill the jar to the actual fill
         if (transform.GetChild(2).GetComponent<Image>().fillAmount < fill) transform.GetChild(2).GetComponent<Image>().fillAmount += 0.004f;
     }
 
+    //Function to increase the actual fill of the jar
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag.Equals("redSoul"))

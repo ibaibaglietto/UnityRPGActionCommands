@@ -9,7 +9,7 @@ public class LvlUpMenuScript : MonoBehaviour
     {
         battleController = GameObject.Find("BattleController");
     }
-
+    //Function to select one of the level up positions
     public void SelectPosition(int pos)
     {
         battleController.GetComponent<BattleController>().SetLvlUpSelected(pos);

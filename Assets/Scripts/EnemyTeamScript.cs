@@ -82,9 +82,11 @@ public class EnemyTeamScript : MonoBehaviour
         dieAnimationFinished = false;
         groundAttack = false;
         attackTeam = new Transform[1];
+        //Bandit
         if (enemyType == 0)
         {
             grounded = true;
+            //We check if the player already knows the health points of this enemy
             if (PlayerPrefs.GetInt("bandit") == 1) 
             {
                 for(int i = 0; i<3; i++)
@@ -102,9 +104,11 @@ public class EnemyTeamScript : MonoBehaviour
                 transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
             }
         }
+        //Evil wizard
         else if (enemyType == 1)
         {
             grounded = false;
+            //We check if the player already knows the health points of this enemy
             if (PlayerPrefs.GetInt("wizard") == 1)
             {
                 for (int i = 0; i < 3; i++)
@@ -122,9 +126,11 @@ public class EnemyTeamScript : MonoBehaviour
                 transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
             }
         }
+        //King
         if (enemyType == 2)
         {
             grounded = true;
+            //We check if the player already knows the health points of this enemy
             if (PlayerPrefs.GetInt("king") == 1)
             {
                 for (int i = 0; i < 3; i++)
@@ -182,8 +188,8 @@ public class EnemyTeamScript : MonoBehaviour
                     GetComponent<Animator>().SetFloat("Speed", -0.5f);
                 }
                 else
-                {
-                    
+                {               
+                    //When the enemy returns to the starting pos we ensure that they are in the correct position
                     transform.position = new Vector3(startPos, transform.position.y, transform.position.z);
                     GetComponent<Animator>().SetFloat("Speed", 0.0f);
                     returnStartPos = false;
@@ -192,6 +198,7 @@ public class EnemyTeamScript : MonoBehaviour
                     else if (enemyNumber == 2) transform.position = new Vector3(transform.position.x, transform.position.y, -2.02f);
                     else if (enemyNumber == 3) transform.position = new Vector3(transform.position.x, transform.position.y, -2.01f);
                     else if (enemyNumber == 4) transform.position = new Vector3(transform.position.x, transform.position.y, -2.00f);
+                    //When the king returns to the starting pos there is a chance that they will charge the teleportation attack
                     if (enemyType == 2 && Random.Range(0.0f,1.0f)<0.4f)
                     {
                         enemySource.clip = bossPowerUpAudio;
@@ -200,6 +207,7 @@ public class EnemyTeamScript : MonoBehaviour
                     }
                     else
                     {
+                        //We let the next enemy attack or end the enemy turn
                         if (enemyNumber < battleController.GetComponent<BattleController>().GetNumberOfEnemies())
                         {
                             battleController.GetComponent<BattleController>().NextEnemy(enemyNumber);
@@ -209,8 +217,10 @@ public class EnemyTeamScript : MonoBehaviour
                 }
             }
         }
+        //The death animation of the evil wizard
         if (enemyType == 1 && !alive && transform.position.y > -0.66f)
         {
+            //They fall to the ground and when they arrive the normal death animation starts
             transform.position = new Vector3(transform.position.x, transform.position.y - 0.0665f, transform.position.z);
             if (transform.position.y <= -0.66f)
             {
@@ -218,8 +228,10 @@ public class EnemyTeamScript : MonoBehaviour
                 dust = Instantiate(dustObject, new Vector3(transform.position.x + 0.5f, -1.57f, -0.3f), Quaternion.identity);
             }
         }
+        //The normal die animation 
         if (!alive && grounded && dieAnimationFinished)
         {
+            //Bandit
             if (enemyType == 0)
             {
                 if (transform.eulerAngles.x == 0.0f) dust = Instantiate(dustObject, new Vector3(transform.position.x + 0.5f, -1.57f, -0.3f), Quaternion.identity);
@@ -230,6 +242,7 @@ public class EnemyTeamScript : MonoBehaviour
                     if (transform.eulerAngles.x >= 90.0f) Destroy(dust.gameObject);
                 }
             }
+            //Wizard
             if(enemyType == 1) 
             {
                 if (transform.eulerAngles.x < 90.0f)
@@ -244,8 +257,10 @@ public class EnemyTeamScript : MonoBehaviour
     //Function to check if the player knows the health of the enemy
     public void KnowHealth()
     {
+        //Bandit
         if(enemyType == 0)
         {
+            //We check if the player already knows the health of the enemy
             if (PlayerPrefs.GetInt("bandit") == 1)
             {
                 for (int i = 0; i < 3; i++)
@@ -263,8 +278,10 @@ public class EnemyTeamScript : MonoBehaviour
                 transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
             }
         }
+        //Evil wizard
         else if(enemyType == 1)
         {
+            //We check if the player already knows the health of the enemy
             if (PlayerPrefs.GetInt("wizard") == 1)
             {
                 for (int i = 0; i < 3; i++)
@@ -282,8 +299,10 @@ public class EnemyTeamScript : MonoBehaviour
                 transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
             }
         }
+        //King
         else if (enemyType == 2)
         {
+            //We check if the player already knows the health of the enemy
             if (PlayerPrefs.GetInt("king") == 1)
             {
                 for (int i = 0; i < 3; i++)
@@ -325,12 +344,14 @@ public class EnemyTeamScript : MonoBehaviour
     {
         int duration = 0;
         float rand;
+        //The bandit and the wizard are affected the same way by the sleep effect
         if(enemyType == 0 || enemyType == 1)
         {
             duration = Mathf.FloorToInt((lvl-1) / 2.0f);
             rand = ((lvl-1) / 2.0f) - Mathf.FloorToInt((lvl - 1) / 2.0f);
             if (rand >= Random.Range(0.0f, 1.0f)) duration += 1;
         }
+        //The king is less affected
         else if(enemyType == 2)
         {
             duration = Mathf.FloorToInt((lvl - 1) / 3.0f);
@@ -343,6 +364,7 @@ public class EnemyTeamScript : MonoBehaviour
     //A function to put a buff or a debuff in the UI. buffDeb = 0 -> Sleep
     public void SetBuffDebuff(int buffDeb, int duration)
     {
+        //If the enemy is asleep already we add the numbers, if not we put the debuff
         if(buffDeb == 0)
         {
             if(asleep == 0)
@@ -363,6 +385,7 @@ public class EnemyTeamScript : MonoBehaviour
         }
     }
 
+    //Function to end the buffs an the debuffs. Enemies can only be affected by the sleep debuff. If other buff or debuff is added a number change needs to be added.
     private void EndBuffDebuff(int pos)
     {
         if(pos == 0)
@@ -436,31 +459,34 @@ public class EnemyTeamScript : MonoBehaviour
             buffDebuffNumb -= 1;
         }
     }
-
     //Function to attack an objective
     public void Attack(Transform[] objective)
     {
         if (asleep == 0)
         {
+            //We put the enemy in the attack position
             transform.position = new Vector3(transform.position.x, transform.position.y, -2.06f);
             attackTeam = new Transform[1];
             attackTeam[0] = objective[0];
             transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
-            //If the enemy is a bandit we make it move towards the player
+            //If the enemy is a bandit or a wizard we make it move towards the player
             if (enemyType == 0 || enemyType == 1)
             {
                 startPos = transform.position.x;
                 movePos = attackTeam[0].position.x + 1.1f;
                 movingToEnemy = true;
             }
+            //If it is the king
             else if(enemyType == 2)
             {
+                //If it is not the teleportation attack them move to the enemy
                 if (!groundAttack)
                 {
                     startPos = transform.position.x;
                     movePos = attackTeam[0].position.x + 2.05f;
                     movingToEnemy = true;
                 }
+                //Else them save both player active team mates and start the teleportation attack
                 else
                 {
                     attackTeam = new Transform[2];
@@ -474,6 +500,7 @@ public class EnemyTeamScript : MonoBehaviour
                 }
             }
         }
+        //If the enemy is asleep we reduce the asleep timer 
         else
         {            
             asleep -= 1;
@@ -529,11 +556,13 @@ public class EnemyTeamScript : MonoBehaviour
     //A function for a not final attack
     public void MidMeleeAttack()
     {
+        //If the player defends correctly while using the barrier there is no damage
         if(battleController.GetComponent<BattleController>().IsTaunting() && battleController.GetComponent<BattleController>().GetDefense(1) == 1.0f && defended == 1.0f)
         {
             attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(0);
         }
         else attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+        //If the player doesnt defend correctly the damage animation is plaied
         if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
         {
             if (!battleController.GetComponent<BattleController>().IsTaunting())
@@ -576,6 +605,7 @@ public class EnemyTeamScript : MonoBehaviour
         gameObject.GetComponent<Animator>().SetBool("IsAttacking", false);
         movingToEnemy = false;
         returnStartPos = true;
+        //We check if the player or the companion died. In case of the player if there is no resurrect potion the game ends. If the companion dies while using the barrier them return to the starting position
         if (attackTeam.Length > 1)
         {
             if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
@@ -662,6 +692,7 @@ public class EnemyTeamScript : MonoBehaviour
         GetComponent<Animator>().SetBool("IsGroundAttacking", false);
         GetComponent<Animator>().SetBool("StartTeleport", true);
         teleportPos = startPos;
+        //We check if the player or the companion died. In case of the player if there is no resurrect potion the game ends. If the companion dies while using the barrier them return to the starting position
         if (attackTeam.Length > 1)
         {
             if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
@@ -740,11 +771,13 @@ public class EnemyTeamScript : MonoBehaviour
     //A function to start the ground attack or end turn
     public void EndTeleport()
     {
+        //If the king teleported to the player team position them do the teleport attack
         if(transform.position.x != startPos)
         {
             attacking = true;
             GetComponent<Animator>().SetBool("IsGroundAttacking", true);
         }
+        //If them teleport to the starting position the turn is ended
         else
         {            
             if (enemyNumber == 1) transform.position = new Vector3(transform.position.x, transform.position.y, -2.03f);
@@ -776,6 +809,7 @@ public class EnemyTeamScript : MonoBehaviour
     {
         attacking = false;
         groundAttack = false;
+        //We check if the wizard is using the barrier, is so we only attack the wizard. 
         if (attackTeam.Length > 1)
         {
             if (battleController.GetComponent<BattleController>().IsTaunting() && battleController.GetComponent<BattleController>().GetDefense(1) == 1.0f && defended == 1.0f)
@@ -820,8 +854,7 @@ public class EnemyTeamScript : MonoBehaviour
                     else attackTeam[0].GetComponent<Animator>().SetBool("isDefending", false);
                 }
             }
-        }
-        
+        }        
         defended = 0;
     }
 
@@ -829,7 +862,7 @@ public class EnemyTeamScript : MonoBehaviour
     //A function to end the melee attack and start moving back to the start position
     public void EndMeleeAttack()
     {
-        attacking = false; 
+        attacking = false;
         if (battleController.GetComponent<BattleController>().IsTaunting() && battleController.GetComponent<BattleController>().GetDefense(1) == 1.0f && defended == 1.0f)
         {
             attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(0);
@@ -847,6 +880,7 @@ public class EnemyTeamScript : MonoBehaviour
         gameObject.GetComponent<Animator>().SetBool("IsAttacking", false);
         movingToEnemy = false;
         returnStartPos = true;
+        //We check if the player or the companion died. In case of the player if there is no resurrect potion the game ends. If the companion dies while using the barrier them return to the starting position
         if (attackTeam.Length > 1)
         {
             if (attackTeam[0].GetComponent<PlayerTeamScript>().playerTeamType == 0 && attackTeam[0].GetComponent<PlayerTeamScript>().IsDead()) attackTeam[0].GetComponent<PlayerTeamScript>().UseRecoverPotion();
@@ -963,7 +997,7 @@ public class EnemyTeamScript : MonoBehaviour
         dieAnimationFinished = true;
     }
 
-    //A function to give XP
+    //A function to give XP depending on the enemy and the player level
     public void GiveXP()
     {
         if(enemyType == 0)

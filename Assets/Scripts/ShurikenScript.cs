@@ -47,6 +47,7 @@ public class ShurikenScript : MonoBehaviour
             //When the shuriken arrives it deals damage and self destroys
             else
             {
+                //We deal the damage
                 if (!fire && !exploded)
                 {
                     battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), shurikenDamage, true);
@@ -54,13 +55,16 @@ public class ShurikenScript : MonoBehaviour
                     else if (shurikenDamage == 2) battleController.GetComponent<BattleController>().FillSouls(0.3f);
                     else battleController.GetComponent<BattleController>().FillSouls(0.4f);
                 }
+                //We destroy the magic ball
                 if (!magic) Destroy(gameObject);
+                //Else we explode it
                 else
                 {
                     exploded = true;
                     GetComponent<Animator>().SetTrigger("explode");
                 }
             }
+            //If the projectile will hit more than one enemy we count the hit and continue moving it
             if (fire && fireObjectives.Length > hit && gameObject.transform.position.x > (fireObjectives[hit].transform.position.x - 0.2f) && gameObject.transform.position.x <= (fireObjectives[hit].transform.position.x + 0.2f))
             {
                 if (shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.075f);
@@ -69,13 +73,17 @@ public class ShurikenScript : MonoBehaviour
                 hit += 1;
             }
         }
+        //If it is a bk-47 projectile 
         else
         {
+            //We move it depending on the rotation
             if(gameObject.transform.position.x < 10.0f) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.39f * Mathf.Cos(rotation), gameObject.transform.position.y + 0.39f * Mathf.Sin(rotation), gameObject.transform.position.z);
+            //we destroy it if it gets too fat away
             else Destroy(gameObject);
         }      
         
     }
+    //Function to know when a BK-47 arrow hits an enemy
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(BK47 && collision.tag.Equals("enemy") && collision.GetComponent<EnemyTeamScript>().IsAlive())

@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class GlanceScript : MonoBehaviour
 {
+    //The adventurer
     private Transform adventurer;
-    // Start is called before the first frame update
+
     void Start()
     {
         adventurer = GameObject.Find("Adventurer(Clone)").transform;

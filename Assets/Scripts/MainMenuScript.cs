@@ -7,7 +7,9 @@ using UnityEngine.Audio;
 
 public class MainMenuScript : MonoBehaviour
 {
+    //The audio mixer
     [SerializeField] private AudioMixer mixer;
+    //The menus
     private GameObject mainMenu;
     private GameObject settings;
     private GameObject battleSettings;
@@ -15,11 +17,14 @@ public class MainMenuScript : MonoBehaviour
     private GameObject howToPlay;
     private GameObject chooseLanguage;
     private GameObject credits;
+    //The configuration sliders dropdowns and toggle
     private Slider masterSlider;
     private Slider musicSlider;
     private Slider effectsSlider;
     private Dropdown resolution;
-    private Toggle fullscreen; 
+    private Toggle fullscreen;
+    private Dropdown language;
+    private Dropdown chooseLanguageDropdown;
     private Dropdown lifeLvl;
     private Dropdown lightLvl;
     private Dropdown swordLvl;
@@ -30,12 +35,11 @@ public class MainMenuScript : MonoBehaviour
     private Dropdown enemy2;
     private Dropdown enemy3;
     private Dropdown enemy4;
+    //The confirm resolution time and button
     private float confirmTime;
     private Text confirmTimeNumb;
     private Button saveResolutionButton;
     private AudioSource effectsSource;
-    private Dropdown language;
-    private Dropdown chooseLanguageDropdown;
     //Int to know the actual explanation
     private int explanation;
     //The text we are going to change depending on the language
@@ -87,12 +91,9 @@ public class MainMenuScript : MonoBehaviour
     private Text creditsTitle;
     private Text creditsReturn;
 
-
-
-
     void Start()
     {        
-        //We find the gameobjects
+        //We find the gameobjects and others
         mainMenu = transform.GetChild(1).gameObject;
         settings = transform.GetChild(2).gameObject;
         saveResolutionButton = settings.transform.Find("SaveResolution").GetComponent<Button>();
@@ -119,7 +120,7 @@ public class MainMenuScript : MonoBehaviour
         enemy3 = battleSettings.transform.Find("Enemy3Dropdown").GetComponent<Dropdown>();
         enemy4 = battleSettings.transform.Find("Enemy4Dropdown").GetComponent<Dropdown>();
         chooseLanguageDropdown = chooseLanguage.transform.GetChild(1).GetComponent<Dropdown>();
-
+        //We find all the texts
         mainMenuStart = mainMenu.transform.GetChild(1).GetChild(0).GetComponent<Text>();
         mainMenuSettings = mainMenu.transform.GetChild(2).GetChild(0).GetComponent<Text>();
         mainMenuBattleSetting = mainMenu.transform.GetChild(3).GetChild(0).GetComponent<Text>();
@@ -209,10 +210,10 @@ public class MainMenuScript : MonoBehaviour
         PlayerPrefs.SetInt("bandit", 0);
         PlayerPrefs.SetInt("wizard", 0);
         PlayerPrefs.SetInt("king", 0); 
+        //We set the audio mixers
         mixer.SetFloat("Master", Mathf.Log10(PlayerPrefs.GetFloat("Master")) * 20);
         mixer.SetFloat("Music", Mathf.Log10(PlayerPrefs.GetFloat("Music")) * 20);
         mixer.SetFloat("Effects", Mathf.Log10(PlayerPrefs.GetFloat("Effects")) * 20);
-
         //We change the text depending on the selected language
         if (PlayerPrefs.GetInt("Language") == 1)
         {
@@ -421,7 +422,7 @@ public class MainMenuScript : MonoBehaviour
             creditsTitle.text = "Kredituak";
             creditsReturn.text = "Itzuli";
         }
-
+        //We find the effects audio source
         effectsSource = GameObject.Find("EffectsSource").GetComponent<AudioSource>();
         //We initialize the settings
         masterSlider.value = PlayerPrefs.GetFloat("Master");
@@ -458,9 +459,12 @@ public class MainMenuScript : MonoBehaviour
 
     void Update()
     {
+        //If we are changing the resolution
         if(confirmTime != -1.0f)
         {
+            //We change the countdown number
             confirmTimeNumb.text = (5 - (int)(Time.fixedTime - confirmTime)).ToString();
+            //If the countdown reaches 0 we restore the previous resolution
             if ((Time.fixedTime - confirmTime) > 5.0f)
             {
                 Screen.SetResolution(PlayerPrefs.GetInt("Resolutionx"), PlayerPrefs.GetInt("Resolutiony"), PlayerPrefs.GetInt("FullScreen") == 1);
@@ -958,6 +962,7 @@ public class MainMenuScript : MonoBehaviour
         howToPlay.SetActive(false);
     }
 
+    //Function to show the next explanation
     public void NextExplanation()
     {
         effectsSource.Play();
@@ -968,6 +973,8 @@ public class MainMenuScript : MonoBehaviour
         else howToPlay.transform.GetChild(9).GetComponent<Button>().interactable = true;
         howToPlay.transform.GetChild(8).GetComponent<Button>().interactable = true;
     }
+
+    //Function to show the previous explanation
 
     public void PrevExplanation()
     {

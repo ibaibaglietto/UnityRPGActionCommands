@@ -10,7 +10,7 @@ public class MagentaSoulScript : MonoBehaviour
     {
         battleController = GameObject.Find("BattleController");
     }
-
+    //Function to absorb one magenta shard, creating another and incrementing the fog size
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag.Equals("magentaShard"))

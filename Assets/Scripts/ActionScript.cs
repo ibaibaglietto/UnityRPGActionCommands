@@ -19,6 +19,7 @@ public class ActionScript : MonoBehaviour
         gameObject.GetComponent<Animator>().SetInteger("Selected",action);
     }
 
+    //Function to save the menu position
     void SelectedMenuPos(int pos)
     {
         battleController.GetComponent<BattleController>().SetMenuSelectionPos(pos);

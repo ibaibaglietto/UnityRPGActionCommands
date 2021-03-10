@@ -13,6 +13,7 @@ public class CameraScript : MonoBehaviour
 
     void Start()
     {
+        //The starting variables
         idle = true;
         victory = false;
         idleToVictory = false;
@@ -23,6 +24,7 @@ public class CameraScript : MonoBehaviour
     // Victory ->  transform.position = new Vector3(-5.4f, 0.0f, -6.5f);
     void FixedUpdate()
     {
+        //We can move the camera into two different positions. We move it slowly to the new position.
         if (idleToVictory)
         {
             if (transform.position.x > -5.35f) transform.position = new Vector3(transform.position.x - 0.108f, transform.position.y - 0.005f, transform.position.z + 0.07f);
