@@ -233,7 +233,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3017266}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 349de283ad1219b40baf985e479ab256, type: 3}
+  m_Script: {fileID: 11500000, guid: b6db75f91e05eff42b314af73bd51eb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!81 &3017268
@@ -1893,6 +1893,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b62ab29655a8e44b84c99f80ca33a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 512
+  groundCheck: {fileID: 5322231657261414950}
+  OnLandEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 745869864}
+        m_TargetAssemblyTypeName: WorldPlayerMovementScript, Assembly-CSharp
+        m_MethodName: OnLanding
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &745869865
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2515,7 +2534,7 @@ GameObject:
   - component: {fileID: 1028776704}
   - component: {fileID: 1028776705}
   - component: {fileID: 1028776706}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5546,7 +5565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2215723681896468820, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.58
+      value: -0.995
       objectReference: {fileID: 0}
     - target: {fileID: 2215723681896468820, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5586,3 +5605,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
+--- !u!4 &5322231657261414950 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1656951681665174916, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
+  m_PrefabInstance: {fileID: 5322231657261414949}
+  m_PrefabAsset: {fileID: 0}
