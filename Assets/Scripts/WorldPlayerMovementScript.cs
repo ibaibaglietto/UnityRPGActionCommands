@@ -14,9 +14,11 @@ public class WorldPlayerMovementScript : MonoBehaviour
     [SerializeField] private Transform groundCheck;
 
     //Radius of the overlap circle to determine if grounded
-    const float groundedRadius = .2f;
+    const float groundedRadius = 0.07f;
     //Whether or not the player is grounded.
     private bool grounded;
+    //A bool to know if the player has jumped
+    private bool jumped;
     //The animator
     Animator animator;
 
@@ -39,6 +41,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //We initialize the variables
         speedX = 0.0f;
         speedZ = 0.0f;
+        jumped = false;
         //We find the animator
         animator = gameObject.GetComponent<Animator>();
     }
@@ -68,11 +71,13 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //Make the player jump when space is pressed
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
         {
+            jumped = true;
             gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 200.0f, 0.0f));
             animator.SetBool("isJumping", true);
         }
         //We check if the player is falling
-        if (animator.GetBool("isJumping") && gameObject.GetComponent<Rigidbody>().velocity.y < -0.01f) animator.SetBool("isFalling", true);
+        if (gameObject.GetComponent<Rigidbody>().velocity.y < -0.01f) animator.SetBool("isFalling", true);
+        else if (animator.GetBool("isFalling")) animator.SetBool("isFalling", false);
     }
 
     private void FixedUpdate()
