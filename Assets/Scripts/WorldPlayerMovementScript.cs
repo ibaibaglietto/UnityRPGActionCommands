@@ -17,8 +17,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
     const float groundedRadius = 0.07f;
     //Whether or not the player is grounded.
     private bool grounded;
-    //A bool to know if the player has jumped
-    private bool jumped;
     //The animator
     Animator animator;
 
@@ -41,7 +39,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //We initialize the variables
         speedX = 0.0f;
         speedZ = 0.0f;
-        jumped = false;
         //We find the animator
         animator = gameObject.GetComponent<Animator>();
     }
@@ -69,19 +66,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
         animator.SetFloat("SpeedZ", speedZ);
         animator.SetFloat("SpeedX", speedX);
         //Make the player jump when space is pressed
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+        if (Input.GetKeyDown(KeyCode.Space) && grounded && gameObject.GetComponent<Rigidbody>().velocity.y > -0.1f)
         {
-            jumped = true;
-            gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 200.0f, 0.0f));
+            gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 600.0f, 0.0f));
             animator.SetBool("isJumping", true);
         }
         //We check if the player is falling
         if (gameObject.GetComponent<Rigidbody>().velocity.y < -0.01f) animator.SetBool("isFalling", true);
         else if (animator.GetBool("isFalling")) animator.SetBool("isFalling", false);
-    }
 
-    private void FixedUpdate()
-    {
         bool wasGrounded = grounded;
         grounded = false;
 
@@ -89,7 +82,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(groundCheck.position, groundedRadius, whatIsGround);
         for (int i = 0; i < colliders.Length; i++)
         {
-            if (colliders[i].gameObject != gameObject)
+            if (colliders[i].gameObject != gameObject && Mathf.Abs(gameObject.GetComponent<Rigidbody>().velocity.y) < 0.01f)
             {
                 grounded = true;
                 if (!wasGrounded)
@@ -97,8 +90,14 @@ public class WorldPlayerMovementScript : MonoBehaviour
             }
         }
 
+    }
+
+    private void FixedUpdate()
+    {
+        
+
         //move the player on the direction we saved previously
-        gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 3, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 3);
+        gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
     }
 
     //When the player lands we uncheck the jumping and falling booleans
