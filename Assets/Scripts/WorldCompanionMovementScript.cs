@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class WorldPlayerMovementScript : MonoBehaviour
+public class WorldCompanionMovementScript : MonoBehaviour
 {
-    //The direction the player is moving. 0-> not moving, 1-> right, 2-> left, 3 -> up, 4 -> down
+    //The direction the companion is moving. 0-> not moving, 1-> right, 2-> left, 3 -> up, 4 -> down
     private float speedX;
     private float speedZ;
     //A mask determining what is ground to the character
@@ -20,6 +20,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
     //The animator
     Animator animator;
 
+    private GameObject player;
 
     //The on land event
     [Header("Events")]
@@ -41,35 +42,42 @@ public class WorldPlayerMovementScript : MonoBehaviour
         speedZ = 0.0f;
         //We find the animator
         animator = gameObject.GetComponent<Animator>();
+        //We find the player
+        player = GameObject.Find("PlayerWorld");
     }
 
 
     void Update()
     {
-        //Detect the direction we want the player to move and save it
-        if (Input.GetKey(KeyCode.UpArrow)) speedZ = 1.0f;
-        else if (Input.GetKey(KeyCode.DownArrow)) speedZ = -1.0f;
-        else speedZ = 0.0f;
-        if (Input.GetKey(KeyCode.RightArrow))
+        if((Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.5f && !animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.25f && animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 0.75f && animator.GetBool("isJumping")))
         {
-            speedX = 1.0f;
-            animator.SetBool("RightLast", true);
+            //Detect where the player is and move the companion towards them
+            speedX = (player.transform.position.x - gameObject.transform.position.x) / (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z)) * (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) / 1.5f);
+            speedZ = (player.transform.position.z - gameObject.transform.position.z) / (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z)) * (Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) / 1.5f);
         }
-        else if (Input.GetKey(KeyCode.LeftArrow))
+        else
         {
-            speedX = -1.0f;
-            animator.SetBool("RightLast", false);
+            speedX = 0.0f;
+            speedZ = 0.0f;
         }
-        else speedX = 0.0f;
-        if (speedX != 0 || speedZ != 0)
-        {
-            animator.SetBool("Moving", true);
-            speedX = speedX / (Mathf.Abs(speedX) + Mathf.Abs(speedZ));
-            speedZ = speedZ / (Mathf.Abs(speedX) + Mathf.Abs(speedZ));
-        }
-        else animator.SetBool("Moving", false);
-        animator.SetFloat("SpeedZ", speedZ);
+
         animator.SetFloat("SpeedX", speedX);
+
+        if (speedX != 0 || speedZ != 0) animator.SetBool("Moving", true);
+        else animator.SetBool("Moving", false);
+        if((player.transform.position.x - gameObject.transform.position.x) >= 0.0f) animator.SetBool("PlayerRight", true);
+        else animator.SetBool("PlayerRight", false);
+
+        if(player.transform.position.y > gameObject.transform.position.y + 0.4f && !animator.GetBool("isJumping"))
+        {
+            gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 600.0f, 0.0f));
+            animator.SetBool("isJumping", true);
+        }
+
+        if (gameObject.GetComponent<Rigidbody>().velocity.y < -0.01f) animator.SetBool("isFalling", true);
+        else if (animator.GetBool("isFalling")) animator.SetBool("isFalling", false);
+
+        /*
         //Make the player jump when space is pressed
         if (Input.GetKeyDown(KeyCode.Space) && grounded && gameObject.GetComponent<Rigidbody>().velocity.y > -0.1f)
         {
@@ -79,6 +87,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //We check if the player is falling
         if (gameObject.GetComponent<Rigidbody>().velocity.y < -0.01f) animator.SetBool("isFalling", true);
         else if (animator.GetBool("isFalling")) animator.SetBool("isFalling", false);
+        */
 
         bool wasGrounded = grounded;
         grounded = false;
