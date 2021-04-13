@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class WorldCompanionMovementScript : MonoBehaviour
 {
-    //The direction the companion is moving. 0-> not moving, 1-> right, 2-> left, 3 -> up, 4 -> down
+    //The movement speed of the companion
     private float speedX;
     private float speedZ;
     //A mask determining what is ground to the character
@@ -101,7 +101,7 @@ public class WorldCompanionMovementScript : MonoBehaviour
         {
             TpToPlayer();
         }
-        //move the player on the direction we saved previously
+        //move the companion on the direction we saved previously
         gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
     }
 

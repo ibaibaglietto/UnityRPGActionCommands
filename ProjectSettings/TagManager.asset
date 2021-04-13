@@ -14,6 +14,7 @@ TagManager:
   - magentaSoul
   - magentaShard
   - arrow
+  - Companion
   layers:
   - Default
   - TransparentFX

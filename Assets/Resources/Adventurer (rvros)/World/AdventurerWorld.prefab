@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4451006892599600777}
   m_Layer: 0
   m_Name: AdventurerWorld
-  m_TagString: Untagged
+  m_TagString: Companion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,7 +95,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   groundCheck: {fileID: 4451006893020923762}
-  tpCheckPrefab: {fileID: 5706987920188814203, guid: 25e97193f4aae3c4e953bab01d7d1018, type: 3}
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:

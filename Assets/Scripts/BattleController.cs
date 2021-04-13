@@ -388,6 +388,8 @@ public class BattleController : MonoBehaviour
 
     private void Awake()
     {
+        //We put the time scale back to normal
+        Time.timeScale = 1.0f;
         //Find the gameobjects and others
         victoryXP = GameObject.Find("VictoryEXP");
         mainCamera = GameObject.Find("Main Camera");
@@ -483,37 +485,133 @@ public class BattleController : MonoBehaviour
         //Spawn the companion
         SpawnCharacter(1,0);  
         //Spawn the enemies
-        SpawnCharacter(2, PlayerPrefs.GetInt("Enemy1"));
+        SpawnCharacter(2, PlayerPrefs.GetInt("Enemy1") - 1);
         if (PlayerPrefs.GetInt("Enemy2") > 0) SpawnCharacter(3, PlayerPrefs.GetInt("Enemy2") - 1);
         if (PlayerPrefs.GetInt("Enemy3") > 0) SpawnCharacter(4, PlayerPrefs.GetInt("Enemy3") - 1);
         if (PlayerPrefs.GetInt("Enemy4") > 0) SpawnCharacter(5, PlayerPrefs.GetInt("Enemy4") - 1);
         //Put the game in the correct state
-        playerTeamTurn = true;
-        playerTurn = true;
-        playerTurnCompleted = false;
-        companionTurn = false;
-        companionTurnCompleted = false;
-        enemyTeamTurn = false;
-        enemy1Turn = false;
-        changePos = false;
-        playerChoosingAction = true;
-        companionChoosingAction = false;
-        selectingEnemy = false;
-        selectingEnemyCompanion = false;
-        selectingPlayer = false;
-        selectingCompanion = false;
-        finalAttack = false;
-        attackAction = false;
-        attackFinished = false;
-        firstPosPlayer = true;
-        goodAttack = false;
-        badAttack = false;
-        lastLeft = false;
-        shurikenHit = false;
-        defenseZone = false;
-        canSelect = false;
-        fleeing = false;
-        fled = false;
+        if (PlayerPrefs.GetInt("EnemyStart") == 1)
+        {
+            playerTeamTurn = false;
+            playerTurn = false;
+            playerTurnCompleted = false;
+            companionTurn = false;
+            companionTurnCompleted = false;
+            enemyTeamTurn = true;
+            enemy1Turn = true;
+            changePos = false;
+            playerChoosingAction = false;
+            companionChoosingAction = false;
+            selectingEnemy = false;
+            selectingEnemyCompanion = false;
+            selectingPlayer = false;
+            selectingCompanion = false;
+            finalAttack = false;
+            attackAction = false;
+            attackFinished = false;
+            firstPosPlayer = true;
+            goodAttack = false;
+            badAttack = false;
+            lastLeft = false;
+            shurikenHit = false;
+            defenseZone = false;
+            canSelect = false;
+            fleeing = false;
+            fled = false;
+            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+            changePosAction.SetActive(false);
+        }
+        else if(PlayerPrefs.GetInt("PlayerFirstAttack") == 1)
+        {
+            playerTeamTurn = true;
+            playerTurn = true;
+            playerTurnCompleted = false;
+            companionTurn = false;
+            companionTurnCompleted = false;
+            enemyTeamTurn = false;
+            enemy1Turn = false;
+            changePos = false;
+            playerChoosingAction = true;
+            companionChoosingAction = false;
+            selectingEnemy = false;
+            selectingEnemyCompanion = false;
+            selectingPlayer = false;
+            selectingCompanion = false;
+            finalAttack = false;
+            attackAction = false;
+            attackFinished = false;
+            firstPosPlayer = true;
+            goodAttack = false;
+            badAttack = false;
+            lastLeft = false;
+            shurikenHit = false;
+            defenseZone = false;
+            canSelect = false;
+            fleeing = false;
+            fled = false;
+            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+            changePosAction.SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("CompanionFirstAttack") == 1)
+        {
+            playerTeamTurn = true;
+            playerTurn = false;
+            playerTurnCompleted = false;
+            companionTurn = true;
+            companionTurnCompleted = false;
+            enemyTeamTurn = false;
+            enemy1Turn = false;
+            changePos = false;
+            playerChoosingAction = false;
+            companionChoosingAction = true;
+            selectingEnemy = false;
+            selectingEnemyCompanion = false;
+            selectingPlayer = false;
+            selectingCompanion = false;
+            finalAttack = false;
+            attackAction = false;
+            attackFinished = false;
+            firstPosPlayer = true;
+            goodAttack = false;
+            badAttack = false;
+            lastLeft = false;
+            shurikenHit = false;
+            defenseZone = false;
+            canSelect = false;
+            fleeing = false;
+            fled = false;
+            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+            changePosAction.SetActive(false);
+        }
+        else
+        {
+            playerTeamTurn = true;
+            playerTurn = true;
+            playerTurnCompleted = false;
+            companionTurn = false;
+            companionTurnCompleted = false;
+            enemyTeamTurn = false;
+            enemy1Turn = false;
+            changePos = false;
+            playerChoosingAction = true;
+            companionChoosingAction = false;
+            selectingEnemy = false;
+            selectingEnemyCompanion = false;
+            selectingPlayer = false;
+            selectingCompanion = false;
+            finalAttack = false;
+            attackAction = false;
+            attackFinished = false;
+            firstPosPlayer = true;
+            goodAttack = false;
+            badAttack = false;
+            lastLeft = false;
+            shurikenHit = false;
+            defenseZone = false;
+            canSelect = false;
+            fleeing = false;
+            fled = false;
+        }            
         //Initialize all the variables
         swordStyles = new int[6];
         shurikenStyles = new int[6];
@@ -598,12 +696,19 @@ public class BattleController : MonoBehaviour
         {
             //When its players turn
             if (playerTurn)
-            {
+            {                
                 //The fase when the player chooses what action to do
                 if (playerChoosingAction)
                 {
+                    //if the player attacks first
+                    if (PlayerPrefs.GetInt("PlayerFirstAttack") == 1)
+                    {
+                        playerChoosingAction = false;
+                        selectedEnemy = enemy1;
+                        player.GetComponent<PlayerTeamScript>().Attack(PlayerPrefs.GetInt("PlayerAttack"), PlayerPrefs.GetInt("PlayerStyle"), selectedEnemy);
+                    }
                     //When we are on the action selection menu
-                    if (!player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().GetBool("MenuOpened"))
+                    else if (!player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().GetBool("MenuOpened"))
                     {
                         //We use left and right arrows to move in the action menu
                         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -2726,8 +2831,15 @@ public class BattleController : MonoBehaviour
                 //Choosing action
                 if (companionChoosingAction)
                 {
+                    //if the player attacks first
+                    if (PlayerPrefs.GetInt("CompanionFirstAttack") == 1)
+                    {
+                        companionChoosingAction = false;
+                        selectedEnemy = enemy1;
+                        companion.GetComponent<PlayerTeamScript>().Attack(PlayerPrefs.GetInt("CompanionAttack"), PlayerPrefs.GetInt("CompanionStyle"), selectedEnemy);
+                    }
                     //When the companion is choosing the main action
-                    if (!companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().GetBool("MenuOpened"))
+                    else if (!companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().GetBool("MenuOpened"))
                     {
                         //We use left and right arrows to move in the action menu
                         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -4214,7 +4326,7 @@ public class BattleController : MonoBehaviour
                         //If the wizard is not using the barrier the enemy will attack the team mate in the first position 3/4 times and 1/4 times the second one will be attacked
                         if (!taunting)
                         {
-                            if (Random.Range(0.0f, 1.0f) < 0.75f)
+                            if ((Random.Range(0.0f, 1.0f) < 0.75f || PlayerPrefs.GetInt("FirstAttackObjective")==1) && PlayerPrefs.GetInt("FirstAttackObjective") != 2)
                             {
                                 if (firstPosPlayer)
                                 {
@@ -5023,9 +5135,10 @@ public class BattleController : MonoBehaviour
         {
             if(player.transform.position.x > -10.0f) player.transform.position = new Vector3(player.transform.position.x - 0.2f, player.transform.position.y, player.transform.position.z);
             if(companion.transform.position.x > -10.0f) companion.transform.position = new Vector3(companion.transform.position.x - 0.2f, companion.transform.position.y, companion.transform.position.z);
-            else endBattle = true;
+            else EndBattle();
         }
         //When the battle ends we increase the alpha of a black image until it is completely opaque, then we load the main menu
+        /*
         if (endBattle)
         {
             if(endBattleImage.GetComponent<Image>().color.a < 1.0f)
@@ -5037,9 +5150,10 @@ public class BattleController : MonoBehaviour
                 SceneManager.LoadScene(0);
             }
         }
+        */
     }
 
-    //Function to spawn the characters. 0 -> Player, 1-> companion, 2-> Enemy1, 3-> Enemy2, 4-> Enemy3, 5-> Enemy4. type-> 0 adventurer and bandit, 1-> wizard
+    //Function to spawn the characters. 0 -> Player, 1-> companion, 2-> Enemy1, 3-> Enemy2, 4-> Enemy3, 5-> Enemy4. companion type-> 0 adventurer, 1-> wizard. enemy type -> 0 bandit, 1 evil wizard, 2 king
     public void SpawnCharacter(int battlePos, int type)
     {
         //We use this position to spawn the companion when we are changing companion
@@ -5823,7 +5937,7 @@ public class BattleController : MonoBehaviour
             if (playerTurn && !firstPosPlayer && attackType == 2) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x - 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
             //If both team mates completed their turn 
             if (playerTurnCompleted && companionTurnCompleted)
-            {
+            {                
                 //We put the color back to normal
                 player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
                 companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
@@ -5856,34 +5970,67 @@ public class BattleController : MonoBehaviour
             //If only the player has completed their turn
             else if (playerTurnCompleted && !companionTurnCompleted)
             {
-                //We put a darker color on the player 
-                player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
-                //We hide the canvas
-                canvas.GetComponent<Animator>().SetBool("Hide", false);
-                //We make the buff/debuff decrease
-                player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
-                companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
-                //We start the companion turn
-                playerTurn = false;
-                companionTurn = true;
-                companionChoosingAction = true;
-                companion.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+                if (PlayerPrefs.GetInt("PlayerFirstAttack") == 1)
+                {
+                    //We unhide the canvas
+                    canvas.GetComponent<Animator>().SetBool("Hide", false);
+                    //We reset the first attack int
+                    PlayerPrefs.SetInt("PlayerFirstAttack", 0);
+                    //We put the game on the initial state
+                    playerTurnCompleted = false;
+                    playerTurn = true;
+                    playerChoosingAction = true;
+                    companionTurn = false;
+                    player.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+                }
+                else
+                {
+                    //We put a darker color on the player 
+                    player.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, player.GetComponent<SpriteRenderer>().color.a);
+                    //We unhide the canvas
+                    canvas.GetComponent<Animator>().SetBool("Hide", false);
+                    //We make the buff/debuff decrease
+                    player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+                    companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+                    //We start the companion turn
+                    playerTurn = false;
+                    companionTurn = true;
+                    companionChoosingAction = true;
+                    companion.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+                }
+                
             }
             //If only the companion has completed their turn
             else if (!playerTurnCompleted && companionTurnCompleted)
             {
-                //We put a darker color on the companion 
-                companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
-                //We hide the canvas
-                canvas.GetComponent<Animator>().SetBool("Hide", false);
-                //We make the buff/debuff decrease
-                player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
-                companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
-                //We start the player turn
-                playerTurn = true;
-                playerChoosingAction = true;
-                companionTurn = false;
-                player.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+                if (PlayerPrefs.GetInt("CompanionFirstAttack") == 1)
+                {
+                    //We unhide the canvas
+                    canvas.GetComponent<Animator>().SetBool("Hide", false);
+                    //We reset the first attack int
+                    PlayerPrefs.SetInt("CompanionFirstAttack", 0);
+                    //We put the game on the initial state
+                    companionTurnCompleted = false;
+                    playerTurn = true;
+                    playerChoosingAction = true;
+                    companionTurn = false;
+                    player.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+                }
+                else
+                {
+                    //We put a darker color on the companion 
+                    companion.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, companion.GetComponent<SpriteRenderer>().color.a);
+                    //We unhide the canvas
+                    canvas.GetComponent<Animator>().SetBool("Hide", false);
+                    //We make the buff/debuff decrease
+                    player.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+                    companion.GetComponent<PlayerTeamScript>().ShowBuffDebuff();
+                    //We start the player turn
+                    playerTurn = true;
+                    playerChoosingAction = true;
+                    companionTurn = false;
+                    player.GetChild(0).GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+                }                
             }
         }
         //If all enemies are dead
@@ -6027,7 +6174,13 @@ public class BattleController : MonoBehaviour
             //We activate the next enemy turn
             if (numb == 1)
             {
-                enemy2Turn = true;
+                if(PlayerPrefs.GetInt("EnemyStart") == 1)
+                {
+                    PlayerPrefs.SetInt("EnemyStart",0);
+                    PlayerPrefs.SetInt("FirstAttackObjective", 0);
+                    EndEnemyTurn();
+                }
+                else enemy2Turn = true;
             }
             else if (numb == 2)
             {
@@ -7588,13 +7741,13 @@ public class BattleController : MonoBehaviour
             victoryXP.transform.GetChild(19).gameObject.SetActive(false);
             victoryXP.transform.GetChild(20).gameObject.SetActive(false);
             victoryXP.transform.GetChild(21).gameObject.SetActive(false);
-            endBattle = true;
+            EndBattle();
         }
     }
     //Function to end the battle
     public void EndBattle()
     {
-        endBattle = true;
+        endBattleImage.GetComponent<Animator>().SetTrigger("end");
     }
     //Function to lvl up the player
     private void LvlUpPlayer(int selection)
@@ -7625,7 +7778,7 @@ public class BattleController : MonoBehaviour
         lvlUpSelected = -3;
         //We end the battle
         victory = false;
-        endBattle = true;
+        EndBattle();
     }
     //Function to create the menu
     private void CreateMenu()
