@@ -7,11 +7,11 @@ public class EnterBattleScript : MonoBehaviour
 {
     private void StartBattle()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(1,LoadSceneMode.Additive);
     }
 
     private void EndBattle()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.UnloadSceneAsync(1);
     }
 }

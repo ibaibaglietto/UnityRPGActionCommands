@@ -15,6 +15,7 @@ TagManager:
   - magentaShard
   - arrow
   - Companion
+  - Attack
   layers:
   - Default
   - TransparentFX

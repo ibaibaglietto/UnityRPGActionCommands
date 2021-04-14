@@ -17,8 +17,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
     const float groundedRadius = 0.07f;
     //Whether or not the player is grounded.
     private bool grounded;
+    //A boonean to know if the player is attacking or not
+    private bool attacking;
     //The animator
     Animator animator;
+    //The melee attack direction. 0-> right, 1-> left, 2 -> up, 3-> down
+    private int dir;
+    //The melee attack prefab and the attack itself
+    [SerializeField] private Transform meleePrefab;
+    private Transform melee;
 
 
     //The on land event
@@ -70,8 +77,14 @@ public class WorldPlayerMovementScript : MonoBehaviour
         else animator.SetBool("Moving", false);
         animator.SetFloat("SpeedZ", speedZ);
         animator.SetFloat("SpeedX", speedX);
+        //make the player attack when X is pressed
+        if(Input.GetKeyDown(KeyCode.X) && !attacking)
+        {
+            attacking = true;
+            animator.SetTrigger("Melee");
+        }
         //Make the player jump when space is pressed
-        if (Input.GetKeyDown(KeyCode.Space) && grounded && gameObject.GetComponent<Rigidbody>().velocity.y > -0.1f)
+        if (Input.GetKeyDown(KeyCode.Space) && grounded && gameObject.GetComponent<Rigidbody>().velocity.y > -0.1f && !attacking)
         {
             gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 600.0f, 0.0f));
             animator.SetBool("isJumping", true);
@@ -100,7 +113,28 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private void FixedUpdate()
     {
         //move the player on the direction we saved previously
-        gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
+        if(!attacking) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
+        else gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0.0f, gameObject.GetComponent<Rigidbody>().velocity.y, 0.0f);
+    }
+
+    //Function to know where the melee attack is directed. 0-> right, 1-> left, 2 -> up, 3-> down
+    public void MeleeDirection(int d)
+    {
+        dir = d;
+    }
+
+    public void StartMelee()
+    {
+        if(dir == 0) melee = Instantiate(meleePrefab, new Vector3(transform.position.x + 1.0f, transform.position.y, transform.position.z), Quaternion.identity);
+        else if (dir == 1) melee = Instantiate(meleePrefab, new Vector3(transform.position.x - 1.0f, transform.position.y, transform.position.z), Quaternion.identity);
+        else if (dir == 2) melee = Instantiate(meleePrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z + 1.0f), Quaternion.identity);
+        else if (dir == 3) melee = Instantiate(meleePrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.0f), Quaternion.identity);
+    }
+
+    public void EndMelee()
+    {
+        attacking = false;
+        Destroy(melee.gameObject);
     }
 
     //When the player lands we uncheck the jumping and falling booleans

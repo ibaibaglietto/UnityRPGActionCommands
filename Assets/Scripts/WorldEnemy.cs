@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WorldEnemy : MonoBehaviour
 {
@@ -88,13 +89,22 @@ public class WorldEnemy : MonoBehaviour
     {
         //move the enemy on the direction we saved previously
         if(animator.GetBool("Attack")) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0.0f, gameObject.GetComponent<Rigidbody>().velocity.y, 0.0f);
-        else gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 7, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 7);
+        else gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
 
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.transform.tag == "Player" || collision.transform.tag == "Companion") StartBattle(0,0);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag == "Attack")
+        {
+            animator.SetTrigger("Hurt");
+            StartBattle(1, 0);
+        }
     }
     //Function to spawn the attack area
     private void SpawnAttack()
@@ -113,55 +123,59 @@ public class WorldEnemy : MonoBehaviour
     //A function to start the battle. User: 0-> no first attack, 1-> player first attack, 2-> companion first attack, 3 -> enemy first attack. objective in case of enemy attack: 1-> player, 2-> companion
     public void StartBattle(int user, int objective)
     {
-        PlayerPrefs.SetInt("Enemy1", enemy1);
-        PlayerPrefs.SetInt("Enemy2", enemy2);
-        PlayerPrefs.SetInt("Enemy3", enemy3);
-        PlayerPrefs.SetInt("Enemy4", enemy4);
-        if(user == 0)
+        Debug.Log(SceneManager.sceneCount);
+        if (SceneManager.sceneCount < 2)
         {
-            PlayerPrefs.SetInt("EnemyStart", 0);
-            PlayerPrefs.SetInt("FirstAttackObjective", 0);
-            PlayerPrefs.SetInt("PlayerFirstAttack", 0);
-            PlayerPrefs.SetInt("PlayerAttack", 0);
-            PlayerPrefs.SetInt("PlayerStyle", 0);
-            PlayerPrefs.SetInt("CompanionFirstAttack", 0);
-            PlayerPrefs.SetInt("CompanionAttack", 0);
-            PlayerPrefs.SetInt("CompanionStyle", 0);
-        }
-        else if (user == 1)
-        {
-            PlayerPrefs.SetInt("EnemyStart", 0);
-            PlayerPrefs.SetInt("FirstAttackObjective", 0);
-            PlayerPrefs.SetInt("PlayerFirstAttack", 1);
-            PlayerPrefs.SetInt("PlayerAttack", 0);
-            PlayerPrefs.SetInt("PlayerStyle", 0);
-            PlayerPrefs.SetInt("CompanionFirstAttack", 0);
-            PlayerPrefs.SetInt("CompanionAttack", 0);
-            PlayerPrefs.SetInt("CompanionStyle", 0);
-        }
-        else if (user == 2)
-        {
-            PlayerPrefs.SetInt("EnemyStart", 0);
-            PlayerPrefs.SetInt("FirstAttackObjective", 0);
-            PlayerPrefs.SetInt("PlayerFirstAttack", 0);
-            PlayerPrefs.SetInt("PlayerAttack", 0);
-            PlayerPrefs.SetInt("PlayerStyle", 0);
-            PlayerPrefs.SetInt("CompanionFirstAttack", 1);
-            PlayerPrefs.SetInt("CompanionAttack", 0);
-            PlayerPrefs.SetInt("CompanionStyle", 0);
-        }
-        else if (user == 3)
-        {
-            PlayerPrefs.SetInt("EnemyStart", 1);
-            PlayerPrefs.SetInt("FirstAttackObjective", objective);
-            PlayerPrefs.SetInt("PlayerFirstAttack", 0);
-            PlayerPrefs.SetInt("PlayerAttack", 0);
-            PlayerPrefs.SetInt("PlayerStyle", 0);
-            PlayerPrefs.SetInt("CompanionFirstAttack", 0);
-            PlayerPrefs.SetInt("CompanionAttack", 0);
-            PlayerPrefs.SetInt("CompanionStyle", 0);
-        }
-        startBattleScreen.GetComponent<Animator>().SetTrigger("Start");
-        Time.timeScale = 0.1f;
+            PlayerPrefs.SetInt("Enemy1", enemy1);
+            PlayerPrefs.SetInt("Enemy2", enemy2);
+            PlayerPrefs.SetInt("Enemy3", enemy3);
+            PlayerPrefs.SetInt("Enemy4", enemy4);
+            if (user == 0)
+            {
+                PlayerPrefs.SetInt("EnemyStart", 0);
+                PlayerPrefs.SetInt("FirstAttackObjective", 0);
+                PlayerPrefs.SetInt("PlayerFirstAttack", 0);
+                PlayerPrefs.SetInt("PlayerAttack", 0);
+                PlayerPrefs.SetInt("PlayerStyle", 0);
+                PlayerPrefs.SetInt("CompanionFirstAttack", 0);
+                PlayerPrefs.SetInt("CompanionAttack", 0);
+                PlayerPrefs.SetInt("CompanionStyle", 0);
+            }
+            else if (user == 1)
+            {
+                PlayerPrefs.SetInt("EnemyStart", 0);
+                PlayerPrefs.SetInt("FirstAttackObjective", 0);
+                PlayerPrefs.SetInt("PlayerFirstAttack", 1);
+                PlayerPrefs.SetInt("PlayerAttack", 0);
+                PlayerPrefs.SetInt("PlayerStyle", 0);
+                PlayerPrefs.SetInt("CompanionFirstAttack", 0);
+                PlayerPrefs.SetInt("CompanionAttack", 0);
+                PlayerPrefs.SetInt("CompanionStyle", 0);
+            }
+            else if (user == 2)
+            {
+                PlayerPrefs.SetInt("EnemyStart", 0);
+                PlayerPrefs.SetInt("FirstAttackObjective", 0);
+                PlayerPrefs.SetInt("PlayerFirstAttack", 0);
+                PlayerPrefs.SetInt("PlayerAttack", 0);
+                PlayerPrefs.SetInt("PlayerStyle", 0);
+                PlayerPrefs.SetInt("CompanionFirstAttack", 1);
+                PlayerPrefs.SetInt("CompanionAttack", 0);
+                PlayerPrefs.SetInt("CompanionStyle", 0);
+            }
+            else if (user == 3)
+            {
+                PlayerPrefs.SetInt("EnemyStart", 1);
+                PlayerPrefs.SetInt("FirstAttackObjective", objective);
+                PlayerPrefs.SetInt("PlayerFirstAttack", 0);
+                PlayerPrefs.SetInt("PlayerAttack", 0);
+                PlayerPrefs.SetInt("PlayerStyle", 0);
+                PlayerPrefs.SetInt("CompanionFirstAttack", 0);
+                PlayerPrefs.SetInt("CompanionAttack", 0);
+                PlayerPrefs.SetInt("CompanionStyle", 0);
+            }
+            startBattleScreen.GetComponent<Animator>().SetTrigger("Start");
+            Time.timeScale = 0.1f;
+        }            
     }
 }
