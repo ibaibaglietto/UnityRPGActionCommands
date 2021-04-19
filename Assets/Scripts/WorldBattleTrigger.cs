@@ -23,11 +23,13 @@ public class WorldBattleTrigger : MonoBehaviour
     {
         if (other.transform.tag == "Player")
         {
+            user.GetComponent<WorldEnemy>().SetInBattle(true);
             other.GetComponent<Animator>().SetTrigger("Damage");
             user.GetComponent<WorldEnemy>().StartBattle(3, 1);
         }
         else if (other.transform.tag == "Companion")
         {
+            user.GetComponent<WorldEnemy>().SetInBattle(true);
             other.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Damage");
             user.GetComponent<WorldEnemy>().StartBattle(3, 2);
         }

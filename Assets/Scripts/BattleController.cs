@@ -391,6 +391,8 @@ public class BattleController : MonoBehaviour
         //We put the time scale back to normal
         Time.timeScale = 1.0f;
         //Find the gameobjects and others
+        canvas = GameObject.Find("Canvas");
+        canvas.GetComponent<WorldCanvasScript>().ShowUI();
         victoryXP = GameObject.Find("VictoryEXP");
         mainCamera = GameObject.Find("Main Camera");
         lightPointsUI = GameObject.Find("LightBckImage");
@@ -404,7 +406,6 @@ public class BattleController : MonoBehaviour
         soul4 = GameObject.Find("Soul4Fill");
         soul5 = GameObject.Find("Soul5Fill");
         soul6 = GameObject.Find("Soul6Fill");
-        canvas = GameObject.Find("Canvas");
         lvlUpMenu = GameObject.Find("LvlUp");
         xpText = canvas.transform.GetChild(3).GetChild(1).GetComponent<Text>();
         xpText.text = PlayerPrefs.GetInt("lvlXP").ToString();
@@ -7747,6 +7748,7 @@ public class BattleController : MonoBehaviour
     //Function to end the battle
     public void EndBattle()
     {
+        canvas.GetComponent<WorldCanvasScript>().HideUI();
         endBattleImage.GetComponent<Animator>().SetTrigger("end");
     }
     //Function to lvl up the player

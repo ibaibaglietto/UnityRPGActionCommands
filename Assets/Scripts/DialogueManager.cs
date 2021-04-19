@@ -28,7 +28,6 @@ public class DialogueManager : MonoBehaviour
         dialogueText = GameObject.Find("DialogueText").GetComponent<Text>();
         animator = GameObject.Find("DialogueBox").GetComponent<Animator>();
         next = GameObject.Find("DialogueNext");
-        next.GetComponent<Image>().color = new Color(next.GetComponent<Image>().color.r, next.GetComponent<Image>().color.g, next.GetComponent<Image>().color.b, 0.0f);
         nameText.enabled = false;
         dialogueText.enabled = false;
         speak = GameObject.Find("SpeakSource").GetComponent<AudioSource>();
@@ -40,8 +39,7 @@ public class DialogueManager : MonoBehaviour
         //We put the talking state
         battleController.GetComponent<BattleController>().SetTalking(true);
         //We open the dialogue box
-        animator.SetBool("Open", true);       
-        
+        animator.SetBool("Open", true);
         //Clear the previous sentences
         sentences.Clear();
         //Check the language and enqueue the sentences

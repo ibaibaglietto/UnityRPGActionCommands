@@ -23,7 +23,7 @@ public class DialogueBox : MonoBehaviour
     {
         nameText.enabled = true;
         dialogueText.enabled = true;
-        next.SetActive(true);
+        next.GetComponent<Image>().color = new Color(next.GetComponent<Image>().color.r, next.GetComponent<Image>().color.g, next.GetComponent<Image>().color.b, 0.0f);
     }
 
     //Function to make the dialogue box disappear
@@ -31,6 +31,6 @@ public class DialogueBox : MonoBehaviour
     {
         nameText.enabled = false;
         dialogueText.enabled = false;
-        next.SetActive(false);
+        next.GetComponent<Image>().color = new Color(next.GetComponent<Image>().color.r, next.GetComponent<Image>().color.g, next.GetComponent<Image>().color.b, 0.0f);
     }
 }

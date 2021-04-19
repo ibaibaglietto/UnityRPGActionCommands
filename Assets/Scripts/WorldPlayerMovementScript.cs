@@ -12,6 +12,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
     [SerializeField] private LayerMask whatIsGround;
     //A position marking where to check if the player is grounded.
     [SerializeField] private Transform groundCheck;
+    //The canvas
+    private GameObject canvas;
 
     //Radius of the overlap circle to determine if grounded
     const float groundedRadius = 0.07f;
@@ -26,7 +28,9 @@ public class WorldPlayerMovementScript : MonoBehaviour
     //The melee attack prefab and the attack itself
     [SerializeField] private Transform meleePrefab;
     private Transform melee;
-
+    //A boolean to know if the player has fled a battle
+    private bool fled;
+    private float fledTime;
 
     //The on land event
     [Header("Events")]
@@ -37,15 +41,19 @@ public class WorldPlayerMovementScript : MonoBehaviour
 
     private void Awake()
     {
+        
         //We initialize the onLandEvent
         if (OnLandEvent == null) OnLandEvent = new UnityEvent();
     }
 
     void Start()
     {
+        canvas = GameObject.Find("Canvas");
+        canvas.GetComponent<WorldCanvasScript>().HideUI();
         //We initialize the variables
         speedX = 0.0f;
         speedZ = 0.0f;
+        fled = false;
         //We find the animator
         animator = gameObject.GetComponent<Animator>();
     }
@@ -54,67 +62,90 @@ public class WorldPlayerMovementScript : MonoBehaviour
     void Update()
     {
         //Detect the direction we want the player to move and save it
-        if (Input.GetKey(KeyCode.UpArrow)) speedZ = 1.0f;
-        else if (Input.GetKey(KeyCode.DownArrow)) speedZ = -1.0f;
-        else speedZ = 0.0f;
-        if (Input.GetKey(KeyCode.RightArrow))
+        if(PlayerPrefs.GetInt("Battle") == 0)
         {
-            speedX = 1.0f;
-            animator.SetBool("RightLast", true);
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            speedX = -1.0f;
-            animator.SetBool("RightLast", false);
-        }
-        else speedX = 0.0f;
-        if (speedX != 0 || speedZ != 0)
-        {
-            animator.SetBool("Moving", true);
-            speedX = speedX / (Mathf.Abs(speedX) + Mathf.Abs(speedZ));
-            speedZ = speedZ / (Mathf.Abs(speedX) + Mathf.Abs(speedZ));
-        }
-        else animator.SetBool("Moving", false);
-        animator.SetFloat("SpeedZ", speedZ);
-        animator.SetFloat("SpeedX", speedX);
-        //make the player attack when X is pressed
-        if(Input.GetKeyDown(KeyCode.X) && !attacking)
-        {
-            attacking = true;
-            animator.SetTrigger("Melee");
-        }
-        //Make the player jump when space is pressed
-        if (Input.GetKeyDown(KeyCode.Space) && grounded && gameObject.GetComponent<Rigidbody>().velocity.y > -0.1f && !attacking)
-        {
-            gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 600.0f, 0.0f));
-            animator.SetBool("isJumping", true);
-        }
-        //We check if the player is falling
-        if (gameObject.GetComponent<Rigidbody>().velocity.y < -0.01f) animator.SetBool("isFalling", true);
-        else if (animator.GetBool("isFalling")) animator.SetBool("isFalling", false);
-
-        bool wasGrounded = grounded;
-        grounded = false;
-
-        // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-        Collider[] colliders = Physics.OverlapSphere(groundCheck.position, groundedRadius, whatIsGround);
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            if (colliders[i].gameObject != gameObject && Mathf.Abs(gameObject.GetComponent<Rigidbody>().velocity.y) < 0.01f)
+            if (Input.GetKey(KeyCode.UpArrow)) speedZ = 1.0f;
+            else if (Input.GetKey(KeyCode.DownArrow)) speedZ = -1.0f;
+            else speedZ = 0.0f;
+            if (Input.GetKey(KeyCode.RightArrow))
             {
-                grounded = true;
-                if (!wasGrounded)
-                    OnLandEvent.Invoke();
+                speedX = 1.0f;
+                animator.SetBool("RightLast", true);
             }
-        }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                speedX = -1.0f;
+                animator.SetBool("RightLast", false);
+            }
+            else speedX = 0.0f;
+            if (speedX != 0 || speedZ != 0)
+            {
+                animator.SetBool("Moving", true);
+                speedX = speedX / (Mathf.Abs(speedX) + Mathf.Abs(speedZ));
+                speedZ = speedZ / (Mathf.Abs(speedX) + Mathf.Abs(speedZ));
+            }
+            else animator.SetBool("Moving", false);
+            animator.SetFloat("SpeedZ", speedZ);
+            animator.SetFloat("SpeedX", speedX);
+            //make the player attack when X is pressed
+            if (Input.GetKeyDown(KeyCode.X) && !attacking)
+            {
+                attacking = true;
+                animator.SetTrigger("Melee");
+            }
+            //Make the player jump when space is pressed
+            if (Input.GetKeyDown(KeyCode.Space) && grounded && gameObject.GetComponent<Rigidbody>().velocity.y > -0.1f && !attacking)
+            {
+                gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 600.0f, 0.0f));
+                animator.SetBool("isJumping", true);
+            }
+            //We check if the player is falling
+            if (gameObject.GetComponent<Rigidbody>().velocity.y < -0.01f) animator.SetBool("isFalling", true);
+            else if (animator.GetBool("isFalling")) animator.SetBool("isFalling", false);
+
+            bool wasGrounded = grounded;
+            grounded = false;
+
+            // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
+            Collider[] colliders = Physics.OverlapSphere(groundCheck.position, groundedRadius, whatIsGround);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                if (colliders[i].gameObject != gameObject && Mathf.Abs(gameObject.GetComponent<Rigidbody>().velocity.y) < 0.01f)
+                {
+                    grounded = true;
+                    if (!wasGrounded)
+                        OnLandEvent.Invoke();
+                }
+            }
+        }        
 
     }
 
     private void FixedUpdate()
     {
         //move the player on the direction we saved previously
-        if(!attacking) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
+        if(!attacking && PlayerPrefs.GetInt("Battle") == 0) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
         else gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0.0f, gameObject.GetComponent<Rigidbody>().velocity.y, 0.0f);
+        if(PlayerPrefs.GetInt("Fled")==1 && PlayerPrefs.GetInt("Battle") == 0)
+        {
+            PlayerPrefs.SetInt("Fled", 0);
+            fled = true;
+            fledTime = Time.fixedTime;
+        }
+        if ((Time.fixedTime - fledTime) < 0)
+        {
+            
+        }
+    }
+
+    private void OnlyShadows()
+    {
+        GetComponent<SpriteRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+    }
+
+    private void NormalSprite()
+    {
+        GetComponent<SpriteRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
     }
 
     //Function to know where the melee attack is directed. 0-> right, 1-> left, 2 -> up, 3-> down
