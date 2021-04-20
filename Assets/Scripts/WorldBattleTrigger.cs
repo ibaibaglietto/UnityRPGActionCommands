@@ -21,13 +21,13 @@ public class WorldBattleTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "Player")
+        if (other.transform.tag == "Player" && !other.GetComponent<WorldPlayerMovementScript>().IsFleeing())
         {
             user.GetComponent<WorldEnemy>().SetInBattle(true);
             other.GetComponent<Animator>().SetTrigger("Damage");
             user.GetComponent<WorldEnemy>().StartBattle(3, 1);
         }
-        else if (other.transform.tag == "Companion")
+        else if (other.transform.tag == "Companion" && !other.GetComponent<WorldCompanionMovementScript>().IsFleeing())
         {
             user.GetComponent<WorldEnemy>().SetInBattle(true);
             other.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Damage");

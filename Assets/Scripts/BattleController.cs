@@ -386,7 +386,7 @@ public class BattleController : MonoBehaviour
     private Text lvlUpText;
     
 
-    private void Awake()
+    private void Start()
     {
         //We put the time scale back to normal
         Time.timeScale = 1.0f;
@@ -478,6 +478,8 @@ public class BattleController : MonoBehaviour
         ring8 = new Transform[2];
         enemyNumber = 0;
         bossDieAnimationEnded = true;
+        //We set the battle scene as the active scene
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName("BattleScene"));
         //Spawn the player
         SpawnCharacter(0,0);
         player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
@@ -5135,8 +5137,12 @@ public class BattleController : MonoBehaviour
         else if (fled)
         {
             if(player.transform.position.x > -10.0f) player.transform.position = new Vector3(player.transform.position.x - 0.2f, player.transform.position.y, player.transform.position.z);
-            if(companion.transform.position.x > -10.0f) companion.transform.position = new Vector3(companion.transform.position.x - 0.2f, companion.transform.position.y, companion.transform.position.z);
-            else EndBattle();
+            if (companion.transform.position.x > -10.0f) companion.transform.position = new Vector3(companion.transform.position.x - 0.2f, companion.transform.position.y, companion.transform.position.z);
+            else
+            {
+                PlayerPrefs.SetInt("Fled", 1);
+                EndBattle();
+            }
         }
         //When the battle ends we increase the alpha of a black image until it is completely opaque, then we load the main menu
         /*
@@ -7738,6 +7744,7 @@ public class BattleController : MonoBehaviour
         //If not we end the battle
         else
         {
+            PlayerPrefs.SetInt("EnemyDied", 1);
             victoryXP.transform.GetChild(18).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             victoryXP.transform.GetChild(19).gameObject.SetActive(false);
             victoryXP.transform.GetChild(20).gameObject.SetActive(false);
@@ -7780,6 +7787,7 @@ public class BattleController : MonoBehaviour
         lvlUpSelected = -3;
         //We end the battle
         victory = false;
+        PlayerPrefs.SetInt("EnemyDied", 1);
         EndBattle();
     }
     //Function to create the menu

@@ -117,8 +117,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         OnLandEvent.Invoke();
                 }
             }
-        }        
-
+        }
+        if (PlayerPrefs.GetInt("Fled") == 1 && PlayerPrefs.GetInt("Battle") == 0)
+        {
+            GetComponent<Animator>().SetTrigger("Fleeing");
+            PlayerPrefs.SetInt("Fled", 0);
+            fled = true;
+            fledTime = Time.fixedTime;
+        }
+        if ((Time.fixedTime - fledTime) >= 3.05f) fled = false;
     }
 
     private void FixedUpdate()
@@ -126,16 +133,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //move the player on the direction we saved previously
         if(!attacking && PlayerPrefs.GetInt("Battle") == 0) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
         else gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0.0f, gameObject.GetComponent<Rigidbody>().velocity.y, 0.0f);
-        if(PlayerPrefs.GetInt("Fled")==1 && PlayerPrefs.GetInt("Battle") == 0)
-        {
-            PlayerPrefs.SetInt("Fled", 0);
-            fled = true;
-            fledTime = Time.fixedTime;
-        }
-        if ((Time.fixedTime - fledTime) < 0)
-        {
-            
-        }
+        
+    }
+
+    public bool IsFleeing()
+    {
+        return fled;
     }
 
     private void OnlyShadows()

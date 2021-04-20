@@ -24,6 +24,10 @@ public class WorldCompanionMovementScript : MonoBehaviour
 
     private GameObject player;
 
+    //A boolean to know if the companion has fled a battle
+    private bool fled;
+    private float fledTime;
+
     //The on land event
     [Header("Events")]
     [Space]
@@ -51,7 +55,7 @@ public class WorldCompanionMovementScript : MonoBehaviour
 
     void Update()
     {
-        if((Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.5f && !animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.25f && animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 0.75f && animator.GetBool("isJumping")))
+        if ((Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.5f && !animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.25f && animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 0.75f && animator.GetBool("isJumping")))
         {
             //Detect where the player is and move the companion towards them
             speedX = (player.transform.position.x - gameObject.transform.position.x) / (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z)) * (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) / 1.5f);
@@ -66,10 +70,10 @@ public class WorldCompanionMovementScript : MonoBehaviour
         animator.SetFloat("SpeedX", speedX);
         if (speedX != 0 || speedZ != 0) animator.SetBool("Moving", true);
         else animator.SetBool("Moving", false);
-        if((player.transform.position.x - gameObject.transform.position.x) >= 0.0f) animator.SetBool("PlayerRight", true);
+        if ((player.transform.position.x - gameObject.transform.position.x) >= 0.0f) animator.SetBool("PlayerRight", true);
         else animator.SetBool("PlayerRight", false);
         //If the player has jumped or is higher than the companion they jump 
-        if(player.transform.position.y > gameObject.transform.position.y + 0.6f && !animator.GetBool("isJumping") && Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.0f)
+        if (player.transform.position.y > gameObject.transform.position.y + 0.6f && !animator.GetBool("isJumping") && Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.0f)
         {
             gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 600.0f, 0.0f));
             animator.SetBool("isJumping", true);
@@ -92,7 +96,16 @@ public class WorldCompanionMovementScript : MonoBehaviour
                     OnLandEvent.Invoke();
             }
         }
-
+        if (PlayerPrefs.GetInt("Battle") == 0)
+        {
+            if (player.GetComponent<WorldPlayerMovementScript>().IsFleeing() && !fled)
+            {
+                GetComponent<Animator>().SetTrigger("Fleeing");
+                fled = true;
+                fledTime = Time.fixedTime;
+            }
+            if ((Time.fixedTime - fledTime) >= 3.05f) fled = false;
+        }            
     }
 
     private void FixedUpdate()
@@ -110,6 +123,21 @@ public class WorldCompanionMovementScript : MonoBehaviour
     {
         animator.SetBool("isJumping", false);
         animator.SetBool("isFalling", false);
+    }
+
+    public bool IsFleeing()
+    {
+        return fled;
+    }
+
+    private void OnlyShadows()
+    {
+        transform.GetChild(0).GetComponent<SpriteRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+    }
+
+    private void NormalSprite()
+    {
+        transform.GetChild(0).GetComponent<SpriteRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
     }
 
     //Function to know if the player is grounded

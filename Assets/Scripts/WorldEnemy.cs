@@ -8,6 +8,9 @@ public class WorldEnemy : MonoBehaviour
     //The movement speed of the enemy
     private float speedX;
     private float speedZ;
+    //The starting point of the enemy
+    private float startX;
+    private float startZ;
     //The animator
     Animator animator;
     //The player and the companion
@@ -36,6 +39,8 @@ public class WorldEnemy : MonoBehaviour
         speedX = 0.0f;
         speedZ = 0.0f;
         inBattle = false;
+        startX = transform.position.x;
+        startZ = transform.position.z;
         //We find the animator
         animator = GetComponent<Animator>();
         //We find the player
@@ -48,46 +53,77 @@ public class WorldEnemy : MonoBehaviour
     {
         if(PlayerPrefs.GetInt("Battle") == 0)
         {
-            if ((Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z)) <= (Mathf.Abs(companion.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(companion.transform.position.z - gameObject.transform.position.z)))
+            if (!inBattle && (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z))<6.0f && (Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 10.0f)
             {
-                if (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.5f)
+                if ((Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z)) <= (Mathf.Abs(companion.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(companion.transform.position.z - gameObject.transform.position.z)))
                 {
-                    //Detect where the player is and move the enemy towards them
-                    speedX = (player.transform.position.x - gameObject.transform.position.x) / (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z));
-                    speedZ = (player.transform.position.z - gameObject.transform.position.z) / (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z));
+                    if (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.5f)
+                    {
+                        //Detect where the player is and move the enemy towards them
+                        speedX = (player.transform.position.x - gameObject.transform.position.x) / (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z));
+                        speedZ = (player.transform.position.z - gameObject.transform.position.z) / (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z));
+                    }
+                    else if (!animator.GetBool("Attack"))
+                    {
+                        objectivePos = player.transform.position;
+                        animator.SetBool("Attack", true);
+                        speedX = 0.0f;
+                        speedZ = 0.0f;
+                    }
                 }
-                else if (!animator.GetBool("Attack"))
+                else
                 {
-                    objectivePos = player.transform.position;
-                    animator.SetBool("Attack", true);
-                    speedX = 0.0f;
-                    speedZ = 0.0f;
+                    if (Mathf.Abs(companion.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(companion.transform.position.z - gameObject.transform.position.z) > 1.5f)
+                    {
+                        //Detect where the companion is and move the enemy towards them
+                        speedX = (companion.transform.position.x - gameObject.transform.position.x) / (Mathf.Abs(companion.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(companion.transform.position.z - gameObject.transform.position.z));
+                        speedZ = (companion.transform.position.z - gameObject.transform.position.z) / (Mathf.Abs(companion.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(companion.transform.position.z - gameObject.transform.position.z));
+                    }
+                    else if (!animator.GetBool("Attack"))
+                    {
+                        objectivePos = companion.transform.position;
+                        animator.SetBool("Attack", true);
+                        speedX = 0.0f;
+                        speedZ = 0.0f;
+                    }
                 }
+
+                //We put the correct values on the animator variables
+                animator.SetFloat("SpeedX", speedX);
+                if (speedX != 0 || speedZ != 0) animator.SetBool("Moving", true);
+                else animator.SetBool("Moving", false);
+                if ((player.transform.position.x - gameObject.transform.position.x) >= 0.0f) animator.SetBool("FacingRight", true);
+                else animator.SetBool("FacingRight", false);
+            }
+            else if (!inBattle)
+            {
+                //Detect where the starting point is and move the enemy towards it
+                if (startX != gameObject.transform.position.x) speedX = (startX - gameObject.transform.position.x) / (Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z));
+                else speedX = 0.0f;
+                if (startZ != gameObject.transform.position.z) speedZ = (startZ - gameObject.transform.position.z) / (Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z));
+                else speedZ = 0.0f;
+                //We put the correct values on the animator variables
+                animator.SetFloat("SpeedX", speedX);
+                if (speedX != 0 || speedZ != 0) animator.SetBool("Moving", true);
+                else animator.SetBool("Moving", false);
+                if ((player.transform.position.x - gameObject.transform.position.x) >= 0.0f) animator.SetBool("FacingRight", true);
+                else animator.SetBool("FacingRight", false);
             }
             else
             {
-                if (Mathf.Abs(companion.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(companion.transform.position.z - gameObject.transform.position.z) > 1.5f)
+                if (PlayerPrefs.GetInt("EnemyDied") == 1)
                 {
-                    //Detect where the companion is and move the enemy towards them
-                    speedX = (companion.transform.position.x - gameObject.transform.position.x) / (Mathf.Abs(companion.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(companion.transform.position.z - gameObject.transform.position.z));
-                    speedZ = (companion.transform.position.z - gameObject.transform.position.z) / (Mathf.Abs(companion.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(companion.transform.position.z - gameObject.transform.position.z));
+                    animator.SetTrigger("Die");
+                    inBattle = false;
+                    PlayerPrefs.SetInt("EnemyDied",0);
                 }
-                else if (!animator.GetBool("Attack"))
+                else
                 {
-                    objectivePos = companion.transform.position;
-                    animator.SetBool("Attack", true);
-                    speedX = 0.0f;
-                    speedZ = 0.0f;
+                    inBattle = false;
                 }
             }
-
-            //We put the correct values on the animator variables
-            animator.SetFloat("SpeedX", speedX);
-            if (speedX != 0 || speedZ != 0) animator.SetBool("Moving", true);
-            else animator.SetBool("Moving", false);
-            if ((player.transform.position.x - gameObject.transform.position.x) >= 0.0f) animator.SetBool("FacingRight", true);
-            else animator.SetBool("FacingRight", false);
-        }        
+        } 
+        
     }
 
 
@@ -101,11 +137,16 @@ public class WorldEnemy : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.tag == "Player" || collision.transform.tag == "Companion")
+        if ((collision.transform.tag == "Player" && !collision.transform.GetComponent<WorldPlayerMovementScript>().IsFleeing()) || (collision.transform.tag == "Companion" && !collision.transform.GetComponent<WorldCompanionMovementScript>().IsFleeing()))
         {
             inBattle = true;
             StartBattle(0, 0);
         }
+    }
+
+    private void SelfDestroy()
+    {
+        Destroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
