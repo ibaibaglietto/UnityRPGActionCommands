@@ -14,7 +14,6 @@ public class EnterBattleScript : MonoBehaviour
 
     private void StartBattle()
     {
-        PlayerPrefs.SetInt("Battle", 1);
         SceneManager.LoadScene(1,LoadSceneMode.Additive);
         cam.GetComponent<WorldCameraScript>().ChangeBattleCamera(true);
     }

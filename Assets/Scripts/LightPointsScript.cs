@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class LightPointsScript : MonoBehaviour
 {
     //An int to save the max health of the player
-    public int maxLight;
+    private int maxLight;
     //An int to save the current health of the player
     private int currentLight;
     //The max health text
@@ -19,7 +19,11 @@ public class LightPointsScript : MonoBehaviour
     {
         //We save the max light and the current light
         maxLight = 5 + PlayerPrefs.GetInt("PlayerLightLvl") * 5;
-        currentLight = maxLight;
+        if (PlayerPrefs.HasKey("PlayerCurrentLight"))
+        {
+            currentLight = PlayerPrefs.GetInt("PlayerCurrentLight");
+        }
+        else currentLight = maxLight;
         //We find the current light text and max light text and initialize them
         currentLightText = transform.GetChild(0).GetComponent<Text>();
         maxLightText = transform.GetChild(2).GetComponent<Text>();
@@ -38,6 +42,7 @@ public class LightPointsScript : MonoBehaviour
     {
         currentLight -= light;
         currentLightText.text = currentLight.ToString();
+        PlayerPrefs.SetInt("PlayerCurrentLight", currentLight);
     }
 
     //Function to increase the amount of light
@@ -45,6 +50,7 @@ public class LightPointsScript : MonoBehaviour
     {
         currentLight += light;
         if (currentLight > maxLight) currentLight = maxLight;
+        PlayerPrefs.SetInt("PlayerCurrentLight", currentLight);
         currentLightText.text = currentLight.ToString();
     }
 

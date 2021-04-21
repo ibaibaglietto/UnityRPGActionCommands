@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerLifeScript : MonoBehaviour
 {
-    //An int to know who is the player or companion using the bar. 0-> Player, 1-> Adventurer
+    //An int to know who is the player or companion using the bar. 0-> Player, 1-> Adventurer 2-> wizard
     public int user;
     //An int to save the max health of the player
     private int maxHealth;
@@ -73,6 +73,9 @@ public class PlayerLifeScript : MonoBehaviour
     public void DealDamage(int health)
     {
         currentHealth -= health;
+        if (user == 0) PlayerPrefs.SetInt("PlayerCurrentHealth", currentHealth);
+        else if (user == 1) PlayerPrefs.SetInt("AdventurerCurrentHealth", currentHealth);
+        else if (user == 2) PlayerPrefs.SetInt("WizardCurrentHealth", currentHealth);
         if (currentHealth < 0) currentHealth = 0;
         currentHealthText.text = currentHealth.ToString();
     }
@@ -85,6 +88,9 @@ public class PlayerLifeScript : MonoBehaviour
     public void Heal(int health)
     {
         currentHealth += health;
+        if (user == 0) PlayerPrefs.SetInt("PlayerCurrentHealth", currentHealth);
+        else if (user == 1) PlayerPrefs.SetInt("AdventurerCurrentHealth", currentHealth);
+        else if (user == 2) PlayerPrefs.SetInt("WizardCurrentHealth", currentHealth);
         if (currentHealth > maxHealth) currentHealth = maxHealth;
         currentHealthText.text = currentHealth.ToString();
     }

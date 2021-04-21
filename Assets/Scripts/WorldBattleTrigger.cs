@@ -5,11 +5,13 @@ using UnityEngine;
 public class WorldBattleTrigger : MonoBehaviour
 {
     //The user of the attack
-    Transform user;
+    private Transform user;
+    //A boolean to know if the battle already started
+    private bool inBattle;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        inBattle = false;
     }
 
     // Update is called once per frame
@@ -21,17 +23,21 @@ public class WorldBattleTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "Player" && !other.GetComponent<WorldPlayerMovementScript>().IsFleeing())
+        if (other.transform.tag == "Player" && !other.GetComponent<WorldPlayerMovementScript>().IsFleeing() &&!inBattle)
         {
-            user.GetComponent<WorldEnemy>().SetInBattle(true);
+            inBattle = true;
             other.GetComponent<Animator>().SetTrigger("Damage");
             user.GetComponent<WorldEnemy>().StartBattle(3, 1);
-        }
-        else if (other.transform.tag == "Companion" && !other.GetComponent<WorldCompanionMovementScript>().IsFleeing())
-        {
             user.GetComponent<WorldEnemy>().SetInBattle(true);
+            Destroy(gameObject);
+        }
+        else if (other.transform.tag == "Companion" && !other.GetComponent<WorldCompanionMovementScript>().IsFleeing() && !inBattle)
+        {
+            inBattle = true;
             other.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Damage");
             user.GetComponent<WorldEnemy>().StartBattle(3, 2);
+            user.GetComponent<WorldEnemy>().SetInBattle(true);
+            Destroy(gameObject);
         }
     }
 

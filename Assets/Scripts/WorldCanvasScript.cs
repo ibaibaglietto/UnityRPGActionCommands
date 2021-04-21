@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WorldCanvasScript : MonoBehaviour
 {
@@ -10,6 +11,12 @@ public class WorldCanvasScript : MonoBehaviour
     private GameObject fleeAction;
     private GameObject lvlUp;
     private GameObject changePosAction;
+    private GameObject canvas;
+    private Text xpText;
+    //The player life
+    private GameObject playerLife;
+    //The companion life
+    private GameObject companionLife;
 
 
     void Awake()
@@ -20,6 +27,14 @@ public class WorldCanvasScript : MonoBehaviour
         fleeAction = GameObject.Find("FleeAction");
         lvlUp = GameObject.Find("LvlUp");
         changePosAction = GameObject.Find("ChangeOrder");
+        //We put the real values on the canvas
+        canvas = GameObject.Find("Canvas");
+        xpText = canvas.transform.GetChild(3).GetChild(1).GetComponent<Text>();
+        xpText.text = PlayerPrefs.GetInt("lvlXP").ToString();
+        playerLife = GameObject.Find("PlayerLifeBckImage");
+        companionLife = GameObject.Find("CompanionLifeBckImage");
+        playerLife.GetComponent<PlayerLifeScript>().SetUser(0);
+        companionLife.GetComponent<PlayerLifeScript>().SetUser(1);
         //We set the state to open world
         PlayerPrefs.SetInt("Battle", 0);
     }
