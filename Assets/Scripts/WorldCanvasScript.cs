@@ -11,8 +11,8 @@ public class WorldCanvasScript : MonoBehaviour
     private GameObject fleeAction;
     private GameObject lvlUp;
     private GameObject changePosAction;
-    private GameObject canvas;
     private Text xpText;
+    private Text coinsText;
     //The player life
     private GameObject playerLife;
     //The companion life
@@ -28,15 +28,23 @@ public class WorldCanvasScript : MonoBehaviour
         lvlUp = GameObject.Find("LvlUp");
         changePosAction = GameObject.Find("ChangeOrder");
         //We put the real values on the canvas
-        canvas = GameObject.Find("Canvas");
-        xpText = canvas.transform.GetChild(3).GetChild(1).GetComponent<Text>();
+        xpText = transform.GetChild(3).GetChild(1).GetComponent<Text>();
+        if (!PlayerPrefs.HasKey("lvlXP")) PlayerPrefs.SetInt("lvlXP", 0);
         xpText.text = PlayerPrefs.GetInt("lvlXP").ToString();
+        coinsText = transform.GetChild(3).GetChild(3).GetComponent<Text>();
+        if (!PlayerPrefs.HasKey("currentCoins")) PlayerPrefs.SetInt("currentCoins", 0);
+        coinsText.text = PlayerPrefs.GetInt("currentCoins").ToString();
         playerLife = GameObject.Find("PlayerLifeBckImage");
         companionLife = GameObject.Find("CompanionLifeBckImage");
         playerLife.GetComponent<PlayerLifeScript>().SetUser(0);
         companionLife.GetComponent<PlayerLifeScript>().SetUser(1);
         //We set the state to open world
         PlayerPrefs.SetInt("Battle", 0);
+    }
+
+    public void UpdateCoins()
+    {
+        coinsText.text = PlayerPrefs.GetInt("currentCoins").ToString();
     }
 
     //Function to hide the UI that is only used in battle

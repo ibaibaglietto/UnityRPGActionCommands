@@ -25,6 +25,10 @@ public class WorldEnemy : MonoBehaviour
     private bool inBattle;
     //A boolean to know if the enemy has seen the player
     private bool seeingPlayer;
+    //The prefab of the coin
+    [SerializeField] private Transform coinPrefab;
+    //The number of coins the enemy will spawn
+    [SerializeField] private int coinNumb;
 
     //The enemies of the battle. 1-> bandit, 2-> evil wizard, 3-> king
     [SerializeField] private int enemy1;
@@ -186,6 +190,12 @@ public class WorldEnemy : MonoBehaviour
     private void EndAttack()
     {
         animator.SetBool("Attack", false);
+    }
+
+    //Function to spawn the coins when the enemy dies
+    private void SpawnCoins()
+    {
+        for(int i = 0; i<coinNumb; i++) Instantiate(coinPrefab, gameObject.transform.position, Quaternion.identity).GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5.0f,5.0f),Random.Range(5.0f,10.0f), Random.Range(-5.0f, 5.0f)); 
     }
 
     //A function to start the battle. User: 0-> no first attack, 1-> player first attack, 2-> companion first attack, 3 -> enemy first attack. objective in case of enemy attack: 1-> player, 2-> companion

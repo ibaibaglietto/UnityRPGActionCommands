@@ -16,6 +16,8 @@ TagManager:
   - arrow
   - Companion
   - Attack
+  - Coin
+  - Bench
   layers:
   - Default
   - TransparentFX
@@ -27,8 +29,8 @@ TagManager:
   - 
   - UIFront
   - Floor
-  - 
-  - 
+  - Coin
+  - Player
   - 
   - 
   - 
