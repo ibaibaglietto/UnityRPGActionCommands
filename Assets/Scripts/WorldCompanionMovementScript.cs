@@ -21,6 +21,8 @@ public class WorldCompanionMovementScript : MonoBehaviour
     Animator animator;
     //The tp check
     private Transform tpCheck;
+    //The rest position
+    private Vector2 restPos;
 
     private GameObject player;
 
@@ -55,57 +57,91 @@ public class WorldCompanionMovementScript : MonoBehaviour
 
     void Update()
     {
-        if ((Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.5f && !animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.25f && animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 0.75f && animator.GetBool("isJumping")))
+        if (!player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest())
         {
-            //Detect where the player is and move the companion towards them
-            speedX = (player.transform.position.x - gameObject.transform.position.x) / (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z)) * (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) / 1.5f);
-            speedZ = (player.transform.position.z - gameObject.transform.position.z) / (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z)) * (Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) / 1.5f);
-        }
+            if ((Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.5f && !animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.25f && animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 0.75f && animator.GetBool("isJumping")))
+            {
+                //Detect where the player is and move the companion towards them
+                speedX = (player.transform.position.x - gameObject.transform.position.x) / (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z)) * (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) / 1.5f);
+                speedZ = (player.transform.position.z - gameObject.transform.position.z) / (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z)) * (Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) / 1.5f);
+            }
+            else
+            {
+                speedX = 0.0f;
+                speedZ = 0.0f;
+            }
+            //We put the correct values on the animator variables
+            animator.SetFloat("SpeedX", speedX);
+            if (speedX != 0 || speedZ != 0) animator.SetBool("Moving", true);
+            else animator.SetBool("Moving", false);
+            if ((player.transform.position.x - gameObject.transform.position.x) >= 0.0f) animator.SetBool("PlayerRight", true);
+            else animator.SetBool("PlayerRight", false);
+            //If the player has jumped or is higher than the companion they jump 
+            if (player.transform.position.y > gameObject.transform.position.y + 0.6f && !animator.GetBool("isJumping") && Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.0f)
+            {
+                gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 600.0f, 0.0f));
+                animator.SetBool("isJumping", true);
+            }
+            //If the y velocity is negative the companion is falling
+            if (gameObject.GetComponent<Rigidbody>().velocity.y < -0.01f) animator.SetBool("isFalling", true);
+            else if (animator.GetBool("isFalling")) animator.SetBool("isFalling", false);
+
+            bool wasGrounded = grounded;
+            grounded = false;
+
+            // The companion is grounded if a circlecast to the groundcheck position hits anything designated as ground
+            Collider[] colliders = Physics.OverlapSphere(groundCheck.position, groundedRadius, whatIsGround);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                if (colliders[i].gameObject != gameObject && Mathf.Abs(gameObject.GetComponent<Rigidbody>().velocity.y) < 0.01f)
+                {
+                    grounded = true;
+                    if (!wasGrounded)
+                        OnLandEvent.Invoke();
+                }
+            }
+            if (PlayerPrefs.GetInt("Battle") == 0)
+            {
+                if (player.GetComponent<WorldPlayerMovementScript>().IsFleeing() && !fled)
+                {
+                    GetComponent<Animator>().SetTrigger("Fleeing");
+                    fled = true;
+                    fledTime = Time.fixedTime;
+                }
+                if ((Time.fixedTime - fledTime) >= 3.05f) fled = false;
+            }
+        }        
         else
         {
-            speedX = 0.0f;
-            speedZ = 0.0f;
-        }
-        //We put the correct values on the animator variables
-        animator.SetFloat("SpeedX", speedX);
-        if (speedX != 0 || speedZ != 0) animator.SetBool("Moving", true);
-        else animator.SetBool("Moving", false);
-        if ((player.transform.position.x - gameObject.transform.position.x) >= 0.0f) animator.SetBool("PlayerRight", true);
-        else animator.SetBool("PlayerRight", false);
-        //If the player has jumped or is higher than the companion they jump 
-        if (player.transform.position.y > gameObject.transform.position.y + 0.6f && !animator.GetBool("isJumping") && Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.0f)
-        {
-            gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 600.0f, 0.0f));
-            animator.SetBool("isJumping", true);
-        }
-        //If the y velocity is negative the companion is falling
-        if (gameObject.GetComponent<Rigidbody>().velocity.y < -0.01f) animator.SetBool("isFalling", true);
-        else if (animator.GetBool("isFalling")) animator.SetBool("isFalling", false);
-
-        bool wasGrounded = grounded;
-        grounded = false;
-
-        // The companion is grounded if a circlecast to the groundcheck position hits anything designated as ground
-        Collider[] colliders = Physics.OverlapSphere(groundCheck.position, groundedRadius, whatIsGround);
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            if (colliders[i].gameObject != gameObject && Mathf.Abs(gameObject.GetComponent<Rigidbody>().velocity.y) < 0.01f)
+            if (transform.position.x < restPos[0])
             {
-                grounded = true;
-                if (!wasGrounded)
-                    OnLandEvent.Invoke();
+                speedX = -0.4f;
+                speedZ = 0;
+                animator.SetBool("Moving", true);
             }
-        }
-        if (PlayerPrefs.GetInt("Battle") == 0)
-        {
-            if (player.GetComponent<WorldPlayerMovementScript>().IsFleeing() && !fled)
+            else if (transform.position.x > restPos[0])
             {
-                GetComponent<Animator>().SetTrigger("Fleeing");
-                fled = true;
-                fledTime = Time.fixedTime;
+                speedX = 0;
+                transform.position = new Vector3(restPos[0], transform.position.y, transform.position.z);
+                gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 600.0f, 0.0f));
+                animator.SetBool("isJumping", true);
             }
-            if ((Time.fixedTime - fledTime) >= 3.05f) fled = false;
-        }            
+            else if (transform.position.x == restPos[0] && transform.position.z < restPos[1])
+            {
+                speedX = 0;
+                speedZ = 1.0f;
+                animator.SetBool("Moving", true);
+            }
+            else if (transform.position.x == restPos[0] && transform.position.z > restPos[1])
+            {
+                speedZ = 0;
+                transform.position = new Vector3(restPos[0], transform.position.y, restPos[1]);
+                animator.SetBool("Moving", false);
+            }
+            else if (transform.position.x == restPos[0] && transform.position.z == restPos[1] && Mathf.Abs(GetComponent<Rigidbody>().velocity.y) < 10.0f) animator.SetBool("Resting", true);
+            animator.SetFloat("SpeedZ", speedZ);
+            animator.SetFloat("SpeedX", speedX);
+        }
     }
 
     private void FixedUpdate()
@@ -315,5 +351,11 @@ public class WorldCompanionMovementScript : MonoBehaviour
         }
         animator.SetBool("isJumping", false);
         animator.SetBool("isFalling", false);
+    }
+    
+    //Function to set the rest position
+    public void SetRestPosition(float restX, float restZ)
+    {
+        restPos = new Vector2(restX, restZ);
     }
 }
