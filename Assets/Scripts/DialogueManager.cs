@@ -18,11 +18,12 @@ public class DialogueManager : MonoBehaviour
     private AudioSource speak;
     //The sentences
     private Queue<string> sentences;
+    //A boolean to know if it is a battle dialogue or a world one
+    private bool battle;
 
     void Start()
     {
         //We find everything
-        battleController = GameObject.Find("BattleController");
         sentences = new Queue<string>();
         nameText = GameObject.Find("DialogueName").GetComponent<Text>();
         dialogueText = GameObject.Find("DialogueText").GetComponent<Text>();
@@ -33,9 +34,51 @@ public class DialogueManager : MonoBehaviour
         speak = GameObject.Find("SpeakSource").GetComponent<AudioSource>();
     }
 
-    //Function to start the dialogue
-    public void StartDialogue(Dialogue dialogue)
+    //Function to start the world dialogue
+    public void StartWorldDialogue(Dialogue dialogue)
     {
+        battle = false;
+        //We open the dialogue box
+        animator.SetBool("Open", true);
+        //Clear the previous sentences
+        sentences.Clear();
+        //Check the language and enqueue the sentences
+        if (PlayerPrefs.GetInt("Language") == 1)
+        {
+            //Set the name of the speaker
+            nameText.text = dialogue.nameEnglish;
+            foreach (string sentence in dialogue.sentencesEnglish)
+            {
+                sentences.Enqueue(sentence);
+            }
+        }
+        else if (PlayerPrefs.GetInt("Language") == 2)
+        {
+            //Set the name of the speaker
+            nameText.text = dialogue.nameSpanish;
+            foreach (string sentence in dialogue.sentencesSpanish)
+            {
+                sentences.Enqueue(sentence);
+            }
+        }
+        else if (PlayerPrefs.GetInt("Language") == 3)
+        {
+            //Set the name of the speaker
+            nameText.text = dialogue.nameBasque;
+            foreach (string sentence in dialogue.sentencesBasque)
+            {
+                sentences.Enqueue(sentence);
+            }
+        }
+        //Display the next sentence
+        DisplayNextSentence();
+    }
+
+    //Function to start the battle dialogue
+    public void StartBattleDialogue(Dialogue dialogue)
+    {
+        battle = true;
+        battleController = GameObject.Find("BattleController");
         //We put the talking state
         battleController.GetComponent<BattleController>().SetTalking(true);
         //We open the dialogue box
@@ -80,7 +123,8 @@ public class DialogueManager : MonoBehaviour
         //When we dont have more sentences we end the dialogue
         if (sentences.Count == 0)
         {
-            EndDialogue();
+            if (battle) EndBattleDialogue();
+            else EndWorldDialogue();
             StopAllCoroutines();
             return;
         }
@@ -105,11 +149,17 @@ public class DialogueManager : MonoBehaviour
         next.GetComponent<Image>().color = new Color(next.GetComponent<Image>().color.r, next.GetComponent<Image>().color.g, next.GetComponent<Image>().color.b, 1.0f);
     }
 
-    //Function to end the dialogue
-    void EndDialogue()
+    //Function to end the battle dialogue
+    void EndBattleDialogue()
     {
         battleController.GetComponent<BattleController>().SetTalking(false);
         animator.SetBool("Open", false);
         battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+    }
+
+    //Function to end the world dialogue
+    void EndWorldDialogue()
+    {
+        animator.SetBool("Open", false);
     }
 }

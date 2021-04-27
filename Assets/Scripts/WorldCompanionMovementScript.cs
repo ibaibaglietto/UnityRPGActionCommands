@@ -57,7 +57,7 @@ public class WorldCompanionMovementScript : MonoBehaviour
 
     void Update()
     {
-        if (!player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest())
+        if (!player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest() && !player.GetComponent<WorldPlayerMovementScript>().GetResting())
         {
             if ((Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.5f && !animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.25f && animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 0.75f && animator.GetBool("isJumping")))
             {
@@ -115,7 +115,7 @@ public class WorldCompanionMovementScript : MonoBehaviour
         {
             if (transform.position.x < restPos[0])
             {
-                speedX = -0.4f;
+                speedX = 0.4f;
                 speedZ = 0;
                 animator.SetBool("Moving", true);
             }
@@ -129,7 +129,7 @@ public class WorldCompanionMovementScript : MonoBehaviour
             else if (transform.position.x == restPos[0] && transform.position.z < restPos[1])
             {
                 speedX = 0;
-                speedZ = 1.0f;
+                speedZ = 1.5f;
                 animator.SetBool("Moving", true);
             }
             else if (transform.position.x == restPos[0] && transform.position.z > restPos[1])
@@ -139,7 +139,6 @@ public class WorldCompanionMovementScript : MonoBehaviour
                 animator.SetBool("Moving", false);
             }
             else if (transform.position.x == restPos[0] && transform.position.z == restPos[1] && Mathf.Abs(GetComponent<Rigidbody>().velocity.y) < 10.0f) animator.SetBool("Resting", true);
-            animator.SetFloat("SpeedZ", speedZ);
             animator.SetFloat("SpeedX", speedX);
         }
     }

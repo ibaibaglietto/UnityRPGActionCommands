@@ -9,6 +9,8 @@ public class FirePlaceScript : MonoBehaviour
     [SerializeField] private float rightChairX;
     [SerializeField] private float rightChairZ;
     private GameObject companion;
+    //The dialogue
+    public Dialogue dialogue;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +28,8 @@ public class FirePlaceScript : MonoBehaviour
         {            
             other.GetComponent<WorldPlayerMovementScript>().SetCanRest(true);
             other.GetComponent<WorldPlayerMovementScript>().SetRestPosition(leftChairX,leftChairZ);
+            other.GetComponent<WorldPlayerMovementScript>().SetFireXPos(transform.position.x);
+            other.GetComponent<WorldPlayerMovementScript>().SetFirePlace(gameObject);
             companion.GetComponent<WorldCompanionMovementScript>().SetRestPosition(rightChairX, rightChairZ);
         }
     }

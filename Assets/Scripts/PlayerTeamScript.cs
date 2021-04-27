@@ -1700,7 +1700,7 @@ public class PlayerTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().GoodCommand();
                 source.clip = adventurerGlanceAudio;
                 source.Play();
-                battleController.GetComponent<DialogueManager>().StartDialogue(attackObjective.GetComponent<EnemyTeamScript>().dialogue);
+                battleController.GetComponent<DialogueManager>().StartBattleDialogue(attackObjective.GetComponent<EnemyTeamScript>().dialogue);
                 //Bandit
                 if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 0) PlayerPrefs.SetInt("bandit", 1);
                 //Wizard

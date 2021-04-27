@@ -35,10 +35,18 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private bool canRest;
     //A boolean to know if the player is moving to the rest position
     private bool movingToRest;
+    //A boolean to know if the player is resting
+    private bool resting;
     //The rest position
     private Vector2 restPos;
+    //The X position of the fire
+    private float fireX;
     //The image to represent that an object is interactable
-    private GameObject interactable; 
+    private GameObject interactable;
+    //The fireplace the player is using
+    private GameObject firePlace;
+    //The dialogue manager
+    private GameObject dialogueManager;
 
     //The on land event
     [Header("Events")]
@@ -59,6 +67,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
     void Start()
     {
         canvas = GameObject.Find("Canvas");
+        dialogueManager = GameObject.Find("WorldDialogueManager");
         canvas.GetComponent<WorldCanvasScript>().HideUI();
         //We initialize the variables
         speedX = 0.0f;
@@ -66,6 +75,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         fled = false;
         canRest = false;
         movingToRest = false;
+        resting = false;
         //We find the animator
         animator = gameObject.GetComponent<Animator>();
     }
@@ -76,7 +86,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //Detect the direction we want the player to move and save it
         if(PlayerPrefs.GetInt("Battle") == 0)
         {
-            if (!movingToRest)
+            if (!movingToRest && !resting)
             {
                 if (Input.GetKey(KeyCode.UpArrow)) speedZ = 1.0f;
                 else if (Input.GetKey(KeyCode.DownArrow)) speedZ = -1.0f;
@@ -132,7 +142,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     }
                 }
             }
-            else
+            else if(movingToRest)
             {
                 if (transform.position.x > restPos[0])
                 {
@@ -140,28 +150,39 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     speedZ = 0;
                     animator.SetBool("Moving", true);
                 }
-                else if(transform.position.x < restPos[0])
+                else if (transform.position.x < restPos[0])
                 {
+                    canvas.GetComponent<Animator>().SetBool("Hide",true);
                     speedX = 0;
                     transform.position = new Vector3(restPos[0], transform.position.y, transform.position.z);
                     gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 600.0f, 0.0f));
                     animator.SetBool("isJumping", true);
                 }
-                else if(transform.position.x == restPos[0] && transform.position.z < restPos[1])
+                else if (transform.position.x == restPos[0] && transform.position.z < restPos[1])
                 {
                     speedX = 0;
                     speedZ = 1.0f;
                     animator.SetBool("Moving", true);
                 }
-                else if(transform.position.x == restPos[0] && transform.position.z > restPos[1])
+                else if (transform.position.x == restPos[0] && transform.position.z > restPos[1])
                 {
                     speedZ = 0;
                     transform.position = new Vector3(restPos[0], transform.position.y, restPos[1]);
                     animator.SetBool("Moving", false);
                 }
-                else if(transform.position.x == restPos[0] && transform.position.z == restPos[1] && Mathf.Abs(GetComponent<Rigidbody>().velocity.y)<10.0f) animator.SetBool("Resting", true);
+                else if (transform.position.x == restPos[0] && transform.position.z == restPos[1] && Mathf.Abs(GetComponent<Rigidbody>().velocity.y) < 10.0f)
+                {
+                    movingToRest = false;
+                    animator.SetBool("Resting", true);
+                    resting = true;
+                    dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(firePlace.GetComponent<FirePlaceScript>().dialogue);
+                }
                 animator.SetFloat("SpeedZ", speedZ);
                 animator.SetFloat("SpeedX", speedX);
+            }
+            if (resting)
+            {
+                if (Input.GetKeyDown(KeyCode.X)) dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
             }
         }
         if (PlayerPrefs.GetInt("Fled") == 1 && PlayerPrefs.GetInt("Battle") == 0)
@@ -244,10 +265,40 @@ public class WorldPlayerMovementScript : MonoBehaviour
         restPos = new Vector2(restX, restZ);
     }
 
+    //Function to set the X position of the fire place
+    public void SetFireXPos(float xPos)
+    {
+        fireX = xPos;
+    }
+
+    //Function to get the X position of the fire place
+    public float GetFireXPos()
+    {
+        return fireX;
+    }
+
     //Function to get if the player is moving to rest
     public bool GetMovingToRest()
     {
         return movingToRest;
     }
-        
+
+    //Function to get if the player is resting
+    public bool GetResting()
+    {
+        return resting;
+    }
+
+    //Function to set the fireplace
+    public void SetFirePlace(GameObject place)
+    {
+        firePlace = place;
+    }
+
+    //Function to get the fireplace
+    public GameObject GetFirePlace()
+    {
+        return firePlace;
+    }
+
 }
