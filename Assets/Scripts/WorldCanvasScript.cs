@@ -67,6 +67,7 @@ public class WorldCanvasScript : MonoBehaviour
         changePosAction.SetActive(true);
     }
 
+
     // Update is called once per frame
     void Update()
     {

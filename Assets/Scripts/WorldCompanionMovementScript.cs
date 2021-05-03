@@ -23,6 +23,8 @@ public class WorldCompanionMovementScript : MonoBehaviour
     private Transform tpCheck;
     //The rest position
     private Vector2 restPos;
+    //A boolean to know if the companion is resting
+    private bool resting;
 
     private GameObject player;
 
@@ -48,6 +50,7 @@ public class WorldCompanionMovementScript : MonoBehaviour
         //We initialize the variables
         speedX = 0.0f;
         speedZ = 0.0f;
+        resting = false;
         //We find the animator
         animator = gameObject.transform.GetChild(0).GetComponent<Animator>();
         //We find the player
@@ -57,7 +60,7 @@ public class WorldCompanionMovementScript : MonoBehaviour
 
     void Update()
     {
-        if (!player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest() && !player.GetComponent<WorldPlayerMovementScript>().GetResting())
+        if (!player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest() && !player.GetComponent<WorldPlayerMovementScript>().GetResting() && !resting)
         {
             if ((Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.5f && !animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 1.25f && animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z) > 0.75f && animator.GetBool("isJumping")))
             {
@@ -110,8 +113,9 @@ public class WorldCompanionMovementScript : MonoBehaviour
                 }
                 if ((Time.fixedTime - fledTime) >= 3.05f) fled = false;
             }
-        }        
-        else
+        }
+        else resting = true;
+        if(resting)
         {
             if (transform.position.x < restPos[0])
             {
@@ -140,6 +144,11 @@ public class WorldCompanionMovementScript : MonoBehaviour
             }
             else if (transform.position.x == restPos[0] && transform.position.z == restPos[1] && Mathf.Abs(GetComponent<Rigidbody>().velocity.y) < 10.0f) animator.SetBool("Resting", true);
             animator.SetFloat("SpeedX", speedX);
+            if(!player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest() && !player.GetComponent<WorldPlayerMovementScript>().GetResting())
+            {
+                animator.SetBool("Resting", false);
+                resting = false;
+            }
         }
     }
 

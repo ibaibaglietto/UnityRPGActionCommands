@@ -47,6 +47,29 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private GameObject firePlace;
     //The dialogue manager
     private GameObject dialogueManager;
+    //A boolean to know if the player is in a dialogue
+    private bool dialogue;
+    //The rest UI
+    private GameObject restUI;
+    //The player rest UI
+    private GameObject restPlayerUI;
+    //The player rest main UI
+    private GameObject restPlayerMainUI;
+    //The player stats rest UI
+    private GameObject restPlayerStatsUI;
+    //The player gems rest UI
+    private GameObject restPlayerGemsUI;
+    //The companion rest UI
+    private GameObject restCompanionUI;
+    //An int to know in what state the rest menu is. 1-> Main menu, 2-> player main menu, 3-> Player stats, 4 -> Player Gems, 5 -> Player items, 6 -> Save menu, 7 -> Companion menu
+    private int restUIState;
+    //An int to know what option are we selecting on the main menu. 1 -> Player, 2 -> Save, 3 -> companion
+    private int restUISelecting;
+    //An int to know what option are we selecting on the player main menu. 1 -> stats, 2 -> gems, 3 -> items 
+    private int restPlayerMainUISelecting;
+    //An int to know what option are we selecting on the companion menu. 1 -> adventurer, 2 -> wizard
+    private int restCompanionUISelecting;
+
 
     //The on land event
     [Header("Events")]
@@ -66,9 +89,20 @@ public class WorldPlayerMovementScript : MonoBehaviour
 
     void Start()
     {
+        //We find the gameobjects and deactivate some of them
         canvas = GameObject.Find("Canvas");
         dialogueManager = GameObject.Find("WorldDialogueManager");
         canvas.GetComponent<WorldCanvasScript>().HideUI();
+        restUI = GameObject.Find("Rest");
+        restPlayerUI = GameObject.Find("RestPlayer");
+        restPlayerMainUI = GameObject.Find("RestPlayerMain");
+        restPlayerStatsUI = GameObject.Find("RestPlayerStats");
+        restPlayerGemsUI = GameObject.Find("RestPlayerGems");
+        restCompanionUI = GameObject.Find("Companions");
+        restPlayerGemsUI.SetActive(false);
+        restPlayerStatsUI.SetActive(false);
+        restPlayerUI.SetActive(false);
+        restUI.SetActive(false);
         //We initialize the variables
         speedX = 0.0f;
         speedZ = 0.0f;
@@ -76,6 +110,11 @@ public class WorldPlayerMovementScript : MonoBehaviour
         canRest = false;
         movingToRest = false;
         resting = false;
+        dialogue = false;
+        restUIState = 1;
+        restUISelecting = 1;
+        restPlayerMainUISelecting = 1;
+        restCompanionUISelecting = 0;
         //We find the animator
         animator = gameObject.GetComponent<Animator>();
     }
@@ -175,6 +214,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     movingToRest = false;
                     animator.SetBool("Resting", true);
                     resting = true;
+                    dialogue = true;
                     dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(firePlace.GetComponent<FirePlaceScript>().dialogue);
                 }
                 animator.SetFloat("SpeedZ", speedZ);
@@ -182,7 +222,122 @@ public class WorldPlayerMovementScript : MonoBehaviour
             }
             if (resting)
             {
-                if (Input.GetKeyDown(KeyCode.X)) dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
+                if (dialogue)
+                {
+                    if (Input.GetKeyDown(KeyCode.X)) dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
+                }
+                else
+                {
+                    if (restUIState == 1)
+                    {
+                        if (Input.GetKeyDown(KeyCode.LeftArrow) && restUISelecting > 1)
+                        {
+                            restUISelecting -= 1;
+                            restUI.GetComponent<Animator>().SetInteger("Pos",restUISelecting);
+                        }
+                        else if (Input.GetKeyDown(KeyCode.RightArrow) && restUISelecting < 3)
+                        {
+                            restUISelecting += 1;
+                            restUI.GetComponent<Animator>().SetInteger("Pos", restUISelecting);
+                        }
+                        else if (Input.GetKeyDown(KeyCode.X))
+                        {
+                            restUI.GetComponent<Animator>().SetInteger("Pos", 0);
+                            if (restUISelecting == 1)
+                            {
+                                restPlayerUI.SetActive(true);
+                                restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
+                                restUIState = 2;
+                            }
+                            /*else if (restUISelecting == 2)
+                            {
+                                //restPlayerUI.SetActive(true);
+                                restUIState = 6;
+                            }*/
+                            else if (restUISelecting == 3)
+                            {
+                                restCompanionUISelecting = 1;
+                                restCompanionUI.GetComponent<Animator>().SetInteger("Pos", restCompanionUISelecting);
+                                restUIState = 7;
+                            }
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Q))
+                        {
+                            resting = false;
+                            restUI.GetComponent<Animator>().SetInteger("Pos", 0);
+                            animator.SetBool("Resting", false);
+                            transform.position = new Vector3(transform.position.x + 0.45f, transform.position.y - 0.45f, transform.position.z);
+                        }
+                    }
+                    else if(restUIState == 2)
+                    {
+                        if(Input.GetKeyDown(KeyCode.UpArrow) && restPlayerMainUISelecting > 1)
+                        {
+                            restPlayerMainUISelecting -= 1;
+                            restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
+                        }
+                        else if (Input.GetKeyDown(KeyCode.DownArrow) && restPlayerMainUISelecting < 3)
+                        {
+                            restPlayerMainUISelecting += 1;
+                            restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
+                        }
+                        else if (Input.GetKeyDown(KeyCode.X))
+                        {
+                            restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", 0);
+                            if (restPlayerMainUISelecting == 1)
+                            {
+                                restPlayerStatsUI.SetActive(true);
+                                restUIState = 3;
+                            }
+                            else if (restPlayerMainUISelecting == 2)
+                            {
+                                restPlayerGemsUI.SetActive(true);
+                                restUIState = 4;
+                            }
+                            /*else if (restPlayerMainUISelecting == 3)
+                            {
+                                restPLayerItemsUI.SetActive(true);
+                                restUIState = 5;
+                            }*/
+                        } 
+                        else if (Input.GetKeyDown(KeyCode.Q))
+                        {
+                            restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", 0);
+                            restUI.GetComponent<Animator>().SetInteger("Pos", restUISelecting);
+                            restPlayerUI.SetActive(false);
+                            restUIState = 1;
+                        }
+                    }
+                    else if(restUIState == 3)
+                    {
+                        if (Input.GetKeyDown(KeyCode.Q))
+                        {
+                            restPlayerStatsUI.SetActive(false);
+                            restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
+                            restUIState = 2;
+                        }
+                    }
+                    else if(restUIState == 7)
+                    {
+                        if (Input.GetKeyDown(KeyCode.DownArrow) && restCompanionUISelecting<2)
+                        {
+                            restCompanionUISelecting += 1;
+                            restCompanionUI.GetComponent<Animator>().SetInteger("Pos", restCompanionUISelecting);
+                        }
+                        else if (Input.GetKeyDown(KeyCode.UpArrow) && restCompanionUISelecting > 1)
+                        {
+                            restCompanionUISelecting -= 1;
+                            restCompanionUI.GetComponent<Animator>().SetInteger("Pos", restCompanionUISelecting);
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Q))
+                        {
+                            restUIState = 1;
+                            restCompanionUISelecting = 0;
+                            restCompanionUI.GetComponent<Animator>().SetInteger("Pos", restCompanionUISelecting);
+                            restUI.GetComponent<Animator>().SetInteger("Pos", restUISelecting);
+                        }
+                    }
+                }
             }
         }
         if (PlayerPrefs.GetInt("Fled") == 1 && PlayerPrefs.GetInt("Battle") == 0)
@@ -263,6 +418,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
     public void SetRestPosition(float restX, float restZ)
     {
         restPos = new Vector2(restX, restZ);
+    }
+
+    //Function to show the rest UI
+    public void ShowRestUI()
+    {
+        restUI.SetActive(true);
+        dialogue = false;
+        restUISelecting = 1;
+        restUI.GetComponent<Animator>().SetInteger("Pos", restUISelecting);
     }
 
     //Function to set the X position of the fire place

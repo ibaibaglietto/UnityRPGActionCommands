@@ -12,10 +12,12 @@ public class DialogueManager : MonoBehaviour
     private Animator animator;
     //The next button
     private GameObject next;
-    //The player
+    //The battlecontroller
     private GameObject battleController;
     //The speak sound source
     private AudioSource speak;
+    //The player
+    private GameObject player;
     //The sentences
     private Queue<string> sentences;
     //A boolean to know if it is a battle dialogue or a world one
@@ -38,6 +40,7 @@ public class DialogueManager : MonoBehaviour
     public void StartWorldDialogue(Dialogue dialogue)
     {
         battle = false;
+        player = GameObject.Find("PlayerWorld");
         //We open the dialogue box
         animator.SetBool("Open", true);
         //Clear the previous sentences
@@ -161,5 +164,6 @@ public class DialogueManager : MonoBehaviour
     void EndWorldDialogue()
     {
         animator.SetBool("Open", false);
+        player.GetComponent<WorldPlayerMovementScript>().ShowRestUI();
     }
 }
