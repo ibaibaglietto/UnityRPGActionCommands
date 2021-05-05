@@ -12,6 +12,8 @@ public class WorldCompanionMovementScript : MonoBehaviour
     [SerializeField] private LayerMask whatIsGround;
     //A position marking where to check if the player is grounded.
     [SerializeField] private Transform groundCheck;
+    //An int to know if the user is the adventurer or the wizard. 1-> adventurer, 2-> wizard
+    [SerializeField] private int user;
 
     //Radius of the overlap circle to determine if grounded
     const float groundedRadius = 0.07f;

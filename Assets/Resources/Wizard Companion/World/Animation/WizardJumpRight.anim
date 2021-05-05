@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FallRight
+  m_Name: WizardJumpRight
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,9 +20,9 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -5966621866309598838, guid: de933b62fcc42d246a28a1b4e0af7fbd, type: 3}
+      value: {fileID: 7460046300004610927, guid: cb601b580f4298a48836d96151a22db4, type: 3}
     - time: 0.25
-      value: {fileID: -2069157278089061004, guid: de933b62fcc42d246a28a1b4e0af7fbd, type: 3}
+      value: {fileID: 7034338576483803127, guid: cb601b580f4298a48836d96151a22db4, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -42,8 +42,8 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: -5966621866309598838, guid: de933b62fcc42d246a28a1b4e0af7fbd, type: 3}
-    - {fileID: -2069157278089061004, guid: de933b62fcc42d246a28a1b4e0af7fbd, type: 3}
+    - {fileID: 7460046300004610927, guid: cb601b580f4298a48836d96151a22db4, type: 3}
+    - {fileID: 7034338576483803127, guid: cb601b580f4298a48836d96151a22db4, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

@@ -95,6 +95,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   groundCheck: {fileID: 4451006893020923762}
+  user: 1
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:

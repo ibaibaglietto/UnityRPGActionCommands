@@ -11,13 +11,13 @@ public class FirePlaceScript : MonoBehaviour
     private GameObject companion;
     //The dialogue
     public Dialogue dialogue;
-    // Start is called before the first frame update
+
     void Start()
     {
-        companion = GameObject.Find("AdventurerWorld");
+        companion = GameObject.Find("CompanionWorld");
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         
