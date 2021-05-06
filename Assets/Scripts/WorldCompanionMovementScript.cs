@@ -27,6 +27,8 @@ public class WorldCompanionMovementScript : MonoBehaviour
     private Vector2 restPos;
     //A boolean to know if the companion is resting
     private bool resting;
+    //The companion life
+    private GameObject companionLife;
 
     private GameObject player;
 
@@ -57,6 +59,11 @@ public class WorldCompanionMovementScript : MonoBehaviour
         animator = gameObject.transform.GetChild(0).GetComponent<Animator>();
         //We find the player
         player = GameObject.Find("PlayerWorld");
+        //We set the current companion        
+        user = PlayerPrefs.GetInt("CurrentCompanion");
+        animator.SetInteger("User", user);
+        //We find the companion health UI
+        companionLife = GameObject.Find("CompanionLifeBckImage");
     }
 
 
@@ -186,11 +193,23 @@ public class WorldCompanionMovementScript : MonoBehaviour
         transform.GetChild(0).GetComponent<SpriteRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
     }
 
-    //Function to know if the player is grounded
+    //Function to know if the companion is grounded
     public bool IsGrounded()
     {
         return grounded;
     }
+
+    //Function to change companions
+    public void ChangeCompanion(int comp)
+    {
+        animator.SetBool("changing", true);
+        animator.SetInteger("User", comp);
+        PlayerPrefs.SetInt("CurrentCompanion",comp);
+        user = comp;
+        companionLife.GetComponent<PlayerLifeScript>().SetUser(user);
+    }
+
+    
 
     //Function to tp the companion to the player
     private void TpToPlayer()

@@ -21,6 +21,8 @@ public class WorldCanvasScript : MonoBehaviour
 
     void Awake()
     {
+        //We set the current companion if it has not been set
+        if (!PlayerPrefs.HasKey("CurrentCompanion")) PlayerPrefs.SetInt("CurrentCompanion", 1);
         //We find the UI that is only used in battle
         actionInstructions = GameObject.Find("ActionInstructions");
         enemyNames = GameObject.Find("EnemyNames");
@@ -37,7 +39,7 @@ public class WorldCanvasScript : MonoBehaviour
         playerLife = GameObject.Find("PlayerLifeBckImage");
         companionLife = GameObject.Find("CompanionLifeBckImage");
         playerLife.GetComponent<PlayerLifeScript>().SetUser(0);
-        companionLife.GetComponent<PlayerLifeScript>().SetUser(1);
+        companionLife.GetComponent<PlayerLifeScript>().SetUser(PlayerPrefs.GetInt("CurrentCompanion"));
         //We set the state to open world
         PlayerPrefs.SetInt("Battle", 0);
     }

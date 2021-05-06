@@ -486,7 +486,7 @@ public class BattleController : MonoBehaviour
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
         player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
         //Spawn the companion
-        SpawnCharacter(1,0);  
+        SpawnCharacter(1, PlayerPrefs.GetInt("CurrentCompanion")-1);  
         //Spawn the enemies
         SpawnCharacter(2, PlayerPrefs.GetInt("Enemy1") - 1);
         if (PlayerPrefs.GetInt("Enemy2") > 0) SpawnCharacter(3, PlayerPrefs.GetInt("Enemy2") - 1);

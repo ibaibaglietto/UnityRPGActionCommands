@@ -53,7 +53,7 @@ public class WorldEnemy : MonoBehaviour
         //We find the player
         player = GameObject.Find("PlayerWorld");
         //We find the companion
-        companion = GameObject.Find("AdventurerWorld");
+        companion = GameObject.Find("CompanionWorld");
     }
 
     private void Update()
