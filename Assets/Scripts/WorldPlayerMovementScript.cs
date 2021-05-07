@@ -76,6 +76,10 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private int gemUIScroll;
     //An int to know the number of available gems
     private int availableGems;
+    //An array with all the gems
+    private string[] allGems = {"Light Sword", "Multistrike Sword", "Light Shuriken", "Fire Shuriken", "HPUp", "LPUp", "CompHPUp"};
+    public Gems gems;
+
 
     //The on land event
     [Header("Events")]
@@ -137,14 +141,14 @@ public class WorldPlayerMovementScript : MonoBehaviour
         PlayerPrefs.SetInt("HPUp Found", 1);
         PlayerPrefs.SetInt("LPUp Found", 1);
         PlayerPrefs.SetInt("CompHPUp Found", 1);
-        availableGems = PlayerPrefs.GetInt("Light Sword Found") + PlayerPrefs.GetInt("Multistrike Sword Found") + PlayerPrefs.GetInt("Light Shuriken Found Found") + PlayerPrefs.GetInt("Fire Shuriken Found") + PlayerPrefs.GetInt("HPUp Found") + PlayerPrefs.GetInt("LPUp Found") + PlayerPrefs.GetInt("CompHPUp Found");
+        availableGems = PlayerPrefs.GetInt("Light Sword Found") + PlayerPrefs.GetInt("Multistrike Sword Found") + PlayerPrefs.GetInt("Light Shuriken Found") + PlayerPrefs.GetInt("Fire Shuriken Found") + PlayerPrefs.GetInt("HPUp Found") + PlayerPrefs.GetInt("LPUp Found") + PlayerPrefs.GetInt("CompHPUp Found");
     }
 
 
     void Update()
     {
         //Detect the direction we want the player to move and save it
-        if(PlayerPrefs.GetInt("Battle") == 0)
+        if (PlayerPrefs.GetInt("Battle") == 0)
         {
             if (!movingToRest && !resting)
             {
@@ -314,7 +318,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             else if (restPlayerMainUISelecting == 2)
                             {
                                 restPlayerGemsUI.SetActive(true);
-                                restUIState = 4;
+                                restUIState = 4; 
+                                CreateGemUI();
                             }
                             /*else if (restPlayerMainUISelecting == 3)
                             {
@@ -468,22 +473,24 @@ public class WorldPlayerMovementScript : MonoBehaviour
         fireX = xPos;
     }
 
+    
     //Function to create the gem UI
-    /*public void CreateGemUI()
+    public void CreateGemUI()
     {
         if (gemUIScroll > 0) restPlayerGemsUI.transform.GetChild(11).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         else restPlayerGemsUI.transform.GetChild(11).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-        if ((gemUIScroll + 6) >= availableGems) restPlayerGemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        if ((gemUIScroll + 6) < availableGems) restPlayerGemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         else restPlayerGemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
         if (availableGems > 5)
         {
             for (int i = 1; i < 7; i++)
             {
-                restPlayerGemsUI.transform.GetChild(4+i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                menuCanUse[i - 1] = true;
+                restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                Debug.Log(FindGemInPos(i));
+                /*
                 if (gems[i + gemUIScroll - 1] == 1)
                 {
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).gameObject.SetActive(true);
@@ -510,7 +517,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     else if (PlayerPrefs.GetInt("Language") == 2) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Poción de resurrección";
                     else companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Berpizkunde pozioa";
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
-                }
+                }*/
             }
         }
         else
@@ -519,9 +526,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
             {
                 if (i < availableGems + 1)
                 {
-                    menuCanUse[i - 1] = true;
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    restPlayerGemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    restPlayerGemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    Debug.Log(FindGemInPos(i));
+                    /*
                     if (gems[i - 1] == 1)
                     {
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).gameObject.SetActive(true);
@@ -548,11 +558,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         else if (PlayerPrefs.GetInt("Language") == 2) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Poción de resurrección";
                         else companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Berpizkunde pozioa";
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
-                    }
+                    }*/
                 }
                 else
                 {
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).gameObject.SetActive(false);
+
+                    restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                    restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                    restPlayerGemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                    restPlayerGemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
                 }
             }
         }
@@ -561,18 +575,18 @@ public class WorldPlayerMovementScript : MonoBehaviour
     //Function to find the gem of the x position
     public int FindGemInPos(int x)
     {
-        int y = 1;
-        if(PlayerPrefs.GetInt("Light Sword Found") == 1)
+        bool found = false;
+        int pos = 0;
+        int y = 0;
+        while (!found && pos < 7)
         {
-            return y; 
+            if (PlayerPrefs.GetInt(allGems[pos] + " Found") == 1) y += 1;
+            if (y == x) found = true;
+            pos += 1;
         }
-        else
-        {
-            y += 1;
-
-        }
-        return x;
-    }*/
+        if (!found) return -1;
+        else return pos;
+    }
 
     //Function to get the X position of the fire place
     public float GetFireXPos()
