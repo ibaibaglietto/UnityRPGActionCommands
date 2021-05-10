@@ -24435,26 +24435,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1550828951937821497, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
-      propertyPath: gems.gems.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1550828951937821497, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
-      propertyPath: gems.gems.Array.data[6].nameBasque.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1550828951937821497, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
-      propertyPath: gems.gems.Array.data[6].nameSpanish.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1550828951937821497, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
-      propertyPath: gems.gems.Array.data[6].icon
-      value: 
-      objectReference: {fileID: 21300000, guid: 32b737394f428a641bad9091b0023ad2, type: 3}
-    - target: {fileID: 1550828951937821497, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
-      propertyPath: gems.gems.Array.data[6].nameSpanish.Array.data[0]
-      value: Comp PV arriba
-      objectReference: {fileID: 0}
     - target: {fileID: 1577287996557969246, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
       propertyPath: side
       value: Right

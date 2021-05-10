@@ -70,6 +70,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private int restUISelecting;
     //An int to know what option are we selecting on the player main menu. 1 -> stats, 2 -> gems, 3 -> items 
     private int restPlayerMainUISelecting;
+    //An int to know what option are we selecting on the player gem menu.
+    private int restPlayerGemUISelecting;
     //An int to know what option are we selecting on the companion menu. 1 -> adventurer, 2 -> wizard
     private int restCompanionUISelecting;
     //An int to know the number of the gem UI scroll
@@ -124,24 +126,29 @@ public class WorldPlayerMovementScript : MonoBehaviour
         restUIState = 1;
         restUISelecting = 1;
         restPlayerMainUISelecting = 1;
+        restPlayerGemUISelecting = 1;
         restCompanionUISelecting = 0;
         gemUIScroll = 0;
         //We find the animator
         animator = gameObject.GetComponent<Animator>();
-        PlayerPrefs.SetInt("Light Sword Found", 1);
-        PlayerPrefs.SetInt("Multistrike Sword Found", 1);
-        PlayerPrefs.SetInt("Light Sword", 1);
-        PlayerPrefs.SetInt("Multistrike Sword", 1);
+        if(!PlayerPrefs.HasKey("Light Sword Found")) PlayerPrefs.SetInt("Light Sword Found", 0);
+        if (!PlayerPrefs.HasKey("Multistrike Sword Found")) PlayerPrefs.SetInt("Multistrike Sword Found", 0);
+        if (!PlayerPrefs.HasKey("Light Sword")) PlayerPrefs.SetInt("Light Sword", 0);
+        if (!PlayerPrefs.HasKey("Multistrike Sword")) PlayerPrefs.SetInt("Multistrike Sword", 0);
         PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
-        PlayerPrefs.SetInt("Light Shuriken Found", 1);
-        PlayerPrefs.SetInt("Fire Shuriken Found", 1);
-        PlayerPrefs.SetInt("Light Shuriken", 1);
-        PlayerPrefs.SetInt("Fire Shuriken", 1);
+        if (!PlayerPrefs.HasKey("Light Shuriken Found")) PlayerPrefs.SetInt("Light Shuriken Found", 0);
+        if (!PlayerPrefs.HasKey("Fire Shuriken Found")) PlayerPrefs.SetInt("Fire Shuriken Found", 0);
+        if (!PlayerPrefs.HasKey("Light Shuriken")) PlayerPrefs.SetInt("Light Shuriken", 0);
+        if (!PlayerPrefs.HasKey("Fire Shuriken")) PlayerPrefs.SetInt("Fire Shuriken", 0);
         PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
-        PlayerPrefs.SetInt("HPUp Found", 1);
-        PlayerPrefs.SetInt("LPUp Found", 1);
-        PlayerPrefs.SetInt("CompHPUp Found", 1);
+        if (!PlayerPrefs.HasKey("HPUp")) PlayerPrefs.SetInt("HPUp", 0);
+        if (!PlayerPrefs.HasKey("LPUp")) PlayerPrefs.SetInt("LPUp", 0);
+        if (!PlayerPrefs.HasKey("CompHPUp")) PlayerPrefs.SetInt("CompHPUp", 0);
+        if (!PlayerPrefs.HasKey("HPUp Found")) PlayerPrefs.SetInt("HPUp Found", 0);
+        if (!PlayerPrefs.HasKey("LPUp Found")) PlayerPrefs.SetInt("LPUp Found", 0);
+        if (!PlayerPrefs.HasKey("CompHPUp Found")) PlayerPrefs.SetInt("CompHPUp Found", 0);
         availableGems = PlayerPrefs.GetInt("Light Sword Found") + PlayerPrefs.GetInt("Multistrike Sword Found") + PlayerPrefs.GetInt("Light Shuriken Found") + PlayerPrefs.GetInt("Fire Shuriken Found") + PlayerPrefs.GetInt("HPUp Found") + PlayerPrefs.GetInt("LPUp Found") + PlayerPrefs.GetInt("CompHPUp Found");
+        SpentGP();
     }
 
 
@@ -344,6 +351,60 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             restUIState = 2;
                         }
                     }
+                    else if (restUIState == 4)
+                    {
+                        if (Input.GetKeyDown(KeyCode.UpArrow) && (restPlayerGemUISelecting > 1 || gemUIScroll > 0))
+                        {
+                            if(gemUIScroll>0 && restPlayerGemUISelecting == 1)
+                            {
+                                gemUIScroll -= 1;
+                                CreateGemUI();
+                            }
+                            else
+                            {
+                                restPlayerGemUISelecting -= 1;
+                                restPlayerGemsUI.GetComponent<Animator>().SetInteger("Pos", restPlayerGemUISelecting);
+                            }
+                        }
+                        else if (Input.GetKeyDown(KeyCode.DownArrow) && (restPlayerGemUISelecting < 6 || gemUIScroll + 6 < availableGems))
+                        {
+                            if (restPlayerGemUISelecting == 6 && gemUIScroll + 6 < availableGems)
+                            {
+                                gemUIScroll += 1;
+                                CreateGemUI();
+                            }
+                            else
+                            {
+                                restPlayerGemUISelecting += 1;
+                                restPlayerGemsUI.GetComponent<Animator>().SetInteger("Pos", restPlayerGemUISelecting);
+                            }
+                        }
+                        if (Input.GetKeyDown(KeyCode.X))
+                        {
+                            if (PlayerPrefs.GetInt(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll)-1]) == 1)
+                            {
+                                PlayerPrefs.SetInt(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll)-1], 0);
+                                PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
+                                PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
+                                SpentGP();
+                                CreateGemUI();
+                            }
+                            else if (gems.gems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll)- 1].points <= ((PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3) - PlayerPrefs.GetInt("SpentGP")))
+                            {
+                                PlayerPrefs.SetInt(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll) - 1], 1);
+                                PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
+                                PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
+                                SpentGP();
+                                CreateGemUI();
+                            }
+                        }
+                        if (Input.GetKeyDown(KeyCode.Q))
+                        {
+                            restPlayerGemsUI.SetActive(false);
+                            restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
+                            restUIState = 2;
+                        }
+                    }
                     else if(restUIState == 7)
                     {
                         if (Input.GetKeyDown(KeyCode.DownArrow) && restCompanionUISelecting<2)
@@ -473,101 +534,46 @@ public class WorldPlayerMovementScript : MonoBehaviour
         fireX = xPos;
     }
 
+    //Function to save the spent GP
+    public void SpentGP()
+    {
+        int spent = 0;
+        for (int i = 0; i<allGems.Length; i++)
+        {
+            spent = spent + PlayerPrefs.GetInt(allGems[i]) * gems.gems[i].points;
+        }
+        PlayerPrefs.SetInt("SpentGP", spent);
+    }
     
     //Function to create the gem UI
     public void CreateGemUI()
     {
+        //We hide or show the arrows depending on the scroll
         if (gemUIScroll > 0) restPlayerGemsUI.transform.GetChild(11).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         else restPlayerGemsUI.transform.GetChild(11).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
         if ((gemUIScroll + 6) < availableGems) restPlayerGemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         else restPlayerGemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-        if (availableGems > 5)
+        //We search the gems for all the available spaces, if there are less than 6 we make those spaces disappear
+        for (int i = 1; i < 7; i++)
         {
-            for (int i = 1; i < 7; i++)
+            if (i < availableGems + 1)
             {
-                restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                if(PlayerPrefs.GetInt(allGems[FindGemInPos(i) + gemUIScroll - 1])==1) restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+                else if(gems.gems[FindGemInPos(i) + gemUIScroll - 1].points > ((PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3) - PlayerPrefs.GetInt("SpentGP"))) restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+                else restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 restPlayerGemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 restPlayerGemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                Debug.Log(FindGemInPos(i));
-                /*
-                if (gems[i + gemUIScroll - 1] == 1)
-                {
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).gameObject.SetActive(true);
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(0).GetComponent<Image>().sprite = apple;
-                    if (PlayerPrefs.GetInt("Language") == 1) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Apple";
-                    else if (PlayerPrefs.GetInt("Language") == 2) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Manzana";
-                    else companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Sagarra";
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
-                }
-                else if (gems[i + gemUIScroll - 1] == 2)
-                {
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).gameObject.SetActive(true);
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(0).GetComponent<Image>().sprite = lightPotion;
-                    if (PlayerPrefs.GetInt("Language") == 1) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Light potion";
-                    else if (PlayerPrefs.GetInt("Language") == 2) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Poción de luz";
-                    else companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Argi pozioa";
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
-                }
-                else if (gems[i + gemUIScroll - 1] == 3)
-                {
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).gameObject.SetActive(true);
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(0).GetComponent<Image>().sprite = resurrectPotion;
-                    if (PlayerPrefs.GetInt("Language") == 1) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Resurrect potion";
-                    else if (PlayerPrefs.GetInt("Language") == 2) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Poción de resurrección";
-                    else companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Berpizkunde pozioa";
-                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
-                }*/
+                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = gems.gems[FindGemInPos(i) + gemUIScroll - 1].nameSpanish[0];
+                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().texture = gems.gems[FindGemInPos(i) + gemUIScroll - 1].icon;
+                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().text = "PG " + gems.gems[FindGemInPos(i) + gemUIScroll - 1].points.ToString();
             }
-        }
-        else
-        {
-            for (int i = 1; i < 7; i++)
+            else
             {
-                if (i < availableGems + 1)
-                {
-                    restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                    restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                    restPlayerGemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                    restPlayerGemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                    Debug.Log(FindGemInPos(i));
-                    /*
-                    if (gems[i - 1] == 1)
-                    {
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).gameObject.SetActive(true);
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(0).GetComponent<Image>().sprite = apple;
-                        if (PlayerPrefs.GetInt("Language") == 1) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Apple";
-                        else if (PlayerPrefs.GetInt("Language") == 2) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Manzana";
-                        else companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Sagarra";
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
-                    }
-                    else if (gems[i - 1] == 2)
-                    {
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).gameObject.SetActive(true);
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(0).GetComponent<Image>().sprite = lightPotion;
-                        if (PlayerPrefs.GetInt("Language") == 1) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Light potion";
-                        else if (PlayerPrefs.GetInt("Language") == 2) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Poción de luz";
-                        else companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Argi pozioa";
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
-                    }
-                    else if (gems[i - 1] == 3)
-                    {
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).gameObject.SetActive(true);
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(0).GetComponent<Image>().sprite = resurrectPotion;
-                        if (PlayerPrefs.GetInt("Language") == 1) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Resurrect potion";
-                        else if (PlayerPrefs.GetInt("Language") == 2) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Poción de resurrección";
-                        else companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(1).GetComponent<Text>().text = "Berpizkunde pozioa";
-                        companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).transform.GetChild(2).GetComponent<Text>().text = "";
-                    }*/
-                }
-                else
-                {
-
-                    restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-                    restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-                    restPlayerGemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-                    restPlayerGemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-                }
+                restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
             }
         }
     }

@@ -8047,7 +8047,7 @@ public class BattleController : MonoBehaviour
                     else if (PlayerPrefs.GetInt("Fire Shuriken") == 1)
                     {
                         shurikenStyles[0] = 2;
-                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = lightShuriken;
+                        player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(0).GetComponent<Image>().sprite = fireShuriken;
                         if (PlayerPrefs.GetInt("Language") == 1)
                         {
                             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(2).transform.GetChild(1).GetComponent<Text>().text = "Fire shuriken";
