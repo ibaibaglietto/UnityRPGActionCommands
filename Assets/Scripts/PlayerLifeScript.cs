@@ -37,19 +37,19 @@ public class PlayerLifeScript : MonoBehaviour
         if (user == 0)
         {
             transform.GetChild(3).GetComponent<RawImage>().texture = playerHealth;
-            maxHealth = 10 + PlayerPrefs.GetInt("PlayerHeartLvl") * 5;
+            maxHealth = 10 + (PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("HPUp")) * 5;
             currentHealth = PlayerPrefs.GetInt("PlayerCurrentHealth");
         }
         else if (user == 1)
         {
             transform.GetChild(3).GetComponent<RawImage>().texture = adventurerHealth;
-            maxHealth = 10 + PlayerPrefs.GetInt("AdventurerLvl") * 10;
+            maxHealth = 10 + PlayerPrefs.GetInt("AdventurerLvl") * 10 + PlayerPrefs.GetInt("CompHPUp") * 5;
             currentHealth = PlayerPrefs.GetInt("AdventurerCurrentHealth");
         }
         else if (user == 2)
         {
             transform.GetChild(3).GetComponent<RawImage>().texture = wizardHealth;
-            maxHealth = 15 + PlayerPrefs.GetInt("WizardLvl") * 10;
+            maxHealth = 15 + PlayerPrefs.GetInt("WizardLvl") * 10 + PlayerPrefs.GetInt("CompHPUp") * 5;
             currentHealth = PlayerPrefs.GetInt("WizardCurrentHealth");
         }
         //We find the current health text and max health text and initialize them
@@ -62,11 +62,31 @@ public class PlayerLifeScript : MonoBehaviour
     //A function to get the max health
     public int GetMaxHealth()
     {
-        if (user == 0) maxHealth = 10 + PlayerPrefs.GetInt("PlayerHeartLvl") * 5;
-        else if (user == 1) maxHealth = 10 + PlayerPrefs.GetInt("AdventurerLvl") * 10;
-        else if (user == 2) maxHealth = 15 + PlayerPrefs.GetInt("WizardLvl") * 10;
+        if (user == 0) maxHealth = 10 + (PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("HPUp")) * 5;
+        else if (user == 1) maxHealth = 10 + PlayerPrefs.GetInt("AdventurerLvl") * 10 + PlayerPrefs.GetInt("CompHPUp") * 5;
+        else if (user == 2) maxHealth = 15 + PlayerPrefs.GetInt("WizardLvl") * 10 + PlayerPrefs.GetInt("CompHPUp") * 5;
         maxHealthText.text = maxHealth.ToString();
         return maxHealth;
+    }
+
+    //A function to update the max health
+    public void UpdateHealth()
+    {
+        if (user == 0)
+        {
+            maxHealthText.text = (10 + (PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("HPUp")) * 5).ToString();
+            currentHealth = PlayerPrefs.GetInt("PlayerCurrentHealth");
+        }
+        else if (user == 1)
+        {
+            maxHealthText.text = (10 + PlayerPrefs.GetInt("AdventurerLvl") * 10 + PlayerPrefs.GetInt("CompHPUp") * 5).ToString();
+            currentHealth = PlayerPrefs.GetInt("AdventurerCurrentHealth");
+        }
+        else if (user == 2)
+        {
+            maxHealthText.text = (15 + PlayerPrefs.GetInt("WizardLvl") * 10 + PlayerPrefs.GetInt("CompHPUp") * 5).ToString();
+            currentHealth = PlayerPrefs.GetInt("WizardCurrentHealth");
+        }
     }
 
     //A function to deal damage to the player

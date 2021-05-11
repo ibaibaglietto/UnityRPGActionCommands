@@ -15,10 +15,10 @@ public class LightPointsScript : MonoBehaviour
     private Text currentLightText;
 
 
-    void Start()
+    void Awake()
     {
         //We save the max light and the current light
-        maxLight = 5 + PlayerPrefs.GetInt("PlayerLightLvl") * 5;
+        maxLight = 5 + (PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("LPUp")) * 5;
         if (PlayerPrefs.HasKey("PlayerCurrentLight"))
         {
             currentLight = PlayerPrefs.GetInt("PlayerCurrentLight");
@@ -57,9 +57,16 @@ public class LightPointsScript : MonoBehaviour
     //Function to get the max light
     public int GetMaxLight()
     {
-        maxLight = 5 + PlayerPrefs.GetInt("PlayerLightLvl") * 5;
+        maxLight = 5 + (PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("LPUp")) * 5;
         maxLightText.text = maxLight.ToString();
         return maxLight;
+    }
+
+    //Function to update the max light 
+    public void UpdateLight()
+    {
+        maxLightText.text = (5 + (PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("LPUp")) * 5).ToString();
+        currentLightText.text = PlayerPrefs.GetInt("PlayerCurrentLight").ToString();
     }
 
 }

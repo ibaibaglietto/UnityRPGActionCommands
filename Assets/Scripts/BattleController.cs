@@ -111,8 +111,8 @@ public class BattleController : MonoBehaviour
     private int[] swordStyles;
     //The shuriken styles that are active
     private int[] shurikenStyles;
-    //The items the player has. 0-> no item, 1-> apple
-    private int[] items = {2,1,1,2,3,1,1,2,1,2,0,0,0,0,0,0,0,0,0,0};
+    //The items the player has. 0-> no item, 1-> apple, 2 -> light potion, 3-> resurrect potion
+    private int[] items;
     //The number of times the player has scrolled down (item menu)
     private int scroll;
     //The style we are using at the moment
@@ -388,6 +388,7 @@ public class BattleController : MonoBehaviour
 
     private void Start()
     {
+        items = PlayerPrefsX.GetIntArray("Items");
         //We put the time scale back to normal
         Time.timeScale = 1.0f;
         //Find the gameobjects and others

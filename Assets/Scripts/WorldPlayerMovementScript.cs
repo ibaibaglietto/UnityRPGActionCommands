@@ -62,6 +62,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private GameObject restPlayerStatsUI;
     //The player gems rest UI
     private GameObject restPlayerGemsUI;
+    //The player items rest UI
+    private GameObject restPlayerItemsUI;
     //The companion rest UI
     private GameObject restCompanionUI;
     //An int to know in what state the rest menu is. 1-> Main menu, 2-> player main menu, 3-> Player stats, 4 -> Player Gems, 5 -> Player items, 6 -> Save menu, 7 -> Companion menu
@@ -72,15 +74,24 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private int restPlayerMainUISelecting;
     //An int to know what option are we selecting on the player gem menu.
     private int restPlayerGemUISelecting;
+    //An int to know what option are we selecting on the player item menu.
+    private int restPlayerItemUISelecting;
     //An int to know what option are we selecting on the companion menu. 1 -> adventurer, 2 -> wizard
     private int restCompanionUISelecting;
     //An int to know the number of the gem UI scroll
     private int gemUIScroll;
+    //An int to know the number of the item UI scroll
+    private int itemUIScroll;
     //An int to know the number of available gems
     private int availableGems;
     //An array with all the gems
     private string[] allGems = {"Light Sword", "Multistrike Sword", "Light Shuriken", "Fire Shuriken", "HPUp", "LPUp", "CompHPUp"};
     public Gems gems;
+    //The images of the items
+    [SerializeField] private Texture2D apple;
+    [SerializeField] private Texture2D lightPotion;
+    [SerializeField] private Texture2D resurrectPotion;
+
 
 
     //The on land event
@@ -109,9 +120,11 @@ public class WorldPlayerMovementScript : MonoBehaviour
         restPlayerMainUI = GameObject.Find("RestPlayerMain");
         restPlayerStatsUI = GameObject.Find("RestPlayerStats");
         restPlayerGemsUI = GameObject.Find("RestPlayerGems");
+        restPlayerItemsUI = GameObject.Find("RestPlayerItems");
         restCompanionUI = GameObject.Find("Companions");
         companion = GameObject.Find("CompanionWorld");
         restPlayerGemsUI.SetActive(false);
+        restPlayerItemsUI.SetActive(false);
         restPlayerStatsUI.SetActive(false);
         restPlayerUI.SetActive(false);
         restUI.SetActive(false);
@@ -127,8 +140,10 @@ public class WorldPlayerMovementScript : MonoBehaviour
         restUISelecting = 1;
         restPlayerMainUISelecting = 1;
         restPlayerGemUISelecting = 1;
+        restPlayerItemUISelecting = 1;
         restCompanionUISelecting = 0;
         gemUIScroll = 0;
+        itemUIScroll = 0;
         //We find the animator
         animator = gameObject.GetComponent<Animator>();
         if(!PlayerPrefs.HasKey("Light Sword Found")) PlayerPrefs.SetInt("Light Sword Found", 0);
@@ -290,6 +305,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             {
                                 restCompanionUISelecting = 1;
                                 restCompanionUI.GetComponent<Animator>().SetInteger("Pos", restCompanionUISelecting);
+                                restCompanionUI.transform.GetChild(2).GetComponent<StatsPlayerLife>().UpdateStats();
+                                restCompanionUI.transform.GetChild(3).GetComponent<StatsPlayerLife>().UpdateStats();
                                 restUIState = 7;
                             }
                         }
@@ -320,19 +337,27 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             if (restPlayerMainUISelecting == 1)
                             {
                                 restPlayerStatsUI.SetActive(true);
+                                restPlayerStatsUI.transform.GetChild(2).GetComponent<StatsPlayerLife>().UpdateStats();
+                                restPlayerStatsUI.transform.GetChild(3).GetComponent<LightPointsScript>().UpdateLight();
+                                restPlayerStatsUI.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = (PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3).ToString();
+                                restPlayerStatsUI.transform.GetChild(5).GetComponent<StatsPlayerXPCoins>().UpdateStats();
                                 restUIState = 3;
                             }
                             else if (restPlayerMainUISelecting == 2)
                             {
                                 restPlayerGemsUI.SetActive(true);
+                                restPlayerGemsUI.transform.GetChild(1).GetComponent<Text>().text = ((PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3) - PlayerPrefs.GetInt("SpentGP")).ToString();
+                                restPlayerGemsUI.transform.GetChild(3).GetComponent<Text>().text = (PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3).ToString();
                                 restUIState = 4; 
                                 CreateGemUI();
                             }
-                            /*else if (restPlayerMainUISelecting == 3)
+                            else if (restPlayerMainUISelecting == 3)
                             {
-                                restPLayerItemsUI.SetActive(true);
+                                restPlayerItemsUI.SetActive(true);
                                 restUIState = 5;
-                            }*/
+                                restPlayerItemsUI.transform.GetChild(1).GetComponent<Text>().text = itemSize().ToString();
+                                CreateItemsUI();
+                            }
                         } 
                         else if (Input.GetKeyDown(KeyCode.Q))
                         {
@@ -386,21 +411,64 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 PlayerPrefs.SetInt(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll)-1], 0);
                                 PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
                                 PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
+                                canvas.GetComponent<WorldCanvasScript>().UpdateStats();
                                 SpentGP();
                                 CreateGemUI();
+                                restPlayerGemsUI.transform.GetChild(1).GetComponent<Text>().text = ((PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3) - PlayerPrefs.GetInt("SpentGP")).ToString();
                             }
                             else if (gems.gems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll)- 1].points <= ((PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3) - PlayerPrefs.GetInt("SpentGP")))
                             {
                                 PlayerPrefs.SetInt(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll) - 1], 1);
                                 PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
                                 PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
+                                canvas.GetComponent<WorldCanvasScript>().UpdateStats();
                                 SpentGP();
                                 CreateGemUI();
+                                restPlayerGemsUI.transform.GetChild(1).GetComponent<Text>().text = ((PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3) - PlayerPrefs.GetInt("SpentGP")).ToString();
                             }
                         }
                         if (Input.GetKeyDown(KeyCode.Q))
                         {
+                            gemUIScroll = 0;
+                            restPlayerGemUISelecting = 1;
                             restPlayerGemsUI.SetActive(false);
+                            restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
+                            restUIState = 2;
+                        }
+                    }
+                    else if (restUIState == 5)
+                    {
+                        if (Input.GetKeyDown(KeyCode.UpArrow) && (restPlayerItemUISelecting > 1 || itemUIScroll > 0))
+                        {
+                            if (itemUIScroll > 0 && restPlayerItemUISelecting == 1)
+                            {
+                                itemUIScroll -= 1;
+                                CreateItemsUI();
+                            }
+                            else
+                            {
+                                restPlayerItemUISelecting -= 1;
+                                restPlayerItemsUI.GetComponent<Animator>().SetInteger("Pos", restPlayerItemUISelecting);
+                            }
+                        }
+                        else if (Input.GetKeyDown(KeyCode.DownArrow) && (restPlayerItemUISelecting < 6 || itemUIScroll + 6 < itemSize()))
+                        {
+                            if (restPlayerItemUISelecting == 6 && itemUIScroll + 6 < itemSize())
+                            {
+                                itemUIScroll += 1;
+                                CreateItemsUI();
+                            }
+                            else
+                            {
+                                restPlayerItemUISelecting += 1;
+                                restPlayerItemsUI.GetComponent<Animator>().SetInteger("Pos", restPlayerItemUISelecting);
+                            }
+                        }
+                        if (Input.GetKeyDown(KeyCode.Q))
+                        {
+                            itemUIScroll = 0;
+                            restPlayerItemUISelecting = 1;
+                            restPlayerItemsUI.SetActive(false);
                             restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
                             restUIState = 2;
                         }
@@ -577,6 +645,63 @@ public class WorldPlayerMovementScript : MonoBehaviour
             }
         }
     }
+    
+    //Function to create the items UI
+    public void CreateItemsUI()
+    {
+        //We hide or show the arrows depending on the scroll
+        if (itemUIScroll > 0) restPlayerItemsUI.transform.GetChild(11).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        else restPlayerItemsUI.transform.GetChild(11).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+        if ((itemUIScroll + 6) < itemSize()) restPlayerItemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        else restPlayerItemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+        if (itemSize() > 5)
+        {
+            for (int i = 1; i < 7; i++)
+            {
+                if (i < itemSize() + 1)
+                {
+                    restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    if (PlayerPrefsX.GetIntArray("Items")[i + itemUIScroll - 1] == 1)
+                    {
+                        restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().texture = apple;
+                        if (PlayerPrefs.GetInt("Language") == 1) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Apple";
+                        else if (PlayerPrefs.GetInt("Language") == 2) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Manzana";
+                        else restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Sagarra";
+                    }
+                    else if (PlayerPrefsX.GetIntArray("Items")[i + itemUIScroll - 1] == 2)
+                    {
+                        restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().texture = lightPotion;
+                        if (PlayerPrefs.GetInt("Language") == 1) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Light potion";
+                        else if (PlayerPrefs.GetInt("Language") == 2) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Poción de luz";
+                        else restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Argi pozioa";
+                    }
+                    else if (PlayerPrefsX.GetIntArray("Items")[i + itemUIScroll - 1] == 3)
+                    {
+                        restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().texture = resurrectPotion;
+                        if (PlayerPrefs.GetInt("Language") == 1) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Resurrection potion";
+                        else if (PlayerPrefs.GetInt("Language") == 2) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Poción de resurrección";
+                        else restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Berpizkunde pozioa";
+                    }
+                }
+                else
+                {
+                    restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                    restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                    restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                    restPlayerItemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                }
+            }
+        }
+    }
 
     //Function to find the gem of the x position
     public int FindGemInPos(int x)
@@ -622,6 +747,17 @@ public class WorldPlayerMovementScript : MonoBehaviour
     public GameObject GetFirePlace()
     {
         return firePlace;
+    }
+
+    //Function to know the number of items the player has
+    private int itemSize()
+    {
+        int i = 0;
+        while (PlayerPrefsX.GetIntArray("Items")[i] != 0 && i < 19)
+        {
+            i++;
+        }
+        return i;
     }
 
 }

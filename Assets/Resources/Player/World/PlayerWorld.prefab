@@ -175,6 +175,9 @@ MonoBehaviour:
       nameBasque:
       - 
       points: 3
+  apple: {fileID: 2800000, guid: ac557a4efb78d694db0c3a777f381a86, type: 3}
+  lightPotion: {fileID: 2800000, guid: 034e73f5171fd16498937cec15feb9aa, type: 3}
+  resurrectPotion: {fileID: 2800000, guid: 712f265c14de619459470fa2f8e04db7, type: 3}
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:

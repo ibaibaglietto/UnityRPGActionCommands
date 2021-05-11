@@ -17,10 +17,15 @@ public class WorldCanvasScript : MonoBehaviour
     private GameObject playerLife;
     //The companion life
     private GameObject companionLife;
+    //The light
+    private GameObject teamLight;
 
+    //The items the player has. 0-> no item, 1-> apple, 2 -> light potion, 3-> resurrect potion
+    private int[] items = { 2, 1, 1, 2, 3, 1, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     void Awake()
     {
+        PlayerPrefsX.SetIntArray("Items", items);
         //We set the current companion if it has not been set
         if (!PlayerPrefs.HasKey("CurrentCompanion")) PlayerPrefs.SetInt("CurrentCompanion", 1);
         //We find the UI that is only used in battle
@@ -38,15 +43,24 @@ public class WorldCanvasScript : MonoBehaviour
         coinsText.text = PlayerPrefs.GetInt("currentCoins").ToString();
         playerLife = GameObject.Find("PlayerLifeBckImage");
         companionLife = GameObject.Find("CompanionLifeBckImage");
+        teamLight = GameObject.Find("LightBckImage");
         playerLife.GetComponent<PlayerLifeScript>().SetUser(0);
         companionLife.GetComponent<PlayerLifeScript>().SetUser(PlayerPrefs.GetInt("CurrentCompanion"));
         //We set the state to open world
         PlayerPrefs.SetInt("Battle", 0);
     }
-
+    //Function to update the actual coins
     public void UpdateCoins()
     {
         coinsText.text = PlayerPrefs.GetInt("currentCoins").ToString();
+    }
+
+    //Function to update the max health and light points
+    public void UpdateStats()
+    {
+        playerLife.GetComponent<PlayerLifeScript>().UpdateHealth();
+        companionLife.GetComponent<PlayerLifeScript>().UpdateHealth();
+        teamLight.GetComponent<LightPointsScript>().UpdateLight();
     }
 
     //Function to hide the UI that is only used in battle
