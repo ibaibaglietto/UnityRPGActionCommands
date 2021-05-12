@@ -735,7 +735,7 @@ public class BattleController : MonoBehaviour
                                 actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
                                 actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
                                 if (PlayerPrefs.GetInt("Language") == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy.";
-                                else if (PlayerPrefs.GetInt("Language") == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=336> cuando <sprite=360> se ilumine.";
+                                else if (PlayerPrefs.GetInt("Language") == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pulsa <sprite=336> justo antes de pegar al enemigo.";
                                 else actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=336> justu etsaia jo baino lehen.";
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                                 attackType = 0;
@@ -1477,12 +1477,24 @@ public class BattleController : MonoBehaviour
                     //Press Q to return to start fase
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
-                        enemyName.SetActive(false);
-                        playerChoosingAction = true;
-                        selectingEnemy = false;
-                        actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
-                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
-                        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                        if((selectingAction == 0 && PlayerPrefs.GetInt("Sword Styles") == 0) || (selectingAction == 1 && PlayerPrefs.GetInt("Shuriken Styles") == 0))
+                        {
+                            changePosAction.SetActive(!companionTurnCompleted && !companion.GetComponent<PlayerTeamScript>().IsDead());
+                            playerChoosingAction = true;
+                            actionInstructions.SetActive(false);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+                            selectingEnemy = false;
+                            enemyName.SetActive(false);
+                        }
+                        else
+                        {
+                            enemyName.SetActive(false);
+                            playerChoosingAction = true;
+                            selectingEnemy = false;
+                            actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 1.0f);
+                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 1.0f);
+                            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                        }                        
                         if (enemyNumber < 2) enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                         else if (enemyNumber < 3)
                         {

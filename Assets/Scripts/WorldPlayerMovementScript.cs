@@ -66,6 +66,10 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private GameObject restPlayerItemsUI;
     //The companion rest UI
     private GameObject restCompanionUI;
+    //The rest instructions
+    private GameObject restInstructions;
+    //The rest instructions text
+    private Text restInstructionsText;
     //An int to know in what state the rest menu is. 1-> Main menu, 2-> player main menu, 3-> Player stats, 4 -> Player Gems, 5 -> Player items, 6 -> Save menu, 7 -> Companion menu
     private int restUIState;
     //An int to know what option are we selecting on the main menu. 1 -> Player, 2 -> Save, 3 -> companion
@@ -121,6 +125,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
         restPlayerStatsUI = GameObject.Find("RestPlayerStats");
         restPlayerGemsUI = GameObject.Find("RestPlayerGems");
         restPlayerItemsUI = GameObject.Find("RestPlayerItems");
+        restInstructions = GameObject.Find("RestInstructions");
+        restInstructionsText = GameObject.Find("RestInstructionsText").GetComponent<Text>();
         restCompanionUI = GameObject.Find("Companions");
         companion = GameObject.Find("CompanionWorld");
         restPlayerGemsUI.SetActive(false);
@@ -128,6 +134,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         restPlayerStatsUI.SetActive(false);
         restPlayerUI.SetActive(false);
         restUI.SetActive(false);
+        restInstructions.SetActive(false);
         //We initialize the variables
         speedX = 0.0f;
         speedZ = 0.0f;
@@ -146,7 +153,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         itemUIScroll = 0;
         //We find the animator
         animator = gameObject.GetComponent<Animator>();
-        if(!PlayerPrefs.HasKey("Light Sword Found")) PlayerPrefs.SetInt("Light Sword Found", 0);
+        if (!PlayerPrefs.HasKey("Light Sword Found")) PlayerPrefs.SetInt("Light Sword Found", 0);
         if (!PlayerPrefs.HasKey("Multistrike Sword Found")) PlayerPrefs.SetInt("Multistrike Sword Found", 0);
         if (!PlayerPrefs.HasKey("Light Sword")) PlayerPrefs.SetInt("Light Sword", 0);
         if (!PlayerPrefs.HasKey("Multistrike Sword")) PlayerPrefs.SetInt("Multistrike Sword", 0);
@@ -281,11 +288,13 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         {
                             restUISelecting -= 1;
                             restUI.GetComponent<Animator>().SetInteger("Pos",restUISelecting);
+                            UpdateRestInstructionText();
                         }
                         else if (Input.GetKeyDown(KeyCode.RightArrow) && restUISelecting < 3)
                         {
                             restUISelecting += 1;
                             restUI.GetComponent<Animator>().SetInteger("Pos", restUISelecting);
+                            UpdateRestInstructionText();
                         }
                         else if (Input.GetKeyDown(KeyCode.X))
                         {
@@ -309,12 +318,14 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 restCompanionUI.transform.GetChild(3).GetComponent<StatsPlayerLife>().UpdateStats();
                                 restUIState = 7;
                             }
+                            UpdateRestInstructionText();
                         }
                         else if (Input.GetKeyDown(KeyCode.Q))
                         {
                             canvas.GetComponent<Animator>().SetBool("Hide", false);
                             resting = false;
                             restUI.GetComponent<Animator>().SetInteger("Pos", 0);
+                            restInstructions.SetActive(false);
                             animator.SetBool("Resting", false);
                             transform.position = new Vector3(transform.position.x + 0.45f, transform.position.y - 0.45f, transform.position.z);
                         }
@@ -325,11 +336,13 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         {
                             restPlayerMainUISelecting -= 1;
                             restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
+                            UpdateRestInstructionText();
                         }
                         else if (Input.GetKeyDown(KeyCode.DownArrow) && restPlayerMainUISelecting < 3)
                         {
                             restPlayerMainUISelecting += 1;
                             restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
+                            UpdateRestInstructionText();
                         }
                         else if (Input.GetKeyDown(KeyCode.X))
                         {
@@ -358,6 +371,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 restPlayerItemsUI.transform.GetChild(1).GetComponent<Text>().text = itemSize().ToString();
                                 CreateItemsUI();
                             }
+                            UpdateRestInstructionText();
                         } 
                         else if (Input.GetKeyDown(KeyCode.Q))
                         {
@@ -365,6 +379,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             restUI.GetComponent<Animator>().SetInteger("Pos", restUISelecting);
                             restPlayerUI.SetActive(false);
                             restUIState = 1;
+                            UpdateRestInstructionText();
                         }
                     }
                     else if(restUIState == 3)
@@ -374,6 +389,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             restPlayerStatsUI.SetActive(false);
                             restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
                             restUIState = 2;
+                            UpdateRestInstructionText();
                         }
                     }
                     else if (restUIState == 4)
@@ -390,6 +406,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 restPlayerGemUISelecting -= 1;
                                 restPlayerGemsUI.GetComponent<Animator>().SetInteger("Pos", restPlayerGemUISelecting);
                             }
+                            UpdateRestInstructionText();
                         }
                         else if (Input.GetKeyDown(KeyCode.DownArrow) && (restPlayerGemUISelecting < 6 || gemUIScroll + 6 < availableGems))
                         {
@@ -403,6 +420,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 restPlayerGemUISelecting += 1;
                                 restPlayerGemsUI.GetComponent<Animator>().SetInteger("Pos", restPlayerGemUISelecting);
                             }
+                            UpdateRestInstructionText();
                         }
                         if (Input.GetKeyDown(KeyCode.X))
                         {
@@ -434,6 +452,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             restPlayerGemsUI.SetActive(false);
                             restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
                             restUIState = 2;
+                            UpdateRestInstructionText();
                         }
                     }
                     else if (restUIState == 5)
@@ -450,6 +469,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 restPlayerItemUISelecting -= 1;
                                 restPlayerItemsUI.GetComponent<Animator>().SetInteger("Pos", restPlayerItemUISelecting);
                             }
+                            UpdateRestInstructionText();
                         }
                         else if (Input.GetKeyDown(KeyCode.DownArrow) && (restPlayerItemUISelecting < 6 || itemUIScroll + 6 < itemSize()))
                         {
@@ -463,6 +483,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 restPlayerItemUISelecting += 1;
                                 restPlayerItemsUI.GetComponent<Animator>().SetInteger("Pos", restPlayerItemUISelecting);
                             }
+                            UpdateRestInstructionText();
                         }
                         if (Input.GetKeyDown(KeyCode.Q))
                         {
@@ -471,6 +492,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             restPlayerItemsUI.SetActive(false);
                             restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
                             restUIState = 2;
+                            UpdateRestInstructionText();
                         }
                     }
                     else if(restUIState == 7)
@@ -479,11 +501,13 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         {
                             restCompanionUISelecting += 1;
                             restCompanionUI.GetComponent<Animator>().SetInteger("Pos", restCompanionUISelecting);
+                            UpdateRestInstructionText();
                         }
                         else if (Input.GetKeyDown(KeyCode.UpArrow) && restCompanionUISelecting > 1)
                         {
                             restCompanionUISelecting -= 1;
                             restCompanionUI.GetComponent<Animator>().SetInteger("Pos", restCompanionUISelecting);
+                            UpdateRestInstructionText();
                         }
                         else if(Input.GetKeyDown(KeyCode.X))
                         {
@@ -502,6 +526,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             restCompanionUISelecting = 0;
                             restCompanionUI.GetComponent<Animator>().SetInteger("Pos", restCompanionUISelecting);
                             restUI.GetComponent<Animator>().SetInteger("Pos", restUISelecting);
+                            UpdateRestInstructionText();
                         }
                     }
                 }
@@ -591,7 +616,9 @@ public class WorldPlayerMovementScript : MonoBehaviour
     public void ShowRestUI()
     {
         restUI.SetActive(true);
+        restInstructions.SetActive(true);
         dialogue = false;
+        UpdateRestInstructionText();
         restUISelecting = 1;
         restUI.GetComponent<Animator>().SetInteger("Pos", restUISelecting);
     }
@@ -611,6 +638,140 @@ public class WorldPlayerMovementScript : MonoBehaviour
             spent = spent + PlayerPrefs.GetInt(allGems[i]) * gems.gems[i].points;
         }
         PlayerPrefs.SetInt("SpentGP", spent);
+    }
+
+    //Function to change the rest instruction text
+    public void UpdateRestInstructionText()
+    {
+        if (restUIState == 1)
+        {
+            if (restUISelecting == 1)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Mira las estadísticas, cambia las gemas o comprueba tus objetos.";
+                else restInstructionsText.text = "";
+            }
+            else if (restUISelecting == 2)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Guarda la partida.";
+                else restInstructionsText.text = "";
+            }
+            else
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Cambia de compañero.";
+                else restInstructionsText.text = "";
+            }
+        }
+        else if (restUIState == 2)
+        {
+            if (restPlayerMainUISelecting == 1)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Mira las estadísticas del jugador.";
+                else restInstructionsText.text = "";
+            }
+            else if (restPlayerMainUISelecting == 2)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Cambia las gemas equipadas.";
+                else restInstructionsText.text = "";
+            }
+            else
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Comprueba tus objetos.";
+                else restInstructionsText.text = "";
+            }
+        }
+        else if (restUIState == 3)
+        {
+            if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+            else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Aquí puedes ver las estadísticas del jugador, desde los puntos de alma disponibles en el momento hasta la experiencia y las monedas.";
+            else restInstructionsText.text = "";
+        }
+        else if (restUIState == 4)
+        {
+            if (FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 1)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Permite al jugador usar la espada de luz, un poderoso ataque de un único golpe que cuesta 1 PL.";
+                else restInstructionsText.text = "";
+            }
+            else if (FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 2)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Permite al jugador usar la espada de multiataque, un ataque que permite golpear repetidamente a un enemigo por 2 PL.";
+                else restInstructionsText.text = "";
+            }
+            else if(FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 3)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Permite al jugador usar el shuriken de luz, que permite lanzar un shuriken con poder de luz que cuesta 1 PL.";
+                else restInstructionsText.text = "";
+            }
+            else if (FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 4)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Permite al jugador usar el shuriken de fuego, que permite dañar a todos los enemigos que se encuentran en el suelo por 2PL.";
+                else restInstructionsText.text = "";
+            }
+            else if (FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 5)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Aumenta los puntos de vida del jugador en 5.";
+                else restInstructionsText.text = "";
+            }
+            else if (FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 6)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Aumenta los puntos de luz del jugador en 5.";
+                else restInstructionsText.text = "";
+            }
+            else
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Aumenta los puntos de vida de los compañeros en 5.";
+                else restInstructionsText.text = "";
+            }
+        }
+        else if (restUIState == 5)
+        {
+            if (PlayerPrefsX.GetIntArray("Items")[restPlayerItemUISelecting + itemUIScroll - 1] == 1)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Una manzana que cura 5 puntos de vida.";
+                else restInstructionsText.text = "";
+            }
+            else if (PlayerPrefsX.GetIntArray("Items")[restPlayerItemUISelecting + itemUIScroll - 1] == 2)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Una poción que regenera 5 puntos de luz.";
+                else restInstructionsText.text = "";
+            }
+            else if (PlayerPrefsX.GetIntArray("Items")[restPlayerItemUISelecting + itemUIScroll - 1] == 3)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Una poción que revive al usuario que la tome curándole 10 puntos de vida.";
+                else restInstructionsText.text = "";
+            }
+        }
+        else if (restUIState == 7)
+        {
+            if(restCompanionUISelecting == 1)
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Un aventurero que puede atacar usando sus armas o fijarse en los enemigos para ver sus puntos débiles.";
+                else restInstructionsText.text = "";
+            }
+            else
+            {
+                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
+                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Un mago experto en recibir golpes que también puede atacar usando sus hechizos mágicos.";
+                else restInstructionsText.text = "";
+            }
+        }
     }
     
     //Function to create the gem UI
