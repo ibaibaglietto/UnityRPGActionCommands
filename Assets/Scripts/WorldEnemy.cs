@@ -37,9 +37,12 @@ public class WorldEnemy : MonoBehaviour
     [SerializeField] private int enemy4;
     //The start battle screen
     private GameObject startBattleScreen;
+    //The current data
+    private GameObject currentData;
 
     void Start()
     {
+        currentData = GameObject.Find("CurrentData");
         startBattleScreen = GameObject.Find("EndBattleImage");
         //We initialize the variables
         speedX = 0.0f;
@@ -58,7 +61,7 @@ public class WorldEnemy : MonoBehaviour
 
     private void Update()
     {
-        if(PlayerPrefs.GetInt("Battle") == 0)
+        if(currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
             if (!inBattle && (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z))<5.0f && (((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 10.0f && seeingPlayer) || ((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 5.0f && !seeingPlayer)))
             {
@@ -126,11 +129,11 @@ public class WorldEnemy : MonoBehaviour
             }
             else
             {
-                if (PlayerPrefs.GetInt("EnemyDied") == 1)
+                if (currentData.GetComponent<CurrentDataScript>().enemyDied == 1)
                 {
                     animator.SetTrigger("Die");
                     inBattle = false;
-                    PlayerPrefs.SetInt("EnemyDied",0);
+                    currentData.GetComponent<CurrentDataScript>().enemyDied = 0;
                 }
                 else
                 {
@@ -145,7 +148,7 @@ public class WorldEnemy : MonoBehaviour
     void FixedUpdate()
     {
         //move the enemy on the direction we saved previously
-        if(animator.GetBool("Attack") || PlayerPrefs.GetInt("Battle") == 1) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0.0f, gameObject.GetComponent<Rigidbody>().velocity.y, 0.0f);
+        if(animator.GetBool("Attack") || currentData.GetComponent<CurrentDataScript>().battle == 1) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0.0f, gameObject.GetComponent<Rigidbody>().velocity.y, 0.0f);
         else gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
 
     }
@@ -203,54 +206,54 @@ public class WorldEnemy : MonoBehaviour
     {
         if (SceneManager.sceneCount < 2)
         {
-            PlayerPrefs.SetInt("Battle", 1);
-            PlayerPrefs.SetInt("Enemy1", enemy1);
-            PlayerPrefs.SetInt("Enemy2", enemy2);
-            PlayerPrefs.SetInt("Enemy3", enemy3);
-            PlayerPrefs.SetInt("Enemy4", enemy4);
+            currentData.GetComponent<CurrentDataScript>().battle = 1;
+            currentData.GetComponent<CurrentDataScript>().enemy1 = enemy1;
+            currentData.GetComponent<CurrentDataScript>().enemy2 = enemy2;
+            currentData.GetComponent<CurrentDataScript>().enemy3 = enemy3;
+            currentData.GetComponent<CurrentDataScript>().enemy4 = enemy4;
             if (user == 0)
             {
-                PlayerPrefs.SetInt("EnemyStart", 0);
-                PlayerPrefs.SetInt("FirstAttackObjective", 0);
-                PlayerPrefs.SetInt("PlayerFirstAttack", 0);
-                PlayerPrefs.SetInt("PlayerAttack", 0);
-                PlayerPrefs.SetInt("PlayerStyle", 0);
-                PlayerPrefs.SetInt("CompanionFirstAttack", 0);
-                PlayerPrefs.SetInt("CompanionAttack", 0);
-                PlayerPrefs.SetInt("CompanionStyle", 0);
+                currentData.GetComponent<CurrentDataScript>().enemyStart = 0;
+                currentData.GetComponent<CurrentDataScript>().firstAttackObjective = 0;
+                currentData.GetComponent<CurrentDataScript>().playerFirstAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().playerAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().playerStyle = 0;
+                currentData.GetComponent<CurrentDataScript>().companionFirstAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().companionAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().companionStyle = 0;
             }
             else if (user == 1)
             {
-                PlayerPrefs.SetInt("EnemyStart", 0);
-                PlayerPrefs.SetInt("FirstAttackObjective", 0);
-                PlayerPrefs.SetInt("PlayerFirstAttack", 1);
-                PlayerPrefs.SetInt("PlayerAttack", 0);
-                PlayerPrefs.SetInt("PlayerStyle", 0);
-                PlayerPrefs.SetInt("CompanionFirstAttack", 0);
-                PlayerPrefs.SetInt("CompanionAttack", 0);
-                PlayerPrefs.SetInt("CompanionStyle", 0);
+                currentData.GetComponent<CurrentDataScript>().enemyStart = 0;
+                currentData.GetComponent<CurrentDataScript>().firstAttackObjective = 0;
+                currentData.GetComponent<CurrentDataScript>().playerFirstAttack = 1;
+                currentData.GetComponent<CurrentDataScript>().playerAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().playerStyle = 0;
+                currentData.GetComponent<CurrentDataScript>().companionFirstAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().companionAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().companionStyle = 0;
             }
             else if (user == 2)
             {
-                PlayerPrefs.SetInt("EnemyStart", 0);
-                PlayerPrefs.SetInt("FirstAttackObjective", 0);
-                PlayerPrefs.SetInt("PlayerFirstAttack", 0);
-                PlayerPrefs.SetInt("PlayerAttack", 0);
-                PlayerPrefs.SetInt("PlayerStyle", 0);
-                PlayerPrefs.SetInt("CompanionFirstAttack", 1);
-                PlayerPrefs.SetInt("CompanionAttack", 0);
-                PlayerPrefs.SetInt("CompanionStyle", 0);
+                currentData.GetComponent<CurrentDataScript>().enemyStart = 0;
+                currentData.GetComponent<CurrentDataScript>().firstAttackObjective = 0;
+                currentData.GetComponent<CurrentDataScript>().playerFirstAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().playerAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().playerStyle = 0;
+                currentData.GetComponent<CurrentDataScript>().companionFirstAttack = 1;
+                currentData.GetComponent<CurrentDataScript>().companionAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().companionStyle = 0;
             }
             else if (user == 3)
             {
-                PlayerPrefs.SetInt("EnemyStart", 1);
-                PlayerPrefs.SetInt("FirstAttackObjective", objective);
-                PlayerPrefs.SetInt("PlayerFirstAttack", 0);
-                PlayerPrefs.SetInt("PlayerAttack", 0);
-                PlayerPrefs.SetInt("PlayerStyle", 0);
-                PlayerPrefs.SetInt("CompanionFirstAttack", 0);
-                PlayerPrefs.SetInt("CompanionAttack", 0);
-                PlayerPrefs.SetInt("CompanionStyle", 0);
+                currentData.GetComponent<CurrentDataScript>().enemyStart = 1;
+                currentData.GetComponent<CurrentDataScript>().firstAttackObjective = objective;
+                currentData.GetComponent<CurrentDataScript>().playerFirstAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().playerAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().playerStyle = 0;
+                currentData.GetComponent<CurrentDataScript>().companionFirstAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().companionAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().companionStyle = 0;
             }
             startBattleScreen.GetComponent<Animator>().SetTrigger("Start");
             Time.timeScale = 0.1f;

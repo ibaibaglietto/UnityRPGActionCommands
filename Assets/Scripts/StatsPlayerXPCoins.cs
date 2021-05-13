@@ -6,10 +6,17 @@ using UnityEngine.UI;
 public class StatsPlayerXPCoins : MonoBehaviour
 {
 
-    
+    //The current data
+    private GameObject currentData;
+
+    void Awake()
+    {
+        currentData = GameObject.Find("CurrentData");
+    }
+
     public void UpdateStats()
     {
-        transform.GetChild(1).GetComponent<Text>().text = PlayerPrefs.GetInt("lvlXP").ToString();
-        transform.GetChild(3).GetComponent<Text>().text = PlayerPrefs.GetInt("currentCoins").ToString();
+        transform.GetChild(1).GetComponent<Text>().text = currentData.GetComponent<CurrentDataScript>().lvlExp.ToString();
+        transform.GetChild(3).GetComponent<Text>().text = currentData.GetComponent<CurrentDataScript>().currentCoins.ToString();
     }
 }

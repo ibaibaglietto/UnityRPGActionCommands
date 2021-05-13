@@ -21,27 +21,33 @@ public class StatsPlayerLife : MonoBehaviour
     [SerializeField] private Texture adventurerHealth;
     //The image of the wizard health
     [SerializeField] private Texture wizardHealth;
+    //The current data
+    private GameObject currentData;
 
+    void Awake()
+    {
+        currentData = GameObject.Find("CurrentData");
+    }
 
     public void UpdateStats()
     {
         if (user == 0)
         {
             transform.GetChild(3).GetComponent<RawImage>().texture = playerHealth;
-            maxHealth = 10 + (PlayerPrefs.GetInt("PlayerHeartLvl") + PlayerPrefs.GetInt("HPUp")) * 5;
-            currentHealth = PlayerPrefs.GetInt("PlayerCurrentHealth");
+            maxHealth = 10 + (currentData.GetComponent<CurrentDataScript>().playerHeartLvl + currentData.GetComponent<CurrentDataScript>().HPUp) * 5;
+            currentHealth = currentData.GetComponent<CurrentDataScript>().playerCurrentHealth;
         }
         else if (user == 1)
         {
             transform.GetChild(3).GetComponent<RawImage>().texture = adventurerHealth;
-            maxHealth = 10 + PlayerPrefs.GetInt("AdventurerLvl") * 10 + PlayerPrefs.GetInt("CompHPUp") * 5;
-            currentHealth = PlayerPrefs.GetInt("AdventurerCurrentHealth");
+            maxHealth = 10 + currentData.GetComponent<CurrentDataScript>().adventurerLvl * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
+            currentHealth = currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth;
         }
         else if (user == 2)
         {
             transform.GetChild(3).GetComponent<RawImage>().texture = wizardHealth;
-            maxHealth = 15 + PlayerPrefs.GetInt("WizardLvl") * 10 + PlayerPrefs.GetInt("CompHPUp") * 5;
-            currentHealth = PlayerPrefs.GetInt("WizardCurrentHealth");
+            maxHealth = 15 + currentData.GetComponent<CurrentDataScript>().wizardLvl * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
+            currentHealth = currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth;
         }
         //We find the current health text and max health text and initialize them
         currentHealthText = transform.GetChild(0).GetComponent<Text>();

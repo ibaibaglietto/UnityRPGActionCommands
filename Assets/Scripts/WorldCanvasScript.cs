@@ -22,12 +22,13 @@ public class WorldCanvasScript : MonoBehaviour
 
     //The items the player has. 0-> no item, 1-> apple, 2 -> light potion, 3-> resurrect potion
     private int[] items = { 2, 1, 1, 2, 3, 1, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    //The current data
+    private GameObject currentData;
 
     void Awake()
     {
-        PlayerPrefsX.SetIntArray("Items", items);
-        //We set the current companion if it has not been set
-        if (!PlayerPrefs.HasKey("CurrentCompanion")) PlayerPrefs.SetInt("CurrentCompanion", 1);
+        currentData = GameObject.Find("CurrentData");
+        currentData.GetComponent<CurrentDataScript>().items = items;
         //We find the UI that is only used in battle
         actionInstructions = GameObject.Find("ActionInstructions");
         enemyNames = GameObject.Find("EnemyNames");
@@ -36,23 +37,21 @@ public class WorldCanvasScript : MonoBehaviour
         changePosAction = GameObject.Find("ChangeOrder");
         //We put the real values on the canvas
         xpText = transform.GetChild(3).GetChild(1).GetComponent<Text>();
-        if (!PlayerPrefs.HasKey("lvlXP")) PlayerPrefs.SetInt("lvlXP", 0);
-        xpText.text = PlayerPrefs.GetInt("lvlXP").ToString();
+        xpText.text = currentData.GetComponent<CurrentDataScript>().lvlExp.ToString();
         coinsText = transform.GetChild(3).GetChild(3).GetComponent<Text>();
-        if (!PlayerPrefs.HasKey("currentCoins")) PlayerPrefs.SetInt("currentCoins", 0);
-        coinsText.text = PlayerPrefs.GetInt("currentCoins").ToString();
+        coinsText.text = currentData.GetComponent<CurrentDataScript>().currentCoins.ToString();
         playerLife = GameObject.Find("PlayerLifeBckImage");
         companionLife = GameObject.Find("CompanionLifeBckImage");
         teamLight = GameObject.Find("LightBckImage");
         playerLife.GetComponent<PlayerLifeScript>().SetUser(0);
-        companionLife.GetComponent<PlayerLifeScript>().SetUser(PlayerPrefs.GetInt("CurrentCompanion"));
+        companionLife.GetComponent<PlayerLifeScript>().SetUser(currentData.GetComponent<CurrentDataScript>().currentCompanion);
         //We set the state to open world
-        PlayerPrefs.SetInt("Battle", 0);
+        currentData.GetComponent<CurrentDataScript>().battle = 0;
     }
     //Function to update the actual coins
     public void UpdateCoins()
     {
-        coinsText.text = PlayerPrefs.GetInt("currentCoins").ToString();
+        coinsText.text = currentData.GetComponent<CurrentDataScript>().currentCoins.ToString();
     }
 
     //Function to update the max health and light points

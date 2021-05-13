@@ -104,9 +104,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
     public UnityEvent OnLandEvent;
     [System.Serializable]
     public class BoolEvent : UnityEvent<bool> { }
+    //The current data
+    private GameObject currentData;
 
     private void Awake()
-    {        
+    {
+        currentData = GameObject.Find("CurrentData");
         //We initialize the onLandEvent
         if (OnLandEvent == null) OnLandEvent = new UnityEvent();
         interactable = GameObject.Find("Interactable");
@@ -153,23 +156,9 @@ public class WorldPlayerMovementScript : MonoBehaviour
         itemUIScroll = 0;
         //We find the animator
         animator = gameObject.GetComponent<Animator>();
-        if (!PlayerPrefs.HasKey("Light Sword Found")) PlayerPrefs.SetInt("Light Sword Found", 0);
-        if (!PlayerPrefs.HasKey("Multistrike Sword Found")) PlayerPrefs.SetInt("Multistrike Sword Found", 0);
-        if (!PlayerPrefs.HasKey("Light Sword")) PlayerPrefs.SetInt("Light Sword", 0);
-        if (!PlayerPrefs.HasKey("Multistrike Sword")) PlayerPrefs.SetInt("Multistrike Sword", 0);
-        PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
-        if (!PlayerPrefs.HasKey("Light Shuriken Found")) PlayerPrefs.SetInt("Light Shuriken Found", 0);
-        if (!PlayerPrefs.HasKey("Fire Shuriken Found")) PlayerPrefs.SetInt("Fire Shuriken Found", 0);
-        if (!PlayerPrefs.HasKey("Light Shuriken")) PlayerPrefs.SetInt("Light Shuriken", 0);
-        if (!PlayerPrefs.HasKey("Fire Shuriken")) PlayerPrefs.SetInt("Fire Shuriken", 0);
-        PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
-        if (!PlayerPrefs.HasKey("HPUp")) PlayerPrefs.SetInt("HPUp", 0);
-        if (!PlayerPrefs.HasKey("LPUp")) PlayerPrefs.SetInt("LPUp", 0);
-        if (!PlayerPrefs.HasKey("CompHPUp")) PlayerPrefs.SetInt("CompHPUp", 0);
-        if (!PlayerPrefs.HasKey("HPUp Found")) PlayerPrefs.SetInt("HPUp Found", 0);
-        if (!PlayerPrefs.HasKey("LPUp Found")) PlayerPrefs.SetInt("LPUp Found", 0);
-        if (!PlayerPrefs.HasKey("CompHPUp Found")) PlayerPrefs.SetInt("CompHPUp Found", 0);
-        availableGems = PlayerPrefs.GetInt("Light Sword Found") + PlayerPrefs.GetInt("Multistrike Sword Found") + PlayerPrefs.GetInt("Light Shuriken Found") + PlayerPrefs.GetInt("Fire Shuriken Found") + PlayerPrefs.GetInt("HPUp Found") + PlayerPrefs.GetInt("LPUp Found") + PlayerPrefs.GetInt("CompHPUp Found");
+        currentData.GetComponent<CurrentDataScript>().swordStyles = currentData.GetComponent<CurrentDataScript>().lightSword + currentData.GetComponent<CurrentDataScript>().multistrikeSword;
+        currentData.GetComponent<CurrentDataScript>().shurikenStyles = currentData.GetComponent<CurrentDataScript>().lightShuriken + currentData.GetComponent<CurrentDataScript>().fireShuriken;
+        availableGems = currentData.GetComponent<CurrentDataScript>().lightSwordFound + currentData.GetComponent<CurrentDataScript>().multistrikeSwordFound + currentData.GetComponent<CurrentDataScript>().lightShurikenFound + currentData.GetComponent<CurrentDataScript>().fireShurikenFound + currentData.GetComponent<CurrentDataScript>().HPUpFound + currentData.GetComponent<CurrentDataScript>().LPUpFound + currentData.GetComponent<CurrentDataScript>().compHPUpFound;
         SpentGP();
     }
 
@@ -177,7 +166,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
     void Update()
     {
         //Detect the direction we want the player to move and save it
-        if (PlayerPrefs.GetInt("Battle") == 0)
+        if (currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
             if (!movingToRest && !resting)
             {
@@ -352,15 +341,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 restPlayerStatsUI.SetActive(true);
                                 restPlayerStatsUI.transform.GetChild(2).GetComponent<StatsPlayerLife>().UpdateStats();
                                 restPlayerStatsUI.transform.GetChild(3).GetComponent<LightPointsScript>().UpdateLight();
-                                restPlayerStatsUI.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = (PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3).ToString();
+                                restPlayerStatsUI.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = (currentData.GetComponent<CurrentDataScript>().playerBadgeLvl * 3 + 3).ToString();
                                 restPlayerStatsUI.transform.GetChild(5).GetComponent<StatsPlayerXPCoins>().UpdateStats();
                                 restUIState = 3;
                             }
                             else if (restPlayerMainUISelecting == 2)
                             {
                                 restPlayerGemsUI.SetActive(true);
-                                restPlayerGemsUI.transform.GetChild(1).GetComponent<Text>().text = ((PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3) - PlayerPrefs.GetInt("SpentGP")).ToString();
-                                restPlayerGemsUI.transform.GetChild(3).GetComponent<Text>().text = (PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3).ToString();
+                                restPlayerGemsUI.transform.GetChild(1).GetComponent<Text>().text = ((currentData.GetComponent<CurrentDataScript>().playerBadgeLvl * 3 + 3) - currentData.GetComponent<CurrentDataScript>().spentGP).ToString();
+                                restPlayerGemsUI.transform.GetChild(3).GetComponent<Text>().text = (currentData.GetComponent<CurrentDataScript>().playerBadgeLvl * 3 + 3).ToString();
                                 restUIState = 4; 
                                 CreateGemUI();
                             }
@@ -427,22 +416,22 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             if (PlayerPrefs.GetInt(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll)-1]) == 1)
                             {
                                 PlayerPrefs.SetInt(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll)-1], 0);
-                                PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
-                                PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
+                                currentData.GetComponent<CurrentDataScript>().swordStyles = currentData.GetComponent<CurrentDataScript>().lightSword + currentData.GetComponent<CurrentDataScript>().multistrikeSword;
+                                currentData.GetComponent<CurrentDataScript>().shurikenStyles = currentData.GetComponent<CurrentDataScript>().lightShuriken + currentData.GetComponent<CurrentDataScript>().fireShuriken;
                                 canvas.GetComponent<WorldCanvasScript>().UpdateStats();
                                 SpentGP();
                                 CreateGemUI();
-                                restPlayerGemsUI.transform.GetChild(1).GetComponent<Text>().text = ((PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3) - PlayerPrefs.GetInt("SpentGP")).ToString();
+                                restPlayerGemsUI.transform.GetChild(1).GetComponent<Text>().text = ((currentData.GetComponent<CurrentDataScript>().playerBadgeLvl * 3 + 3) - currentData.GetComponent<CurrentDataScript>().spentGP).ToString();
                             }
-                            else if (gems.gems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll)- 1].points <= ((PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3) - PlayerPrefs.GetInt("SpentGP")))
+                            else if (gems.gems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll)- 1].points <= ((currentData.GetComponent<CurrentDataScript>().playerBadgeLvl * 3 + 3) - currentData.GetComponent<CurrentDataScript>().spentGP))
                             {
                                 PlayerPrefs.SetInt(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll) - 1], 1);
-                                PlayerPrefs.SetInt("Sword Styles", PlayerPrefs.GetInt("Light Sword") + PlayerPrefs.GetInt("Multistrike Sword"));
-                                PlayerPrefs.SetInt("Shuriken Styles", PlayerPrefs.GetInt("Light Shuriken") + PlayerPrefs.GetInt("Fire Shuriken"));
+                                currentData.GetComponent<CurrentDataScript>().swordStyles = currentData.GetComponent<CurrentDataScript>().lightSword + currentData.GetComponent<CurrentDataScript>().multistrikeSword;
+                                currentData.GetComponent<CurrentDataScript>().shurikenStyles = currentData.GetComponent<CurrentDataScript>().lightShuriken + currentData.GetComponent<CurrentDataScript>().fireShuriken;
                                 canvas.GetComponent<WorldCanvasScript>().UpdateStats();
                                 SpentGP();
                                 CreateGemUI();
-                                restPlayerGemsUI.transform.GetChild(1).GetComponent<Text>().text = ((PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3) - PlayerPrefs.GetInt("SpentGP")).ToString();
+                                restPlayerGemsUI.transform.GetChild(1).GetComponent<Text>().text = ((currentData.GetComponent<CurrentDataScript>().playerBadgeLvl * 3 + 3) - currentData.GetComponent<CurrentDataScript>().spentGP).ToString();
                             }
                         }
                         if (Input.GetKeyDown(KeyCode.Q))
@@ -511,7 +500,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         }
                         else if(Input.GetKeyDown(KeyCode.X))
                         {
-                            if(PlayerPrefs.GetInt("CurrentCompanion") != restCompanionUISelecting)
+                            if(currentData.GetComponent<CurrentDataScript>().currentCompanion != restCompanionUISelecting)
                             {
                                 companion.GetComponent<WorldCompanionMovementScript>().ChangeCompanion(restCompanionUISelecting); 
                                 restUIState = 1;
@@ -532,10 +521,10 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 }
             }
         }
-        if (PlayerPrefs.GetInt("Fled") == 1 && PlayerPrefs.GetInt("Battle") == 0)
+        if (currentData.GetComponent<CurrentDataScript>().fled == 1 && currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
             GetComponent<Animator>().SetTrigger("Fleeing");
-            PlayerPrefs.SetInt("Fled", 0);
+            currentData.GetComponent<CurrentDataScript>().fled = 0;
             fled = true;
             fledTime = Time.fixedTime;
         }
@@ -546,7 +535,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private void FixedUpdate()
     {
         //move the player on the direction we saved previously
-        if(!attacking && PlayerPrefs.GetInt("Battle") == 0) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
+        if(!attacking && currentData.GetComponent<CurrentDataScript>().battle == 0) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
         else gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0.0f, gameObject.GetComponent<Rigidbody>().velocity.y, 0.0f);
         
     }
@@ -637,7 +626,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         {
             spent = spent + PlayerPrefs.GetInt(allGems[i]) * gems.gems[i].points;
         }
-        PlayerPrefs.SetInt("SpentGP", spent);
+        currentData.GetComponent<CurrentDataScript>().spentGP = spent;
     }
 
     //Function to change the rest instruction text
@@ -647,20 +636,20 @@ public class WorldPlayerMovementScript : MonoBehaviour
         {
             if (restUISelecting == 1)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Mira las estadísticas, cambia las gemas o comprueba tus objetos.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Mira las estadísticas, cambia las gemas o comprueba tus objetos.";
                 else restInstructionsText.text = "";
             }
             else if (restUISelecting == 2)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Guarda la partida.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Guarda la partida.";
                 else restInstructionsText.text = "";
             }
             else
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Cambia de compañero.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Cambia de compañero.";
                 else restInstructionsText.text = "";
             }
         }
@@ -668,92 +657,92 @@ public class WorldPlayerMovementScript : MonoBehaviour
         {
             if (restPlayerMainUISelecting == 1)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Mira las estadísticas del jugador.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Mira las estadísticas del jugador.";
                 else restInstructionsText.text = "";
             }
             else if (restPlayerMainUISelecting == 2)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Cambia las gemas equipadas.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Cambia las gemas equipadas.";
                 else restInstructionsText.text = "";
             }
             else
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Comprueba tus objetos.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Comprueba tus objetos.";
                 else restInstructionsText.text = "";
             }
         }
         else if (restUIState == 3)
         {
-            if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-            else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Aquí puedes ver las estadísticas del jugador, desde los puntos de alma disponibles en el momento hasta la experiencia y las monedas.";
+            if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+            else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Aquí puedes ver las estadísticas del jugador, desde los puntos de alma disponibles en el momento hasta la experiencia y las monedas.";
             else restInstructionsText.text = "";
         }
         else if (restUIState == 4)
         {
             if (FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 1)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Permite al jugador usar la espada de luz, un poderoso ataque de un único golpe que cuesta 1 PL.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Permite al jugador usar la espada de luz, un poderoso ataque de un único golpe que cuesta 1 PL.";
                 else restInstructionsText.text = "";
             }
             else if (FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 2)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Permite al jugador usar la espada de multiataque, un ataque que permite golpear repetidamente a un enemigo por 2 PL.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Permite al jugador usar la espada de multiataque, un ataque que permite golpear repetidamente a un enemigo por 2 PL.";
                 else restInstructionsText.text = "";
             }
             else if(FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 3)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Permite al jugador usar el shuriken de luz, que permite lanzar un shuriken con poder de luz que cuesta 1 PL.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Permite al jugador usar el shuriken de luz, que permite lanzar un shuriken con poder de luz que cuesta 1 PL.";
                 else restInstructionsText.text = "";
             }
             else if (FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 4)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Permite al jugador usar el shuriken de fuego, que permite dañar a todos los enemigos que se encuentran en el suelo por 2PL.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Permite al jugador usar el shuriken de fuego, que permite dañar a todos los enemigos que se encuentran en el suelo por 2PL.";
                 else restInstructionsText.text = "";
             }
             else if (FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 5)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Aumenta los puntos de vida del jugador en 5.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Aumenta los puntos de vida del jugador en 5.";
                 else restInstructionsText.text = "";
             }
             else if (FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 6)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Aumenta los puntos de luz del jugador en 5.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Aumenta los puntos de luz del jugador en 5.";
                 else restInstructionsText.text = "";
             }
             else
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Aumenta los puntos de vida de los compañeros en 5.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Aumenta los puntos de vida de los compañeros en 5.";
                 else restInstructionsText.text = "";
             }
         }
         else if (restUIState == 5)
         {
-            if (PlayerPrefsX.GetIntArray("Items")[restPlayerItemUISelecting + itemUIScroll - 1] == 1)
+            if (currentData.GetComponent<CurrentDataScript>().items[restPlayerItemUISelecting + itemUIScroll - 1] == 1)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Una manzana que cura 5 puntos de vida.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Una manzana que cura 5 puntos de vida.";
                 else restInstructionsText.text = "";
             }
-            else if (PlayerPrefsX.GetIntArray("Items")[restPlayerItemUISelecting + itemUIScroll - 1] == 2)
+            else if (currentData.GetComponent<CurrentDataScript>().items[restPlayerItemUISelecting + itemUIScroll - 1] == 2)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Una poción que regenera 5 puntos de luz.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Una poción que regenera 5 puntos de luz.";
                 else restInstructionsText.text = "";
             }
-            else if (PlayerPrefsX.GetIntArray("Items")[restPlayerItemUISelecting + itemUIScroll - 1] == 3)
+            else if (currentData.GetComponent<CurrentDataScript>().items[restPlayerItemUISelecting + itemUIScroll - 1] == 3)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Una poción que revive al usuario que la tome curándole 10 puntos de vida.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Una poción que revive al usuario que la tome curándole 10 puntos de vida.";
                 else restInstructionsText.text = "";
             }
         }
@@ -761,14 +750,14 @@ public class WorldPlayerMovementScript : MonoBehaviour
         {
             if(restCompanionUISelecting == 1)
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Un aventurero que puede atacar usando sus armas o fijarse en los enemigos para ver sus puntos débiles.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Un aventurero que puede atacar usando sus armas o fijarse en los enemigos para ver sus puntos débiles.";
                 else restInstructionsText.text = "";
             }
             else
             {
-                if (PlayerPrefs.GetInt("Language") == 1) restInstructionsText.text = "";
-                else if (PlayerPrefs.GetInt("Language") == 2) restInstructionsText.text = "Un mago experto en recibir golpes que también puede atacar usando sus hechizos mágicos.";
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Un mago experto en recibir golpes que también puede atacar usando sus hechizos mágicos.";
                 else restInstructionsText.text = "";
             }
         }
@@ -788,7 +777,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
             if (i < availableGems + 1)
             {
                 if(PlayerPrefs.GetInt(allGems[FindGemInPos(i) + gemUIScroll - 1])==1) restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-                else if(gems.gems[FindGemInPos(i) + gemUIScroll - 1].points > ((PlayerPrefs.GetInt("PlayerBadgeLvl") * 3 + 3) - PlayerPrefs.GetInt("SpentGP"))) restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+                else if(gems.gems[FindGemInPos(i) + gemUIScroll - 1].points > ((currentData.GetComponent<CurrentDataScript>().playerBadgeLvl * 3 + 3) - currentData.GetComponent<CurrentDataScript>().spentGP)) restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 0.0f, 0.0f, 1.0f);
                 else restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 restPlayerGemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -822,34 +811,34 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 if (i < itemSize() + 1)
                 {
                     restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                    if (PlayerPrefsX.GetIntArray("Items")[i + itemUIScroll - 1] == 1)
+                    if (currentData.GetComponent<CurrentDataScript>().items[i + itemUIScroll - 1] == 1)
                     {
                         restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().texture = apple;
-                        if (PlayerPrefs.GetInt("Language") == 1) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Apple";
-                        else if (PlayerPrefs.GetInt("Language") == 2) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Manzana";
+                        if (currentData.GetComponent<CurrentDataScript>().language == 1) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Apple";
+                        else if (currentData.GetComponent<CurrentDataScript>().language == 2) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Manzana";
                         else restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Sagarra";
                     }
-                    else if (PlayerPrefsX.GetIntArray("Items")[i + itemUIScroll - 1] == 2)
+                    else if (currentData.GetComponent<CurrentDataScript>().items[i + itemUIScroll - 1] == 2)
                     {
                         restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().texture = lightPotion;
-                        if (PlayerPrefs.GetInt("Language") == 1) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Light potion";
-                        else if (PlayerPrefs.GetInt("Language") == 2) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Poción de luz";
+                        if (currentData.GetComponent<CurrentDataScript>().language == 1) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Light potion";
+                        else if (currentData.GetComponent<CurrentDataScript>().language == 2) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Poción de luz";
                         else restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Argi pozioa";
                     }
-                    else if (PlayerPrefsX.GetIntArray("Items")[i + itemUIScroll - 1] == 3)
+                    else if (currentData.GetComponent<CurrentDataScript>().items[i + itemUIScroll - 1] == 3)
                     {
                         restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().texture = resurrectPotion;
-                        if (PlayerPrefs.GetInt("Language") == 1) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Resurrection potion";
-                        else if (PlayerPrefs.GetInt("Language") == 2) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Poción de resurrección";
+                        if (currentData.GetComponent<CurrentDataScript>().language == 1) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Resurrection potion";
+                        else if (currentData.GetComponent<CurrentDataScript>().language == 2) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Poción de resurrección";
                         else restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Berpizkunde pozioa";
                     }
                 }
@@ -914,7 +903,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private int itemSize()
     {
         int i = 0;
-        while (PlayerPrefsX.GetIntArray("Items")[i] != 0 && i < 19)
+        while (currentData.GetComponent<CurrentDataScript>().items[i] != 0 && i < 19)
         {
             i++;
         }

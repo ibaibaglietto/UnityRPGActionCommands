@@ -13,17 +13,16 @@ public class LightPointsScript : MonoBehaviour
     private Text maxLightText;
     //The current health text
     private Text currentLightText;
+    //The current data
+    private GameObject currentData;
 
 
     void Awake()
     {
+        currentData = GameObject.Find("CurrentData");
         //We save the max light and the current light
-        maxLight = 5 + (PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("LPUp")) * 5;
-        if (PlayerPrefs.HasKey("PlayerCurrentLight"))
-        {
-            currentLight = PlayerPrefs.GetInt("PlayerCurrentLight");
-        }
-        else currentLight = maxLight;
+        maxLight = 5 + (currentData.GetComponent<CurrentDataScript>().playerLightLvl + currentData.GetComponent<CurrentDataScript>().LPUp) * 5;
+        currentLight = currentData.GetComponent<CurrentDataScript>().playerCurrentLight;
         //We find the current light text and max light text and initialize them
         currentLightText = transform.GetChild(0).GetComponent<Text>();
         maxLightText = transform.GetChild(2).GetComponent<Text>();
@@ -42,7 +41,7 @@ public class LightPointsScript : MonoBehaviour
     {
         currentLight -= light;
         currentLightText.text = currentLight.ToString();
-        PlayerPrefs.SetInt("PlayerCurrentLight", currentLight);
+        currentData.GetComponent<CurrentDataScript>().playerCurrentLight = currentLight;
     }
 
     //Function to increase the amount of light
@@ -50,14 +49,14 @@ public class LightPointsScript : MonoBehaviour
     {
         currentLight += light;
         if (currentLight > maxLight) currentLight = maxLight;
-        PlayerPrefs.SetInt("PlayerCurrentLight", currentLight);
+        currentData.GetComponent<CurrentDataScript>().playerCurrentLight = currentLight;
         currentLightText.text = currentLight.ToString();
     }
 
     //Function to get the max light
     public int GetMaxLight()
     {
-        maxLight = 5 + (PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("LPUp")) * 5;
+        maxLight = 5 + (currentData.GetComponent<CurrentDataScript>().playerLightLvl + currentData.GetComponent<CurrentDataScript>().LPUp) * 5;
         maxLightText.text = maxLight.ToString();
         return maxLight;
     }
@@ -65,8 +64,8 @@ public class LightPointsScript : MonoBehaviour
     //Function to update the max light 
     public void UpdateLight()
     {
-        maxLightText.text = (5 + (PlayerPrefs.GetInt("PlayerLightLvl") + PlayerPrefs.GetInt("LPUp")) * 5).ToString();
-        currentLightText.text = PlayerPrefs.GetInt("PlayerCurrentLight").ToString();
+        maxLightText.text = (5 + (currentData.GetComponent<CurrentDataScript>().playerLightLvl + currentData.GetComponent<CurrentDataScript>().LPUp) * 5).ToString();
+        currentLightText.text = currentData.GetComponent<CurrentDataScript>().playerCurrentLight.ToString();
     }
 
 }

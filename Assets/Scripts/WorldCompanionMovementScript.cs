@@ -42,9 +42,12 @@ public class WorldCompanionMovementScript : MonoBehaviour
     public UnityEvent OnLandEvent;
     [System.Serializable]
     public class BoolEvent : UnityEvent<bool> { }
+    //The current data
+    private GameObject currentData;
 
     private void Awake()
     {
+        currentData = GameObject.Find("CurrentData");
         //We initialize the onLandEvent
         if (OnLandEvent == null) OnLandEvent = new UnityEvent();
     }
@@ -60,7 +63,7 @@ public class WorldCompanionMovementScript : MonoBehaviour
         //We find the player
         player = GameObject.Find("PlayerWorld");
         //We set the current companion        
-        user = PlayerPrefs.GetInt("CurrentCompanion");
+        user = currentData.GetComponent<CurrentDataScript>().currentCompanion;
         animator.SetInteger("User", user);
         //We find the companion health UI
         companionLife = GameObject.Find("CompanionLifeBckImage");
@@ -112,7 +115,7 @@ public class WorldCompanionMovementScript : MonoBehaviour
                         OnLandEvent.Invoke();
                 }
             }
-            if (PlayerPrefs.GetInt("Battle") == 0)
+            if (currentData.GetComponent<CurrentDataScript>().battle == 0)
             {
                 if (player.GetComponent<WorldPlayerMovementScript>().IsFleeing() && !fled)
                 {
@@ -204,7 +207,7 @@ public class WorldCompanionMovementScript : MonoBehaviour
     {
         animator.SetBool("changing", true);
         animator.SetInteger("User", comp);
-        PlayerPrefs.SetInt("CurrentCompanion",comp);
+        currentData.GetComponent<CurrentDataScript>().currentCompanion = comp;
         user = comp;
         companionLife.GetComponent<PlayerLifeScript>().SetUser(user);
     }

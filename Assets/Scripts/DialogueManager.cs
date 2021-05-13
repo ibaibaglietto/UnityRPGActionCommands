@@ -22,9 +22,12 @@ public class DialogueManager : MonoBehaviour
     private Queue<string> sentences;
     //A boolean to know if it is a battle dialogue or a world one
     private bool battle;
+    //The current data
+    private GameObject currentData;
 
     void Start()
     {
+        currentData = GameObject.Find("CurrentData");
         //We find everything
         sentences = new Queue<string>();
         nameText = GameObject.Find("DialogueName").GetComponent<Text>();
@@ -46,7 +49,7 @@ public class DialogueManager : MonoBehaviour
         //Clear the previous sentences
         sentences.Clear();
         //Check the language and enqueue the sentences
-        if (PlayerPrefs.GetInt("Language") == 1)
+        if (currentData.GetComponent<CurrentDataScript>().language == 1)
         {
             //Set the name of the speaker
             nameText.text = dialogue.nameEnglish;
@@ -55,7 +58,7 @@ public class DialogueManager : MonoBehaviour
                 sentences.Enqueue(sentence);
             }
         }
-        else if (PlayerPrefs.GetInt("Language") == 2)
+        else if (currentData.GetComponent<CurrentDataScript>().language == 2)
         {
             //Set the name of the speaker
             nameText.text = dialogue.nameSpanish;
@@ -64,7 +67,7 @@ public class DialogueManager : MonoBehaviour
                 sentences.Enqueue(sentence);
             }
         }
-        else if (PlayerPrefs.GetInt("Language") == 3)
+        else if (currentData.GetComponent<CurrentDataScript>().language == 3)
         {
             //Set the name of the speaker
             nameText.text = dialogue.nameBasque;
@@ -89,7 +92,7 @@ public class DialogueManager : MonoBehaviour
         //Clear the previous sentences
         sentences.Clear();
         //Check the language and enqueue the sentences
-        if (PlayerPrefs.GetInt("Language") == 1)
+        if (currentData.GetComponent<CurrentDataScript>().language == 1)
         {
             //Set the name of the speaker
             nameText.text = dialogue.nameEnglish;
@@ -98,7 +101,7 @@ public class DialogueManager : MonoBehaviour
                 sentences.Enqueue(sentence);
             }
         }
-        else if (PlayerPrefs.GetInt("Language") == 2)
+        else if (currentData.GetComponent<CurrentDataScript>().language == 2)
         {
             //Set the name of the speaker
             nameText.text = dialogue.nameSpanish;
@@ -107,7 +110,7 @@ public class DialogueManager : MonoBehaviour
                 sentences.Enqueue(sentence);
             }
         }
-        else if (PlayerPrefs.GetInt("Language") == 3)
+        else if (currentData.GetComponent<CurrentDataScript>().language == 3)
         {
             //Set the name of the speaker
             nameText.text = dialogue.nameBasque;

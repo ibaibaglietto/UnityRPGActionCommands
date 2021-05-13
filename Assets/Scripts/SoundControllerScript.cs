@@ -7,21 +7,29 @@ public class SoundControllerScript : MonoBehaviour
 {
     //The audio mixer
     public AudioMixer mixer;
+    //The current data
+    private GameObject currentData;
+
+
+    void Awake()
+    {
+        currentData = GameObject.Find("CurrentData");
+    }
 
     //3 functions to set the master, music and effects volumes
     public void SetMasterLevel(float sliderValue)
     {
         mixer.SetFloat("Master", Mathf.Log10(sliderValue) * 20);
-        PlayerPrefs.SetFloat("Master", sliderValue);
+        currentData.GetComponent<CurrentDataScript>().master = sliderValue;
     }
     public void SetMusicLevel(float sliderValue)
     {
         mixer.SetFloat("Music", Mathf.Log10(sliderValue) * 20);
-        PlayerPrefs.SetFloat("Music", sliderValue);
+        currentData.GetComponent<CurrentDataScript>().music = sliderValue;
     }
     public void SetEffectsLevel(float sliderValue)
     {
         mixer.SetFloat("Effects", Mathf.Log10(sliderValue) * 20);
-        PlayerPrefs.SetFloat("Effects", sliderValue);
+        currentData.GetComponent<CurrentDataScript>().effects = sliderValue;
     }
 }

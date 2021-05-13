@@ -63,9 +63,12 @@ public class EnemyTeamScript : MonoBehaviour
     [SerializeField] private AudioClip bossGroundAttackAudio;
     [SerializeField] private AudioClip bossTeleportAudio;
     [SerializeField] private AudioClip bossPowerUpAudio;
+    //The current data
+    private GameObject currentData;
 
     void Start()
     {
+        currentData = GameObject.Find("CurrentData");
         //We find the battle controller and initialize the variables
         battleController = GameObject.Find("BattleController");
         buffDebuffUI = transform.GetChild(0).Find("BuffsDebuffs").gameObject;
@@ -87,7 +90,7 @@ public class EnemyTeamScript : MonoBehaviour
         {
             grounded = true;
             //We check if the player already knows the health points of this enemy
-            if (PlayerPrefs.GetInt("bandit") == 1) 
+            if (currentData.GetComponent<CurrentDataScript>().bandit == 1) 
             {
                 for(int i = 0; i<3; i++)
                 {
@@ -109,7 +112,7 @@ public class EnemyTeamScript : MonoBehaviour
         {
             grounded = false;
             //We check if the player already knows the health points of this enemy
-            if (PlayerPrefs.GetInt("wizard") == 1)
+            if (currentData.GetComponent<CurrentDataScript>().wizard == 1)
             {
                 for (int i = 0; i < 3; i++)
                 {
@@ -131,7 +134,7 @@ public class EnemyTeamScript : MonoBehaviour
         {
             grounded = true;
             //We check if the player already knows the health points of this enemy
-            if (PlayerPrefs.GetInt("king") == 1)
+            if (currentData.GetComponent<CurrentDataScript>().king == 1)
             {
                 for (int i = 0; i < 3; i++)
                 {
@@ -261,7 +264,7 @@ public class EnemyTeamScript : MonoBehaviour
         if(enemyType == 0)
         {
             //We check if the player already knows the health of the enemy
-            if (PlayerPrefs.GetInt("bandit") == 1)
+            if (currentData.GetComponent<CurrentDataScript>().bandit == 1)
             {
                 for (int i = 0; i < 3; i++)
                 {
@@ -282,7 +285,7 @@ public class EnemyTeamScript : MonoBehaviour
         else if(enemyType == 1)
         {
             //We check if the player already knows the health of the enemy
-            if (PlayerPrefs.GetInt("wizard") == 1)
+            if (currentData.GetComponent<CurrentDataScript>().wizard == 1)
             {
                 for (int i = 0; i < 3; i++)
                 {
@@ -303,7 +306,7 @@ public class EnemyTeamScript : MonoBehaviour
         else if (enemyType == 2)
         {
             //We check if the player already knows the health of the enemy
-            if (PlayerPrefs.GetInt("king") == 1)
+            if (currentData.GetComponent<CurrentDataScript>().king == 1)
             {
                 for (int i = 0; i < 3; i++)
                 {
@@ -1002,65 +1005,65 @@ public class EnemyTeamScript : MonoBehaviour
     {
         if(enemyType == 0)
         {
-            if (PlayerPrefs.GetInt("PlayerLvl") == 1)
+            if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(4);
             }
-            else if (PlayerPrefs.GetInt("PlayerLvl") == 2)
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 2)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(2);
             }
-            else if (PlayerPrefs.GetInt("PlayerLvl") == 3)
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 3)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(1);
             }
         }
         else if(enemyType == 1)
         {
-            if (PlayerPrefs.GetInt("PlayerLvl") == 1)
+            if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(5);
             }
-            else if (PlayerPrefs.GetInt("PlayerLvl") == 2)
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 2)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(3);
             }
-            else if (PlayerPrefs.GetInt("PlayerLvl") == 3)
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 3)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(1);
             }
         }
         else if (enemyType == 2)
         {
-            if (PlayerPrefs.GetInt("PlayerLvl") == 1)
+            if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(50);
             }
-            else if (PlayerPrefs.GetInt("PlayerLvl") == 2)
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 2)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(40);
             }
-            else if (PlayerPrefs.GetInt("PlayerLvl") == 3)
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 3)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(30);
             }
-            else if (PlayerPrefs.GetInt("PlayerLvl") == 4)
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 4)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(23);
             }
-            else if (PlayerPrefs.GetInt("PlayerLvl") == 5)
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 5)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(16);
             }
-            else if (PlayerPrefs.GetInt("PlayerLvl") == 6)
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 6)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(8);
             }
-            else if (PlayerPrefs.GetInt("PlayerLvl") == 7)
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 7)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(4);
             }
-            else if (PlayerPrefs.GetInt("PlayerLvl") == 8)
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 8)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(1);
             }

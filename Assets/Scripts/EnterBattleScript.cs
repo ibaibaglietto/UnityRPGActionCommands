@@ -6,9 +6,12 @@ using UnityEngine.SceneManagement;
 public class EnterBattleScript : MonoBehaviour
 {
     private GameObject cam;
+    //The current data
+    private GameObject currentData;
 
     private void Start()
     {
+        currentData = GameObject.Find("CurrentData");
         cam = GameObject.Find("Main Camera");
     }
 
@@ -20,7 +23,7 @@ public class EnterBattleScript : MonoBehaviour
 
     private void EndBattle()
     {
-        PlayerPrefs.SetInt("Battle", 0);
+        currentData.GetComponent<CurrentDataScript>().battle = 0;
         cam.GetComponent<WorldCameraScript>().ChangeBattleCamera(false);
         SceneManager.UnloadSceneAsync(1);
     }

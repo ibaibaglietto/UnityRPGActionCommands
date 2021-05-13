@@ -155,9 +155,12 @@ public class PlayerTeamScript : MonoBehaviour
     private Text companionAttackText;
     private Text companionItemsText;
     private Text companionOtherText;
+    //The current data
+    private GameObject currentData;
 
     void Awake()
     {
+        currentData = GameObject.Find("CurrentData");
         //We find the gameobjects and initialize some variables
         lightPointsUI = GameObject.Find("LightBckImage");
         battleController = GameObject.Find("BattleController");
@@ -205,7 +208,7 @@ public class PlayerTeamScript : MonoBehaviour
             companionOtherText = GameObject.Find("OtherActionImageText").GetComponent<Text>();
         }        
         //We translate the texts
-        if (PlayerPrefs.GetInt("Language") == 1)
+        if (currentData.GetComponent<CurrentDataScript>().language == 1)
         {
             if (playerTeamType == 0)
             {
@@ -222,7 +225,7 @@ public class PlayerTeamScript : MonoBehaviour
                 companionOtherText.text = "Other";
             }
         }
-        else if (PlayerPrefs.GetInt("Language") == 2)
+        else if (currentData.GetComponent<CurrentDataScript>().language == 2)
         {
             if (playerTeamType == 0)
             {
@@ -952,7 +955,7 @@ public class PlayerTeamScript : MonoBehaviour
                     startPos = transform.position.x;
                     movePos = attackObjective.position.x - 1.1f;
                     movingToEnemy = true;
-                    repeatingDamage = PlayerPrefs.GetInt("SwordLvl") - 1;
+                    repeatingDamage = currentData.GetComponent<CurrentDataScript>().swordLvl - 1;
                 }
             }
             //The shuriken attack
@@ -1074,7 +1077,7 @@ public class PlayerTeamScript : MonoBehaviour
                     startPos = transform.position.x;
                     movePos = attackObjective.position.x - 1.1f;
                     movingToEnemy = true;
-                    repeatingDamage = PlayerPrefs.GetInt("AdventurerLvl") - 1;
+                    repeatingDamage = currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1;
                 }
                 //Dragonslayer bow
                 else if(style == 3)
@@ -1130,7 +1133,7 @@ public class PlayerTeamScript : MonoBehaviour
                     movePos = attackObjective.position.x - 1.5f;
                     movingToEnemy = true;
                     //We save the number of hits
-                    repeatingDamage = PlayerPrefs.GetInt("WizardLvl") - 1;
+                    repeatingDamage = currentData.GetComponent<CurrentDataScript>().wizardLvl - 1;
                 }
                 //Magic Spear
                 else if(style == 3)
@@ -1203,14 +1206,14 @@ public class PlayerTeamScript : MonoBehaviour
                 //Player
                 if (playerTeamType == 0)
                 {
-                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("SwordLvl") - 1), false);
+                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (currentData.GetComponent<CurrentDataScript>().swordLvl - 1), false);
                     source.clip = playerNormalSwordAudio;
                     source.Play();
                 }
                 //Adventurer
                 else if (playerTeamType == 1)
                 {
-                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("AdventurerLvl") - 1), false);
+                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1), false);
                     source.clip = adventurerNormalSwordAudio;
                     source.Play();
                 }
@@ -1227,7 +1230,7 @@ public class PlayerTeamScript : MonoBehaviour
                 if (playerTeamType == 0)
                 {
                     gameObject.GetComponent<Animator>().SetBool("isAttacking", false);
-                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("SwordLvl") - 1), true); 
+                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (currentData.GetComponent<CurrentDataScript>().swordLvl - 1), true); 
                     source.clip = playerNormalSwordAudio;
                     source.Play();
                 }
@@ -1235,7 +1238,7 @@ public class PlayerTeamScript : MonoBehaviour
                 else if (playerTeamType == 1)
                 {
                     gameObject.GetComponent<Animator>().SetBool("Melee2", false);
-                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (PlayerPrefs.GetInt("AdventurerLvl") - 1), true);
+                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1), true);
                     source.clip = adventurerNormalSwordAudio;
                     source.Play();
                 }
@@ -1323,7 +1326,7 @@ public class PlayerTeamScript : MonoBehaviour
         source.Play();
         battleController.GetComponent<BattleController>().FillSouls(0.2f * damage);
         returnStartPos = true;
-        battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), damage * PlayerPrefs.GetInt("SwordLvl") + lightUp + 2, true);
+        battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), damage * currentData.GetComponent<CurrentDataScript>().swordLvl + lightUp + 2, true);
         if (lightUp != 0) EndBuffDebuff(lightUpPos);
         lightUp = 0;
     }
@@ -1342,7 +1345,7 @@ public class PlayerTeamScript : MonoBehaviour
                 //We instantiate the shuriken, save the objective and the damage
                 shuriken = Instantiate(shurikenPrefab, gameObject.transform.position, Quaternion.identity);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
-                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp + (PlayerPrefs.GetInt("ShurikenLvl") - 1) * 2);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp + (currentData.GetComponent<CurrentDataScript>().shurikenLvl - 1) * 2);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
@@ -1354,7 +1357,7 @@ public class PlayerTeamScript : MonoBehaviour
                 //We instantiate the shuriken, save the objective and the damage
                 shuriken = Instantiate(lightShurikenPrefab, gameObject.transform.position, Quaternion.identity);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
-                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage * PlayerPrefs.GetInt("ShurikenLvl") + lightUp + 2);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage * currentData.GetComponent<CurrentDataScript>().shurikenLvl + lightUp + 2);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
@@ -1368,7 +1371,7 @@ public class PlayerTeamScript : MonoBehaviour
                 shuriken.GetComponent<ShurikenScript>().SetFireObjectives(battleController.GetComponent<BattleController>().GetGroundEnemies());
                 shuriken.GetComponent<ShurikenScript>().OnFireShuriken(true);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
-                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp + (PlayerPrefs.GetInt("ShurikenLvl") - 1) * 2);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp + (currentData.GetComponent<CurrentDataScript>().shurikenLvl - 1) * 2);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
@@ -1387,7 +1390,7 @@ public class PlayerTeamScript : MonoBehaviour
                 shuriken.GetComponent<ShurikenScript>().SetFireObjectives(battleController.GetComponent<BattleController>().GetGroundEnemies());
                 shuriken.GetComponent<ShurikenScript>().OnFireShuriken(true);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
-                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage * PlayerPrefs.GetInt("AdventurerLvl") + lightUp);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage * currentData.GetComponent<CurrentDataScript>().adventurerLvl + lightUp);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
@@ -1422,7 +1425,7 @@ public class PlayerTeamScript : MonoBehaviour
                 shuriken = Instantiate(magicBallPrefab, new Vector3(gameObject.transform.position.x + 1.0104f, gameObject.transform.position.y + 0.3781f, gameObject.transform.position.z), Quaternion.identity);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
                 shuriken.GetComponent<ShurikenScript>().SetMagic();
-                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp + (PlayerPrefs.GetInt("WizardLvl") - 1) * 2);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage + lightUp + (currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 2);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
@@ -1436,7 +1439,7 @@ public class PlayerTeamScript : MonoBehaviour
                 shuriken = Instantiate(magicSpearPrefab, new Vector3(gameObject.transform.position.x + 1.0104f, gameObject.transform.position.y + 0.3781f, gameObject.transform.position.z), Quaternion.identity);
                 shuriken.GetComponent<ShurikenScript>().SetObjective(shurikenObjective);
                 shuriken.GetComponent<ShurikenScript>().SetMagic();
-                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage * PlayerPrefs.GetInt("WizardLvl") + lightUp);
+                shuriken.GetComponent<ShurikenScript>().SetShurikenDamage(shurikenDamage * currentData.GetComponent<CurrentDataScript>().wizardLvl + lightUp);
                 if (lightUp != 0) EndBuffDebuff(lightUpPos);
                 lightUp = 0;
             }
@@ -1702,11 +1705,11 @@ public class PlayerTeamScript : MonoBehaviour
                 source.Play();
                 battleController.GetComponent<DialogueManager>().StartBattleDialogue(attackObjective.GetComponent<EnemyTeamScript>().dialogue);
                 //Bandit
-                if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 0) PlayerPrefs.SetInt("bandit", 1);
+                if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 0) currentData.GetComponent<CurrentDataScript>().bandit = 1;
                 //Wizard
-                else if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 1) PlayerPrefs.SetInt("wizard", 1);
+                else if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 1) currentData.GetComponent<CurrentDataScript>().wizard = 1;
                 //King
-                else if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 2) PlayerPrefs.SetInt("king", 1);
+                else if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 2) currentData.GetComponent<CurrentDataScript>().king = 1;
                 battleController.GetComponent<BattleController>().KnowHealth();
             }
             //If one of them is wrongly done we end the turn
