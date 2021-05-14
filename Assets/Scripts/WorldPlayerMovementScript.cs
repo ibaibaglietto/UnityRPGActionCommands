@@ -110,6 +110,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private void Awake()
     {
         currentData = GameObject.Find("CurrentData");
+        GameDataScript data = SaveScript.LoadGame();
+        currentData.GetComponent<CurrentDataScript>().LoadData(data);
         //We initialize the onLandEvent
         if (OnLandEvent == null) OnLandEvent = new UnityEvent();
         interactable = GameObject.Find("Interactable");
@@ -293,12 +295,18 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 restPlayerUI.SetActive(true);
                                 restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
                                 restUIState = 2;
+                                UpdateRestInstructionText();
                             }
-                            /*else if (restUISelecting == 2)
+                            else if (restUISelecting == 2)
                             {
-                                //restPlayerUI.SetActive(true);
                                 restUIState = 6;
-                            }*/
+                                UpdateRestInstructionText();
+                                SaveScript.SaveGame(currentData.GetComponent<CurrentDataScript>()); 
+                                if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Se ha guardado la partida";
+                                else restInstructionsText.text = "";
+
+                            }
                             else if (restUISelecting == 3)
                             {
                                 restCompanionUISelecting = 1;
@@ -306,8 +314,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 restCompanionUI.transform.GetChild(2).GetComponent<StatsPlayerLife>().UpdateStats();
                                 restCompanionUI.transform.GetChild(3).GetComponent<StatsPlayerLife>().UpdateStats();
                                 restUIState = 7;
+                                UpdateRestInstructionText();
                             }
-                            UpdateRestInstructionText();
                         }
                         else if (Input.GetKeyDown(KeyCode.Q))
                         {
@@ -413,9 +421,9 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         }
                         if (Input.GetKeyDown(KeyCode.X))
                         {
-                            if (PlayerPrefs.GetInt(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll)-1]) == 1)
+                            if (currentData.GetComponent<CurrentDataScript>().GemUsing(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll) - 1],allGems) == 1)
                             {
-                                PlayerPrefs.SetInt(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll)-1], 0);
+                                currentData.GetComponent<CurrentDataScript>().SetGemUsing(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll) - 1], allGems, 0);
                                 currentData.GetComponent<CurrentDataScript>().swordStyles = currentData.GetComponent<CurrentDataScript>().lightSword + currentData.GetComponent<CurrentDataScript>().multistrikeSword;
                                 currentData.GetComponent<CurrentDataScript>().shurikenStyles = currentData.GetComponent<CurrentDataScript>().lightShuriken + currentData.GetComponent<CurrentDataScript>().fireShuriken;
                                 canvas.GetComponent<WorldCanvasScript>().UpdateStats();
@@ -425,7 +433,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             }
                             else if (gems.gems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll)- 1].points <= ((currentData.GetComponent<CurrentDataScript>().playerBadgeLvl * 3 + 3) - currentData.GetComponent<CurrentDataScript>().spentGP))
                             {
-                                PlayerPrefs.SetInt(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll) - 1], 1);
+
+                                currentData.GetComponent<CurrentDataScript>().SetGemUsing(allGems[FindGemInPos(restPlayerGemUISelecting + gemUIScroll) - 1], allGems, 1);
                                 currentData.GetComponent<CurrentDataScript>().swordStyles = currentData.GetComponent<CurrentDataScript>().lightSword + currentData.GetComponent<CurrentDataScript>().multistrikeSword;
                                 currentData.GetComponent<CurrentDataScript>().shurikenStyles = currentData.GetComponent<CurrentDataScript>().lightShuriken + currentData.GetComponent<CurrentDataScript>().fireShuriken;
                                 canvas.GetComponent<WorldCanvasScript>().UpdateStats();
@@ -481,6 +490,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             restPlayerItemsUI.SetActive(false);
                             restPlayerMainUI.GetComponent<Animator>().SetInteger("Pos", restPlayerMainUISelecting);
                             restUIState = 2;
+                            UpdateRestInstructionText();
+                        }
+                    }
+                    else if (restUIState == 6)
+                    {
+                        if (Input.GetKeyDown(KeyCode.Q))
+                        {
+                            restUI.GetComponent<Animator>().SetInteger("Pos", restUISelecting);
+                            restUIState = 1;
                             UpdateRestInstructionText();
                         }
                     }
@@ -624,7 +642,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         int spent = 0;
         for (int i = 0; i<allGems.Length; i++)
         {
-            spent = spent + PlayerPrefs.GetInt(allGems[i]) * gems.gems[i].points;
+            spent = spent + currentData.GetComponent<CurrentDataScript>().GemUsing(allGems[i],allGems) * gems.gems[i].points;
         }
         currentData.GetComponent<CurrentDataScript>().spentGP = spent;
     }
@@ -694,7 +712,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Permite al jugador usar la espada de multiataque, un ataque que permite golpear repetidamente a un enemigo por 2 PL.";
                 else restInstructionsText.text = "";
             }
-            else if(FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 3)
+            else if (FindGemInPos(restPlayerGemUISelecting + gemUIScroll) == 3)
             {
                 if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
                 else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Permite al jugador usar el shuriken de luz, que permite lanzar un shuriken con poder de luz que cuesta 1 PL.";
@@ -746,9 +764,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 else restInstructionsText.text = "";
             }
         }
+        else if (restUIState == 6) 
+        {
+            if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
+            else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Guardando la partida...";
+            else restInstructionsText.text = "";
+        }
         else if (restUIState == 7)
         {
-            if(restCompanionUISelecting == 1)
+            if (restCompanionUISelecting == 1)
             {
                 if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
                 else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Un aventurero que puede atacar usando sus armas o fijarse en los enemigos para ver sus puntos débiles.";
@@ -776,7 +800,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         {
             if (i < availableGems + 1)
             {
-                if(PlayerPrefs.GetInt(allGems[FindGemInPos(i) + gemUIScroll - 1])==1) restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+                if(currentData.GetComponent<CurrentDataScript>().GemUsing(allGems[FindGemInPos(i) + gemUIScroll - 1],allGems)==1) restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(0.0f, 1.0f, 0.0f, 1.0f);
                 else if(gems.gems[FindGemInPos(i) + gemUIScroll - 1].points > ((currentData.GetComponent<CurrentDataScript>().playerBadgeLvl * 3 + 3) - currentData.GetComponent<CurrentDataScript>().spentGP)) restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 0.0f, 0.0f, 1.0f);
                 else restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -861,13 +885,14 @@ public class WorldPlayerMovementScript : MonoBehaviour
         int y = 0;
         while (!found && pos < 7)
         {
-            if (PlayerPrefs.GetInt(allGems[pos] + " Found") == 1) y += 1;
+            if (currentData.GetComponent<CurrentDataScript>().GemFound(allGems[pos] + " Found",allGems) == 1) y += 1;
             if (y == x) found = true;
             pos += 1;
         }
         if (!found) return -1;
         else return pos;
     }
+
 
     //Function to get the X position of the fire place
     public float GetFireXPos()

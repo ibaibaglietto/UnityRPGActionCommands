@@ -1061,6 +1061,111 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 64438706}
   m_CullTransparentMesh: 0
+--- !u!1 &72230393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 72230395}
+  - component: {fileID: 72230394}
+  m_Layer: 0
+  m_Name: CurrentData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &72230394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72230393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3889f078f87a720439ad794d18a57e66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCurrentHealth: 0
+  playerCurrentLight: 0
+  souls: 0
+  playerLvl: 0
+  playerHeartLvl: 0
+  playerLightLvl: 0
+  playerBadgeLvl: 0
+  lvlExp: 0
+  currentCoins: 0
+  spentGP: 0
+  swordLvl: 0
+  shurikenLvl: 0
+  items: 0200000001000000010000000200000003000000010000000100000002000000010000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  currentCompanion: 1
+  unlockedCompanions: 2
+  adventurerCurrentHealth: 12
+  wizardCurrentHealth: 23
+  adventurerLvl: 2
+  wizardLvl: 3
+  lightSword: 0
+  multistrikeSword: 0
+  lightShuriken: 0
+  fireShuriken: 0
+  HPUp: 0
+  LPUp: 0
+  compHPUp: 0
+  lightSwordFound: 1
+  multistrikeSwordFound: 0
+  lightShurikenFound: 0
+  fireShurikenFound: 1
+  HPUpFound: 1
+  LPUpFound: 1
+  compHPUpFound: 0
+  swordStyles: 0
+  shurikenStyles: 0
+  master: 0
+  music: 0
+  effects: 0
+  fullScreen: 0
+  resolutionX: 0
+  resolutionY: 0
+  language: 2
+  fled: 0
+  playerFirstAttack: 0
+  companionFirstAttack: 0
+  enemyStart: 0
+  enemyDied: 0
+  battle: 0
+  enemy1: 0
+  enemy2: 0
+  enemy3: 0
+  enemy4: 0
+  first: 0
+  bandit: 0
+  wizard: 0
+  king: 0
+  firstAttackObjective: 0
+  playerAttackFirst: 0
+  playerAttack: 0
+  playerStyle: 0
+  companionAttack: 0
+  companionStyle: 0
+--- !u!4 &72230395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72230393}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 806.9713, y: 432.29382, z: -59.288494}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 22
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &73415096
 GameObject:
   m_ObjectHideFlags: 0
@@ -17057,7 +17162,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1058432325201483513, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.5
+      value: 1.504425
       objectReference: {fileID: 0}
     - target: {fileID: 1058432325993556212, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
       propertyPath: m_AnchoredPosition.y
