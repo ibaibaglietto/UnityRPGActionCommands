@@ -8,6 +8,8 @@ public class EnterBattleScript : MonoBehaviour
     private GameObject cam;
     //The current data
     private GameObject currentData;
+    //The scene we are going to load
+    private string sceneName;
 
     private void Start()
     {
@@ -26,5 +28,15 @@ public class EnterBattleScript : MonoBehaviour
         currentData.GetComponent<CurrentDataScript>().battle = 0;
         cam.GetComponent<WorldCameraScript>().ChangeBattleCamera(false);
         SceneManager.UnloadSceneAsync(1);
+    }
+
+    private void LoadScene()
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void SetSceneName(string name)
+    {
+        sceneName = name;
     }
 }

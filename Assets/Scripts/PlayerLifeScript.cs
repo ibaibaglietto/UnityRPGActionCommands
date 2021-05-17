@@ -39,6 +39,7 @@ public class PlayerLifeScript : MonoBehaviour
     //Function to set the user
     public void SetUser(int u)
     {
+        if(currentData == null) currentData = GameObject.Find("CurrentData");
         user = u;
         if (user == 0)
         {

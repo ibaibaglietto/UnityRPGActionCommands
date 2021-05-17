@@ -18,6 +18,7 @@ TagManager:
   - Attack
   - Coin
   - Bench
+  - Data
   layers:
   - Default
   - TransparentFX

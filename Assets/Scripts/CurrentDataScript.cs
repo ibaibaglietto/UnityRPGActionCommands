@@ -6,6 +6,9 @@ using UnityEngine;
 public class CurrentDataScript : MonoBehaviour
 {
     //Player stats
+    public float spawnX;
+    public float spawnY;
+    public float spawnZ;
     public int playerCurrentHealth;
     public int playerCurrentLight;
     public int souls;
@@ -19,6 +22,7 @@ public class CurrentDataScript : MonoBehaviour
     public int swordLvl;
     public int shurikenLvl;
     public int[] items = { 2, 1, 1, 2, 3, 1, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    public int changingScene;
     //Companion stats
     public int currentCompanion;
     public int unlockedCompanions;
@@ -76,6 +80,13 @@ public class CurrentDataScript : MonoBehaviour
 
     private void Awake()
     {
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Data");
+
+        if (objs.Length > 1)
+        {
+            Destroy(gameObject);
+        }
+
         DontDestroyOnLoad(gameObject);
     }
 
@@ -181,6 +192,9 @@ public class CurrentDataScript : MonoBehaviour
     //Function to load the data
     public void LoadData(GameDataScript data)
     {
+        spawnX = data.spawnX;
+        spawnY = data.spawnY;
+        spawnZ = data.spawnZ;
         playerCurrentHealth = data.playerCurrentHealth;
         playerCurrentLight = data.playerCurrentLight;
         souls = data.souls;
@@ -194,6 +208,7 @@ public class CurrentDataScript : MonoBehaviour
         swordLvl = data.swordLvl;
         shurikenLvl = data.shurikenLvl;
         items = data.items;
+        changingScene = data.changingScene;
         currentCompanion = data.currentCompanion;
         unlockedCompanions = data.unlockedCompanions;
         adventurerCurrentHealth = data.adventurerCurrentHealth;

@@ -6,6 +6,9 @@ using UnityEngine;
 public class GameDataScript
 {
     //Player stats
+    public float spawnX;
+    public float spawnY;
+    public float spawnZ;
     public int playerCurrentHealth;
     public int playerCurrentLight;
     public int souls;
@@ -19,6 +22,7 @@ public class GameDataScript
     public int swordLvl;
     public int shurikenLvl;
     public int[] items;
+    public int changingScene;
     //Companion stats
     public int currentCompanion;
     public int unlockedCompanions;
@@ -77,6 +81,9 @@ public class GameDataScript
     //Contructor to use when saving the game
     public GameDataScript (CurrentDataScript current)
     {
+        spawnX = current.spawnX;
+        spawnY = current.spawnY;
+        spawnZ = current.spawnZ;
         playerCurrentHealth = current.playerCurrentHealth;
         playerCurrentLight = current.playerCurrentLight;
         souls = current.souls;
@@ -90,6 +97,7 @@ public class GameDataScript
         swordLvl = current.swordLvl;
         shurikenLvl = current.shurikenLvl;
         items = current.items;
+        changingScene = current.changingScene;
         currentCompanion = current.currentCompanion;
         unlockedCompanions = current.unlockedCompanions;
         adventurerCurrentHealth = current.adventurerCurrentHealth;

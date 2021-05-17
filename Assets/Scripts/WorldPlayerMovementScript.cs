@@ -17,6 +17,10 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private GameObject canvas;
     //The companion
     private GameObject companion;
+    //A boolean to know if the player is changing scene
+    private bool changingScene;
+    //An int to know where is the player moving when changing scene. 0-> left, 1 -> right, 2 -> up, 3 -> down
+    private int changingSceneMov;
 
     //Radius of the overlap circle to determine if grounded
     const float groundedRadius = 0.07f;
@@ -110,8 +114,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private void Awake()
     {
         currentData = GameObject.Find("CurrentData");
-        GameDataScript data = SaveScript.LoadGame();
-        currentData.GetComponent<CurrentDataScript>().LoadData(data);
+        //GameDataScript data = SaveScript.LoadGame();
+        //currentData.GetComponent<CurrentDataScript>().LoadData(data);
         //We initialize the onLandEvent
         if (OnLandEvent == null) OnLandEvent = new UnityEvent();
         interactable = GameObject.Find("Interactable");
@@ -148,6 +152,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         movingToRest = false;
         resting = false;
         dialogue = false;
+        changingScene = false;
         restUIState = 1;
         restUISelecting = 1;
         restPlayerMainUISelecting = 1;
@@ -162,6 +167,9 @@ public class WorldPlayerMovementScript : MonoBehaviour
         currentData.GetComponent<CurrentDataScript>().shurikenStyles = currentData.GetComponent<CurrentDataScript>().lightShuriken + currentData.GetComponent<CurrentDataScript>().fireShuriken;
         availableGems = currentData.GetComponent<CurrentDataScript>().lightSwordFound + currentData.GetComponent<CurrentDataScript>().multistrikeSwordFound + currentData.GetComponent<CurrentDataScript>().lightShurikenFound + currentData.GetComponent<CurrentDataScript>().fireShurikenFound + currentData.GetComponent<CurrentDataScript>().HPUpFound + currentData.GetComponent<CurrentDataScript>().LPUpFound + currentData.GetComponent<CurrentDataScript>().compHPUpFound;
         SpentGP();
+        if (currentData.GetComponent<CurrentDataScript>().changingScene == 1) changingScene = true;
+        else changingScene = false;
+        gameObject.transform.position = new Vector3(currentData.GetComponent<CurrentDataScript>().spawnX, currentData.GetComponent<CurrentDataScript>().spawnY, currentData.GetComponent<CurrentDataScript>().spawnZ);
     }
 
 
@@ -170,7 +178,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //Detect the direction we want the player to move and save it
         if (currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
-            if (!movingToRest && !resting)
+            if (!movingToRest && !resting && !changingScene)
             {
                 if (Input.GetKey(KeyCode.UpArrow)) speedZ = 1.0f;
                 else if (Input.GetKey(KeyCode.DownArrow)) speedZ = -1.0f;
@@ -264,6 +272,47 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 }
                 animator.SetFloat("SpeedZ", speedZ);
                 animator.SetFloat("SpeedX", speedX);
+            }
+            else if (changingScene)
+            {
+                if (changingSceneMov == 0)
+                {
+                    speedX = -1.0f;
+                    speedZ = 0.0f;
+                }
+                else if (changingSceneMov == 1)
+                {
+                    speedX = 1.0f;
+                    speedZ = 0.0f;
+                }
+                else if (changingSceneMov == 2)
+                {
+                    speedX = 0.0f;
+                    speedZ = 1.0f;
+                }
+                else if (changingSceneMov == 3)
+                {
+                    speedX = 0.0f;
+                    speedZ = -1.0f;
+                }
+                animator.SetFloat("SpeedX", speedX);
+                animator.SetFloat("SpeedZ", speedZ);
+                animator.SetBool("Moving", true);
+
+                bool wasGrounded = grounded;
+                grounded = false;
+
+                // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
+                Collider[] colliders = Physics.OverlapSphere(groundCheck.position, groundedRadius, whatIsGround);
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    if (colliders[i].gameObject != gameObject && Mathf.Abs(gameObject.GetComponent<Rigidbody>().velocity.y) < 0.01f)
+                    {
+                        grounded = true;
+                        if (!wasGrounded)
+                            OnLandEvent.Invoke();
+                    }
+                }
             }
             if (resting)
             {
@@ -893,6 +942,18 @@ public class WorldPlayerMovementScript : MonoBehaviour
         else return pos;
     }
 
+    //Function to set the player to the changing scene state and the movement direction
+    public void SetChangingScene(int mov)
+    {
+        changingScene = true;
+        changingSceneMov = mov;
+    }
+
+    //Function to get if the player is changing scene
+    public bool GetChangingScene()
+    {
+        return changingScene;
+    }
 
     //Function to get the X position of the fire place
     public float GetFireXPos()
