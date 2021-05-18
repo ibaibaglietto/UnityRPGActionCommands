@@ -29,7 +29,6 @@ public class WorldBattleTrigger : MonoBehaviour
             other.GetComponent<Animator>().SetTrigger("Damage");
             user.GetComponent<WorldEnemy>().StartBattle(3, 1);
             user.GetComponent<WorldEnemy>().SetInBattle(true);
-            Destroy(gameObject);
         }
         else if (other.transform.tag == "Companion" && !other.GetComponent<WorldCompanionMovementScript>().IsFleeing() && !inBattle)
         {
@@ -37,7 +36,6 @@ public class WorldBattleTrigger : MonoBehaviour
             other.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Damage");
             user.GetComponent<WorldEnemy>().StartBattle(3, 2);
             user.GetComponent<WorldEnemy>().SetInBattle(true);
-            Destroy(gameObject);
         }
     }
 

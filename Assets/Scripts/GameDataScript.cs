@@ -23,6 +23,10 @@ public class GameDataScript
     public int shurikenLvl;
     public int[] items;
     public int changingScene;
+    public bool movLeft;
+    public bool movRight;
+    public bool movUp;
+    public bool movDown;
     //Companion stats
     public int currentCompanion;
     public int unlockedCompanions;
@@ -98,6 +102,10 @@ public class GameDataScript
         shurikenLvl = current.shurikenLvl;
         items = current.items;
         changingScene = current.changingScene;
+        movLeft = current.movLeft;
+        movRight = current.movRight;
+        movUp = current.movUp;
+        movDown = current.movDown;
         currentCompanion = current.currentCompanion;
         unlockedCompanions = current.unlockedCompanions;
         adventurerCurrentHealth = current.adventurerCurrentHealth;

@@ -384,7 +384,17 @@ public class WorldCompanionMovementScript : MonoBehaviour
         animator.SetBool("isJumping", false);
         animator.SetBool("isFalling", false);
     }
-    
+
+    //Function to tp to the player when the scene is being changed
+    public void TpToPlayerScene(int mov)
+    { 
+        if(mov == 0) tpCheck = player.transform.Find("TpCheckRight"); 
+        else if (mov == 1) tpCheck = player.transform.Find("TpCheckLeft");
+        else if (mov == 2) tpCheck = player.transform.Find("TpCheckDown");
+        else if (mov == 3) tpCheck = player.transform.Find("TpCheckUp");
+        gameObject.transform.position = tpCheck.position;
+    }
+
     //Function to set the rest position
     public void SetRestPosition(float restX, float restZ)
     {

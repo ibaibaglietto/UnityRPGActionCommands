@@ -193,6 +193,7 @@ public class WorldEnemy : MonoBehaviour
     private void EndAttack()
     {
         animator.SetBool("Attack", false);
+        Destroy(area.gameObject);
     }
 
     //Function to spawn the coins when the enemy dies

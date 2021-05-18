@@ -20,25 +20,22 @@ public class ChangeSceneTriggerScript : MonoBehaviour
     {
         currentData = GameObject.Find("CurrentData");
         changeSceneScreen = GameObject.Find("EndBattleImage");
+        if (currentData.GetComponent<CurrentDataScript>().changingScene == 1) changeSceneScreen.GetComponent<Animator>().SetTrigger("FromOther");
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
         {
-            if (!other.GetComponent<WorldPlayerMovementScript>().GetChangingScene())
+            if(currentData.GetComponent<CurrentDataScript>().changingScene == 0)
             {
                 changeSceneScreen.GetComponent<Animator>().SetTrigger("toOther");
                 changeSceneScreen.GetComponent<EnterBattleScript>().SetSceneName(sceneName);
-                other.GetComponent<WorldPlayerMovementScript>().SetChangingScene(dir);
                 currentData.GetComponent<CurrentDataScript>().spawnX = pos.x;
                 currentData.GetComponent<CurrentDataScript>().spawnY = pos.y;
                 currentData.GetComponent<CurrentDataScript>().spawnZ = pos.z;
             }
-            else if(dir == 0) other.GetComponent<WorldPlayerMovementScript>().SetChangingScene(1);
-            else if(dir == 1) other.GetComponent<WorldPlayerMovementScript>().SetChangingScene(0);
-            else if (dir == 2) other.GetComponent<WorldPlayerMovementScript>().SetChangingScene(3);
-            else other.GetComponent<WorldPlayerMovementScript>().SetChangingScene(2);
+            other.GetComponent<WorldPlayerMovementScript>().SetChangingScene(dir);
         }
     }
 }

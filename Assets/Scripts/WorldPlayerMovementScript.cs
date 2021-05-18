@@ -19,6 +19,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private GameObject companion;
     //A boolean to know if the player is changing scene
     private bool changingScene;
+    //A boolean to know if the player has changed scene
+    private bool changedScene;
     //An int to know where is the player moving when changing scene. 0-> left, 1 -> right, 2 -> up, 3 -> down
     private int changingSceneMov;
 
@@ -167,8 +169,16 @@ public class WorldPlayerMovementScript : MonoBehaviour
         currentData.GetComponent<CurrentDataScript>().shurikenStyles = currentData.GetComponent<CurrentDataScript>().lightShuriken + currentData.GetComponent<CurrentDataScript>().fireShuriken;
         availableGems = currentData.GetComponent<CurrentDataScript>().lightSwordFound + currentData.GetComponent<CurrentDataScript>().multistrikeSwordFound + currentData.GetComponent<CurrentDataScript>().lightShurikenFound + currentData.GetComponent<CurrentDataScript>().fireShurikenFound + currentData.GetComponent<CurrentDataScript>().HPUpFound + currentData.GetComponent<CurrentDataScript>().LPUpFound + currentData.GetComponent<CurrentDataScript>().compHPUpFound;
         SpentGP();
-        if (currentData.GetComponent<CurrentDataScript>().changingScene == 1) changingScene = true;
-        else changingScene = false;
+        if (currentData.GetComponent<CurrentDataScript>().changingScene == 1)
+        {
+            changingScene = true;
+            changedScene = true;
+        }
+        else
+        {
+            changingScene = false;
+            changedScene = false;
+        }
         gameObject.transform.position = new Vector3(currentData.GetComponent<CurrentDataScript>().spawnX, currentData.GetComponent<CurrentDataScript>().spawnY, currentData.GetComponent<CurrentDataScript>().spawnZ);
     }
 
@@ -180,15 +190,16 @@ public class WorldPlayerMovementScript : MonoBehaviour
         {
             if (!movingToRest && !resting && !changingScene)
             {
-                if (Input.GetKey(KeyCode.UpArrow)) speedZ = 1.0f;
-                else if (Input.GetKey(KeyCode.DownArrow)) speedZ = -1.0f;
+                
+                if (currentData.GetComponent<CurrentDataScript>().movUp) speedZ = 1.0f;
+                else if (currentData.GetComponent<CurrentDataScript>().movDown) speedZ = -1.0f;
                 else speedZ = 0.0f;
-                if (Input.GetKey(KeyCode.RightArrow))
+                if (currentData.GetComponent<CurrentDataScript>().movRight)
                 {
                     speedX = 1.0f;
                     animator.SetBool("RightLast", true);
                 }
-                else if (Input.GetKey(KeyCode.LeftArrow))
+                else if (currentData.GetComponent<CurrentDataScript>().movLeft)
                 {
                     speedX = -1.0f;
                     animator.SetBool("RightLast", false);
@@ -312,6 +323,11 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         if (!wasGrounded)
                             OnLandEvent.Invoke();
                     }
+                }
+                if (changedScene && currentData.GetComponent<CurrentDataScript>().changingScene == 0)
+                {
+                    changingScene = false;
+                    changedScene = false;
                 }
             }
             if (resting)
@@ -945,8 +961,19 @@ public class WorldPlayerMovementScript : MonoBehaviour
     //Function to set the player to the changing scene state and the movement direction
     public void SetChangingScene(int mov)
     {
-        changingScene = true;
-        changingSceneMov = mov;
+        if (currentData.GetComponent<CurrentDataScript>().changingScene == 0)
+        {
+            changingScene = true;
+            changingSceneMov = mov;
+        }
+        else
+        {
+            if (mov == 0) changingSceneMov = 1;
+            else if (mov == 1) changingSceneMov = 0;
+            else if (mov == 2) changingSceneMov = 3;
+            else if (mov == 3) changingSceneMov = 2;
+            companion.GetComponent<WorldCompanionMovementScript>().TpToPlayerScene(changingSceneMov);
+        }
     }
 
     //Function to get if the player is changing scene

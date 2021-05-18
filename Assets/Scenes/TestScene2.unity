@@ -23414,19 +23414,20 @@ MonoBehaviour:
   spawnX: 0
   spawnY: 139.136
   spawnZ: -2
-  playerCurrentHealth: 0
-  playerCurrentLight: 0
-  souls: 0
-  playerLvl: 0
-  playerHeartLvl: 0
-  playerLightLvl: 0
-  playerBadgeLvl: 0
-  lvlExp: 0
-  currentCoins: 0
+  playerCurrentHealth: 10
+  playerCurrentLight: 10
+  souls: 1
+  playerLvl: 6
+  playerHeartLvl: 2
+  playerLightLvl: 2
+  playerBadgeLvl: 2
+  lvlExp: 12
+  currentCoins: 49
   spentGP: 0
-  swordLvl: 0
-  shurikenLvl: 0
+  swordLvl: 2
+  shurikenLvl: 2
   items: 0200000001000000010000000200000003000000010000000100000002000000010000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  changingScene: 0
   currentCompanion: 1
   unlockedCompanions: 2
   adventurerCurrentHealth: 12

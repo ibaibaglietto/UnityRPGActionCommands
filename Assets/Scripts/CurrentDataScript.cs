@@ -23,6 +23,10 @@ public class CurrentDataScript : MonoBehaviour
     public int shurikenLvl;
     public int[] items = { 2, 1, 1, 2, 3, 1, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     public int changingScene;
+    public bool movLeft;
+    public bool movRight;
+    public bool movUp;
+    public bool movDown;
     //Companion stats
     public int currentCompanion;
     public int unlockedCompanions;
@@ -209,6 +213,10 @@ public class CurrentDataScript : MonoBehaviour
         shurikenLvl = data.shurikenLvl;
         items = data.items;
         changingScene = data.changingScene;
+        movLeft = data.movLeft;
+        movRight = data.movRight;
+        movUp = data.movUp;
+        movDown = data.movDown;
         currentCompanion = data.currentCompanion;
         unlockedCompanions = data.unlockedCompanions;
         adventurerCurrentHealth = data.adventurerCurrentHealth;
@@ -260,4 +268,31 @@ public class CurrentDataScript : MonoBehaviour
         companionStyle = data.companionStyle;
     }
 
+    private void OnGUI()
+    {
+        Event e = Event.current;
+        if (e.isKey)
+        {
+            if(e.keyCode == KeyCode.LeftArrow)
+            {
+                if (e.type == EventType.KeyDown) movLeft = true;
+                else if (e.type == EventType.KeyUp) movLeft = false;
+            }
+            else if (e.keyCode == KeyCode.RightArrow)
+            {
+                if (e.type == EventType.KeyDown) movRight = true;
+                else if (e.type == EventType.KeyUp) movRight = false;
+            }
+            else if (e.keyCode == KeyCode.UpArrow)
+            {
+                if (e.type == EventType.KeyDown) movUp = true;
+                else if (e.type == EventType.KeyUp) movUp = false;
+            }
+            else if (e.keyCode == KeyCode.DownArrow)
+            {
+                if (e.type == EventType.KeyDown) movDown = true;
+                else if (e.type == EventType.KeyUp) movDown = false;
+            }
+        }
+    }
 }

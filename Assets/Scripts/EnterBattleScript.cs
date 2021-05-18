@@ -32,7 +32,14 @@ public class EnterBattleScript : MonoBehaviour
 
     private void LoadScene()
     {
+        currentData.GetComponent<CurrentDataScript>().changingScene = 1;
         SceneManager.LoadScene(sceneName);
+    }
+
+    //Function to end the scene transition
+    private void EndTransition()
+    {
+        currentData.GetComponent<CurrentDataScript>().changingScene = 0;
     }
 
     public void SetSceneName(string name)
