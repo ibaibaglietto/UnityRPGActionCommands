@@ -5192,6 +5192,7 @@ public class BattleController : MonoBehaviour
             if (companion.transform.position.x > -10.0f) companion.transform.position = new Vector3(companion.transform.position.x - 0.2f, companion.transform.position.y, companion.transform.position.z);
             else
             {
+                fled = false;
                 currentData.GetComponent<CurrentDataScript>().fled = 1;
                 EndBattle();
             }

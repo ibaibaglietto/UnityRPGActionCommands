@@ -180,6 +180,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
             changedScene = false;
         }
         gameObject.transform.position = new Vector3(currentData.GetComponent<CurrentDataScript>().spawnX, currentData.GetComponent<CurrentDataScript>().spawnY, currentData.GetComponent<CurrentDataScript>().spawnZ);
+        companion.transform.position = new Vector3(currentData.GetComponent<CurrentDataScript>().spawnX - 1.0f, currentData.GetComponent<CurrentDataScript>().spawnY, currentData.GetComponent<CurrentDataScript>().spawnZ);
     }
 
 
@@ -366,6 +367,9 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             {
                                 restUIState = 6;
                                 UpdateRestInstructionText();
+                                currentData.GetComponent<CurrentDataScript>().spawnX = firePlace.transform.position.x;
+                                currentData.GetComponent<CurrentDataScript>().spawnY = firePlace.transform.position.y - 0.8f;
+                                currentData.GetComponent<CurrentDataScript>().spawnZ = firePlace.transform.position.z - 0.4f;
                                 SaveScript.SaveGame(currentData.GetComponent<CurrentDataScript>()); 
                                 if (currentData.GetComponent<CurrentDataScript>().language == 1) restInstructionsText.text = "";
                                 else if (currentData.GetComponent<CurrentDataScript>().language == 2) restInstructionsText.text = "Se ha guardado la partida";
@@ -612,7 +616,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
             fledTime = Time.fixedTime;
         }
         if ((Time.fixedTime - fledTime) >= 3.05f) fled = false;
-        if (canRest && Input.GetKey(KeyCode.X)) movingToRest = true;
+        if (canRest && Input.GetKeyDown(KeyCode.X))
+        {
+            movingToRest = true;
+            SetCanRest(false);
+            companion.GetComponent<WorldCompanionMovementScript>().TpToPlayerScene(2);
+        }
     }
 
     private void FixedUpdate()
