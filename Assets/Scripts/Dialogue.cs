@@ -6,9 +6,7 @@ using UnityEngine;
 public class Dialogue
 {
     //Name of the speaker
-    public string nameEnglish;
-    public string nameSpanish;
-    public string nameBasque;
+    public Transform speaker;
 
     //Text in english
     [TextArea(3, 10)]

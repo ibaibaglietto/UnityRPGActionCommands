@@ -10,6 +10,8 @@ public class DialogueManager : MonoBehaviour
     private Text dialogueText;
     //The animator of the dialogue box
     private Animator animator;
+    //The dialogue box
+    private GameObject dialogueBox;
     //The next button
     private GameObject next;
     //The battlecontroller
@@ -30,11 +32,10 @@ public class DialogueManager : MonoBehaviour
         currentData = GameObject.Find("CurrentData");
         //We find everything
         sentences = new Queue<string>();
-        nameText = GameObject.Find("DialogueName").GetComponent<Text>();
         dialogueText = GameObject.Find("DialogueText").GetComponent<Text>();
         animator = GameObject.Find("DialogueBox").GetComponent<Animator>();
+        dialogueBox = GameObject.Find("DialogueBox");
         next = GameObject.Find("DialogueNext");
-        nameText.enabled = false;
         dialogueText.enabled = false;
         speak = GameObject.Find("SpeakSource").GetComponent<AudioSource>();
     }
@@ -48,11 +49,10 @@ public class DialogueManager : MonoBehaviour
         animator.SetBool("Open", true);
         //Clear the previous sentences
         sentences.Clear();
+        dialogueBox.GetComponent<DialogueBox>().SetSpeaker(dialogue.speaker);
         //Check the language and enqueue the sentences
         if (currentData.GetComponent<CurrentDataScript>().language == 1)
         {
-            //Set the name of the speaker
-            nameText.text = dialogue.nameEnglish;
             foreach (string sentence in dialogue.sentencesEnglish)
             {
                 sentences.Enqueue(sentence);
@@ -60,8 +60,6 @@ public class DialogueManager : MonoBehaviour
         }
         else if (currentData.GetComponent<CurrentDataScript>().language == 2)
         {
-            //Set the name of the speaker
-            nameText.text = dialogue.nameSpanish;
             foreach (string sentence in dialogue.sentencesSpanish)
             {
                 sentences.Enqueue(sentence);
@@ -69,8 +67,6 @@ public class DialogueManager : MonoBehaviour
         }
         else if (currentData.GetComponent<CurrentDataScript>().language == 3)
         {
-            //Set the name of the speaker
-            nameText.text = dialogue.nameBasque;
             foreach (string sentence in dialogue.sentencesBasque)
             {
                 sentences.Enqueue(sentence);
@@ -91,11 +87,10 @@ public class DialogueManager : MonoBehaviour
         animator.SetBool("Open", true);
         //Clear the previous sentences
         sentences.Clear();
+        dialogueBox.GetComponent<DialogueBox>().SetSpeaker(GameObject.FindGameObjectWithTag("Adventurer").transform);
         //Check the language and enqueue the sentences
         if (currentData.GetComponent<CurrentDataScript>().language == 1)
         {
-            //Set the name of the speaker
-            nameText.text = dialogue.nameEnglish;
             foreach (string sentence in dialogue.sentencesEnglish)
             {
                 sentences.Enqueue(sentence);
@@ -103,8 +98,6 @@ public class DialogueManager : MonoBehaviour
         }
         else if (currentData.GetComponent<CurrentDataScript>().language == 2)
         {
-            //Set the name of the speaker
-            nameText.text = dialogue.nameSpanish;
             foreach (string sentence in dialogue.sentencesSpanish)
             {
                 sentences.Enqueue(sentence);
@@ -112,8 +105,6 @@ public class DialogueManager : MonoBehaviour
         }
         else if (currentData.GetComponent<CurrentDataScript>().language == 3)
         {
-            //Set the name of the speaker
-            nameText.text = dialogue.nameBasque;
             foreach (string sentence in dialogue.sentencesBasque)
             {
                 sentences.Enqueue(sentence);

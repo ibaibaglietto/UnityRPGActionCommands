@@ -101,20 +101,7 @@ public class WorldCompanionMovementScript : MonoBehaviour
             if (gameObject.GetComponent<Rigidbody>().velocity.y < -0.01f) animator.SetBool("isFalling", true);
             else if (animator.GetBool("isFalling")) animator.SetBool("isFalling", false);
 
-            bool wasGrounded = grounded;
-            grounded = false;
-
-            // The companion is grounded if a circlecast to the groundcheck position hits anything designated as ground
-            Collider[] colliders = Physics.OverlapSphere(groundCheck.position, groundedRadius, whatIsGround);
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                if (colliders[i].gameObject != gameObject && Mathf.Abs(gameObject.GetComponent<Rigidbody>().velocity.y) < 0.01f)
-                {
-                    grounded = true;
-                    if (!wasGrounded)
-                        OnLandEvent.Invoke();
-                }
-            }
+            
             if (currentData.GetComponent<CurrentDataScript>().battle == 0)
             {
                 if (player.GetComponent<WorldPlayerMovementScript>().IsFleeing() && !fled)
@@ -160,6 +147,20 @@ public class WorldCompanionMovementScript : MonoBehaviour
             {
                 animator.SetBool("Resting", false);
                 resting = false;
+            }
+        }
+        bool wasGrounded = grounded;
+        grounded = false;
+
+        // The companion is grounded if a circlecast to the groundcheck position hits anything designated as ground
+        Collider[] colliders = Physics.OverlapSphere(groundCheck.position, groundedRadius, whatIsGround);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i].gameObject != gameObject && Mathf.Abs(gameObject.GetComponent<Rigidbody>().velocity.y) < 0.01f)
+            {
+                grounded = true;
+                if (!wasGrounded)
+                    OnLandEvent.Invoke();
             }
         }
     }

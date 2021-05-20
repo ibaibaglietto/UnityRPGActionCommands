@@ -39,6 +39,8 @@ public class EnemyTeamScript : MonoBehaviour
     private int buffDebuffNumb;
     //The position of the slep debuff
     private int sleepPos;
+    //A boolean to know if the enemy is returning to the normal height
+    private bool returnHeight;
     //The sprite of the sleepUI
     [SerializeField] private Sprite sleepSprite;
     //The dust 
@@ -84,6 +86,7 @@ public class EnemyTeamScript : MonoBehaviour
         asleep = 0;
         dieAnimationFinished = false;
         groundAttack = false;
+        returnHeight = false;
         attackTeam = new Transform[1];
         //Bandit
         if (enemyType == 0)
@@ -220,6 +223,14 @@ public class EnemyTeamScript : MonoBehaviour
                 }
             }
         }
+        if(enemyType == 1 && returnHeight)
+        {
+            if (transform.position.y < 1.0f)
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y + 0.0334f, transform.position.z);
+            }
+            else returnHeight = false;
+        }
         //The death animation of the evil wizard
         if (enemyType == 1 && !alive && transform.position.y > -0.66f)
         {
@@ -256,6 +267,12 @@ public class EnemyTeamScript : MonoBehaviour
                 }
             }
         }
+    }
+
+    //Function to make the enemy return to the normal height
+    public void ReturnNormalHeight()
+    {
+        returnHeight = true;
     }
     //Function to check if the player knows the health of the enemy
     public void KnowHealth()

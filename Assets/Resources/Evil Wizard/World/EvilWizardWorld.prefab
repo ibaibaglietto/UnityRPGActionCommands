@@ -289,7 +289,7 @@ GameObject:
   - component: {fileID: 2962685939598205561}
   - component: {fileID: 988489617487145296}
   m_Layer: 11
-  m_Name: WizardWorld
+  m_Name: EvilWizardWorld
   m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -352,7 +352,7 @@ SpriteRenderer:
   m_SortingLayerID: 1469699909
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 08387818e0d32df44818a37978923057, type: 3}
+  m_Sprite: {fileID: 4723107735738678597, guid: 6ae8d5423fdbaef47b2ee0f480d35dbe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -409,8 +409,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   areaPrefab: {fileID: 1780450934971576681, guid: 08623860d178042439bb1c095db1d514, type: 3}
   coinPrefab: {fileID: 878143310500713995, guid: 24d1fd07ba9bf2444b838a93277240cf, type: 3}
-  coinNumb: 3
-  enemy1: 1
+  coinNumb: 5
+  enemy1: 2
   enemy2: 1
   enemy3: 0
   enemy4: 0

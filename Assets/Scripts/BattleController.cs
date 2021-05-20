@@ -5253,7 +5253,11 @@ public class BattleController : MonoBehaviour
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
             }
-            else if (type == 1) enemy1 = Instantiate(wizardBattle, new Vector3(2.1f, 1.0f, -2.03f), Quaternion.identity);
+            else if (type == 1)
+            {
+                if(currentData.GetComponent<CurrentDataScript>().playerFirstAttack == 1 && currentData.GetComponent<CurrentDataScript>().playerAttack == 0) enemy1 = Instantiate(wizardBattle, new Vector3(2.1f, -0.5f, -2.03f), Quaternion.identity);
+                else enemy1 = Instantiate(wizardBattle, new Vector3(2.1f, 1.0f, -2.03f), Quaternion.identity);
+            }
             else if (type == 2)
             {
                 bossDieAnimationEnded = false;
@@ -6032,6 +6036,7 @@ public class BattleController : MonoBehaviour
             {
                 if (currentData.GetComponent<CurrentDataScript>().playerFirstAttack == 1)
                 {
+                    if (currentData.GetComponent<CurrentDataScript>().playerAttack == 0 && enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemy1.GetComponent<EnemyTeamScript>().ReturnNormalHeight();
                     //We unhide the canvas
                     canvas.GetComponent<Animator>().SetBool("Hide", false);
                     //We reset the first attack int
