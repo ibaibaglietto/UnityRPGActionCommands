@@ -26,6 +26,8 @@ public class DialogueManager : MonoBehaviour
     private bool battle;
     //The current data
     private GameObject currentData;
+    //A boolean to know if the dialogue is previous a rest or not
+    public bool prevRest;
 
     void Start()
     {
@@ -43,6 +45,7 @@ public class DialogueManager : MonoBehaviour
     //Function to start the world dialogue
     public void StartWorldDialogue(Dialogue dialogue)
     {
+        prevRest = dialogue.prevRest;
         battle = false;
         player = GameObject.Find("PlayerWorld");
         //We open the dialogue box
@@ -158,6 +161,7 @@ public class DialogueManager : MonoBehaviour
     void EndWorldDialogue()
     {
         animator.SetBool("Open", false);
-        player.GetComponent<WorldPlayerMovementScript>().ShowRestUI();
+        if (prevRest) player.GetComponent<WorldPlayerMovementScript>().ShowRestUI();
+        else player.GetComponent<WorldPlayerMovementScript>().EndDialogue();
     }
 }

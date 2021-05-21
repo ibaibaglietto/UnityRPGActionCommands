@@ -8,6 +8,9 @@ public class Dialogue
     //Name of the speaker
     public Transform speaker;
 
+    //A boolean to know if the dialogue is previous a rest or not
+    public bool prevRest;
+
     //Text in english
     [TextArea(3, 10)]
     public string[] sentencesEnglish;

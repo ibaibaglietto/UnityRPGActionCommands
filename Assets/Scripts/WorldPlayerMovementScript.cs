@@ -42,6 +42,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private float fledTime;
     //A boolean to know if the player can rest
     private bool canRest;
+    //A boolean to know if the player is speaking
+    private bool speaking;
     //A boolean to know if the player is moving to the rest position
     private bool movingToRest;
     //A boolean to know if the player is resting
@@ -54,10 +56,14 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private GameObject interactable;
     //The fireplace the player is using
     private GameObject firePlace;
+    //A boolean to know if the player can start a conversation
+    private bool canSpeak;
     //The dialogue manager
     private GameObject dialogueManager;
     //A boolean to know if the player is in a dialogue
     private bool dialogue;
+    //The dialogue that will be displayed
+    private Dialogue nextDialogue;
     //The rest UI
     private GameObject restUI;
     //The player rest UI
@@ -154,6 +160,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
         movingToRest = false;
         resting = false;
         dialogue = false;
+        canSpeak = false;
+        speaking = false;
         changingScene = false;
         restUIState = 1;
         restUISelecting = 1;
@@ -189,9 +197,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //Detect the direction we want the player to move and save it
         if (currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
-            if (!movingToRest && !resting && !changingScene)
+            if (!movingToRest && !resting && !changingScene && !speaking)
             {
-                
                 if (currentData.GetComponent<CurrentDataScript>().movUp) speedZ = 1.0f;
                 else if (currentData.GetComponent<CurrentDataScript>().movDown) speedZ = -1.0f;
                 else speedZ = 0.0f;
@@ -216,7 +223,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 animator.SetFloat("SpeedZ", speedZ);
                 animator.SetFloat("SpeedX", speedX);
                 //make the player attack when X is pressed
-                if (Input.GetKeyDown(KeyCode.X) && !attacking && !canRest)
+                if (Input.GetKeyDown(KeyCode.X) && !attacking && !canRest && !canSpeak)
                 {
                     attacking = true;
                     animator.SetTrigger("Melee");
@@ -607,6 +614,17 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     }
                 }
             }
+            if (speaking)
+            {
+                if (dialogue)
+                {
+                    if (Input.GetKeyDown(KeyCode.X)) dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
+                }
+                else
+                {
+                    speaking = false;
+                }
+            }
         }
         if (currentData.GetComponent<CurrentDataScript>().fled == 1 && currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
@@ -621,6 +639,13 @@ public class WorldPlayerMovementScript : MonoBehaviour
             movingToRest = true;
             SetCanRest(false);
             companion.GetComponent<WorldCompanionMovementScript>().TpToPlayerScene(2);
+        }
+        if(canSpeak && Input.GetKeyDown(KeyCode.X))
+        {
+            dialogue = true;
+            speaking = true;
+            dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(nextDialogue);
+            SetCanSpeak(false);
         }
     }
 
@@ -687,6 +712,13 @@ public class WorldPlayerMovementScript : MonoBehaviour
         interactable.SetActive(rest);
     }
 
+    //Function to set the rest bool
+    public void SetCanSpeak(bool s)
+    {
+        canSpeak = s;
+        interactable.SetActive(s);
+    }
+
     //Function to set the rest position
     public void SetRestPosition(float restX, float restZ)
     {
@@ -702,6 +734,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
         UpdateRestInstructionText();
         restUISelecting = 1;
         restUI.GetComponent<Animator>().SetInteger("Pos", restUISelecting);
+    }
+
+    //Function to end the dialogue
+    public void EndDialogue()
+    {
+        dialogue = false;
     }
 
     //Function to set the X position of the fire place
@@ -1019,6 +1057,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
     public GameObject GetFirePlace()
     {
         return firePlace;
+    }
+
+    //Function to set the next dialogue
+    public void SetNextDialogue(Dialogue d)
+    {
+        nextDialogue = d;
     }
 
     //Function to know the number of items the player has
