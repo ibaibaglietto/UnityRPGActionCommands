@@ -162,6 +162,9 @@ public class DialogueManager : MonoBehaviour
     {
         animator.SetBool("Open", false);
         if (prevRest) player.GetComponent<WorldPlayerMovementScript>().ShowRestUI();
-        else player.GetComponent<WorldPlayerMovementScript>().EndDialogue();
+        else
+        {
+            player.GetComponent<WorldPlayerMovementScript>().EndDialogue();
+        }
     }
 }

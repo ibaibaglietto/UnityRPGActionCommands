@@ -98,8 +98,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private int gemUIScroll;
     //An int to know the number of the item UI scroll
     private int itemUIScroll;
-    //An int to know the number of available gems
-    private int availableGems;
     //An array with all the gems
     private string[] allGems = {"Light Sword", "Multistrike Sword", "Light Shuriken", "Fire Shuriken", "HPUp", "LPUp", "CompHPUp"};
     public Gems gems;
@@ -175,7 +173,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         currentData.GetComponent<CurrentDataScript>().swordStyles = currentData.GetComponent<CurrentDataScript>().lightSword + currentData.GetComponent<CurrentDataScript>().multistrikeSword;
         currentData.GetComponent<CurrentDataScript>().shurikenStyles = currentData.GetComponent<CurrentDataScript>().lightShuriken + currentData.GetComponent<CurrentDataScript>().fireShuriken;
-        availableGems = currentData.GetComponent<CurrentDataScript>().lightSwordFound + currentData.GetComponent<CurrentDataScript>().multistrikeSwordFound + currentData.GetComponent<CurrentDataScript>().lightShurikenFound + currentData.GetComponent<CurrentDataScript>().fireShurikenFound + currentData.GetComponent<CurrentDataScript>().HPUpFound + currentData.GetComponent<CurrentDataScript>().LPUpFound + currentData.GetComponent<CurrentDataScript>().compHPUpFound;
         SpentGP();
         if (currentData.GetComponent<CurrentDataScript>().changingScene == 1)
         {
@@ -481,9 +478,9 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             }
                             UpdateRestInstructionText();
                         }
-                        else if (Input.GetKeyDown(KeyCode.DownArrow) && (restPlayerGemUISelecting < 6 || gemUIScroll + 6 < availableGems))
+                        else if (Input.GetKeyDown(KeyCode.DownArrow) && ((restPlayerGemUISelecting < 6 && currentData.GetComponent<CurrentDataScript>().availableGems > 6) || gemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().availableGems || (restPlayerGemUISelecting < currentData.GetComponent<CurrentDataScript>().availableGems && currentData.GetComponent<CurrentDataScript>().availableGems <= 6)))
                         {
-                            if (restPlayerGemUISelecting == 6 && gemUIScroll + 6 < availableGems)
+                            if (restPlayerGemUISelecting == 6 && gemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().availableGems)
                             {
                                 gemUIScroll += 1;
                                 CreateGemUI();
@@ -905,12 +902,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //We hide or show the arrows depending on the scroll
         if (gemUIScroll > 0) restPlayerGemsUI.transform.GetChild(11).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         else restPlayerGemsUI.transform.GetChild(11).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-        if ((gemUIScroll + 6) < availableGems) restPlayerGemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        if ((gemUIScroll + 6) < currentData.GetComponent<CurrentDataScript>().availableGems) restPlayerGemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         else restPlayerGemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
         //We search the gems for all the available spaces, if there are less than 6 we make those spaces disappear
         for (int i = 1; i < 7; i++)
         {
-            if (i < availableGems + 1)
+            if (i < currentData.GetComponent<CurrentDataScript>().availableGems + 1)
             {
                 if(currentData.GetComponent<CurrentDataScript>().GemUsing(allGems[FindGemInPos(i) + gemUIScroll - 1],allGems)==1) restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(0.0f, 1.0f, 0.0f, 1.0f);
                 else if(gems.gems[FindGemInPos(i) + gemUIScroll - 1].points > ((currentData.GetComponent<CurrentDataScript>().playerBadgeLvl * 3 + 3) - currentData.GetComponent<CurrentDataScript>().spentGP)) restPlayerGemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 0.0f, 0.0f, 1.0f);

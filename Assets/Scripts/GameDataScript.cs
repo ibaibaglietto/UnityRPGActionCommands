@@ -49,6 +49,7 @@ public class GameDataScript
     public int HPUpFound;
     public int LPUpFound;
     public int compHPUpFound;
+    public int availableGems;
     //Available attacks
     public int swordStyles;
     public int shurikenStyles;
@@ -126,6 +127,7 @@ public class GameDataScript
         HPUpFound = current.HPUpFound;
         LPUpFound = current.LPUpFound;
         compHPUpFound = current.compHPUpFound;
+        availableGems = current.availableGems;
         swordStyles = current.swordStyles;
         shurikenStyles = current.shurikenStyles;
         master = current.master;

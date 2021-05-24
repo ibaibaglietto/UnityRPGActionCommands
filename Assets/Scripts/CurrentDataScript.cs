@@ -49,6 +49,7 @@ public class CurrentDataScript : MonoBehaviour
     public int HPUpFound;
     public int LPUpFound;
     public int compHPUpFound;
+    public int availableGems;
     //Available attacks
     public int swordStyles;
     public int shurikenStyles;
@@ -237,6 +238,7 @@ public class CurrentDataScript : MonoBehaviour
         HPUpFound = data.HPUpFound;
         LPUpFound = data.LPUpFound;
         compHPUpFound = data.compHPUpFound;
+        availableGems = data.availableGems;
         swordStyles = data.swordStyles;
         shurikenStyles = data.shurikenStyles;
         master = data.master;
@@ -266,6 +268,32 @@ public class CurrentDataScript : MonoBehaviour
         playerStyle = data.playerStyle;
         companionAttack = data.companionAttack;
         companionStyle = data.companionStyle;
+    }
+
+    //A function to know if a gem is already found
+    public bool IsGemFound(int id)
+    {
+        if(id == 1) return lightSwordFound == 1;
+        else if (id == 2) return multistrikeSwordFound == 1;
+        else if (id == 3) return lightShurikenFound == 1;
+        else if (id == 4) return fireShurikenFound == 1;
+        else if (id == 5) return HPUpFound == 1;
+        else if (id == 6) return LPUpFound == 1;
+        else if (id == 7) return compHPUpFound == 1;
+        return false;
+    }
+
+    //A funstion to set a gem to found
+    public void SetGemFound(int id)
+    {
+        if (id == 1) lightSwordFound = 1;
+        else if (id == 2) multistrikeSwordFound = 1;
+        else if (id == 3) lightShurikenFound = 1;
+        else if (id == 4) fireShurikenFound = 1;
+        else if (id == 5) HPUpFound = 1;
+        else if (id == 6) LPUpFound = 1;
+        else if (id == 7) compHPUpFound = 1;
+        availableGems = lightSwordFound + multistrikeSwordFound + lightShurikenFound + fireShurikenFound + HPUpFound + LPUpFound + compHPUpFound;
     }
 
     private void OnGUI()

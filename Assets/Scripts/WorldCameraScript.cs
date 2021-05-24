@@ -36,19 +36,18 @@ public class WorldCameraScript : MonoBehaviour
         {
             if (!player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest() && !player.GetComponent<WorldPlayerMovementScript>().GetResting())
             {
-                if (Mathf.Abs(player.GetComponent<Rigidbody>().velocity.y) < 0.1f && player.GetComponent<WorldPlayerMovementScript>().IsGrounded() && ((player.transform.position.y + 3.0f) > (gameObject.transform.position.y + 0.20f))) posY = Vector3.Lerp(gameObject.transform.position, new Vector3(player.transform.position.x, player.transform.position.y + 3.0f, player.transform.position.z - 7.0f), Time.deltaTime * 20).y;
+                if (Mathf.Abs(player.GetComponent<Rigidbody>().velocity.y) < 0.1f && player.GetComponent<WorldPlayerMovementScript>().IsGrounded() && ((player.transform.position.y + 3.0f) > (gameObject.transform.position.y + 0.20f))) posY = Vector3.Lerp(gameObject.transform.position, new Vector3(player.transform.position.x, player.transform.position.y + 3.0f, player.transform.position.z - 8.0f), Time.deltaTime * 20).y;
                 else if ((player.transform.position.y + 3.0f) < gameObject.transform.position.y - 0.1f) posY = player.transform.position.y + 3.0f;
                 else posY = gameObject.transform.position.y;
                 gameObject.transform.position = new Vector3(player.transform.position.x, posY, player.transform.position.z - 8.0f);
             }
-            else if (player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest()) gameObject.transform.position = new Vector3(player.GetComponent<WorldPlayerMovementScript>().GetFireXPos(), posY, player.transform.position.z - 7.0f);
+            else if (player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest()) gameObject.transform.position = new Vector3(player.GetComponent<WorldPlayerMovementScript>().GetFireXPos(), posY, player.transform.position.z - 8.0f);
             else if (player.GetComponent<WorldPlayerMovementScript>().GetResting())
             {
                 transform.position = Vector3.Lerp(transform.position, new Vector3(player.GetComponent<WorldPlayerMovementScript>().GetFireXPos(), posY, player.transform.position.z - 5.0f), Time.deltaTime);
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(20, 0, 0), Time.deltaTime);
             }
         }
-
     }
     private void FixedUpdate()
     {
