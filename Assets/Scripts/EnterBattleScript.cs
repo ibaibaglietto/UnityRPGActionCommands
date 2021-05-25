@@ -10,15 +10,19 @@ public class EnterBattleScript : MonoBehaviour
     private GameObject currentData;
     //The scene we are going to load
     private string sceneName;
+    //The open world player
+    private GameObject worldPlayer;
 
     private void Start()
     {
         currentData = GameObject.Find("CurrentData");
         cam = GameObject.Find("Main Camera");
+        worldPlayer = GameObject.Find("PlayerWorld");
     }
 
     private void StartBattle()
     {
+        worldPlayer.GetComponent<WorldPlayerMovementScript>().DeactivateFirstStrikeUI();
         SceneManager.LoadScene(1,LoadSceneMode.Additive);
         cam.GetComponent<WorldCameraScript>().ChangeBattleCamera(true);
     }

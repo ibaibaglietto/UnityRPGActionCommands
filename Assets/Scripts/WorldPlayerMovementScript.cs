@@ -105,7 +105,16 @@ public class WorldPlayerMovementScript : MonoBehaviour
     [SerializeField] private Texture2D apple;
     [SerializeField] private Texture2D lightPotion;
     [SerializeField] private Texture2D resurrectPotion;
-
+    //The object we are picking
+    private GameObject pickedObject;
+    //A boolean to know if the player is picking an object
+    private bool pickingObject;
+    //A boolean to know if the player is showing the item
+    private bool showItem;
+    //The pick item UI
+    private GameObject pickItemUI;
+    //The battle first strike UI
+    private GameObject firstStrikeUI;
 
 
     //The on land event
@@ -140,9 +149,11 @@ public class WorldPlayerMovementScript : MonoBehaviour
         restPlayerStatsUI = GameObject.Find("RestPlayerStats");
         restPlayerGemsUI = GameObject.Find("RestPlayerGems");
         restPlayerItemsUI = GameObject.Find("RestPlayerItems");
+        pickItemUI = GameObject.Find("PickItem");
         restInstructions = GameObject.Find("RestInstructions");
         restInstructionsText = GameObject.Find("RestInstructionsText").GetComponent<Text>();
         restCompanionUI = GameObject.Find("Companions");
+        firstStrikeUI = GameObject.Find("BattleFirstStrike");
         companion = GameObject.Find("CompanionWorld");
         restPlayerGemsUI.SetActive(false);
         restPlayerItemsUI.SetActive(false);
@@ -150,6 +161,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
         restPlayerUI.SetActive(false);
         restUI.SetActive(false);
         restInstructions.SetActive(false);
+        pickItemUI.SetActive(false);
+        firstStrikeUI.SetActive(false);
         //We initialize the variables
         speedX = 0.0f;
         speedZ = 0.0f;
@@ -161,6 +174,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
         canSpeak = false;
         speaking = false;
         changingScene = false;
+        pickingObject = false;
+        showItem = false;
         restUIState = 1;
         restUISelecting = 1;
         restPlayerMainUISelecting = 1;
@@ -194,7 +209,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //Detect the direction we want the player to move and save it
         if (currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
-            if (!movingToRest && !resting && !changingScene && !speaking)
+            if (!movingToRest && !resting && !changingScene && !speaking && !pickingObject)
             {
                 if (currentData.GetComponent<CurrentDataScript>().movUp) speedZ = 1.0f;
                 else if (currentData.GetComponent<CurrentDataScript>().movDown) speedZ = -1.0f;
@@ -333,6 +348,22 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 {
                     changingScene = false;
                     changedScene = false;
+                }
+            }
+            if (pickingObject)
+            {
+                speedX = 0.0f;
+                speedZ = 0.0f;
+                animator.SetBool("Moving", false);
+                animator.SetFloat("SpeedZ", speedZ);
+                animator.SetFloat("SpeedX", speedX);
+                if (showItem && Input.GetKeyDown(KeyCode.X))
+                {
+                    animator.SetBool("Pick", false);
+                    showItem = false;
+                    pickingObject = false;
+                    pickItemUI.SetActive(false);
+                    pickedObject.SetActive(false);
                 }
             }
             if (resting)
@@ -1073,4 +1104,65 @@ public class WorldPlayerMovementScript : MonoBehaviour
         return i;
     }
 
+    //Function to set the picked object
+    public void SetPickedObject(GameObject o)
+    {
+        pickedObject = o;
+        pickedObject.SetActive(false);
+        pickingObject = true;
+    }
+
+    //Function to show the picked object
+    public void ShowPickedObject(int isRight)
+    {
+        showItem = true;
+        pickItemUI.SetActive(true);
+        if (isRight == 1)
+        {
+            pickedObject.SetActive(true);
+            if(pickedObject.tag == "Gem")
+            {
+                pickedObject.transform.position = new Vector3(transform.position.x + 0.5f, transform.position.y + 0.52f, transform.position.z);
+                pickedObject.transform.localScale = new Vector3(0.15f, 0.15f, 1.0f);
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "¡Has conseguido el " + pickedObject.GetComponent<WorldGemScript>().nameSpanish + "!";
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldGemScript>().descriptionSpanish;
+            }
+            
+
+        }
+        else
+        {
+            pickedObject.SetActive(true);
+            if (pickedObject.tag == "Gem")
+            {
+                pickedObject.transform.position = new Vector3(transform.position.x - 0.5f, transform.position.y + 0.52f, transform.position.z);
+                pickedObject.transform.localScale = new Vector3(0.15f, 0.15f, 1.0f);
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "¡Has conseguido el " + pickedObject.GetComponent<WorldGemScript>().nameSpanish + "!";
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldGemScript>().descriptionSpanish;
+            }
+        }
+    }
+
+    //Function to set the text on the first strike UI. 1-> player, 2-> companion, 3-> enemy
+    public void SetFirstStrikeUI(int user)
+    {
+        firstStrikeUI.SetActive(true);
+        if (user == 1 || user == 2)
+        {
+            firstStrikeUI.GetComponent<Image>().color = new Color(0.427451f, 0.8784314f, 0.4557848f, 1.0f);
+            firstStrikeUI.transform.GetChild(0).GetComponent<Text>().text = "¡Has dado el primer golpe!";
+        }
+        else
+        {
+            firstStrikeUI.GetComponent<Image>().color = new Color(0.8784314f, 0.4419824f, 0.427451f, 1.0f);
+            firstStrikeUI.transform.GetChild(0).GetComponent<Text>().text = "¡Recibes el primer golpe!";
+        }
+
+    }
+
+    //Function to deactivate the first strike ui
+    public void DeactivateFirstStrikeUI()
+    {
+        firstStrikeUI.SetActive(false);
+    }
 }

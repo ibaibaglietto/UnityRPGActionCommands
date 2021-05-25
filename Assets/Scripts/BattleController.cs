@@ -6036,7 +6036,7 @@ public class BattleController : MonoBehaviour
             {
                 if (currentData.GetComponent<CurrentDataScript>().playerFirstAttack == 1)
                 {
-                    if (currentData.GetComponent<CurrentDataScript>().playerAttack == 0 && enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemy1.GetComponent<EnemyTeamScript>().ReturnNormalHeight();
+                    if (currentData.GetComponent<CurrentDataScript>().playerAttack == 0 && enemy1.GetComponent<EnemyTeamScript>().enemyType == 1 && enemy1.GetComponent<EnemyTeamScript>().IsAlive()) enemy1.GetComponent<EnemyTeamScript>().ReturnNormalHeight();
                     //We unhide the canvas
                     canvas.GetComponent<Animator>().SetBool("Hide", false);
                     //We reset the first attack int

@@ -20,6 +20,7 @@ TagManager:
   - Bench
   - Data
   - Adventurer
+  - Gem
   layers:
   - Default
   - TransparentFX

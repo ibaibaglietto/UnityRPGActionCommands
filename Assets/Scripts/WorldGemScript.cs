@@ -12,6 +12,14 @@ public class WorldGemScript : MonoBehaviour
     private GameObject currentData;
     //The id of the gem
     [SerializeField] private int id;
+    //The name of the gem in every language
+    public string nameEnglish;
+    public string nameSpanish;
+    public string nameBasque;
+    //The description of the gem in every language
+    public string descriptionEnglish;
+    public string descriptionSpanish;
+    public string descriptionBasque;
 
     void Start()
     {
@@ -27,16 +35,14 @@ public class WorldGemScript : MonoBehaviour
         if (other.transform.tag == "Player" && !picked)
         {
             GetComponent<BoxCollider>().enabled = false;
+            GetComponent<SphereCollider>().enabled = false;
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().velocity = new Vector3(0.0f, 0.0f, 0.0f);
             picked = true;
             currentData.GetComponent<CurrentDataScript>().SetGemFound(id);
-            Destroy(gameObject);
+            other.GetComponent<Animator>().SetBool("Pick", true);
+            other.GetComponent<WorldPlayerMovementScript>().SetPickedObject(gameObject);
         }
     }
 
-    private void SelfDestroy()
-    {
-        Destroy(gameObject);
-    }
 }

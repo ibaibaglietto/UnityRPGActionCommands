@@ -225,6 +225,7 @@ public class WorldEnemy : MonoBehaviour
             }
             else if (user == 1)
             {
+                player.GetComponent<WorldPlayerMovementScript>().SetFirstStrikeUI(user);
                 currentData.GetComponent<CurrentDataScript>().enemyStart = 0;
                 currentData.GetComponent<CurrentDataScript>().firstAttackObjective = 0;
                 currentData.GetComponent<CurrentDataScript>().playerFirstAttack = 1;
@@ -236,6 +237,7 @@ public class WorldEnemy : MonoBehaviour
             }
             else if (user == 2)
             {
+                player.GetComponent<WorldPlayerMovementScript>().SetFirstStrikeUI(user);
                 currentData.GetComponent<CurrentDataScript>().enemyStart = 0;
                 currentData.GetComponent<CurrentDataScript>().firstAttackObjective = 0;
                 currentData.GetComponent<CurrentDataScript>().playerFirstAttack = 0;
@@ -247,6 +249,7 @@ public class WorldEnemy : MonoBehaviour
             }
             else if (user == 3)
             {
+                player.GetComponent<WorldPlayerMovementScript>().SetFirstStrikeUI(user);
                 currentData.GetComponent<CurrentDataScript>().enemyStart = 1;
                 currentData.GetComponent<CurrentDataScript>().firstAttackObjective = objective;
                 currentData.GetComponent<CurrentDataScript>().playerFirstAttack = 0;
