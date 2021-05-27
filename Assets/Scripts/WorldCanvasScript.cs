@@ -27,15 +27,12 @@ public class WorldCanvasScript : MonoBehaviour
     private GameObject soul5;
     private GameObject soul6;
 
-    //The items the player has. 0-> no item, 1-> apple, 2 -> light potion, 3-> resurrect potion
-    private int[] items = { 2, 1, 1, 2, 3, 1, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     //The current data
     private GameObject currentData;
 
     void Awake()
     {
         currentData = GameObject.Find("CurrentData");
-        currentData.GetComponent<CurrentDataScript>().items = items;
         //We find the UI that is only used in battle
         actionInstructions = GameObject.Find("ActionInstructions");
         enemyNames = GameObject.Find("EnemyNames");

@@ -107,6 +107,22 @@ public class WorldPlayerMovementScript : MonoBehaviour
     [SerializeField] private Texture2D resurrectPotion;
     //The object we are picking
     private GameObject pickedObject;
+    //A boolean to know that we have to throw an item
+    private bool fullItems;
+    //A boolean to know that the player is choosing the item to thow
+    private bool throwingItem;
+    //An int to know what option are we selecting on the throw item menu.
+    private int throwingItemSelecting;
+    //An int to know the number of the item UI scroll
+    private int throwItemUIScroll;
+    //A boolean to know if the player is showing the item to the right
+    private bool itemRight;
+    //An int to know the id of the thrown item
+    private int thrownItemID;
+    //The sprites of the items
+    [SerializeField] private Sprite appleItem;
+    [SerializeField] private Sprite lightPotionItem;
+    [SerializeField] private Sprite resurrectPotionItem;
     //A boolean to know if the player is picking an object
     private bool pickingObject;
     //A boolean to know if the player is showing the item
@@ -176,12 +192,17 @@ public class WorldPlayerMovementScript : MonoBehaviour
         changingScene = false;
         pickingObject = false;
         showItem = false;
+        fullItems = false;
+        throwingItem = false;
+        itemRight = false;
         restUIState = 1;
         restUISelecting = 1;
         restPlayerMainUISelecting = 1;
         restPlayerGemUISelecting = 1;
         restPlayerItemUISelecting = 1;
         restCompanionUISelecting = 0;
+        throwingItemSelecting = 0;
+        throwItemUIScroll = 0;
         gemUIScroll = 0;
         itemUIScroll = 0;
         //We find the animator
@@ -357,13 +378,230 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 animator.SetBool("Moving", false);
                 animator.SetFloat("SpeedZ", speedZ);
                 animator.SetFloat("SpeedX", speedX);
-                if (showItem && Input.GetKeyDown(KeyCode.X))
+                if (throwingItem)
                 {
-                    animator.SetBool("Pick", false);
-                    showItem = false;
-                    pickingObject = false;
-                    pickItemUI.SetActive(false);
-                    pickedObject.SetActive(false);
+                    if (Input.GetKeyDown(KeyCode.UpArrow) && (throwingItemSelecting > 0 || throwItemUIScroll > 0))
+                    {
+                        if (throwItemUIScroll > 0 && throwingItemSelecting == 1)
+                        {
+                            throwItemUIScroll -= 1;
+                            CreateThrowItemUI();
+                        }
+                        else
+                        {
+                            throwingItemSelecting -= 1;
+                            pickItemUI.transform.GetChild(4).GetComponent<Animator>().SetInteger("Pos", throwingItemSelecting);
+                        }
+                        if (throwingItemSelecting > 0)
+                        {
+                            if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 1)
+                            {
+                                if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una manzana que cura 5 puntos de vida.";
+                                else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                            }
+                            else if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 2)
+                            {
+                                if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que regenera 5 puntos de luz.";
+                                else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                            }
+                            else if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 3)
+                            {
+                                if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que revive al usuario que la tome curándole 10 puntos de vida.";
+                                else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                            }
+                        }
+                        else
+                        {
+                            if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 1)
+                            {
+                                if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una manzana que cura 5 puntos de vida.";
+                                else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                            }
+                            else if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 2)
+                            {
+                                if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que regenera 5 puntos de luz.";
+                                else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                            }
+                            else if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 3)
+                            {
+                                if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que revive al usuario que la tome curándole 10 puntos de vida.";
+                                else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                            }
+                        }
+                    }
+                    else if (Input.GetKeyDown(KeyCode.DownArrow) && (throwingItemSelecting < 6 || throwItemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().itemSize()))
+                    {
+                        if (throwingItemSelecting == 6 && throwItemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().itemSize())
+                        {
+                            throwItemUIScroll += 1;
+                            CreateThrowItemUI();
+                        }
+                        else
+                        {
+                            throwingItemSelecting += 1;
+                            pickItemUI.transform.GetChild(4).GetComponent<Animator>().SetInteger("Pos", throwingItemSelecting);
+                        }
+                        if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 1)
+                        {
+                            if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                            else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una manzana que cura 5 puntos de vida.";
+                            else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                        }
+                        else if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 2)
+                        {
+                            if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                            else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que regenera 5 puntos de luz.";
+                            else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                        }
+                        else if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 3)
+                        {
+                            if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                            else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que revive al usuario que la tome curándole 10 puntos de vida.";
+                            else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                        }                                              
+                    }
+                    if (Input.GetKeyDown(KeyCode.X))
+                    {
+                        pickedObject.transform.localScale = new Vector3(0.3f, 0.3f, 1.0f);
+                        pickedObject.GetComponent<BoxCollider>().enabled = true;
+                        pickedObject.GetComponent<SphereCollider>().enabled = true;
+                        pickedObject.GetComponent<Rigidbody>().useGravity = true;
+                        pickedObject.GetComponent<WorldObjectScript>().SetPicked(false); 
+                        pickItemUI.transform.GetChild(0).gameObject.SetActive(true);
+                        pickItemUI.transform.GetChild(2).gameObject.SetActive(true);
+                        pickItemUI.transform.GetChild(3).gameObject.SetActive(false);
+                        pickItemUI.transform.GetChild(4).gameObject.SetActive(false);
+                        throwingItem = false;
+                        animator.SetBool("Pick", false);
+                        showItem = false;
+                        pickingObject = false;
+                        pickItemUI.transform.GetChild(4).GetComponent<Animator>().SetInteger("Pos", 0);
+                        pickItemUI.transform.GetChild(4).GetComponent<Animator>().SetTrigger("Reset");
+                        pickItemUI.SetActive(false);
+                        if (itemRight)
+                        {
+                            pickedObject.transform.position = new Vector3(transform.position.x + 1.5f, transform.position.y + 0.52f, transform.position.z);
+                            pickedObject.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(0.0f, 3.0f), Random.Range(5.0f, 10.0f), Random.Range(-5.0f, 5.0f));
+                        }
+                        else
+                        {
+                            pickedObject.transform.position = new Vector3(transform.position.x - 1.5f, transform.position.y + 0.52f, transform.position.z);
+                            pickedObject.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-3.0f, 0.0f), Random.Range(5.0f, 10.0f), Random.Range(-5.0f, 5.0f));
+                        }                        
+                        if (throwingItemSelecting > 0)
+                        {
+                            thrownItemID = currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1];
+                            currentData.GetComponent<CurrentDataScript>().DeleteItem(throwingItemSelecting + throwItemUIScroll - 1);
+                            currentData.GetComponent<CurrentDataScript>().AddItem(pickedObject.GetComponent<WorldObjectScript>().GetId());
+                            if (thrownItemID == 1)
+                            {
+                                pickedObject.GetComponent<SpriteRenderer>().sprite = appleItem;
+                                pickedObject.GetComponent<WorldObjectScript>().SetId(1);
+                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
+                                {
+                                    pickedObject.GetComponent<WorldObjectScript>().nameEnglish = "";
+                                    pickedObject.GetComponent<WorldObjectScript>().descriptionEnglish = "";
+                                }
+                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
+                                {
+                                    pickedObject.GetComponent<WorldObjectScript>().nameSpanish = "Manzana";
+                                    pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish = "Una manzana que cura 5 puntos de vida.";
+                                }
+                                else if (currentData.GetComponent<CurrentDataScript>().language == 3)
+                                {
+                                    pickedObject.GetComponent<WorldObjectScript>().nameBasque = "";
+                                    pickedObject.GetComponent<WorldObjectScript>().descriptionBasque = "";
+                                }
+                            }
+                            else if (thrownItemID == 2)
+                            {
+                                pickedObject.GetComponent<SpriteRenderer>().sprite = lightPotionItem;
+                                pickedObject.GetComponent<WorldObjectScript>().SetId(2);
+                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
+                                {
+                                    pickedObject.GetComponent<WorldObjectScript>().nameEnglish = "";
+                                    pickedObject.GetComponent<WorldObjectScript>().descriptionEnglish = "";
+                                }
+                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
+                                {
+                                    pickedObject.GetComponent<WorldObjectScript>().nameSpanish = "Poción de luz";
+                                    pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish = "Una poción que regenera 5 puntos de luz.";
+                                }
+                                else if (currentData.GetComponent<CurrentDataScript>().language == 3)
+                                {
+                                    pickedObject.GetComponent<WorldObjectScript>().nameBasque = "";
+                                    pickedObject.GetComponent<WorldObjectScript>().descriptionBasque = "";
+                                }
+                            }
+                            else if (thrownItemID == 3)
+                            {
+                                pickedObject.GetComponent<SpriteRenderer>().sprite = resurrectPotionItem;
+                                pickedObject.GetComponent<WorldObjectScript>().SetId(3);
+                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
+                                {
+                                    pickedObject.GetComponent<WorldObjectScript>().nameEnglish = "";
+                                    pickedObject.GetComponent<WorldObjectScript>().descriptionEnglish = "";
+                                }
+                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
+                                {
+                                    pickedObject.GetComponent<WorldObjectScript>().nameSpanish = "Poción de resurrección";
+                                    pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish = "Una poción que revive al usuario que la tome curándole 10 puntos de vida.";
+                                }
+                                else if (currentData.GetComponent<CurrentDataScript>().language == 3)
+                                {
+                                    pickedObject.GetComponent<WorldObjectScript>().nameBasque = "";
+                                    pickedObject.GetComponent<WorldObjectScript>().descriptionBasque = "";
+                                }
+                            }
+                        }
+                        throwItemUIScroll = 0;
+                        throwingItemSelecting = 0;
+                    }
+                }
+                else if (showItem && Input.GetKeyDown(KeyCode.X))
+                {
+                    if (fullItems)
+                    {
+                        pickItemUI.transform.GetChild(0).gameObject.SetActive(false);
+                        pickItemUI.transform.GetChild(2).gameObject.SetActive(false);
+                        pickItemUI.transform.GetChild(3).gameObject.SetActive(true);
+                        pickItemUI.transform.GetChild(4).gameObject.SetActive(true);
+                        CreateThrowItemUI();
+                        if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 1)
+                        {
+                            if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                            else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una manzana que cura 5 puntos de vida.";
+                            else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                        }
+                        else if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 2)
+                        {
+                            if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                            else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que regenera 5 puntos de luz.";
+                            else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                        }
+                        else if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 3)
+                        {
+                            if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                            else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que revive al usuario que la tome curándole 10 puntos de vida.";
+                            else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                        }
+                        fullItems = false;
+                        throwingItem = true;
+                    }                    
+                    else
+                    {
+                        animator.SetBool("Pick", false);
+                        showItem = false;
+                        pickingObject = false;
+                        pickItemUI.SetActive(false);
+                        Destroy(pickedObject);
+                    }                    
                 }
             }
             if (resting)
@@ -469,7 +707,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             {
                                 restPlayerItemsUI.SetActive(true);
                                 restUIState = 5;
-                                restPlayerItemsUI.transform.GetChild(1).GetComponent<Text>().text = itemSize().ToString();
+                                restPlayerItemsUI.transform.GetChild(1).GetComponent<Text>().text = currentData.GetComponent<CurrentDataScript>().itemSize().ToString();
                                 CreateItemsUI();
                             }
                             UpdateRestInstructionText();
@@ -573,9 +811,9 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             }
                             UpdateRestInstructionText();
                         }
-                        else if (Input.GetKeyDown(KeyCode.DownArrow) && (restPlayerItemUISelecting < 6 || itemUIScroll + 6 < itemSize()))
+                        else if (Input.GetKeyDown(KeyCode.DownArrow) && (restPlayerItemUISelecting < 6 || itemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().itemSize()))
                         {
-                            if (restPlayerItemUISelecting == 6 && itemUIScroll + 6 < itemSize())
+                            if (restPlayerItemUISelecting == 6 && itemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().itemSize())
                             {
                                 itemUIScroll += 1;
                                 CreateItemsUI();
@@ -966,20 +1204,20 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //We hide or show the arrows depending on the scroll
         if (itemUIScroll > 0) restPlayerItemsUI.transform.GetChild(11).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         else restPlayerItemsUI.transform.GetChild(11).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-        if ((itemUIScroll + 6) < itemSize()) restPlayerItemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        if ((itemUIScroll + 6) < currentData.GetComponent<CurrentDataScript>().itemSize()) restPlayerItemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         else restPlayerItemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-        if (itemSize() > 5)
+        if (currentData.GetComponent<CurrentDataScript>().itemSize() > 5)
         {
             for (int i = 1; i < 7; i++)
             {
-                if (i < itemSize() + 1)
+                if (i < currentData.GetComponent<CurrentDataScript>().itemSize() + 1)
                 {
                     restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                     if (currentData.GetComponent<CurrentDataScript>().items[i + itemUIScroll - 1] == 1)
                     {
-                        restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().texture = apple;
                         if (currentData.GetComponent<CurrentDataScript>().language == 1) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Apple";
                         else if (currentData.GetComponent<CurrentDataScript>().language == 2) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Manzana";
@@ -987,9 +1225,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     }
                     else if (currentData.GetComponent<CurrentDataScript>().items[i + itemUIScroll - 1] == 2)
                     {
-                        restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().texture = lightPotion;
                         if (currentData.GetComponent<CurrentDataScript>().language == 1) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Light potion";
                         else if (currentData.GetComponent<CurrentDataScript>().language == 2) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Poción de luz";
@@ -997,9 +1232,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     }
                     else if (currentData.GetComponent<CurrentDataScript>().items[i + itemUIScroll - 1] == 3)
                     {
-                        restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                        restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().texture = resurrectPotion;
                         if (currentData.GetComponent<CurrentDataScript>().language == 1) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Resurrection potion";
                         else if (currentData.GetComponent<CurrentDataScript>().language == 2) restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = "Poción de resurrección";
@@ -1012,6 +1244,84 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
                     restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
                     restPlayerItemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                }
+            }
+        }
+    }
+
+    //Function to create the throw item UI
+    public void CreateThrowItemUI()
+    {
+        //We hide or show the arrows depending on the scroll
+        if (throwItemUIScroll > 0) pickItemUI.transform.GetChild(4).GetChild(8).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        else pickItemUI.transform.GetChild(4).GetChild(8).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+        if ((throwItemUIScroll + 6) < currentData.GetComponent<CurrentDataScript>().itemSize()) pickItemUI.transform.GetChild(4).GetChild(9).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        else pickItemUI.transform.GetChild(4).GetChild(9).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+
+        pickItemUI.transform.GetChild(4).GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        pickItemUI.transform.GetChild(4).GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        pickItemUI.transform.GetChild(4).GetChild(1).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        pickItemUI.transform.GetChild(4).GetChild(1).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 1)
+        {
+            pickItemUI.transform.GetChild(4).GetChild(1).GetChild(1).GetComponent<RawImage>().texture = apple;
+            if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(4).GetChild(1).GetChild(0).GetComponent<Text>().text = "Apple";
+            else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(4).GetChild(1).GetChild(0).GetComponent<Text>().text = "Manzana";
+            else pickItemUI.transform.GetChild(4).GetChild(1).GetChild(0).GetComponent<Text>().text = "Sagarra";
+        }
+        else if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 2)
+        {
+            pickItemUI.transform.GetChild(4).GetChild(1).GetChild(1).GetComponent<RawImage>().texture = lightPotion;
+            if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(4).GetChild(1).GetChild(0).GetComponent<Text>().text = "Light potion";
+            else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(4).GetChild(1).GetChild(0).GetComponent<Text>().text = "Poción de luz";
+            else pickItemUI.transform.GetChild(4).GetChild(1).GetChild(0).GetComponent<Text>().text = "Argi pozioa";
+        }
+        else if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 3)
+        {
+            pickItemUI.transform.GetChild(4).GetChild(1).GetChild(1).GetComponent<RawImage>().texture = resurrectPotion;
+            if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(4).GetChild(1).GetChild(0).GetComponent<Text>().text = "Resurrection potion";
+            else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(4).GetChild(1).GetChild(0).GetComponent<Text>().text = "Poción de resurrección";
+            else pickItemUI.transform.GetChild(4).GetChild(1).GetChild(0).GetComponent<Text>().text = "Berpizkunde pozioa";
+        }
+
+        if (currentData.GetComponent<CurrentDataScript>().itemSize() > 5)
+        {
+            for (int i = 1; i < 7; i++)
+            {
+                if (i < currentData.GetComponent<CurrentDataScript>().itemSize() + 1)
+                {
+                    pickItemUI.transform.GetChild(4).GetChild(1 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    pickItemUI.transform.GetChild(4).GetChild(1 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                    if (currentData.GetComponent<CurrentDataScript>().items[i + throwItemUIScroll - 1] == 1)
+                    {
+                        pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(1).GetComponent<RawImage>().texture = apple;
+                        if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Apple";
+                        else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Manzana";
+                        else pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Sagarra";
+                    }
+                    else if (currentData.GetComponent<CurrentDataScript>().items[i + throwItemUIScroll - 1] == 2)
+                    {
+                        pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(1).GetComponent<RawImage>().texture = lightPotion;
+                        if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Light potion";
+                        else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Poción de luz";
+                        else pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Argi pozioa";
+                    }
+                    else if (currentData.GetComponent<CurrentDataScript>().items[i + throwItemUIScroll - 1] == 3)
+                    {
+                        pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(1).GetComponent<RawImage>().texture = resurrectPotion;
+                        if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Resurrection potion";
+                        else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Poción de resurrección";
+                        else pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Berpizkunde pozioa";
+                    }
+                }
+                else
+                {
+                    pickItemUI.transform.GetChild(4).GetChild(1 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                    pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                    pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                    pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
                 }
             }
         }
@@ -1093,16 +1403,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         nextDialogue = d;
     }
 
-    //Function to know the number of items the player has
-    private int itemSize()
-    {
-        int i = 0;
-        while (currentData.GetComponent<CurrentDataScript>().items[i] != 0 && i < 19)
-        {
-            i++;
-        }
-        return i;
-    }
+    
 
     //Function to set the picked object
     public void SetPickedObject(GameObject o)
@@ -1110,6 +1411,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
         pickedObject = o;
         pickedObject.SetActive(false);
         pickingObject = true;
+    }
+
+    //Function to activate the throw item action
+    public void FullItems()
+    {
+        fullItems = true;
     }
 
     //Function to show the picked object
@@ -1124,11 +1431,17 @@ public class WorldPlayerMovementScript : MonoBehaviour
             {
                 pickedObject.transform.position = new Vector3(transform.position.x + 0.5f, transform.position.y + 0.52f, transform.position.z);
                 pickedObject.transform.localScale = new Vector3(0.15f, 0.15f, 1.0f);
-                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "¡Has conseguido el " + pickedObject.GetComponent<WorldGemScript>().nameSpanish + "!";
-                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldGemScript>().descriptionSpanish;
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "¡Has recogido " + pickedObject.GetComponent<WorldObjectScript>().nameSpanish + "!";
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish;
             }
-            
-
+            else if (pickedObject.tag == "Item")
+            {
+                pickedObject.transform.position = new Vector3(transform.position.x + 0.5f, transform.position.y + 0.52f, transform.position.z);
+                pickedObject.transform.localScale = new Vector3(0.2f, 0.2f, 1.0f);
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "¡Has recogido " + pickedObject.GetComponent<WorldObjectScript>().nameSpanish + "!";
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish;
+                itemRight = true;
+            }
         }
         else
         {
@@ -1137,10 +1450,19 @@ public class WorldPlayerMovementScript : MonoBehaviour
             {
                 pickedObject.transform.position = new Vector3(transform.position.x - 0.5f, transform.position.y + 0.52f, transform.position.z);
                 pickedObject.transform.localScale = new Vector3(0.15f, 0.15f, 1.0f);
-                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "¡Has conseguido el " + pickedObject.GetComponent<WorldGemScript>().nameSpanish + "!";
-                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldGemScript>().descriptionSpanish;
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "¡Has recogido " + pickedObject.GetComponent<WorldObjectScript>().nameSpanish + "!";
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish;
+            }
+            else if (pickedObject.tag == "Item")
+            {
+                pickedObject.transform.position = new Vector3(transform.position.x - 0.5f, transform.position.y + 0.52f, transform.position.z);
+                pickedObject.transform.localScale = new Vector3(0.2f, 0.2f, 1.0f);
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "¡Has recogido " + pickedObject.GetComponent<WorldObjectScript>().nameSpanish + "!";
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish;
+                itemRight = false;
             }
         }
+        if (fullItems) pickItemUI.transform.GetChild(2).gameObject.SetActive(true);
     }
 
     //Function to set the text on the first strike UI. 1-> player, 2-> companion, 3-> enemy

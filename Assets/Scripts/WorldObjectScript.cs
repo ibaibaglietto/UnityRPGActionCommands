@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldGemScript : MonoBehaviour
+public class WorldObjectScript : MonoBehaviour
 {
     //The canvas
     private GameObject canvas;
@@ -26,7 +26,7 @@ public class WorldGemScript : MonoBehaviour
         currentData = GameObject.Find("CurrentData");
         canvas = GameObject.Find("Canvas");
         picked = false;
-        if (currentData.GetComponent<CurrentDataScript>().IsGemFound(id)) Destroy(gameObject);
+        if (gameObject.tag == "Gem" && currentData.GetComponent<CurrentDataScript>().IsGemFound(id)) Destroy(gameObject);
     }
 
 
@@ -39,10 +39,33 @@ public class WorldGemScript : MonoBehaviour
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().velocity = new Vector3(0.0f, 0.0f, 0.0f);
             picked = true;
-            currentData.GetComponent<CurrentDataScript>().SetGemFound(id);
+            if (gameObject.tag == "Gem") currentData.GetComponent<CurrentDataScript>().SetGemFound(id);
+            else if (gameObject.tag == "Item")
+            {
+                if (currentData.GetComponent<CurrentDataScript>().itemSize() < 20) currentData.GetComponent<CurrentDataScript>().AddItem(id);
+                else other.GetComponent<WorldPlayerMovementScript>().FullItems();
+            }
             other.GetComponent<Animator>().SetBool("Pick", true);
             other.GetComponent<WorldPlayerMovementScript>().SetPickedObject(gameObject);
         }
+    }
+
+    //Function to change the id
+    public void SetId(int i)
+    {
+        id = i;
+    }
+
+    //Function to get the id
+    public int GetId()
+    {
+        return id;
+    }
+
+    //Function to change the picked state of an item
+    public void SetPicked(bool p)
+    {
+        picked = p;
     }
 
 }

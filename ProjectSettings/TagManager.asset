@@ -21,6 +21,7 @@ TagManager:
   - Data
   - Adventurer
   - Gem
+  - Item
   layers:
   - Default
   - TransparentFX

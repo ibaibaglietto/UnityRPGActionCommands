@@ -21,7 +21,7 @@ public class CurrentDataScript : MonoBehaviour
     public int spentGP;
     public int swordLvl;
     public int shurikenLvl;
-    public int[] items = { 2, 1, 1, 2, 3, 1, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    public int[] items;
     public int changingScene;
     public bool movLeft;
     public bool movRight;
@@ -294,6 +294,32 @@ public class CurrentDataScript : MonoBehaviour
         else if (id == 6) LPUpFound = 1;
         else if (id == 7) compHPUpFound = 1;
         availableGems = lightSwordFound + multistrikeSwordFound + lightShurikenFound + fireShurikenFound + HPUpFound + LPUpFound + compHPUpFound;
+    }
+
+    public void AddItem(int id)
+    {
+        if(itemSize()<20) items[itemSize()] = id;
+    }
+
+    //Function to know the number of items the player has
+    public int itemSize()
+    {
+        int i = 0;
+        while (i < 20 && items[i] != 0)
+        {
+            i++;
+        }
+        return i;
+    }
+
+    //Function to delete an item
+    public void DeleteItem(int pos)
+    {
+        for (int i = pos; i < itemSize(); i++)
+        {
+            if (i < 19) items[i] = items[i + 1];
+            else items[i] = 0;
+        }
     }
 
     private void OnGUI()

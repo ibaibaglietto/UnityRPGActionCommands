@@ -996,7 +996,7 @@ public class BattleController : MonoBehaviour
                                 else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pozio hau edan 5 AP berreskuratzeko.";
                                 else if (items[menuSelectionPos + scroll] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pozio hau edan taldekide bat berpizteko.";
                             }
-                            if (((menuSelectionPos + scroll) < (itemSize() - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
+                            if (((menuSelectionPos + scroll) < (currentData.GetComponent<CurrentDataScript>().itemSize() - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
                             {
                                 if (menuSelectionPos < 5) player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
                                 if (menuSelectionPos == 5)
@@ -1407,7 +1407,7 @@ public class BattleController : MonoBehaviour
                                         UISource.Play();
                                         player.GetComponent<PlayerTeamScript>().Recover(true, false);
                                     }
-                                    DeleteItem(menuSelectionPos + scroll);
+                                    currentData.GetComponent<CurrentDataScript>().DeleteItem(menuSelectionPos + scroll);
                                     scroll = 0;
                                     actionInstructions.SetActive(false);
                                 }
@@ -1475,7 +1475,7 @@ public class BattleController : MonoBehaviour
                                         UISource.Play();
                                         companion.GetComponent<PlayerTeamScript>().Recover(true, false);
                                     }
-                                    DeleteItem(menuSelectionPos + scroll);
+                                    currentData.GetComponent<CurrentDataScript>().DeleteItem(menuSelectionPos + scroll);
                                     scroll = 0;
                                     actionInstructions.SetActive(false);
                                 }
@@ -3134,7 +3134,7 @@ public class BattleController : MonoBehaviour
                                 else if (items[menuSelectionPos + scroll] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pozio hau edan taldekide bat berpizteko.";
                             }
 
-                            if (((menuSelectionPos + scroll) < (itemSize() - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
+                            if (((menuSelectionPos + scroll) < (currentData.GetComponent<CurrentDataScript>().itemSize() - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
                             {
                                 if (menuSelectionPos < 5) companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
                                 if (menuSelectionPos == 5)
@@ -3428,7 +3428,7 @@ public class BattleController : MonoBehaviour
                                     UISource.Play();
                                     player.GetComponent<PlayerTeamScript>().Recover(false, false);
                                 }
-                                DeleteItem(menuSelectionPos + scroll);
+                                currentData.GetComponent<CurrentDataScript>().DeleteItem(menuSelectionPos + scroll);
                                 scroll = 0;
                                 actionInstructions.SetActive(false);
                                 companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
@@ -3485,7 +3485,7 @@ public class BattleController : MonoBehaviour
                                     UISource.Play();
                                     companion.GetComponent<PlayerTeamScript>().Recover(false, false);
                                 }
-                                DeleteItem(menuSelectionPos + scroll);
+                                currentData.GetComponent<CurrentDataScript>().DeleteItem(menuSelectionPos + scroll);
                                 scroll = 0;
                                 actionInstructions.SetActive(false);
                                 companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
@@ -6973,26 +6973,6 @@ public class BattleController : MonoBehaviour
         menuSelectionPos = pos;
     }
 
-    //Function to know the number of items the player has
-    private int itemSize()
-    {
-        int i = 0;
-        while(items[i] != 0 && i < 19)
-        {
-            i++;
-        }
-        return i;
-    }
-
-    //Function to delete an item
-    private void DeleteItem(int pos)
-    {
-        for(int i = pos; i < itemSize(); i++)
-        {
-            if (i < 19) items[i] = items[i + 1];
-            else items[i] = 0;
-        }
-    }
     //Function to know the position of the recover potion item
     private int RecoverPotionPos()
     {
@@ -7012,7 +6992,7 @@ public class BattleController : MonoBehaviour
         if (pos != -1)
         {
             player.GetComponent<PlayerTeamScript>().Recover(firstPosPlayer, false);
-            DeleteItem(pos);
+            currentData.GetComponent<CurrentDataScript>().DeleteItem(pos);
             return true;
         }
         else return false;
@@ -8256,10 +8236,10 @@ public class BattleController : MonoBehaviour
                 //We can have more than 6 items so we save the scroll to know which items we need to show. When we are at the top or at the bot of the list we make the arrows disappear
                 if (scroll > 0) player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 1.0f);
                 else player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
-                if ((scroll + 6) == itemSize()) player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+                if ((scroll + 6) == currentData.GetComponent<CurrentDataScript>().itemSize()) player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
                 else player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 1.0f);
                 //We use the scroll variable when we have 6 items or more
-                if (itemSize() > 5)
+                if (currentData.GetComponent<CurrentDataScript>().itemSize() > 5)
                 {
                     for (int i = 1; i < 7; i++)
                     {
@@ -8300,7 +8280,7 @@ public class BattleController : MonoBehaviour
                 {
                     for (int i = 1; i < 7; i++)
                     {
-                        if (i < itemSize() + 1)
+                        if (i < currentData.GetComponent<CurrentDataScript>().itemSize() + 1)
                         {
                             menuCanUse[i - 1] = true;
                             player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -8970,9 +8950,9 @@ public class BattleController : MonoBehaviour
                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 if (scroll > 0) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 1.0f);
                 else companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
-                if ((scroll + 6) == itemSize()) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+                if ((scroll + 6) == currentData.GetComponent<CurrentDataScript>().itemSize()) companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
                 else companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 1.0f);
-                if (itemSize() > 5)
+                if (currentData.GetComponent<CurrentDataScript>().itemSize() > 5)
                 {
                     for (int i = 1; i < 7; i++)
                     {
@@ -9012,7 +8992,7 @@ public class BattleController : MonoBehaviour
                 {
                     for (int i = 1; i < 7; i++)
                     {
-                        if (i < itemSize() + 1)
+                        if (i < currentData.GetComponent<CurrentDataScript>().itemSize() + 1)
                         {
                             menuCanUse[i - 1] = true;
                             companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
