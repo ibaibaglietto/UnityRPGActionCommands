@@ -5166,7 +5166,6 @@ public class BattleController : MonoBehaviour
             {
                 //When the countdown ends we check if the little bar is inside the fill amount, if so the player flees. If not the players turn ends.
                 actionInstructions.SetActive(false);
-                fleeAction.gameObject.SetActive(false);
                 if (fleeAction.transform.GetChild(1).GetComponent<Image>().fillAmount > ((fleeAction.transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition.x + 1.425f) / 3.86f))
                 {
                     fleeing = false;
@@ -5183,6 +5182,8 @@ public class BattleController : MonoBehaviour
                     if(playerTurn) EndPlayerTurn(1);
                     else if(companionTurn) EndPlayerTurn(2);
                 }
+                fleeAction.transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
+                fleeAction.gameObject.SetActive(false);
             }
         }
         //When the player flees we move the player and the companion out of the camera view and finish the battle

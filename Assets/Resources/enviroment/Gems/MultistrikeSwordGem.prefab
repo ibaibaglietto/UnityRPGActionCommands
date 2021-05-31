@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5971972954080345535
+--- !u!1 &1294511330658193391
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,41 +8,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5971972954080345529}
-  - component: {fileID: 5971972954080345534}
-  - component: {fileID: 5971972954080345531}
-  - component: {fileID: 5971972954080345528}
-  - component: {fileID: 5971972954080345530}
-  - component: {fileID: 5971972954080345525}
+  - component: {fileID: 1294511330658193385}
+  - component: {fileID: 1294511330658193390}
+  - component: {fileID: 1294511330658193387}
+  - component: {fileID: 1294511330658193384}
+  - component: {fileID: 1294511330658193386}
+  - component: {fileID: 1294511330658193381}
   m_Layer: 0
-  m_Name: FireShurikenGem
+  m_Name: MultistrikeSwordGem
   m_TagString: Gem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5971972954080345529
+--- !u!4 &1294511330658193385
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971972954080345535}
+  m_GameObject: {fileID: 1294511330658193391}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.73, y: 138.935, z: 0.703}
+  m_LocalPosition: {x: 1.9954908, y: 139.02942, z: 0.6029997}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children:
-  - {fileID: 5971972954832920467}
+  - {fileID: 1294511330977721795}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &5971972954080345534
+--- !u!212 &1294511330658193390
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971972954080345535}
+  m_GameObject: {fileID: 1294511330658193391}
   m_Enabled: 1
   m_CastShadows: 2
   m_ReceiveShadows: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f8c6e78e8f74c704abb52fe991525312, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3c045bd3880e136418f6b0541b374e58, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -87,26 +87,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!135 &5971972954080345531
+--- !u!135 &1294511330658193387
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971972954080345535}
+  m_GameObject: {fileID: 1294511330658193391}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.8483505
   m_Center: {x: 0, y: 0.00043233234, z: 0}
---- !u!54 &5971972954080345528
+--- !u!54 &1294511330658193384
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971972954080345535}
+  m_GameObject: {fileID: 1294511330658193391}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -116,40 +116,40 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &5971972954080345530
+--- !u!114 &1294511330658193386
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971972954080345535}
+  m_GameObject: {fileID: 1294511330658193391}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7067614c57e89494086a6b1c2c40500d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 4
+  id: 2
   nameEnglish: 
-  nameSpanish: shuriken de fuego
+  nameSpanish: espada de multiataque
   nameBasque: 
   descriptionEnglish: 
-  descriptionSpanish: "Permite al jugador usar el shuriken de fuego, que permite
-    da\xF1ar a todos los enemigos que se encuentran en el suelo."
+  descriptionSpanish: Permite al jugador usar la espada de multiataque, un ataque
+    que golpea repetidamente a un enemigo.
   descriptionBasque: 
---- !u!65 &5971972954080345525
+--- !u!65 &1294511330658193381
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971972954080345535}
+  m_GameObject: {fileID: 1294511330658193391}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 3.9999998, y: 3.8031816, z: 0.2}
   m_Center: {x: 0, y: 0.098408855, z: 0}
---- !u!1 &5971972954832920464
+--- !u!1 &1294511330977721792
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,8 +157,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5971972954832920467}
-  - component: {fileID: 5971972954832920466}
+  - component: {fileID: 1294511330977721795}
+  - component: {fileID: 1294511330977721794}
   m_Layer: 0
   m_Name: Spot Light
   m_TagString: Untagged
@@ -166,32 +166,32 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5971972954832920467
+--- !u!4 &1294511330977721795
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971972954832920464}
+  m_GameObject: {fileID: 1294511330977721792}
   m_LocalRotation: {x: 0.623675, y: 0, z: 0, w: 0.7816838}
   m_LocalPosition: {x: 0, y: 3.93, z: -0.177}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5971972954080345529}
+  m_Father: {fileID: 1294511330658193385}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 77.17, y: 0, z: 0}
---- !u!108 &5971972954832920466
+--- !u!108 &1294511330977721794
 Light:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971972954832920464}
+  m_GameObject: {fileID: 1294511330977721792}
   m_Enabled: 1
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 0.33, b: 0, a: 1}
+  m_Color: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
   m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 55.9

@@ -40,6 +40,7 @@ public class WorldCameraScript : MonoBehaviour
                 else if ((player.transform.position.y + 3.0f) < gameObject.transform.position.y - 0.1f) posY = player.transform.position.y + 3.0f;
                 else posY = gameObject.transform.position.y;
                 gameObject.transform.position = new Vector3(player.transform.position.x, posY, player.transform.position.z - 8.0f);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(5, 0, 0), Time.deltaTime);
             }
             else if (player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest()) gameObject.transform.position = new Vector3(player.GetComponent<WorldPlayerMovementScript>().GetFireXPos(), posY, player.transform.position.z - 8.0f);
             else if (player.GetComponent<WorldPlayerMovementScript>().GetResting())
