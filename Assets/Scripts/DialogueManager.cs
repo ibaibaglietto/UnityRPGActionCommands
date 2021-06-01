@@ -28,6 +28,10 @@ public class DialogueManager : MonoBehaviour
     private GameObject currentData;
     //A boolean to know if the dialogue is previous a rest or not
     public bool prevRest;
+    //A boolean to know if the dialogue is in a shop
+    public bool shop;
+    //The speaker
+    private Transform speaker;
 
     void Start()
     {
@@ -46,6 +50,8 @@ public class DialogueManager : MonoBehaviour
     public void StartWorldDialogue(Dialogue dialogue)
     {
         prevRest = dialogue.prevRest;
+        shop = dialogue.shop;
+        speaker = dialogue.speaker;
         battle = false;
         player = GameObject.Find("PlayerWorld");
         //We open the dialogue box
@@ -162,6 +168,11 @@ public class DialogueManager : MonoBehaviour
     {
         animator.SetBool("Open", false);
         if (prevRest) player.GetComponent<WorldPlayerMovementScript>().ShowRestUI();
+        else if (shop)
+        {
+            player.GetComponent<WorldPlayerMovementScript>().SetShopItems(speaker.GetComponent<ShopInventoryScript>().items);
+            player.GetComponent<WorldPlayerMovementScript>().ShowShopUI();
+        }
         else
         {
             player.GetComponent<WorldPlayerMovementScript>().EndDialogue();

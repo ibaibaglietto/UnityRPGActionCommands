@@ -80,6 +80,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private GameObject restCompanionUI;
     //The rest instructions
     private GameObject restInstructions;
+    //The shop UI
+    private GameObject shopUI;
     //The rest instructions text
     private Text restInstructionsText;
     //An int to know in what state the rest menu is. 1-> Main menu, 2-> player main menu, 3-> Player stats, 4 -> Player Gems, 5 -> Player items, 6 -> Save menu, 7 -> Companion menu
@@ -98,6 +100,17 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private int gemUIScroll;
     //An int to know the number of the item UI scroll
     private int itemUIScroll;
+    //An int to know what option we are selecting on the shop menu
+    private int shopSelecting;
+    //An int to knwo the scroll on the shop
+    private int shopScroll;
+    //An int to know what option we are selecting on the shop confirm menu
+    private int shopConfirmSelecting;
+    //A bool to know if the shop UI is opened
+    private bool shopOpened;
+    //A bool to know if the player is in the confirm window of the shop
+    private bool shopConfirming;
+    private Item[] shopItems;
     //An array with all the gems
     private string[] allGems = {"Light Sword", "Multistrike Sword", "Light Shuriken", "Fire Shuriken", "HPUp", "LPUp", "CompHPUp"};
     public Gems gems;
@@ -171,6 +184,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         restCompanionUI = GameObject.Find("Companions");
         firstStrikeUI = GameObject.Find("BattleFirstStrike");
         companion = GameObject.Find("CompanionWorld");
+        shopUI = GameObject.Find("Shop");
         restPlayerGemsUI.SetActive(false);
         restPlayerItemsUI.SetActive(false);
         restPlayerStatsUI.SetActive(false);
@@ -179,6 +193,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         restInstructions.SetActive(false);
         pickItemUI.SetActive(false);
         firstStrikeUI.SetActive(false);
+        shopUI.SetActive(false);
         //We initialize the variables
         speedX = 0.0f;
         speedZ = 0.0f;
@@ -195,6 +210,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
         fullItems = false;
         throwingItem = false;
         itemRight = false;
+        shopOpened = false;
+        shopConfirming = false;
         restUIState = 1;
         restUISelecting = 1;
         restPlayerMainUISelecting = 1;
@@ -203,6 +220,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
         restCompanionUISelecting = 0;
         throwingItemSelecting = 0;
         throwItemUIScroll = 0;
+        shopSelecting = 1;
+        shopConfirmSelecting = 0;
         gemUIScroll = 0;
         itemUIScroll = 0;
         //We find the animator
@@ -230,7 +249,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //Detect the direction we want the player to move and save it
         if (currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
-            if (!movingToRest && !resting && !changingScene && !speaking && !pickingObject)
+            if (!movingToRest && !resting && !changingScene && !speaking && !pickingObject && !shopOpened)
             {
                 if (currentData.GetComponent<CurrentDataScript>().movUp) speedZ = 1.0f;
                 else if (currentData.GetComponent<CurrentDataScript>().movDown) speedZ = -1.0f;
@@ -604,6 +623,50 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     }                    
                 }
             }
+            if (shopOpened)
+            {
+                speedX = 0.0f;
+                speedZ = 0.0f;
+                animator.SetBool("Moving", false);
+                animator.SetFloat("SpeedZ", speedZ);
+                animator.SetFloat("SpeedX", speedX);
+                if (Input.GetKeyDown(KeyCode.UpArrow) && (shopSelecting > 1 || shopScroll > 0))
+                {
+                    if (shopScroll > 0 && shopSelecting == 1)
+                    {
+                        shopScroll -= 1;
+                        CreateShopUI();
+                    }
+                    else
+                    {
+                        shopSelecting -= 1;
+                        shopUI.transform.GetChild(0).GetComponent<Animator>().SetInteger("Pos", shopSelecting);
+                    }
+                    UpdateShopInstructionText();
+                }
+                else if (Input.GetKeyDown(KeyCode.DownArrow) && (shopSelecting < 6 || shopScroll + 6 < shopItems.Length))
+                {
+                    if (shopSelecting == 6 && shopScroll + 6 < shopItems.Length)
+                    {
+                        shopScroll += 1;
+                        CreateShopUI();
+                        UpdateShopInstructionText();
+                    }
+                    else if (shopSelecting < shopItems.Length)
+                    {
+                        shopSelecting += 1;
+                        shopUI.transform.GetChild(0).GetComponent<Animator>().SetInteger("Pos", shopSelecting);
+                        UpdateShopInstructionText();
+                    }
+                }
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    shopSelecting = 1;
+                    shopUI.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Reset");
+                    shopOpened = false;
+                    shopUI.SetActive(false);
+                }
+            }
             if (resting)
             {
                 if (dialogue)
@@ -818,7 +881,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 itemUIScroll += 1;
                                 CreateItemsUI();
                             }
-                            else
+                            else if(restPlayerItemUISelecting < currentData.GetComponent<CurrentDataScript>().itemSize())
                             {
                                 restPlayerItemUISelecting += 1;
                                 restPlayerItemsUI.GetComponent<Animator>().SetInteger("Pos", restPlayerItemUISelecting);
@@ -1000,6 +1063,18 @@ public class WorldPlayerMovementScript : MonoBehaviour
         UpdateRestInstructionText();
         restUISelecting = 1;
         restUI.GetComponent<Animator>().SetInteger("Pos", restUISelecting);
+    }
+
+    //Function to show the shop UI
+    public void ShowShopUI()
+    {
+        shopUI.SetActive(true);
+        dialogue = false;
+        CreateShopUI();
+        UpdateShopInstructionText();
+        shopSelecting = 1;
+        shopOpened = true;
+        shopUI.transform.GetChild(0).GetComponent<Animator>().SetInteger("Pos", shopSelecting);
     }
 
     //Function to end the dialogue
@@ -1206,9 +1281,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         else restPlayerItemsUI.transform.GetChild(11).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
         if ((itemUIScroll + 6) < currentData.GetComponent<CurrentDataScript>().itemSize()) restPlayerItemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         else restPlayerItemsUI.transform.GetChild(12).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-        if (currentData.GetComponent<CurrentDataScript>().itemSize() > 5)
-        {
-            for (int i = 1; i < 7; i++)
+        for (int i = 1; i < 7; i++)
             {
                 if (i < currentData.GetComponent<CurrentDataScript>().itemSize() + 1)
                 {
@@ -1243,9 +1316,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     restPlayerItemsUI.transform.GetChild(4 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
                     restPlayerItemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
                     restPlayerItemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-                    restPlayerItemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
                 }
-            }
+           
         }
     }
 
@@ -1321,11 +1393,145 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     pickItemUI.transform.GetChild(4).GetChild(1 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
                     pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
                     pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
-                    pickItemUI.transform.GetChild(4).GetChild(1 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
                 }
             }
         }
     }
+    
+
+    //Function to create the shop UI
+    public void CreateShopUI()
+    {
+        //We hide or show the arrows depending on the scroll
+        if (shopScroll > 0) shopUI.transform.GetChild(0).transform.GetChild(8).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        else shopUI.transform.GetChild(0).transform.GetChild(8).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+        if ((shopScroll + 6) < shopItems.Length) shopUI.transform.GetChild(0).transform.GetChild(9).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        else shopUI.transform.GetChild(0).transform.GetChild(9).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+        for (int i = 1; i < 7; i++)
+        {
+            if (i < shopItems.Length + 1)
+            {
+                shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+                if(!shopItems[i + shopScroll - 1].isBadge)
+                {
+                    if (shopItems[i + shopScroll - 1].id == 1)
+                    {
+                        shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(1).GetComponent<RawImage>().texture = apple;
+                        if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Apple";
+                        else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Manzana";
+                        else shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Sagarra";
+                    }
+                    else if (shopItems[i + shopScroll - 1].id == 2)
+                    {
+                        shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(1).GetComponent<RawImage>().texture = lightPotion;
+                        if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Light potion";
+                        else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Poción de luz";
+                        else shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Argi pozioa";
+                    }
+                    else if (shopItems[i + shopScroll - 1].id == 3)
+                    {
+                        shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(1).GetComponent<RawImage>().texture = resurrectPotion;
+                        if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Resurrection potion";
+                        else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Poción de resurrección";
+                        else shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = "Berpizkunde pozioa";
+                    }
+                }
+                else
+                {
+                    shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(1).GetComponent<RawImage>().texture = gems.gems[shopItems[i + shopScroll - 1].id - 1].icon;
+                    shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = gems.gems[shopItems[i + shopScroll - 1].id - 1].nameSpanish[0];
+                }
+                shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(2).GetComponent<Text>().text = shopItems[i + shopScroll - 1].price.ToString();
+                if (shopItems[i + shopScroll - 1].price > currentData.GetComponent<CurrentDataScript>().currentCoins)
+                {
+                    shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetComponent<Image>().color = new Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+                }
+            }
+            else
+            {
+                shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+                shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
+            }
+        
+        }
+    }
+
+    //Function to change the rest instruction text
+    public void UpdateShopInstructionText()
+    {
+        if(!shopItems[shopSelecting + shopScroll - 1].isBadge)
+        {
+            if (shopItems[shopSelecting + shopScroll - 1].id == 1)
+            {
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una manzana que cura 5 puntos de vida.";
+                else shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+            }
+            else if (shopItems[shopSelecting + shopScroll - 1].id == 2)
+            {
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que regenera 5 puntos de luz.";
+                else shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+            }
+            else if (shopItems[shopSelecting + shopScroll - 1].id == 3)
+            {
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que revive al usuario que la tome curándole 10 puntos de vida.";
+                else shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+            }
+        }
+        else
+        {
+            if (shopItems[shopSelecting + shopScroll - 1].id == 1)
+            {
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Permite al jugador usar la espada de luz, un poderoso ataque de un único golpe que cuesta 1 PL.";
+                else shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+            }
+            else if (shopItems[shopSelecting + shopScroll - 1].id == 2)
+            {
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Permite al jugador usar la espada de multiataque, un ataque que permite golpear repetidamente a un enemigo por 2 PL.";
+                else shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+            }
+            else if (shopItems[shopSelecting + shopScroll - 1].id == 3)
+            {
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Permite al jugador usar el shuriken de luz, que permite lanzar un shuriken con poder de luz que cuesta 1 PL.";
+                else shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+            }
+            else if (shopItems[shopSelecting + shopScroll - 1].id == 4)
+            {
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Permite al jugador usar el shuriken de fuego, que permite dañar a todos los enemigos que se encuentran en el suelo por 2PL.";
+                else shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+            }
+            else if (shopItems[shopSelecting + shopScroll - 1].id == 5)
+            {
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Aumenta los puntos de vida del jugador en 5.";
+                else shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+            }
+            else if (shopItems[shopSelecting + shopScroll - 1].id == 6)
+            {
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Aumenta los puntos de luz del jugador en 5.";
+                else shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+            }
+            else if (shopItems[shopSelecting + shopScroll - 1].id == 7)
+            {
+                if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+                else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Aumenta los puntos de vida de los compañeros en 5.";
+                else shopUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
+            }
+        }
+    }
+    
 
     //Function to find the gem of the x position
     public int FindGemInPos(int x)
@@ -1465,6 +1671,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
         if (fullItems) pickItemUI.transform.GetChild(2).gameObject.SetActive(true);
     }
 
+    //A function to set the shop items
+    public void SetShopItems(Item[] i)
+    {
+        shopItems = i;
+    }
+
     //Function to set the text on the first strike UI. 1-> player, 2-> companion, 3-> enemy
     public void SetFirstStrikeUI(int user)
     {
@@ -1479,7 +1691,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
             firstStrikeUI.GetComponent<Image>().color = new Color(0.8784314f, 0.4419824f, 0.427451f, 1.0f);
             firstStrikeUI.transform.GetChild(0).GetComponent<Text>().text = "¡Recibes el primer golpe!";
         }
-
     }
 
     //Function to deactivate the first strike ui

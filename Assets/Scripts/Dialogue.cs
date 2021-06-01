@@ -10,6 +10,8 @@ public class Dialogue
 
     //A boolean to know if the dialogue is previous a rest or not
     public bool prevRest;
+    //A boolean to know if the dialogue is in a shop
+    public bool shop;
 
     //Text in english
     [TextArea(3, 10)]
