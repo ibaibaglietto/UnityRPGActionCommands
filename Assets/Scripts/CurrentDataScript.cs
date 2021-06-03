@@ -22,6 +22,7 @@ public class CurrentDataScript : MonoBehaviour
     public int swordLvl;
     public int shurikenLvl;
     public int[] items;
+    public int[] storedItems;
     public int changingScene;
     public bool movLeft;
     public bool movRight;
@@ -213,6 +214,7 @@ public class CurrentDataScript : MonoBehaviour
         swordLvl = data.swordLvl;
         shurikenLvl = data.shurikenLvl;
         items = data.items;
+        storedItems = data.storedItems;
         changingScene = data.changingScene;
         movLeft = data.movLeft;
         movRight = data.movRight;
@@ -270,6 +272,7 @@ public class CurrentDataScript : MonoBehaviour
         companionStyle = data.companionStyle;
     }
 
+
     //A function to know if a gem is already found
     public bool IsGemFound(int id)
     {
@@ -319,6 +322,32 @@ public class CurrentDataScript : MonoBehaviour
         {
             if (i < 19) items[i] = items[i + 1];
             else items[i] = 0;
+        }
+    }
+
+    public void AddStoredItem(int id)
+    {
+        storedItems[StoredItemSize()] = id;
+    }
+
+    //Function to know the number of items the player has
+    public int StoredItemSize()
+    {
+        int i = 0;
+        while (i < 99 && storedItems[i] != 0)
+        {
+            i++;
+        }
+        return i;
+    }
+
+    //Function to delete an item
+    public void DeleteStoredItem(int pos)
+    {
+        for (int i = pos; i < StoredItemSize(); i++)
+        {
+            if (i < 98) storedItems[i] = storedItems[i + 1];
+            else storedItems[i] = 0;
         }
     }
 

@@ -22,6 +22,7 @@ public class GameDataScript
     public int swordLvl;
     public int shurikenLvl;
     public int[] items;
+    public int[] storedItems;
     public int changingScene;
     public bool movLeft;
     public bool movRight;
@@ -102,6 +103,7 @@ public class GameDataScript
         swordLvl = current.swordLvl;
         shurikenLvl = current.shurikenLvl;
         items = current.items;
+        storedItems = current.storedItems;
         changingScene = current.changingScene;
         movLeft = current.movLeft;
         movRight = current.movRight;
