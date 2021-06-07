@@ -37,7 +37,6 @@ public class DialogueBox : MonoBehaviour
     {
         dialogueText.enabled = true;
         next.GetComponent<Image>().color = new Color(next.GetComponent<Image>().color.r, next.GetComponent<Image>().color.g, next.GetComponent<Image>().color.b, 0.0f);
-        arrow.GetComponent<Image>().color = new Color(arrow.GetComponent<Image>().color.r, arrow.GetComponent<Image>().color.g, arrow.GetComponent<Image>().color.b, 1.0f);
 
         viewportPosition = Camera.main.WorldToViewportPoint(speaker.position);
         proportionalPosition = new Vector2(viewportPosition.x * canvas.transform.GetComponent<RectTransform>().sizeDelta.x, 0.0f);
@@ -64,7 +63,6 @@ public class DialogueBox : MonoBehaviour
     {
         dialogueText.enabled = false;
         next.GetComponent<Image>().color = new Color(next.GetComponent<Image>().color.r, next.GetComponent<Image>().color.g, next.GetComponent<Image>().color.b, 0.0f);
-        arrow.GetComponent<Image>().color = new Color(arrow.GetComponent<Image>().color.r, arrow.GetComponent<Image>().color.g, arrow.GetComponent<Image>().color.b, 0.0f);
     }
 
     //Function to set the speaker
