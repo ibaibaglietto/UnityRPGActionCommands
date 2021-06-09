@@ -132,43 +132,50 @@ MonoBehaviour:
   meleePrefab: {fileID: 3737689849737592926, guid: 0cc1d464750346c408f74d31e75a4ee7, type: 3}
   gems:
     gems:
-    - icon: {fileID: 2800000, guid: c8c7a5f5e1930be4dae588b05dab6a64, type: 3}
+    - id: 1
+      icon: {fileID: 2800000, guid: c8c7a5f5e1930be4dae588b05dab6a64, type: 3}
       nameEnglish: []
       nameSpanish:
       - Espada de luz
       nameBasque: []
       points: 1
-    - icon: {fileID: 2800000, guid: 80e3e3e4ba7bcd243bb76e0a20742180, type: 3}
+    - id: 2
+      icon: {fileID: 2800000, guid: 80e3e3e4ba7bcd243bb76e0a20742180, type: 3}
       nameEnglish: []
       nameSpanish:
       - Espada de multiataque
       nameBasque: []
       points: 2
-    - icon: {fileID: 2800000, guid: 660f7129ecc45104498cd20245066e9f, type: 3}
+    - id: 3
+      icon: {fileID: 2800000, guid: 660f7129ecc45104498cd20245066e9f, type: 3}
       nameEnglish: []
       nameSpanish:
       - Shuriken de luz
       nameBasque: []
       points: 1
-    - icon: {fileID: 2800000, guid: 96aae68d6dc460e4fa61e37de41b2bdb, type: 3}
+    - id: 4
+      icon: {fileID: 2800000, guid: 96aae68d6dc460e4fa61e37de41b2bdb, type: 3}
       nameEnglish: []
       nameSpanish:
       - Shuriken de fuego
       nameBasque: []
       points: 2
-    - icon: {fileID: 2800000, guid: c3dbfa73c27d5dd45b1da203b1b8b962, type: 3}
+    - id: 5
+      icon: {fileID: 2800000, guid: c3dbfa73c27d5dd45b1da203b1b8b962, type: 3}
       nameEnglish: []
       nameSpanish:
       - PV arriba
       nameBasque: []
       points: 3
-    - icon: {fileID: 2800000, guid: 9465b4deb17da5242ba471c6f5761d4c, type: 3}
+    - id: 6
+      icon: {fileID: 2800000, guid: 9465b4deb17da5242ba471c6f5761d4c, type: 3}
       nameEnglish: []
       nameSpanish:
       - PL arriba
       nameBasque: []
       points: 3
-    - icon: {fileID: 2800000, guid: 32b737394f428a641bad9091b0023ad2, type: 3}
+    - id: 7
+      icon: {fileID: 2800000, guid: 32b737394f428a641bad9091b0023ad2, type: 3}
       nameEnglish: []
       nameSpanish:
       - Comp PV arriba

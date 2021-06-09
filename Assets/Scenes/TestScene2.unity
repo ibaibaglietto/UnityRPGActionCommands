@@ -30922,12 +30922,12 @@ MonoBehaviour:
   compHPUp: 0
   lightSwordFound: 0
   multistrikeSwordFound: 0
-  lightShurikenFound: 0
+  lightShurikenFound: 1
   fireShurikenFound: 0
   HPUpFound: 0
   LPUpFound: 0
   compHPUpFound: 0
-  availableGems: 3
+  availableGems: 1
   swordStyles: 0
   shurikenStyles: 0
   master: 0

@@ -286,16 +286,16 @@ public class CurrentDataScript : MonoBehaviour
         return false;
     }
 
-    //A funstion to set a gem to found
-    public void SetGemFound(int id)
+    //A funstion to set a gem to found or not
+    public void SetGemFound(int id, int found)
     {
-        if (id == 1) lightSwordFound = 1;
-        else if (id == 2) multistrikeSwordFound = 1;
-        else if (id == 3) lightShurikenFound = 1;
-        else if (id == 4) fireShurikenFound = 1;
-        else if (id == 5) HPUpFound = 1;
-        else if (id == 6) LPUpFound = 1;
-        else if (id == 7) compHPUpFound = 1;
+        if (id == 1) lightSwordFound = found;
+        else if (id == 2) multistrikeSwordFound = found;
+        else if (id == 3) lightShurikenFound = found;
+        else if (id == 4) fireShurikenFound = found;
+        else if (id == 5) HPUpFound = found;
+        else if (id == 6) LPUpFound = found;
+        else if (id == 7) compHPUpFound = found;
         availableGems = lightSwordFound + multistrikeSwordFound + lightShurikenFound + fireShurikenFound + HPUpFound + LPUpFound + compHPUpFound;
     }
 
@@ -351,7 +351,26 @@ public class CurrentDataScript : MonoBehaviour
         }
     }
 
-    
+    //Function to know the price of an item
+    public int ItemPrice(int id, bool isGem)
+    {
+        if (!isGem)
+        {
+            if (id == 1) return 10;
+            else if (id == 2) return 10;
+            else return 30;
+        }
+        else
+        {
+            if (id == 1) return 50;
+            else if (id == 2) return 100;
+            else if (id == 3) return 50;
+            else if (id == 4) return 100;
+            else if (id == 5) return 50;
+            else if (id == 6) return 50;
+            else return 150;
+        }
+    }
 
     private void OnGUI()
     {

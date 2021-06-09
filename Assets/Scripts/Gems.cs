@@ -12,6 +12,7 @@ public class Gems
 [System.Serializable]
 public class Gem
 {
+    public int id;
     public Texture2D icon;
     [TextArea(3, 10)]
     public string[] nameEnglish;

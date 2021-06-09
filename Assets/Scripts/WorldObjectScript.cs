@@ -39,7 +39,7 @@ public class WorldObjectScript : MonoBehaviour
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().velocity = new Vector3(0.0f, 0.0f, 0.0f);
             picked = true;
-            if (gameObject.tag == "Gem") currentData.GetComponent<CurrentDataScript>().SetGemFound(id);
+            if (gameObject.tag == "Gem") currentData.GetComponent<CurrentDataScript>().SetGemFound(id,1);
             else if (gameObject.tag == "Item")
             {
                 if (currentData.GetComponent<CurrentDataScript>().itemSize() < 20) currentData.GetComponent<CurrentDataScript>().AddItem(id);
