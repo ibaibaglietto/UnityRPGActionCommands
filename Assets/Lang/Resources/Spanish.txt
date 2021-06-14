@@ -1,0 +1,107 @@
+combat_player_sword_normalsword_name$Espada normal
+combat_player_sword_normalsword_lp$
+combat_player_sword_normalsword_description$Usa tu espada para atacar a un enemigo dos veces.
+combat_player_sword_normalsword_action$Pulsa <sprite=336> justo antes de pegar al enemigo.
+combat_player_sword_lightsword_name$Espada de luz
+combat_player_sword_lightsword_lp$2 PL
+combat_player_sword_lightsword_description$Usa tu poder de luz para atacar a un enemigo con tu espada de luz.
+combat_player_sword_lightsword_action$Presiona y manten <sprite=336> hasta que <sprite=360> se llene.
+combat_player_sword_multistrikesword_name$Espada de multiataque
+combat_player_sword_multistrikesword_lp$3 PL
+combat_player_sword_multistrikesword_description$Golpea a un enemigo cuantas veces puedas con tu espada.
+combat_player_sword_multistrikesword_action$Pulsa <sprite=336> justo antes de pegar al enemigo hasta que falles.
+combat_player_shuriken_normalshuriken_name$Shuriken normal
+combat_player_shuriken_normalshuriken_lp$
+combat_player_shuriken_normalshuriken_description$Lanza tu shuriken a un enemigo.
+combat_player_shuriken_normalshuriken_action$Presiona <sprite=336> cuando <sprite=360> se ilumine.
+combat_player_shuriken_lightshuriken_name$Shuriken de luz
+combat_player_shuriken_lightshuriken_lp$2 PL
+combat_player_shuriken_lightshuriken_description$Usa tu poder de luz para lanzar un shuriken de luz a un enemigo.
+combat_player_shuriken_lightshuriken_action$Presiona <sprite=336> repetidamente hasta que <sprite=360> se ilumine.
+combat_player_shuriken_fireshuriken_name$Shuriken de fuego
+combat_player_shuriken_fireshuriken_lp$3 PL
+combat_player_shuriken_fireshuriken_description$Lanza un shuriken de fuego a todos los enemigos en el suelo.
+combat_player_shuriken_fireshuriken_action$Presiona <sprite=214> y <sprite=246> repetidamente hasta que <sprite=360> se ilumine.
+combat_player_special_soulmusic_name$Música soul
+combat_player_special_soulmusic_sp$1 PA
+combat_player_special_soulmusic_description$Toca música soul para dormir a los enemigos.
+combat_player_special_soulmusic_action$Presiona <sprite=198>, <sprite=214>, <sprite=246> o <sprite=230> cuando aparezcan.
+combat_player_special_regeneration_name$Regeneración
+combat_player_special_regeneration_sp$2 PA
+combat_player_special_regeneration_description$Regenera algunos de los PV y PL de tu equipo.
+combat_player_special_regeneration_action$Atraviesa los aros usando <sprite=198>, <sprite=214>, <sprite=246> y <sprite=230> para moverte.
+combat_player_special_lightning_name$Rayo
+combat_player_special_lightning_sp$3 PA
+combat_player_special_lightning_description$Lanza rayos a los enemigos.
+combat_player_special_lightning_action$Presiona <sprite=336> cuando el alma amarilla este sobre un enemigo para hacerle daño. Puedes lanzar rayos hasta que vuelva.
+combat_player_special_lifesteal_name$Robo de vida
+combat_player_special_lifesteal_sp$3 PA
+combat_player_special_lifesteal_description$Gana robo de vida, curándote dañando a los enemigos.
+combat_player_special_lifesteal_action$Reúne el mayor número de almas rojas que puedas usando <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> para moverte.
+combat_player_special_ghost_name$Fantasma
+combat_player_special_ghost_sp$3 PA
+combat_player_special_ghost_description$Esquiva todos los ataques enemigos por algunos turnos.
+combat_player_special_ghost_action$Usa <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> para esquivar las paredes mientras el alma desaparece.
+combat_player_special_lightup_name$Encenderse
+combat_player_special_lightup_sp$2 PA
+combat_player_special_lightup_description$Gana poder para un ataque. Se puede usar más de una vez seguida.
+combat_player_special_lightup_action$Usa <sprite=198>, <sprite=214>, <sprite=246> y <sprite=230> para mover el alma y recolectar los trozos de alma. Puedes incrementar el área de visión presionando <sprite=336> repetidamente.
+combat_adventurer_attack_sword_name$Espada
+combat_adventurer_attack_sword_lp$
+combat_adventurer_attack_sword_description$Usa tu espada para atacar a un enemigo dos veces.
+combat_adventurer_attack_sword_action$Pulsa <sprite=336> justo antes de pegar al enemigo.
+combat_adventurer_attack_glance_name$Vistazo
+combat_adventurer_attack_glance_lp$
+combat_adventurer_attack_glance_description$Pega un vistazo al enemigo para ver sus puntos débiles y sus PV.
+combat_adventurer_attack_glance_action$Presiona <sprite=336> cuando <sprite=361> llegue a <sprite=362>.
+combat_adventurer_attack_swordspin_name$Espada giratoria
+combat_adventurer_attack_swordspin_lp$3 PL
+combat_adventurer_attack_swordspin_description$Golpea a un enemigo cuantas veces puedas con tu espada.
+combat_adventurer_attack_swordspin_action$Pulsa <sprite=336> justo antes de pegar al enemigo hasta que falles.
+combat_adventurer_attack_dragonslayerbow_name$Arco mata dragones
+combat_adventurer_attack_dragonslayerbow_lp$4 PL
+combat_adventurer_attack_dragonslayerbow_description$Usa tu arco mata dragones para disparar una flecha a todos los enemigos que estén en el suelo.
+combat_adventurer_attack_dragonslayerbow_action$Presiona <sprite=336> hasta que <sprite=360> se ilumine.
+combat_adventurer_attack_bk-47_name$BK-47
+combat_adventurer_attack_bk-47_lp$7 PL
+combat_adventurer_attack_bk-47_description$Dispara cinco flechas que golpearán al primer enemigo que encuentren en su camino.
+combat_adventurer_attack_bk-47_action$Presiona <sprite=336> cuando el aventurero apunte a un objetivo.
+combat_wizard_attack_magicball_name$Bola mágica
+combat_wizard_attack_magicball_lp$
+combat_wizard_attack_magicball_description$Genera una bola mágica para golpear a un enemigo.
+combat_wizard_attack_magicball_action$Presiona <sprite=198>, <sprite=214>, <sprite=246> o <sprite=230> cuando aparezca.
+combat_wizard_attack_barrier_name$Barrera
+combat_wizard_attack_barrier_lp$1 PL
+combat_wizard_attack_barrier_description$Protege al jugador usando un escudo mágico y haz que todo el daño vaya al mago. Si completas el comando de acción correctamente puedes bloquear todo el daño si te defiendes correctamente.
+combat_wizard_attack_barrier_action$Presiona <sprite=198>, <sprite=214>, <sprite=246> o <sprite=230> en secuencia.
+combat_wizard_attack_pulsingmagic_name$Magia pulsante
+combat_wizard_attack_pulsingmagic_lp$3 PL
+combat_wizard_attack_pulsingmagic_description$Usa tus poderes mágicos para golpear a un enemigo varias veces.
+combat_wizard_attack_pulsingmagic_action$Presiona <sprite=246> repetidamente hasta que llenes la barra.
+combat_wizard_attack_magicspear_name$Lanza mágica 
+combat_wizard_attack_magicspear_lp$4 PL
+combat_wizard_attack_magicspear_description$Crea una lanza mágica y lánzasela a un enemigo.
+combat_wizard_attack_magicspear_action$Presiona <sprite=198>, <sprite=214>, <sprite=246> o <sprite=230> cada vez que aparezcan.
+combat_wizard_attack_energybomb_name$Bomba de energía
+combat_wizard_attack_energybomb_lp$9 PL
+combat_wizard_attack_energybomb_description$Genera una bola mágica enorme que dañará a todos los enemigos.
+combat_wizard_attack_energybomb_action$Presiona o suelta <sprite=336> cuando se te diga.
+combat_item_apple_name$Manzana
+combat_item_apple_description$Come esta manzana para curarte 5 PV.
+combat_item_apple_action$Elije quién quieres que se coma la manzana.
+combat_item_lightpotion_name$Poción de luz
+combat_item_lightpotion_description$Bebe esta poción para recuperar 5 PL.
+combat_item_lightpotion_action$Elije quién quieres que beba la poción de luz.
+combat_item_resurrectionpotion_name$Poción de resurrección
+combat_item_resurrectionpotion_description$Bébela para resucitar a un compañero con 10 PV.
+combat_item_resurrectionpotion_action$Elije quién quieres que beba la poción de resurrección.
+combat_other_changepartner_name$Cambiar de compañero
+combat_other_changepartner_description$Cambia tu compañero por otro del grupo.
+combat_other_changepartner_adventurer$Un aventurero que puede atacar usando sus armas o fijarse en los enemigos para ver sus puntos débiles.
+combat_other_changepartner_wizard$Un mago experto en recibir golpes que también puede atacar usando sus hechizos mágicos.
+combat_other_defend_name$Defenderse
+combat_other_defend_description$Gana +1 de defensa en el próximo turno enemigo.
+combat_other_flee_name$Huir
+combat_other_flee_description$Intenta escapar de la pelea.
+combat_other_flee_action$Presiona <sprite=336> repetidamente para llenar la barra.
+adventurer_explanation_TestScene2$Esta es la zona de testeo principal. Es un poco rara, pero sirve para lo que se creó.

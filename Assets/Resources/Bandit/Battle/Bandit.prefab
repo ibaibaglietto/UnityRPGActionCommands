@@ -847,9 +847,12 @@ MonoBehaviour:
   sleepSprite: {fileID: -3877204253021290591, guid: 9b361e3522856904390736bcbc9aa048, type: 3}
   dustObject: {fileID: 6059004063304751159, guid: a215ffc94008a1c4183b153383ae3d46, type: 3}
   dialogue:
-    nameEnglish: Adventurer
-    nameSpanish: Aventurero
-    nameBasque: Abenturazalea
+    speaker: {fileID: 0}
+    prevRest: 0
+    shop: 0
+    sentenceName:
+    - 
+    - 
     sentencesEnglish:
     - This bandit uses his sword to give a powerful strike.
     - "HP: 4\r\nDamage: 2\r\nDefence: 0\r"

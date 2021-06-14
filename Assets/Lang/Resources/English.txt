@@ -1,0 +1,107 @@
+combat_player_sword_normalsword_name$Normal sword
+combat_player_sword_normalsword_lp$
+combat_player_sword_normalsword_description$Use your sword to hit an enemy twice.
+combat_player_sword_normalsword_action$Press <sprite=336> just before hitting an enemy.
+combat_player_sword_lightsword_name$Light sword
+combat_player_sword_lightsword_lp$2 LP
+combat_player_sword_lightsword_description$Use your light power to hit an enemy with your light sword.
+combat_player_sword_lightsword_action$Press and hold <sprite=336> until <sprite=360> fills completely.
+combat_player_sword_multistrikesword_name$Multistrike sword
+combat_player_sword_multistrikesword_lp$3 LP
+combat_player_sword_multistrikesword_description$Hit an enemy as many times as you can with your sword.
+combat_player_sword_multistrikesword_action$Press <sprite=336> just before hitting an enemy until you fail.
+combat_player_shuriken_normalshuriken_name$Normal shuriken
+combat_player_shuriken_normalshuriken_lp$
+combat_player_shuriken_normalshuriken_description$Throw your shuriken to an enemy.
+combat_player_shuriken_normalshuriken_action$Press <sprite=336> when <sprite=360> lights up.
+combat_player_shuriken_lightshuriken_name$Light shuriken
+combat_player_shuriken_lightshuriken_lp$2 LP
+combat_player_shuriken_lightshuriken_description$Use your light power to throw a light shuriken to an enemy.
+combat_player_shuriken_lightshuriken_action$Press <sprite=336> repeatedly until <sprite=360> lights up.
+combat_player_shuriken_fireshuriken_name$Fire shuriken
+combat_player_shuriken_fireshuriken_lp$3 LP
+combat_player_shuriken_fireshuriken_description$Throw a fire shuriken to all the grounded enemies.
+combat_player_shuriken_fireshuriken_action$Press <sprite=214> and <sprite=246> repeatedly until <sprite=360> lights up.
+combat_player_special_soulmusic_name$Soul music
+combat_player_special_soulmusic_sp$1 SP
+combat_player_special_soulmusic_description$Play some soul music to sleep the enemies. That was a silly joke, sorry.
+combat_player_special_soulmusic_action$Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> when they appear.
+combat_player_special_regeneration_name$Regeneration
+combat_player_special_regeneration_sp$2 SP
+combat_player_special_regeneration_description$Regenerate some of your teams HP and LP.
+combat_player_special_regeneration_action$Pass through the circles using <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move.
+combat_player_special_lightning_name$Lightning
+combat_player_special_lightning_sp$3 SP
+combat_player_special_lightning_description$Throw lightnings to the enemies.
+combat_player_special_lightning_action$Press <sprite=336> when the yellow soul is over the enemy to deal damage. You can throw lightnings until it returns.
+combat_player_special_lifesteal_name$Life steal
+combat_player_special_lifesteal_sp$3 SP
+combat_player_special_lifesteal_description$Gain life steal, healing yourself damaging the enemy.
+combat_player_special_lifesteal_action$Gather as many red souls as you can using <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move.
+combat_player_special_ghost_name$Ghost
+combat_player_special_ghost_sp$3 SP
+combat_player_special_ghost_description$Dodge every attack for some enemy phases.
+combat_player_special_ghost_action$Use <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to dodge the walls while the soul fades out.
+combat_player_special_lightup_name$Light up
+combat_player_special_lightup_sp$2 SP
+combat_player_special_lightup_description$Power up for one attack. Stackable.
+combat_player_special_lightup_action$Use <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move the soul and collect the soul shards. You can increase the visible area pressing <sprite=336> repeatedly.
+combat_adventurer_attack_sword_name$Sword
+combat_adventurer_attack_sword_lp$
+combat_adventurer_attack_sword_description$Use your sword to hit an enemy twice.
+combat_adventurer_attack_sword_action$Press <sprite=336> just before hitting an enemy.
+combat_adventurer_attack_glance_name$Glance
+combat_adventurer_attack_glance_lp$
+combat_adventurer_attack_glance_description$Look at the enemy to see their weak points and HP.
+combat_adventurer_attack_glance_action$Press <sprite=336> when <sprite=361> arrives to the <sprite=362>.
+combat_adventurer_attack_swordspin_name$Sword spin
+combat_adventurer_attack_swordspin_lp$3 LP
+combat_adventurer_attack_swordspin_description$Hit an enemy as many times as you can with your sword.
+combat_adventurer_attack_swordspin_action$Press <sprite=336> just before hitting an enemy until you fail to press it in time.
+combat_adventurer_attack_dragonslayerbow_name$Dragon slayer bow
+combat_adventurer_attack_dragonslayerbow_lp$4 LP
+combat_adventurer_attack_dragonslayerbow_description$Use your dragon slayer bow to shoot an arrow to all the grounded enemies.
+combat_adventurer_attack_dragonslayerbow_action$Press <sprite=336> until <sprite=360> lights up.
+combat_adventurer_attack_bk-47_name$BK-47
+combat_adventurer_attack_bk-47_lp$7 LP
+combat_adventurer_attack_bk-47_description$Shoot five arrows that will hit the first enemy they find in their way.
+combat_adventurer_attack_bk-47_action$Press <sprite=336> when the adventurer aims to an objective.
+combat_wizard_attack_magicball_name$Magic ball
+combat_wizard_attack_magicball_lp$
+combat_wizard_attack_magicball_description$Cast a magic ball to hit an enemy.
+combat_wizard_attack_magicball_action$Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> when it appears.
+combat_wizard_attack_barrier_name$Barrier
+combat_wizard_attack_barrier_lp$1 LP
+combat_wizard_attack_barrier_description$Protect the player using a magic shield and make the wizard tank the damage. If you complete the action command you can block all the damage if you defend correctly.
+combat_wizard_attack_barrier_action$Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> in sequence.
+combat_wizard_attack_pulsingmagic_name$Pulsing magic
+combat_wizard_attack_pulsingmagic_lp$3 LP
+combat_wizard_attack_pulsingmagic_description$Use you magical powers to hit an enemy several times.
+combat_wizard_attack_pulsingmagic_action$Press <sprite=246> repeatedly until you fill the bar.
+combat_wizard_attack_magicspear_name$Magic spear
+combat_wizard_attack_magicspear_lp$4 LP
+combat_wizard_attack_magicspear_description$Create a magical spear and throw it to an enemy.
+combat_wizard_attack_magicspear_action$Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> each time they appear.
+combat_wizard_attack_energybomb_name$Energy bomb
+combat_wizard_attack_energybomb_lp$9 LP
+combat_wizard_attack_energybomb_description$Cast an enormous magic ball to damage all the enemies.
+combat_wizard_attack_energybomb_action$Press or release <sprite=336> when you are said so.
+combat_item_apple_name$Apple
+combat_item_apple_description$Eat this apple to restore 5 HP.
+combat_item_apple_action$Select who you want to eat the apple.
+combat_item_lightpotion_name$Light potion
+combat_item_lightpotion_description$Drink this potion to restore 5 LP.
+combat_item_lightpotion_action$Select who you want to drink the light potion.
+combat_item_resurrectionpotion_name$Resurrection potion
+combat_item_resurrectionpotion_description$Drink this to resurrect a party member with 10 HP.
+combat_item_resurrectionpotion_action$Select who you want to drink the resurrection potion.
+combat_other_changepartner_name$Change partner
+combat_other_changepartner_description$Change your partner with another from your party.
+combat_other_changepartner_adventurer$An adventurer that can attack using his weapons or look at the enemies to know their weaknesses.
+combat_other_changepartner_wizard$A tanking expert wizard that can also attack using his magic spells.
+combat_other_defend_name$Defend
+combat_other_defend_description$Gain +1 of defence on the next enemy turn.
+combat_other_flee_name$Flee
+combat_other_flee_description$Try to flee the battle.
+combat_other_flee_action$Press <sprite=336> repeatedly to fill the bar.
+adventurer_explanation_TestScene2$This is the test zone. It is a bit weird, but it works.

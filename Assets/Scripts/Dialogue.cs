@@ -13,6 +13,9 @@ public class Dialogue
     //A boolean to know if the dialogue is in a shop
     public bool shop;
 
+    //The sentence name
+    public string[] sentenceName;
+
     //Text in english
     [TextArea(3, 10)]
     public string[] sentencesEnglish;

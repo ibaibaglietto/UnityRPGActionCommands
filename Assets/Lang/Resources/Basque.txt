@@ -1,0 +1,107 @@
+combat_player_sword_normalsword_name$Ezpata normala
+combat_player_sword_normalsword_lp$
+combat_player_sword_normalsword_description$Zure ezpata erabili etsai bat bi aldiz jotzeko.
+combat_player_sword_normalsword_action$Pultsatu <sprite=336> justu etsaia jo baino lehen.
+combat_player_sword_lightsword_name$Argizko ezpata
+combat_player_sword_lightsword_lp$2 AP
+combat_player_sword_lightsword_description$Zure argi botereak erabili etsai bat zure argi ezpatarekin jotzeko.
+combat_player_sword_lightsword_action$<sprite=336> pultsatu eta mantendu <sprite=360> bete arte.
+combat_player_sword_multistrikesword_name$Multieraso ezpata
+combat_player_sword_multistrikesword_lp$3 AP
+combat_player_sword_multistrikesword_description$Jo etsai bat ahal duzun bezain beste zure ezpatarekin.
+combat_player_sword_multistrikesword_action$Pultsatu <sprite=336> justu etsaia jo baino lehen huts egin arte.
+combat_player_shuriken_normalshuriken_name$Shuriken normala
+combat_player_shuriken_normalshuriken_lp$
+combat_player_shuriken_normalshuriken_description$Jaurti zure shurikena etsai bati
+combat_player_shuriken_normalshuriken_action$Pultsatu <sprite=336> <sprite=360> argitzen denean.
+combat_player_shuriken_lightshuriken_name$Argizko shurikena
+combat_player_shuriken_lightshuriken_lp$2 AP
+combat_player_shuriken_lightshuriken_description$Zure argi botereak erabili etsai bat zure argi shurikenarekin jotzeko.
+combat_player_shuriken_lightshuriken_action$Pultsatu <sprite=336> behin eta berriz <sprite=360> argitu arte.
+combat_player_shuriken_fireshuriken_name$Suzko shurikena
+combat_player_shuriken_fireshuriken_lp$3 AP
+combat_player_shuriken_fireshuriken_description$Jaurti suzko shuriken bat lurrean dauden etsai guztiei.
+combat_player_shuriken_fireshuriken_action$Pultsatu <sprite=214> eta <sprite=246> behin eta berriz <sprite=360> argitu arte.
+combat_player_special_soulmusic_name$Soul musika
+combat_player_special_soulmusic_sp$1 AR
+combat_player_special_soulmusic_description$Soul musika jo etsaiak lokartzeko.
+combat_player_special_soulmusic_action$Pultsatu <sprite=198>, <sprite=214>, <sprite=246> edo <sprite=230> agertzen direnean.
+combat_player_special_regeneration_name$Erregenerazioa
+combat_player_special_regeneration_sp$2 AR
+combat_player_special_regeneration_description$Taldearen BP eta AP batzuk berreskuratu.
+combat_player_special_regeneration_action$Eraztunak gurutzatu <sprite=198>, <sprite=214>, <sprite=246> eta <sprite=230> erabiliz mugitzeko.
+combat_player_special_lightning_name$Tximista
+combat_player_special_lightning_sp$3 AR
+combat_player_special_lightning_description$Tximistak jaurti etsaiei.
+combat_player_special_lightning_action$Pultsatu <sprite=336> arima horia etsai baten gainean dagoenean. Arima itzuli arte bota ditzakezu tximistak.
+combat_player_special_lifesteal_name$Bizi lapurreta
+combat_player_special_lifesteal_sp$3 AR
+combat_player_special_lifesteal_description$Bizi lapurreta eskuratu, etsaiei min egiterakoan sendatuz.
+combat_player_special_lifesteal_action$Ahal duzun arima gorri kantitate altuena eskuratu <sprite=198>, <sprite=214>, <sprite=246> eta <sprite=230> erabiliz mugitzeko.
+combat_player_special_ghost_name$Mamua
+combat_player_special_ghost_sp$3 AR
+combat_player_special_ghost_description$Etsaien eraso guztiak saihestu turno batzuetan.
+combat_player_special_ghost_action$Erabili <sprite=198>, <sprite=214>, <sprite=246> eta <sprite=230> paretak saihesteko arima desagertzen den bitartean.
+combat_player_special_lightup_name$Piztu
+combat_player_special_lightup_sp$2 AR
+combat_player_special_lightup_description$Eraso baterako boterea bildu. Behin baino gehiagotan erabili ahal da jarraieran.
+combat_player_special_lightup_action$Erabili <sprite=198>, <sprite=214>, <sprite=246> eta <sprite=230> arima mugitzeko eta arima zatiak biltzeko. <sprite=336>  pultsatuz behin eta berriz ikus dezakezun area handitu dezakezu.
+combat_adventurer_attack_sword_name$Ezpata
+combat_adventurer_attack_sword_lp$
+combat_adventurer_attack_sword_description$Zure ezpata erabili etsai bat bi aldiz jotzeko.
+combat_adventurer_attack_sword_action$Pultsatu <sprite=336> justu etsaia jo baino lehen.
+combat_adventurer_attack_glance_name$Begirada
+combat_adventurer_attack_glance_lp$
+combat_adventurer_attack_glance_description$Begirada bat bota etsai bati bere puntu debilak eta BP ikusteko.
+combat_adventurer_attack_glance_action$Pultsatu <sprite=336> <sprite=361> <sprite=362>ra heltzen denean.
+combat_adventurer_attack_swordspin_name$Ezpata birakaria
+combat_adventurer_attack_swordspin_lp$3 AP
+combat_adventurer_attack_swordspin_description$Jo etsai bat ahal duzun bezain beste zure ezpatarekin.
+combat_adventurer_attack_swordspin_action$Pultsatu <sprite=336> justu etsaia jo baino lehen.
+combat_adventurer_attack_dragonslayerbow_name$Dragoi hiltzaile arkua
+combat_adventurer_attack_dragonslayerbow_lp$4 AP
+combat_adventurer_attack_dragonslayerbow_description$Erabili zure dragon hiltzaile arkua lurrean dauden etsai guztiei gezi bat jaurtitzeko.
+combat_adventurer_attack_dragonslayerbow_action$Pultsatu <sprite=336> <sprite=360> argitu arte.
+combat_adventurer_attack_bk-47_name$BK-47
+combat_adventurer_attack_bk-47_lp$7 AP
+combat_adventurer_attack_bk-47_description$Aurkituko duten lehen etsaia joko duten bost gezi jaurti.
+combat_adventurer_attack_bk-47_action$Pultsatu <sprite=336> abenturazaleak objektibo bati apuntatzen dionean.
+combat_wizard_attack_magicball_name$Bola magikoa
+combat_wizard_attack_magicball_lp$
+combat_wizard_attack_magicball_description$Bola magiko bat sortu etsai bat kolpekatzeko.
+combat_wizard_attack_magicball_action$Pultsatu <sprite=198>, <sprite=214>, <sprite=246> edo <sprite=230> agertzen denean.
+combat_wizard_attack_barrier_name$Barrera
+combat_wizard_attack_barrier_lp$1 LP
+combat_wizard_attack_barrier_description$Jokalaria babestu ezkutu magiko bat erabiliz eta magoak jasoko du min guztia. Akzio komandoa ondo betez gero min guztia blokea dezakezu ondo defenditzen bazara.
+combat_wizard_attack_barrier_action$Pultsatu <sprite=198>, <sprite=214>, <sprite=246> edo <sprite=230> sekuentzia jarraituz.
+combat_wizard_attack_pulsingmagic_name$Magia pultsatzailea
+combat_wizard_attack_pulsingmagic_lp$3 AP
+combat_wizard_attack_pulsingmagic_description$Erabili zure botere magikoak etsai bat hainbat aldiz jotzeko.
+combat_wizard_attack_pulsingmagic_action$Pultsatu <sprite=246> behin eta berriz barra bete arte.
+combat_wizard_attack_magicspear_name$Lantza magikoa
+combat_wizard_attack_magicspear_lp$4 AP
+combat_wizard_attack_magicspear_description$Lantza magiko bat sortu eta jaurti etsai bati.
+combat_wizard_attack_magicspear_action$Pultsatu <sprite=198>, <sprite=214>, <sprite=246> edo <sprite=230> agertzen direnean.
+combat_wizard_attack_energybomb_name$Energia bonba
+combat_wizard_attack_energybomb_lp$9 AP
+combat_wizard_attack_energybomb_description$Bola magiko erraldoi bat sortu etsai guztiei min eginez.
+combat_wizard_attack_energybomb_action$Pultsatu edo askatu <sprite=336> esaten zaizunean.
+combat_item_apple_name$Sagarra
+combat_item_apple_description$Jan sagar hau 5 BP berreskuratzeko.
+combat_item_apple_action$Erabaki zeinek jango duen sagarra.
+combat_item_lightpotion_name$Argi pozioa
+combat_item_lightpotion_description$Pozio hau edan 5 AP berreskuratzeko.
+combat_item_lightpotion_action$Erabaki zeinek edango duen argi pozioa.
+combat_item_resurrectionpotion_name$Berpizkunde pozioa
+combat_item_resurrectionpotion_description$Pozio hau edan taldekide bat berpizteko.
+combat_item_resurrectionpotion_action$Erabaki zeinek edango duen berpizkunde pozioa.
+combat_other_changepartner_name$Taldekidez aldatu
+combat_other_changepartner_description$Zure taldekidea taldeko beste batez aldatu.
+combat_other_changepartner_adventurer$Bere armak erabiliz eraso ahal duen edo etsaien puntu debilak ikus ditzakeen abenturazalea.
+combat_other_changepartner_wizard$Kolpeak jasotzen aditua den eta bere magiak erabiliz eraso ahal duen magoa.
+combat_other_defend_name$Defendatu
+combat_other_defend_description$Defentsa +1 eskuratu hurrengo etsai turnorako.
+combat_other_flee_name$Ihes
+combat_other_flee_description$Borrokatik ihes egiten saiatu.
+combat_other_flee_action$Pultsatu behin eta berriz barra betetzeko.
+adventurer_explanation_TestScene2$Hau testeoko zona printzipala da. Pixkat arraroa da, baina egin zenerako balio du.
