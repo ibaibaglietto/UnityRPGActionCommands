@@ -1,3 +1,4 @@
+combat_player_name$Jokalaria
 combat_player_sword_normalsword_name$Ezpata normala
 combat_player_sword_normalsword_lp$
 combat_player_sword_normalsword_description$Zure ezpata erabili etsai bat bi aldiz jotzeko.
@@ -46,6 +47,7 @@ combat_player_special_lightup_name$Piztu
 combat_player_special_lightup_sp$2 AR
 combat_player_special_lightup_description$Eraso baterako boterea bildu. Behin baino gehiagotan erabili ahal da jarraieran.
 combat_player_special_lightup_action$Erabili <sprite=198>, <sprite=214>, <sprite=246> eta <sprite=230> arima mugitzeko eta arima zatiak biltzeko. <sprite=336>  pultsatuz behin eta berriz ikus dezakezun area handitu dezakezu.
+combat_adventurer_name$Abenturazalea
 combat_adventurer_attack_sword_name$Ezpata
 combat_adventurer_attack_sword_lp$
 combat_adventurer_attack_sword_description$Zure ezpata erabili etsai bat bi aldiz jotzeko.
@@ -66,6 +68,7 @@ combat_adventurer_attack_bk-47_name$BK-47
 combat_adventurer_attack_bk-47_lp$7 AP
 combat_adventurer_attack_bk-47_description$Aurkituko duten lehen etsaia joko duten bost gezi jaurti.
 combat_adventurer_attack_bk-47_action$Pultsatu <sprite=336> abenturazaleak objektibo bati apuntatzen dionean.
+combat_wizard_name$Magoa
 combat_wizard_attack_magicball_name$Bola magikoa
 combat_wizard_attack_magicball_lp$
 combat_wizard_attack_magicball_description$Bola magiko bat sortu etsai bat kolpekatzeko.
@@ -104,4 +107,37 @@ combat_other_defend_description$Defentsa +1 eskuratu hurrengo etsai turnorako.
 combat_other_flee_name$Ihes
 combat_other_flee_description$Borrokatik ihes egiten saiatu.
 combat_other_flee_action$Pultsatu behin eta berriz barra betetzeko.
+combat_enemy_bandit$Bidelapurra
+combat_enemy_evilwizard$Mago gaiztoa
+combat_enemy_king$Erregea
+combat_glance_bandit_1$Bidelapur honek bere ezpata erabiliko du kolpe indartsu bat emateko.
+combat_glance_bandit_2$BP: 4\nMina: 2\nDefentsa: 0
+combat_glance_evilwizard_1$Mago honek botere magikoak erabiltzen ditu bere etsaiak erretzeko.
+combat_glance_evilwizard_2$BP: 4\nMina: 2\nDefentsa: 0
+combat_glance_king_1$Erregeak bere maza eta teleportazio botereak erabiliz erasotzen du. Kontuz ibili bere teleportazio erasoarekin, hau erabili baino lehen prestatu egin beharko da, beraz ondo bigilatu. 
+combat_glance_king_2$BP: 40\nMina: 3\nDefentsa: 0
+combat_lvlup_title$NIBELA IGO DUZU!
+combat_lvlup_select$Erabaki zein nahi duzun hobetzea! 
+combat_lvlup_hp$Gehitu 5 zure BP maximoari! Ideala kolpe gehiago jasan ahal izateko.
+combat_lvlup_lp$Gehitu 5 zure AP maximoari! Perfektua abilitate asko erabiltzea gustuko baduzu.
+combat_lvlup_gp$Gehitu 3 zure GP maximoari! Erabilgarria gema gehiago erabili nahi badituzu.
+world_rest_main_player$Estatistikak begiratu, gemak aldatu edo zer objektu dituzun egiaztatu.
+world_rest_main_save$Partida gorde.
+world_rest_main_change$Taldekidez aldatu.
+world_rest_player_stats$Jokalariaren estatistikak begiratu.
+world_rest_player_gems$Ekipatutako gemak aldatu.
+world_rest_player_items$Zure objektuak begiratu.
+world_rest_stats$Hemen jokalariaren estatistikak begira ditzakezu, momentuan dituzun arima puntuetatik esperientzia eta dirurarte.
+world_rest_gems_lightsword$Jokalariak argizko ezpata erabili ahal du, kolpe bakarreko eraso boteretsu bat, 2 AP erabiliz.
+world_rest_gems_multistrikesword$Jokalariak multieraso ezpata erabili ahal du, hainbat aldiz etsai berdina kolpatuz, 3 AP erabiliz.
+world_rest_gems_lightshuriken$Jokalariak argizko shurikena erabili ahal du, argizko boteredun shuriken bat jaurtiz, 2 AP erabiliz.
+world_rest_gems_fireshuriken$Jokalariak suzko shurikena erabili ahal du, lurreko etsai guztiak joz, 3AP erabiliz.
+world_rest_gems_hpup$Jokalariaren bizi puntuak 5en igotzen ditu.
+world_rest_gems_lpup$Jokalariaren argi puntuak 5en igotzen ditu.
+world_rest_gems_comphpup$Taldekide guztien bizi puntuak 5en igotzen ditu.
+world_rest_items_apple$5 bizi puntu sendatzen dituen sagarra.
+world_rest_items_lightpotion$5 argi puntu birsortzen dituen pozioa.
+world_rest_items_resurrectpotion$Erabiltzailea berpizten duen pozioa, 10 bizi puntu sendatuz.
+world_rest_companions_adventurer$Bere armak erabiliz eraso ahal duen edo etsaien puntu debilak ikus ditzakeen abenturazalea.
+world_rest_companions_wizard$Kolpeak jasotzen aditua den eta bere magiak erabiliz eraso ahal duen magoa.
 adventurer_explanation_TestScene2$Hau testeoko zona printzipala da. Pixkat arraroa da, baina egin zenerako balio du.

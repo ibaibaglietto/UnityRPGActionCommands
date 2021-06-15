@@ -20476,7 +20476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8868297127648146873, guid: c1174526e876f8e4b834e65d04806cd4, type: 3}
       propertyPath: dialogue.sentencesSpanish.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8868297127648146873, guid: c1174526e876f8e4b834e65d04806cd4, type: 3}
       propertyPath: dialogue.nameEnglish
@@ -20492,7 +20492,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8868297127648146873, guid: c1174526e876f8e4b834e65d04806cd4, type: 3}
       propertyPath: dialogue.sentencesSpanish.Array.data[0]
-      value: Pos ha quedao buena tarde.
+      value: "Nos vendr\xE1 bien un peque\xF1o descanso."
       objectReference: {fileID: 0}
     - target: {fileID: 8868297127648146873, guid: c1174526e876f8e4b834e65d04806cd4, type: 3}
       propertyPath: dialogue.sentencesSpanish.Array.data[1]

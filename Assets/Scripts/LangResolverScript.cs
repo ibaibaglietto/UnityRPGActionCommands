@@ -14,6 +14,7 @@ public class LangResolverScript : MonoBehaviour
         Debug.Log(_lang.Count);
         Debug.Log(_lang.Keys.First());
         Debug.Log(_lang.Values.First());
+        Debug.Log("á ó í ñ");
         Debug.Log(ResolveText(_lang.Keys.First()));
     }
     private void ReadProperties()

@@ -1,3 +1,4 @@
+combat_player_name$Jugador
 combat_player_sword_normalsword_name$Espada normal
 combat_player_sword_normalsword_lp$
 combat_player_sword_normalsword_description$Usa tu espada para atacar a un enemigo dos veces.
@@ -46,6 +47,7 @@ combat_player_special_lightup_name$Encenderse
 combat_player_special_lightup_sp$2 PA
 combat_player_special_lightup_description$Gana poder para un ataque. Se puede usar más de una vez seguida.
 combat_player_special_lightup_action$Usa <sprite=198>, <sprite=214>, <sprite=246> y <sprite=230> para mover el alma y recolectar los trozos de alma. Puedes incrementar el área de visión presionando <sprite=336> repetidamente.
+combat_adventurer_name$Aventurero
 combat_adventurer_attack_sword_name$Espada
 combat_adventurer_attack_sword_lp$
 combat_adventurer_attack_sword_description$Usa tu espada para atacar a un enemigo dos veces.
@@ -66,6 +68,7 @@ combat_adventurer_attack_bk-47_name$BK-47
 combat_adventurer_attack_bk-47_lp$7 PL
 combat_adventurer_attack_bk-47_description$Dispara cinco flechas que golpearán al primer enemigo que encuentren en su camino.
 combat_adventurer_attack_bk-47_action$Presiona <sprite=336> cuando el aventurero apunte a un objetivo.
+combat_wizard_name$Mago
 combat_wizard_attack_magicball_name$Bola mágica
 combat_wizard_attack_magicball_lp$
 combat_wizard_attack_magicball_description$Genera una bola mágica para golpear a un enemigo.
@@ -104,4 +107,37 @@ combat_other_defend_description$Gana +1 de defensa en el próximo turno enemigo.
 combat_other_flee_name$Huir
 combat_other_flee_description$Intenta escapar de la pelea.
 combat_other_flee_action$Presiona <sprite=336> repetidamente para llenar la barra.
+combat_enemy_bandit$Bandido
+combat_enemy_evilwizard$Mago malvado
+combat_enemy_king$Rey
+combat_glance_bandit_1$Este bandido usa su espada para dar un potente golpe.
+combat_glance_bandit_2$PV: 4\nDaño: 2\nDefensa: 0
+combat_glance_evilwizard_1$Este mago usa sus poderes mágicos para quemar a sus enemigos.
+combat_glance_evilwizard_2$PV: 4\nDaño: 2\nDefensa: 0
+combat_glance_king_1$El rey ataca usando su maza y sus poderes de teleportación. Ten cuidado con su ataque de teleportación, tendrá que prepararse antes de hacerlo, así que mantenlo vigilado.
+combat_glance_king_2$PV: 40\nDaño: 3\nDefensa: 0
+combat_lvlup_title$¡SUBES DE NIVEL!
+combat_lvlup_select$¡Selecciona cuál quieres mejorar!
+combat_lvlup_hp$¡Incrementa tus PV en 5! Ideal para poder aguantar más daño.
+combat_lvlup_lp$¡Incrementa tus PL en 5! Perfecto si te gusta usar habilidades de forma habitual.
+combat_lvlup_gp$¡Incrementa tus PG en 3! Útil si quieres usar más gemas.
+world_rest_main_player$Mira las estadísticas, cambia las gemas o comprueba tus objetos.
+world_rest_main_save$Guarda la partida.
+world_rest_main_change$Cambia de compañero.
+world_rest_player_stats$Mira las estadísticas del jugador.
+world_rest_player_gems$Cambia las gemas equipadas.
+world_rest_player_items$Comprueba tus objetos.
+world_rest_stats$Aquí puedes ver las estadísticas del jugador, desde los puntos de alma disponibles en el momento hasta la experiencia y las monedas.
+world_rest_gems_lightsword$Permite al jugador usar la espada de luz, un poderoso ataque de un único golpe que cuesta 2 PL.
+world_rest_gems_multistrikesword$Permite al jugador usar la espada de multiataque, un ataque que golpea repetidamente a un enemigo por 3 PL.
+world_rest_gems_lightshuriken$Permite al jugador usar el shuriken de luz, con el que puede lanzar un shuriken con poder de luz que cuesta 2 PL.
+world_rest_gems_fireshuriken$Permite al jugador usar el shuriken de fuego, con el que puede dañar a todos los enemigos que se encuentran en el suelo por 3 PL.
+world_rest_gems_hpup$Aumenta los puntos de vida del jugador en 5.
+world_rest_gems_lpup$Aumenta los puntos de luz del jugador en 5.
+world_rest_gems_comphpup$Aumenta los puntos de vida de los compañeros en 5.
+world_rest_items_apple$Una manzana que cura 5 puntos de vida.
+world_rest_items_lightpotion$Una poción que regenera 5 puntos de luz.
+world_rest_items_resurrectpotion$Una poción que revive al usuario que la tome curándole 10 puntos de vida.
+world_rest_companions_adventurer$Un aventurero que puede atacar usando sus armas o fijarse en los enemigos para ver sus puntos débiles.
+world_rest_companions_wizard$Un mago experto en recibir golpes que también puede atacar usando sus hechizos mágicos.
 adventurer_explanation_TestScene2$Esta es la zona de testeo principal. Es un poco rara, pero sirve para lo que se creó.

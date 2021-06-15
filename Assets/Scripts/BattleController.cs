@@ -725,9 +725,7 @@ public class BattleController : MonoBehaviour
         fleeAction.SetActive(false);
         lvlUpMenu.SetActive(false);
         //We translate the lvl up text
-        if (currentData.GetComponent<CurrentDataScript>().language == 1) lvlUpText.text = "LEVEL UP!";
-        else if (currentData.GetComponent<CurrentDataScript>().language == 2) lvlUpText.text = "¡SUBES DE NIVEL!";
-        else lvlUpText.text = "NIBELA IGO DUZU!";
+        lvlUpText.text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_lvlup_title");
     }
 
     private void Update()
@@ -799,9 +797,7 @@ public class BattleController : MonoBehaviour
                                 actionInstructions.SetActive(true);
                                 actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
                                 actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when <sprite=360> lights up.";
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=336> cuando <sprite=360> se ilumine.";
-                                else actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=336> <sprite=360> argitzen denean.";
+                                actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_shuriken_normalshuriken_action");
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                                 attackType = 1;
                                 selectingEnemy = true;
@@ -852,24 +848,9 @@ public class BattleController : MonoBehaviour
                             if (menuSelectionPos == 0) usingStyle = 0;
                             else if (menuSelectionPos == 1) usingStyle = swordStyles[0];
                             else if (menuSelectionPos == 2) usingStyle = swordStyles[1];
-                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                            {
-                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use your sword to hit an enemy twice.";
-                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use your light power to hit an enemy with your light sword.";
-                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hit an enemy as many times as you can with your sword.";
-                            }
-                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                            {
-                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Usa tu espada para atacar a un enemigo dos veces.";
-                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Usa tu poder de luz para atacar a un enemigo con tu espada de luz.";
-                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Golpea a un enemigo cuantas veces puedas con tu espada.";
-                            }
-                            else
-                            {
-                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Zure ezpata erabili etsai bat bi aldiz jotzeko.";
-                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Zure argi botereak erabili etsai bat zure argi ezpatarekin jotzeko.";
-                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Jo etsai bat ahal duzun bezain beste zure ezpatarekin.";
-                            }
+                            if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_sword_normalsword_description");
+                            else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_sword_lightsword_description");
+                            else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_sword_multistrikesword_description");
                             if ((menuSelectionPos < currentData.GetComponent<CurrentDataScript>().swordStyles) && Input.GetKeyDown(KeyCode.DownArrow))
                             {
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
@@ -885,24 +866,9 @@ public class BattleController : MonoBehaviour
                                 playerChoosingAction = false;
                                 actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
                                 actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy.";
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press and hold <sprite=336> until <sprite=360> fills completely.";
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy until you fail.";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pulsa <sprite=336> justo antes de pegar al enemigo.";
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona y manten <sprite=336> hasta que <sprite=360> se llene.";
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pulsa <sprite=336> justo antes de pegar al enemigo hasta que falles.";
-                                }
-                                else
-                                {
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=336> justu etsaia jo baino lehen.";
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "<sprite=336> pultsatu eta mantendu <sprite=360> bete arte.";
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=336> justu etsaia jo baino lehen huts egin arte.";
-                                }
+                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_sword_normalsword_action");
+                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_sword_lightsword_action");
+                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_sword_multistrikesword_action");
                                 attackType = 0;
                                 selectingEnemy = true;
                                 enemyName.SetActive(true);
@@ -915,24 +881,9 @@ public class BattleController : MonoBehaviour
                             if (menuSelectionPos == 0) usingStyle = 0;
                             else if (menuSelectionPos == 1) usingStyle = shurikenStyles[0];
                             else if (menuSelectionPos == 2) usingStyle = shurikenStyles[1];
-                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                            {
-                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Throw your shuriken to an enemy.";
-                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use your light power to throw a light shuriken to an enemy.";
-                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Throw a fire shuriken to all the grounded enemies.";
-                            }
-                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                            {
-                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Lanza tu shuriken a un enemigo.";
-                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Usa tu poder de luz para lanzar un shuriken de luz a un enemigo.";
-                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Lanza un shuriken de fuego a todos los enemigos en el suelo.";
-                            }
-                            else
-                            {
-                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Jaurti zure shurikena etsai bati";
-                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Zure argi botereak erabili etsai bat zure argi shurikenarekin jotzeko.";
-                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Jaurti suzko shuriken bat lurrean dauden etsai guztiei.";
-                            }
+                            if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_shuriken_normalshuriken_description");
+                            else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_shuriken_lightshuriken_description");
+                            else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_shuriken_fireshuriken_description");
                             if ((menuSelectionPos < currentData.GetComponent<CurrentDataScript>().shurikenStyles) && Input.GetKeyDown(KeyCode.DownArrow))
                             {
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
@@ -948,24 +899,9 @@ public class BattleController : MonoBehaviour
                                 playerChoosingAction = false;
                                 actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
                                 actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when <sprite=360> lights up.";
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> repeatedly until <sprite=360> lights up.";
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=214> and <sprite=246> repeatedly until <sprite=360> lights up.";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=336> cuando <sprite=360> se ilumine.";
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=336> repetidamente hasta que <sprite=360> se ilumine.";
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=214> y <sprite=246> repetidamente hasta que <sprite=360> se ilumine.";
-                                }
-                                else
-                                {
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=336> <sprite=360> argitzen denean.";
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=336> behin eta berriz <sprite=360> argitu arte.";
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=214> eta <sprite=246> behin eta berriz <sprite=360> argitu arte.";
-                                }
+                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_shuriken_normalshuriken_action"); 
+                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_shuriken_lightshuriken_action");
+                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_shuriken_fireshuriken_action");
                                 attackType = 1;
                                 selectingEnemy = true;
                                 enemyName.SetActive(true);
@@ -976,24 +912,9 @@ public class BattleController : MonoBehaviour
                         //When we open the Objects action we can select the object using up or down and accept using space
                         else if (selectingAction == 2)
                         {
-                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                            {
-                                if (items[menuSelectionPos + scroll] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Eat this apple to restore 5 HP.";
-                                else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Drink this potion to restore 5 LP.";
-                                else if (items[menuSelectionPos + scroll] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Drink this to resurrect a party member with 10 HP.";
-                            }
-                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                            {
-                                if (items[menuSelectionPos + scroll] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Come esta manzana para curarte 5 PV.";
-                                else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Bebe esta poción para recuperar 5 PL.";
-                                else if (items[menuSelectionPos + scroll] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Bébela para resucitar a un compañero con 10 PV.";
-                            }
-                            else
-                            {
-                                if (items[menuSelectionPos + scroll] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Jan sagar hau 5 BP berreskuratzeko.";
-                                else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pozio hau edan 5 AP berreskuratzeko.";
-                                else if (items[menuSelectionPos + scroll] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pozio hau edan taldekide bat berpizteko.";
-                            }
+                            if (items[menuSelectionPos + scroll] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_apple_description");
+                            else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_lightpotion_description");
+                            else if (items[menuSelectionPos + scroll] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_resurrectionpotion_description");
                             if (((menuSelectionPos + scroll) < (currentData.GetComponent<CurrentDataScript>().itemSize() - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
                             {
                                 if (menuSelectionPos < 5) player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
@@ -1017,9 +938,7 @@ public class BattleController : MonoBehaviour
                             {
                                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
                                 player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(8).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Jugadora";
-                                else enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Jokalaria";
+                                enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_name");
                                 enemyName.transform.GetChild(1).gameObject.SetActive(false);
                                 enemyName.transform.GetChild(2).gameObject.SetActive(false);
                                 enemyName.transform.GetChild(3).gameObject.SetActive(false);
@@ -1027,25 +946,9 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
                                 playerChoosingAction = false;
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    if (items[menuSelectionPos] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to eat the apple.";
-                                    else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to drink the light potion.";
-                                    else if (items[menuSelectionPos] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to drink the resurrection potion.";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    if (items[menuSelectionPos] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Elije quién quieres que se coma la manzana.";
-                                    else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Elije quién quieres que beba la poción de luz.";
-                                    else if (items[menuSelectionPos] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Elije quién quieres que beba la poción de resurrección.";
-                                }
-                                else
-                                {
-                                    if (items[menuSelectionPos] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Erabaki zeinek jango duen sagarra.";
-                                    else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Erabaki zeinek edango duen argi pozioa.";
-                                    else if (items[menuSelectionPos] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Erabaki zeinek edango duen berpizkunde pozioa.";
-                                }
-
+                                if (items[menuSelectionPos] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_apple_action");
+                                else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_lightpotion_action");
+                                else if (items[menuSelectionPos] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_resurrectionpotion_action");
                                 selectingPlayer = true;
                                 canSelect = true;
                                 enemyName.SetActive(true);
@@ -1055,33 +958,12 @@ public class BattleController : MonoBehaviour
                         else if (selectingAction == 3)
                         {
                             usingStyle = menuSelectionPos;
-                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                            {
-                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Play some soul music to sleep the enemies. That was a silly joke, sorry.";
-                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Regenerate some of your teams HP and LP.";
-                                else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Throw lightnings to the enemies.";
-                                else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gain life steal, healing yourself damaging the enemy.";
-                                else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Dodge every attack for some enemy phases.";
-                                else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Power up for one attack. Stackable.";
-                            }
-                            else if(currentData.GetComponent<CurrentDataScript>().language == 2)
-                            {
-                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Toca música soul para dormir a los enemigos.";
-                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Regenera algunos de los PV y PL de tu equipo.";
-                                else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Lanza rayos a los enemigos.";
-                                else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gana robo de vida, curándote dañando a los enemigos.";
-                                else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Esquiva todos los ataques enemigos por algunos turnos.";
-                                else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gana poder para un ataque. Se puede usar más de una vez seguida.";
-                            }
-                            else
-                            {
-                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Soul musika jo etsaiak lokartzeko.";
-                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Taldearen BP eta AP batzuk berreskuratu.";
-                                else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Tximistak jaurti etsaiei.";
-                                else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Bizi lapurreta eskuratu, etsaiei min egiterakoan sendatuz.";
-                                else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Etsaien eraso guztiak saihestu turno batzuetan.";
-                                else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Eraso baterako boterea bildu. Behin baino gehiagotan erabili ahal da jarraieran.";
-                            }
+                            if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_special_soulmusic_description");
+                            else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_special_regeneration_description");
+                            else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_special_lightning_description");
+                            else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_special_lifesteal_description");
+                            else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_special_ghost_description");
+                            else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_special_lightup_description");
                             if ((menuSelectionPos < currentData.GetComponent<CurrentDataScript>().souls - 1) && Input.GetKeyDown(KeyCode.DownArrow))
                             {
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
@@ -1097,33 +979,12 @@ public class BattleController : MonoBehaviour
                                 playerChoosingAction = false;
                                 actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
                                 actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> when they appear.";
-                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pass through the circles using <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move.";
-                                    else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the yellow soul is over the enemy to deal damage. You can throw lightnings until it returns.";
-                                    else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gather as many red souls as you can using <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move.";
-                                    else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to dodge the walls while the soul fades out.";
-                                    else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move the soul and collect the soul shards. You can increase the visible area pressing <sprite=336> repeatedly.";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=198>, <sprite=214>, <sprite=246> o <sprite=230> cuando aparezcan.";
-                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Atraviesa los aros usando <sprite=198>, <sprite=214>, <sprite=246> y <sprite=230> para moverte.";
-                                    else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=336> cuando el alma amarilla este sobre un enemigo para hacerle daño. Puedes lanzar rayos hasta que vuelva.";
-                                    else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Reúne el mayor número de almas rojas que puedas usando <sprite=198>, <sprite=214>, <sprite=246> y <sprite=230> para moverte.";
-                                    else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Usa <sprite=198>, <sprite=214>, <sprite=246> y <sprite=230> para esquivar las paredes mientras el alma desaparece.";
-                                    else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Usa <sprite=198>, <sprite=214>, <sprite=246> y <sprite=230> para mover el alma y recolectar los trozos de alma. Puedes incrementar el área de visión presionando <sprite=336> repetidamente.";
-                                }
-                                else
-                                {
-                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=198>, <sprite=214>, <sprite=246> edo <sprite=230> agertzen direnean.";
-                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Eraztunak gurutzatu <sprite=198>, <sprite=214>, <sprite=246> eta <sprite=230> erabiliz mugitzeko.";
-                                    else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=336> arima horia etsai baten gainean dagoenean. Arima itzuli arte bota ditzakezu tximistak.";
-                                    else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Ahal duzun arima gorri kantitate altuena eskuratu <sprite=198>, <sprite=214>, <sprite=246> eta <sprite=230> erabiliz mugitzeko.";
-                                    else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Erabili <sprite=198>, <sprite=214>, <sprite=246> eta <sprite=230> paretak saihesteko arima desagertzen den bitartean.";
-                                    else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Erabili <sprite=198>, <sprite=214>, <sprite=246> eta <sprite=230> arima mugitzeko eta arima zatiak biltzeko. <sprite=336>  pultsatuz behin eta berriz ikus dezakezun area handitu dezakezu.";
-                                }
+                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_special_soulmusic_action");
+                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_special_regeneration_action");
+                                else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_special_lightning_action");
+                                else if (menuSelectionPos == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_special_lifesteal_action");
+                                else if (menuSelectionPos == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_special_ghost_action");
+                                else if (menuSelectionPos == 5) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_special_lightup_action");
                                 attackType = 2;
                                 enemyName.SetActive(true);
                                 if (menuSelectionPos == 0 || menuSelectionPos == 2)
@@ -1134,9 +995,7 @@ public class BattleController : MonoBehaviour
                                 else if (menuSelectionPos == 1 || menuSelectionPos == 3 || menuSelectionPos == 4 || menuSelectionPos == 5)
                                 {
                                     player.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
-                                    if (currentData.GetComponent<CurrentDataScript>().language == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
-                                    else if (currentData.GetComponent<CurrentDataScript>().language == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Jugadora";
-                                    else enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Jokalaria";                                    
+                                    enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_name");                                
                                     enemyName.transform.GetChild(1).gameObject.SetActive(false);
                                     enemyName.transform.GetChild(2).gameObject.SetActive(false);
                                     enemyName.transform.GetChild(3).gameObject.SetActive(false);
@@ -1148,21 +1007,8 @@ public class BattleController : MonoBehaviour
                                         {
                                             companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
                                             enemyName.transform.GetChild(1).gameObject.SetActive(true);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (currentCompanion == 0) enemyName.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = "Adventurer";
-                                                else if (currentCompanion == 1) enemyName.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
-                                            }
-                                            else if(currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (currentCompanion == 0) enemyName.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = "Aventurero";
-                                                else if (currentCompanion == 1) enemyName.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = "Mago";
-                                            }
-                                            else
-                                            {
-                                                if (currentCompanion == 0) enemyName.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = "Abenturazalea";
-                                                else if (currentCompanion == 1) enemyName.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = "Magoa";
-                                            }
+                                            if (currentCompanion == 0) enemyName.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_name");
+                                            else if (currentCompanion == 1) enemyName.transform.GetChild(1).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_name");
                                         }                                        
                                         canSelect = false;
                                     }
@@ -1175,24 +1021,9 @@ public class BattleController : MonoBehaviour
                         {
                             if (!changeCompanion)
                             {
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Change your partner with another from your party.";
-                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gain +1 of defence on the next enemy turn.";
-                                    else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Try to flee the battle.";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Cambia tu compañero por otro del grupo.";
-                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gana +1 de defensa en el próximo turno enemigo.";
-                                    else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Intenta escapar de la pelea.";
-                                }
-                                else
-                                {
-                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Zure taldekidea taldeko beste batez aldatu.";
-                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Defentsa +1 eskuratu hurrengo etsai turnorako.";
-                                    else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Borrokatik ihes egiten saiatu.";
-                                }
+                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_changepartner_description");
+                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_defend_description");
+                                else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_flee_description");
 
                                 if ((menuSelectionPos < 2) && Input.GetKeyDown(KeyCode.DownArrow))
                                 {
@@ -1226,9 +1057,7 @@ public class BattleController : MonoBehaviour
                                         fleeRight = Random.Range(0.0f, 100.0f) > 50.0f;
                                         player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                                         player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                        if (currentData.GetComponent<CurrentDataScript>().language == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> repeatedly to fill the bar.";
-                                        else if (currentData.GetComponent<CurrentDataScript>().language == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=336> repetidamente para llenar la barra.";
-                                        else actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=336> behin eta berriz barra betetzeko.";
+                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_flee_action");
                                         fleeTime = Time.fixedTime;
                                         playerChoosingAction = false;
                                         player.GetComponent<Animator>().SetFloat("Speed", -0.5f);
@@ -1245,21 +1074,8 @@ public class BattleController : MonoBehaviour
                             //When we open the change action menu we select the companion using up or down and accept using space
                             else
                             {
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "An adventurer that can attack using his weapons or look at the enemies to know their weaknesses.";
-                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "A tanking expert wizard that can also attack using his magic spells.";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Un aventurero que puede atacar usando sus armas o fijarse en los enemigos para ver sus puntos débiles.";
-                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Un mago experto en recibir golpes que también puede atacar usando sus hechizos mágicos.";
-                                }
-                                else
-                                {
-                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Bere armak erabiliz eraso ahal duen edo etsaien puntu debilak ikus ditzakeen abenturazalea.";
-                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Kolpeak jasotzen aditua den eta bere magiak erabiliz eraso ahal duen magoa.";
-                                }
+                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_changepartner_adventurer");
+                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_changepartner_wizard");
                                 if ((menuSelectionPos < currentData.GetComponent<CurrentDataScript>().unlockedCompanions - 1) && Input.GetKeyDown(KeyCode.DownArrow))
                                 {
                                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
@@ -1336,21 +1152,8 @@ public class BattleController : MonoBehaviour
                                 {
                                     player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                                     companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
-                                    if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                    {
-                                        if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Adventurer";
-                                        else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
-                                    }
-                                    else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                    {
-                                        if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Aventurero";
-                                        else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago";
-                                    }
-                                    else
-                                    {
-                                        if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Abenturazalea";
-                                        else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Magoa";
-                                    }
+                                    if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_name");
+                                    else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_name");
                                 }
                             }
                             else
@@ -1359,21 +1162,8 @@ public class BattleController : MonoBehaviour
                                 {
                                     player.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                                     companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
-                                    if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                    {
-                                        if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Adventurer";
-                                        else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
-                                    }
-                                    else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                    {
-                                        if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Aventurero";
-                                        else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago";
-                                    }
-                                    else
-                                    {
-                                        if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Abenturazalea";
-                                        else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Magoa";
-                                    }
+                                    if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_name");
+                                    else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_name");
                                 }
                             }
                             //We accept pressing space starting the friendly action we previously selected
@@ -1428,9 +1218,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     player.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
                                     companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
-                                    if (currentData.GetComponent<CurrentDataScript>().language == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
-                                    else if (currentData.GetComponent<CurrentDataScript>().language == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Jugadora";
-                                    else enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Jokalaria";
+                                    enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_name");
                                 }
                             }
                             else
@@ -1439,9 +1227,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     player.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
                                     companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
-                                    if (currentData.GetComponent<CurrentDataScript>().language == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
-                                    else if (currentData.GetComponent<CurrentDataScript>().language == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Jugadora";
-                                    else enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Jokalaria";
+                                    enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_name");
                                 }
                             }
                             //We accept pressing space starting the friendly action we previously selected
@@ -1570,70 +1356,25 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                         else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
                                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                         else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
                                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                     }
                                     else
@@ -1643,24 +1384,9 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                     }
                                 }
@@ -1684,24 +1410,9 @@ public class BattleController : MonoBehaviour
                                 {
                                     enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                     enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                    if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                    {
-                                        if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                        else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                        else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                    }
-                                    else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                    {
-                                        if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                        else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                        else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                    }
-                                    else
-                                    {
-                                        if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                        else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                        else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                    }
+                                    if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                    else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                    else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                 }
                                 if (Input.GetKeyDown(KeyCode.RightArrow))
                                 {
@@ -1711,47 +1422,17 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                         else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
                                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                     }
                                     else if(!enemy1.GetComponent<EnemyTeamScript>().IsAlive())
@@ -1761,24 +1442,9 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                     }                                    
                                 }
@@ -1806,47 +1472,17 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                         else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
                                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                     }
                                     else if(enemy1.GetComponent<EnemyTeamScript>().IsAlive() || enemy2.GetComponent<EnemyTeamScript>().IsAlive())
@@ -1856,24 +1492,9 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                     }
                                 }
@@ -1885,24 +1506,9 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                     }
                                     else if (!enemy1.GetComponent<EnemyTeamScript>().IsAlive() && !enemy2.GetComponent<EnemyTeamScript>().IsAlive())
@@ -1912,24 +1518,9 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                     }
                                 }
@@ -1957,70 +1548,25 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemy3.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                         else if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
                                             enemy2.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                         else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
                                             enemy1.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                                             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                     }
                                     else
@@ -2030,24 +1576,9 @@ public class BattleController : MonoBehaviour
                                         {
                                             enemy4.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                                             enemy.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandit";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Evil Wizard";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "King";
-                                            }
-                                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bandido";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago malvado";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Rey";
-                                            }
-                                            else
-                                            {
-                                                if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Bidelapurra";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago gaiztoa";
-                                                else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Erregea";
-                                            }
+                                            if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                                         }
                                     }
                                 }
@@ -2942,30 +2473,11 @@ public class BattleController : MonoBehaviour
                             if(currentCompanion == 0)
                             {
                                 usingStyle = menuSelectionPos;
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use your sword to hit an enemy twice.";
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Look at the enemy to see their weak points and HP.";
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hit an enemy as many times as you can with your sword.";
-                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use your dragon slayer bow to shoot an arrow to all the grounded enemies.";
-                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Shoot five arrows that will hit the first enemy they find in their way.";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Usa tu espada para atacar a un enemigo dos veces.";
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pega un vistazo al enemigo para ver sus puntos débiles y sus PV.";
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Golpea a un enemigo cuantas veces puedas con tu espada.";
-                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Usa tu arco mata dragones para disparar una flecha a todos los enemigos que estén en el suelo.";
-                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Dispara cinco flechas que golpearán al primer enemigo que encuentren en su camino.";
-                                }
-                                else
-                                {
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Zure ezpata erabili etsai bat bi aldiz jotzeko.";
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Begirada bat bota etsai bati bere puntu debilak eta BP ikusteko.";
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Jo etsai bat ahal duzun bezain beste zure ezpatarekin.";
-                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Erabili zure dragon hiltzaile arkua lurrean dauden etsai guztiei gezi bat jaurtitzeko.";
-                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Aurkituko duten lehen etsaia joko duten bost gezi jaurti.";
-                                }
+                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_sword_description");
+                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_glance_description");
+                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_swordspin_description");
+                                else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_dragonslayerbow_description");
+                                else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_bk-47_description");
                                 if ((menuSelectionPos < currentData.GetComponent<CurrentDataScript>().adventurerLvl + 1) && Input.GetKeyDown(KeyCode.DownArrow))
                                 {
                                     companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
@@ -2980,30 +2492,11 @@ public class BattleController : MonoBehaviour
                                     companionChoosingAction = false;
                                     actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
                                     actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                                    if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                    {
-                                        if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy.";
-                                        else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when <sprite=361> arrives to the <sprite=362>.";
-                                        else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> just before hitting an enemy until you fail to press it in time.";
-                                        else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> until <sprite=360> lights up.";
-                                        else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=336> when the adventurer aims to an objective.";
-                                    }
-                                    else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                    {
-                                        if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pulsa <sprite=336> justo antes de pegar al enemigo.";
-                                        else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=336> cuando <sprite=361> llegue a <sprite=362>.";
-                                        else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pulsa <sprite=336> justo antes de pegar al enemigo hasta que falles.";
-                                        else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=336> hasta que <sprite=360> se ilumine.";
-                                        else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=336> cuando el aventurero apunte a un objetivo.";
-                                    }
-                                    else
-                                    {
-                                        if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=336> justu etsaia jo baino lehen.";
-                                        else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=336> <sprite=361> <sprite=362>ra heltzen denean.";
-                                        else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=336> justu etsaia jo baino lehen.";
-                                        else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=336> <sprite=360> argitu arte.";
-                                        else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=336> abenturazaleak objektibo bati apuntatzen dionean.";
-                                    }
+                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_sword_action");
+                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_glance_action");
+                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_swordspin_action");
+                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_dragonslayerbow_action");
+                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_bk-47_action");
                                     attackType = 0;
                                     selectingEnemyCompanion = true;
                                     enemyName.SetActive(true);
@@ -3017,30 +2510,11 @@ public class BattleController : MonoBehaviour
                             else if (currentCompanion == 1)
                             {
                                 usingStyle = menuSelectionPos;
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Cast a magic ball to hit an enemy.";
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Protect the player using a magic shield and make the wizard tank the damage. If you complete the action command you can block all the damage if you defend correctly.";
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Use you magical powers to hit an enemy several times.";
-                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Create a magical spear and throw it to an enemy.";
-                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Cast an enormous magic ball to damage all the enemies.";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Genera una bola mágica para golpear a un enemigo.";
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Protege al jugador usando un escudo mágico y haz que todo el daño vaya al mago. Si completas el comando de acción puedes bloquear todo el daño si te defiendes correctamente.";
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Usa tus poderes mágicos para golpear a un enemigo varias veces.";
-                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Crea una lanza mágica y lánzasela a un enemigo.";
-                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Genera una bola mágica enorme que dañará a todos los enemigos.";
-                                }
-                                else
-                                {
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Bola magiko bat sortu etsai bat kolpekatzeko.";
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Jokalaria babestu ezkutu magiko bat erabiliz eta magoak jasoko du min guztia. Akzio komandoa ondo betez gero min guztia blokea dezakezu ondo defenditzen bazara.";
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Erabili zure botere magikoak etsai bat hainbat aldiz jotzeko.";
-                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Lantza magiko bat sortu eta jaurti etsai bati.";
-                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Bola magiko erraldoi bat sortu etsai guztiei min eginez.";
-                                }
+                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicball_description");
+                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_barrier_description");
+                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_pulsingmagic_description");
+                                else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicspear_description");
+                                else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_energybomb_description");
 
                                 if ((menuSelectionPos < currentData.GetComponent<CurrentDataScript>().wizardLvl + 1) && Input.GetKeyDown(KeyCode.DownArrow))
                                 {
@@ -3056,30 +2530,11 @@ public class BattleController : MonoBehaviour
                                     companionChoosingAction = false;
                                     actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
                                     actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                                    if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                    {
-                                        if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> when it appears.";
-                                        else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> in sequence.";
-                                        else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=246> repeatedly until you fill the bar.";
-                                        else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press <sprite=198>, <sprite=214>, <sprite=246> or <sprite=230> each time they appear.";
-                                        else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Press or release <sprite=336> when you are said so.";
-                                    }
-                                    else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                    {
-                                        if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=198>, <sprite=214>, <sprite=246> o <sprite=230> cuando aparezca.";
-                                        else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=198>, <sprite=214>, <sprite=246> o <sprite=230> en secuencia.";
-                                        else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=246> repetidamente hasta que llenes la barra.";
-                                        else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona <sprite=198>, <sprite=214>, <sprite=246> o <sprite=230> cada vez que aparezcan.";
-                                        else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Presiona o suelta <sprite=336> cuando se te diga.";
-                                    }
-                                    else
-                                    {
-                                        if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=198>, <sprite=214>, <sprite=246> edo <sprite=230> agertzen denean.";
-                                        else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=198>, <sprite=214>, <sprite=246> edo <sprite=230> sekuentzia jarraituz.";
-                                        else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=246> behin eta berriz barra bete arte.";
-                                        else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu <sprite=198>, <sprite=214>, <sprite=246> edo <sprite=230> agertzen direnean.";
-                                        else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pultsatu edo askatu <sprite=336> esaten zaizunean.";
-                                    }
+                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicball_action");
+                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_barrier_action");
+                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_pulsingmagic_action");
+                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicspear_action");
+                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_energybomb_action");
 
                                     attackType = 0;
                                     enemyName.SetActive(true);
@@ -3091,9 +2546,7 @@ public class BattleController : MonoBehaviour
                                     else if (usingStyle == 1)
                                     {
                                         player.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
-                                        if (currentData.GetComponent<CurrentDataScript>().language == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Player";
-                                        else if (currentData.GetComponent<CurrentDataScript>().language == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Jugadora";
-                                        else enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Jokalaria";
+                                        enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_name");
                                         enemyName.transform.GetChild(1).gameObject.SetActive(false);
                                         enemyName.transform.GetChild(2).gameObject.SetActive(false);
                                         enemyName.transform.GetChild(3).gameObject.SetActive(false);
@@ -3113,24 +2566,9 @@ public class BattleController : MonoBehaviour
                         //We change the item using the arrows and accept pressing space
                         else if (selectingAction == 1)
                         {
-                            if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                            {
-                                if (items[menuSelectionPos + scroll] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Eat this apple to restore 5 HP.";
-                                else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Drink this potion to restore 5 LP.";
-                                else if (items[menuSelectionPos + scroll] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Drink this to resurrect a party member with 10 HP.";
-                            }
-                            else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                            {
-                                if (items[menuSelectionPos + scroll] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Come esta manzana para curarte 5 PV.";
-                                else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Bebe esta poción para recuperar 5 PL.";
-                                else if (items[menuSelectionPos + scroll] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Bébela para resucitar a un compañero con 10 PV.";
-                            }
-                            else
-                            {
-                                if (items[menuSelectionPos + scroll] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Jan sagar hau 5 BP berreskuratzeko.";
-                                else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pozio hau edan 5 AP berreskuratzeko.";
-                                else if (items[menuSelectionPos + scroll] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Pozio hau edan taldekide bat berpizteko.";
-                            }
+                            if (items[menuSelectionPos + scroll] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_apple_description");
+                            else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_lightpotion_description");
+                            else if (items[menuSelectionPos + scroll] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_resurrectionpotion_description");
 
                             if (((menuSelectionPos + scroll) < (currentData.GetComponent<CurrentDataScript>().itemSize() - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
                             {
@@ -3154,22 +2592,8 @@ public class BattleController : MonoBehaviour
                             {
                                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
                                 companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.b, 0.0f);
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Adventurer";
-                                    else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Wizard";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Aventurero";
-                                    else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Mago";
-                                }
-                                else
-                                {
-                                    if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Abenturazalea";
-                                    else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = "Magoa";
-                                }
-
+                                if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_name");
+                                else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_name");
                                 enemyName.transform.GetChild(1).gameObject.SetActive(false);
                                 enemyName.transform.GetChild(2).gameObject.SetActive(false);
                                 enemyName.transform.GetChild(3).gameObject.SetActive(false);
@@ -3177,25 +2601,9 @@ public class BattleController : MonoBehaviour
                                 companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
                                 companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
                                 companionChoosingAction = false;
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    if (items[menuSelectionPos] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to eat the apple.";
-                                    else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to drink the light potion.";
-                                    else if (items[menuSelectionPos] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Select who you want to drink the resurrection potion.";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    if (items[menuSelectionPos] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Elije quién quieres que se coma la manzana.";
-                                    else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Elije quién quieres que beba la poción de luz.";
-                                    else if (items[menuSelectionPos] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Elije quién quieres que beba la poción de resurrección.";
-                                }
-                                else
-                                {
-                                    if (items[menuSelectionPos] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Erabaki zeinek jango duen sagarra.";
-                                    else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Erabaki zeinek edango duen argi pozioa.";
-                                    else if (items[menuSelectionPos] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Erabaki zeinek edango duen berpizkunde pozioa.";
-                                }
-
+                                if (items[menuSelectionPos] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_apple_action");
+                                else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_lightpotion_action");
+                                else if (items[menuSelectionPos] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_resurrectionpotion_action");
                                 selectingCompanion = true;
                                 canSelect = true;
                                 enemyName.SetActive(true);
@@ -3207,24 +2615,9 @@ public class BattleController : MonoBehaviour
                         {
                             if (!changeCompanion)
                             {
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Change your partner with another from your party.";
-                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gain +1 of defence on the next enemy turn.";
-                                    else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Try to flee the battle.";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Cambia tu compañero por otro del grupo.";
-                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Gana +1 de defensa en el próximo turno enemigo.";
-                                    else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Intenta escapar de la pelea.";
-                                }
-                                else
-                                {
-                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Zure taldekidea taldeko beste batez aldatu.";
-                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Defentsa +1 eskuratu hurrengo etsai turnorako.";
-                                    else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Borrokatik ihes egiten saiatu.";
-                                }
+                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_changepartner_description");
+                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_defend_description");
+                                else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_flee_description");
 
                                 if ((menuSelectionPos < 2) && Input.GetKeyDown(KeyCode.DownArrow))
                                 {
