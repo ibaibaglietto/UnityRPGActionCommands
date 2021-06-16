@@ -458,45 +458,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         }
                         if (throwingItemSelecting > 0)
                         {
-                            if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 1)
-                            {
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una manzana que cura 5 puntos de vida.";
-                                else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                            }
-                            else if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 2)
-                            {
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que regenera 5 puntos de luz.";
-                                else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                            }
-                            else if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 3)
-                            {
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que revive al usuario que la tome curándole 10 puntos de vida.";
-                                else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                            }
+                            if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_items_apple");
+                            else if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_items_lightpotion");
+                            else if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 3) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_items_resurrectpotion");
                         }
                         else
                         {
-                            if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 1)
-                            {
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una manzana que cura 5 puntos de vida.";
-                                else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                            }
-                            else if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 2)
-                            {
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que regenera 5 puntos de luz.";
-                                else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                            }
-                            else if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 3)
-                            {
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que revive al usuario que la tome curándole 10 puntos de vida.";
-                                else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                            }
+                            if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_items_apple");
+                            else if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_items_lightpotion");
+                            else if (pickedObject.GetComponent<WorldObjectScript>().GetId() == 3) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_items_resurrectpotion");
                         }
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow) && (throwingItemSelecting < 6 || throwItemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().itemSize()))
@@ -511,24 +481,9 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             throwingItemSelecting += 1;
                             pickItemUI.transform.GetChild(4).GetComponent<Animator>().SetInteger("Pos", throwingItemSelecting);
                         }
-                        if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 1)
-                        {
-                            if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                            else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una manzana que cura 5 puntos de vida.";
-                            else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                        }
-                        else if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 2)
-                        {
-                            if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                            else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que regenera 5 puntos de luz.";
-                            else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                        }
-                        else if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 3)
-                        {
-                            if (currentData.GetComponent<CurrentDataScript>().language == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                            else if (currentData.GetComponent<CurrentDataScript>().language == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "Una poción que revive al usuario que la tome curándole 10 puntos de vida.";
-                            else pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = "";
-                        }                                              
+                        if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 1) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_items_apple");
+                        else if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 2) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_items_lightpotion");
+                        else if (currentData.GetComponent<CurrentDataScript>().items[throwingItemSelecting + throwItemUIScroll - 1] == 3) pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_items_resurrectpotion");
                     }
                     if (Input.GetKeyDown(KeyCode.X))
                     {
@@ -567,61 +522,22 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             {
                                 pickedObject.GetComponent<SpriteRenderer>().sprite = appleItem;
                                 pickedObject.GetComponent<WorldObjectScript>().SetId(1);
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    pickedObject.GetComponent<WorldObjectScript>().nameEnglish = "";
-                                    pickedObject.GetComponent<WorldObjectScript>().descriptionEnglish = "";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    pickedObject.GetComponent<WorldObjectScript>().nameSpanish = "Manzana";
-                                    pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish = "Una manzana que cura 5 puntos de vida.";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 3)
-                                {
-                                    pickedObject.GetComponent<WorldObjectScript>().nameBasque = "";
-                                    pickedObject.GetComponent<WorldObjectScript>().descriptionBasque = "";
-                                }
+                                pickedObject.GetComponent<WorldObjectScript>().itemName = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_apple_name");
+                                pickedObject.GetComponent<WorldObjectScript>().itemDescription = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_items_apple");
                             }
                             else if (thrownItemID == 2)
                             {
                                 pickedObject.GetComponent<SpriteRenderer>().sprite = lightPotionItem;
                                 pickedObject.GetComponent<WorldObjectScript>().SetId(2);
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    pickedObject.GetComponent<WorldObjectScript>().nameEnglish = "";
-                                    pickedObject.GetComponent<WorldObjectScript>().descriptionEnglish = "";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    pickedObject.GetComponent<WorldObjectScript>().nameSpanish = "Poción de luz";
-                                    pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish = "Una poción que regenera 5 puntos de luz.";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 3)
-                                {
-                                    pickedObject.GetComponent<WorldObjectScript>().nameBasque = "";
-                                    pickedObject.GetComponent<WorldObjectScript>().descriptionBasque = "";
-                                }
+                                pickedObject.GetComponent<WorldObjectScript>().itemName = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_lightpotion_name");
+                                pickedObject.GetComponent<WorldObjectScript>().itemDescription = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_items_lightpotion");
                             }
                             else if (thrownItemID == 3)
                             {
                                 pickedObject.GetComponent<SpriteRenderer>().sprite = resurrectPotionItem;
                                 pickedObject.GetComponent<WorldObjectScript>().SetId(3);
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1)
-                                {
-                                    pickedObject.GetComponent<WorldObjectScript>().nameEnglish = "";
-                                    pickedObject.GetComponent<WorldObjectScript>().descriptionEnglish = "";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-                                {
-                                    pickedObject.GetComponent<WorldObjectScript>().nameSpanish = "Poción de resurrección";
-                                    pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish = "Una poción que revive al usuario que la tome curándole 10 puntos de vida.";
-                                }
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 3)
-                                {
-                                    pickedObject.GetComponent<WorldObjectScript>().nameBasque = "";
-                                    pickedObject.GetComponent<WorldObjectScript>().descriptionBasque = "";
-                                }
+                                pickedObject.GetComponent<WorldObjectScript>().itemName = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_resurrectionpotion_name");
+                                pickedObject.GetComponent<WorldObjectScript>().itemDescription = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_items_resurrectpotion");
                             }
                         }
                         throwItemUIScroll = 0;
@@ -2673,15 +2589,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
             {
                 pickedObject.transform.position = new Vector3(transform.position.x + 0.5f, transform.position.y + 0.52f, transform.position.z);
                 pickedObject.transform.localScale = new Vector3(0.15f, 0.15f, 1.0f);
-                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "¡Has recogido " + pickedObject.GetComponent<WorldObjectScript>().nameSpanish + "!";
-                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish;
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_1") + pickedObject.GetComponent<WorldObjectScript>().itemName + currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_2");
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().itemDescription;
             }
             else if (pickedObject.tag == "Item")
             {
                 pickedObject.transform.position = new Vector3(transform.position.x + 0.5f, transform.position.y + 0.52f, transform.position.z);
                 pickedObject.transform.localScale = new Vector3(0.2f, 0.2f, 1.0f);
-                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "¡Has recogido " + pickedObject.GetComponent<WorldObjectScript>().nameSpanish + "!";
-                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish;
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_1") + pickedObject.GetComponent<WorldObjectScript>().itemName + currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_2");
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().itemDescription;
                 itemRight = true;
             }
         }
@@ -2692,15 +2608,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
             {
                 pickedObject.transform.position = new Vector3(transform.position.x - 0.5f, transform.position.y + 0.52f, transform.position.z);
                 pickedObject.transform.localScale = new Vector3(0.15f, 0.15f, 1.0f);
-                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "¡Has recogido " + pickedObject.GetComponent<WorldObjectScript>().nameSpanish + "!";
-                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish;
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_1") + pickedObject.GetComponent<WorldObjectScript>().itemName + currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_2");
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().itemDescription;
             }
             else if (pickedObject.tag == "Item")
             {
                 pickedObject.transform.position = new Vector3(transform.position.x - 0.5f, transform.position.y + 0.52f, transform.position.z);
                 pickedObject.transform.localScale = new Vector3(0.2f, 0.2f, 1.0f);
-                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "¡Has recogido " + pickedObject.GetComponent<WorldObjectScript>().nameSpanish + "!";
-                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().descriptionSpanish;
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_1") + pickedObject.GetComponent<WorldObjectScript>().itemName + currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_2");
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().itemDescription;
                 itemRight = false;
             }
         }

@@ -1,4 +1,5 @@
 combat_player_name$Jokalaria
+combat_player_sword_name$Ezpata
 combat_player_sword_normalsword_name$Ezpata normala
 combat_player_sword_normalsword_lp$
 combat_player_sword_normalsword_description$Zure ezpata erabili etsai bat bi aldiz jotzeko.
@@ -11,6 +12,7 @@ combat_player_sword_multistrikesword_name$Multieraso ezpata
 combat_player_sword_multistrikesword_lp$3 AP
 combat_player_sword_multistrikesword_description$Jo etsai bat ahal duzun bezain beste zure ezpatarekin.
 combat_player_sword_multistrikesword_action$Pultsatu <sprite=336> justu etsaia jo baino lehen huts egin arte.
+combat_player_shuriken_name$Shuriken
 combat_player_shuriken_normalshuriken_name$Shuriken normala
 combat_player_shuriken_normalshuriken_lp$
 combat_player_shuriken_normalshuriken_description$Jaurti zure shurikena etsai bati
@@ -23,6 +25,7 @@ combat_player_shuriken_fireshuriken_name$Suzko shurikena
 combat_player_shuriken_fireshuriken_lp$3 AP
 combat_player_shuriken_fireshuriken_description$Jaurti suzko shuriken bat lurrean dauden etsai guztiei.
 combat_player_shuriken_fireshuriken_action$Pultsatu <sprite=214> eta <sprite=246> behin eta berriz <sprite=360> argitu arte.
+combat_player_special_name$Berezia
 combat_player_special_soulmusic_name$Soul musika
 combat_player_special_soulmusic_sp$1 AR
 combat_player_special_soulmusic_description$Soul musika jo etsaiak lokartzeko.
@@ -47,6 +50,7 @@ combat_player_special_lightup_name$Piztu
 combat_player_special_lightup_sp$2 AR
 combat_player_special_lightup_description$Eraso baterako boterea bildu. Behin baino gehiagotan erabili ahal da jarraieran.
 combat_player_special_lightup_action$Erabili <sprite=198>, <sprite=214>, <sprite=246> eta <sprite=230> arima mugitzeko eta arima zatiak biltzeko. <sprite=336>  pultsatuz behin eta berriz ikus dezakezun area handitu dezakezu.
+combat_attack_name$Eraso
 combat_adventurer_name$Abenturazalea
 combat_adventurer_attack_sword_name$Ezpata
 combat_adventurer_attack_sword_lp$
@@ -89,6 +93,7 @@ combat_wizard_attack_energybomb_name$Energia bonba
 combat_wizard_attack_energybomb_lp$9 AP
 combat_wizard_attack_energybomb_description$Bola magiko erraldoi bat sortu etsai guztiei min eginez.
 combat_wizard_attack_energybomb_action$Pultsatu edo askatu <sprite=336> esaten zaizunean.
+combat_item_name$Objektuak
 combat_item_apple_name$Sagarra
 combat_item_apple_description$Jan sagar hau 5 BP berreskuratzeko.
 combat_item_apple_action$Erabaki zeinek jango duen sagarra.
@@ -98,6 +103,7 @@ combat_item_lightpotion_action$Erabaki zeinek edango duen argi pozioa.
 combat_item_resurrectionpotion_name$Berpizkunde pozioa
 combat_item_resurrectionpotion_description$Pozio hau edan taldekide bat berpizteko.
 combat_item_resurrectionpotion_action$Erabaki zeinek edango duen berpizkunde pozioa.
+combat_other_name$Bestelakoak
 combat_other_changepartner_name$Taldekidez aldatu
 combat_other_changepartner_description$Zure taldekidea taldeko beste batez aldatu.
 combat_other_changepartner_adventurer$Bere armak erabiliz eraso ahal duen edo etsaien puntu debilak ikus ditzakeen abenturazalea.
@@ -116,11 +122,15 @@ combat_glance_evilwizard_1$Mago honek botere magikoak erabiltzen ditu bere etsai
 combat_glance_evilwizard_2$BP: 4\nMina: 2\nDefentsa: 0
 combat_glance_king_1$Erregeak bere maza eta teleportazio botereak erabiliz erasotzen du. Kontuz ibili bere teleportazio erasoarekin, hau erabili baino lehen prestatu egin beharko da, beraz ondo bigilatu. 
 combat_glance_king_2$BP: 40\nMina: 3\nDefentsa: 0
+combat_victory_1$
+combat_victory_2$experientzia puntu irabazi dituzu!
 combat_lvlup_title$NIBELA IGO DUZU!
 combat_lvlup_select$Erabaki zein nahi duzun hobetzea! 
 combat_lvlup_hp$Gehitu 5 zure BP maximoari! Ideala kolpe gehiago jasan ahal izateko.
 combat_lvlup_lp$Gehitu 5 zure AP maximoari! Perfektua abilitate asko erabiltzea gustuko baduzu.
 combat_lvlup_gp$Gehitu 3 zure GP maximoari! Erabilgarria gema gehiago erabili nahi badituzu.
+world_pickup_1$
+world_pickup_2$ aurkitu duzu!
 world_rest_main_player$Estatistikak begiratu, gemak aldatu edo zer objektu dituzun egiaztatu.
 world_rest_main_save$Partida gorde.
 world_rest_main_change$Taldekidez aldatu.

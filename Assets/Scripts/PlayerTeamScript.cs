@@ -206,59 +206,22 @@ public class PlayerTeamScript : MonoBehaviour
             companionAttackText = GameObject.Find("AttackActionImageText").GetComponent<Text>();
             companionItemsText = GameObject.Find("ConsumablesActionImageText").GetComponent<Text>();
             companionOtherText = GameObject.Find("OtherActionImageText").GetComponent<Text>();
-        }        
-        //We translate the texts
-        if (currentData.GetComponent<CurrentDataScript>().language == 1)
-        {
-            if (playerTeamType == 0)
-            {
-                playerSwordText.text = "Sword";
-                playerShurikenText.text = "Shuriken";
-                playerItemsText.text = "Items";
-                playerSpecialText.text = "Special";
-                playerOtherText.text = "Other";
-            }
-            else
-            {
-                companionAttackText.text = "Attack";
-                companionItemsText.text = "Items";
-                companionOtherText.text = "Other";
-            }
         }
-        else if (currentData.GetComponent<CurrentDataScript>().language == 2)
+        //We translate the texts
+        if (playerTeamType == 0)
         {
-            if (playerTeamType == 0)
-            {
-                playerSwordText.text = "Espada";
-                playerShurikenText.text = "Shuriken";
-                playerItemsText.text = "Objetos";
-                playerSpecialText.text = "Especial";
-                playerOtherText.text = "Otros";
-            }
-            else
-            {
-                companionAttackText.text = "Atacar";
-                companionItemsText.text = "Objetos";
-                companionOtherText.text = "Otros";
-            }
+            playerSwordText.text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_sword_name");
+            playerShurikenText.text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_shuriken_name");
+            playerItemsText.text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_name");
+            playerSpecialText.text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_special_name");
+            playerOtherText.text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_name");
         }
         else
         {
-            if (playerTeamType == 0)
-            {
-                playerSwordText.text = "Ezpata";
-                playerShurikenText.text = "Shuriken";
-                playerItemsText.text = "Objektuak";
-                playerSpecialText.text = "Berezia";
-                playerOtherText.text = "Bestelakoak";
-            }
-            else
-            {
-                companionAttackText.text = "Eraso";
-                companionItemsText.text = "Objektuak";
-                companionOtherText.text = "Bestelakoak";
-            }
-        }
+            companionAttackText.text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_attack_name");
+            companionItemsText.text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_name");
+            companionOtherText.text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_name");
+        }        
     }
     private void Start()
     {

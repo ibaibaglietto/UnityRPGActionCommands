@@ -13,13 +13,9 @@ public class WorldObjectScript : MonoBehaviour
     //The id of the gem
     [SerializeField] private int id;
     //The name of the gem in every language
-    public string nameEnglish;
-    public string nameSpanish;
-    public string nameBasque;
+    public string itemName;
     //The description of the gem in every language
-    public string descriptionEnglish;
-    public string descriptionSpanish;
-    public string descriptionBasque;
+    public string itemDescription;
 
     void Start()
     {

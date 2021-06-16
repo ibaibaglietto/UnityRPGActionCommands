@@ -1,4 +1,5 @@
 combat_player_name$Jugador
+combat_player_sword_name$Espada
 combat_player_sword_normalsword_name$Espada normal
 combat_player_sword_normalsword_lp$
 combat_player_sword_normalsword_description$Usa tu espada para atacar a un enemigo dos veces.
@@ -11,6 +12,7 @@ combat_player_sword_multistrikesword_name$Espada de multiataque
 combat_player_sword_multistrikesword_lp$3 PL
 combat_player_sword_multistrikesword_description$Golpea a un enemigo cuantas veces puedas con tu espada.
 combat_player_sword_multistrikesword_action$Pulsa <sprite=336> justo antes de pegar al enemigo hasta que falles.
+combat_player_shuriken_name$Shuriken
 combat_player_shuriken_normalshuriken_name$Shuriken normal
 combat_player_shuriken_normalshuriken_lp$
 combat_player_shuriken_normalshuriken_description$Lanza tu shuriken a un enemigo.
@@ -23,30 +25,32 @@ combat_player_shuriken_fireshuriken_name$Shuriken de fuego
 combat_player_shuriken_fireshuriken_lp$3 PL
 combat_player_shuriken_fireshuriken_description$Lanza un shuriken de fuego a todos los enemigos en el suelo.
 combat_player_shuriken_fireshuriken_action$Presiona <sprite=214> y <sprite=246> repetidamente hasta que <sprite=360> se ilumine.
-combat_player_special_soulmusic_name$Música soul
+combat_player_special_name$Especial
+combat_player_special_soulmusic_name$MÃºsica soul
 combat_player_special_soulmusic_sp$1 PA
-combat_player_special_soulmusic_description$Toca música soul para dormir a los enemigos.
+combat_player_special_soulmusic_description$Toca mÃºsica soul para dormir a los enemigos.
 combat_player_special_soulmusic_action$Presiona <sprite=198>, <sprite=214>, <sprite=246> o <sprite=230> cuando aparezcan.
-combat_player_special_regeneration_name$Regeneración
+combat_player_special_regeneration_name$RegeneraciÃ³n
 combat_player_special_regeneration_sp$2 PA
 combat_player_special_regeneration_description$Regenera algunos de los PV y PL de tu equipo.
 combat_player_special_regeneration_action$Atraviesa los aros usando <sprite=198>, <sprite=214>, <sprite=246> y <sprite=230> para moverte.
 combat_player_special_lightning_name$Rayo
 combat_player_special_lightning_sp$3 PA
 combat_player_special_lightning_description$Lanza rayos a los enemigos.
-combat_player_special_lightning_action$Presiona <sprite=336> cuando el alma amarilla este sobre un enemigo para hacerle daño. Puedes lanzar rayos hasta que vuelva.
+combat_player_special_lightning_action$Presiona <sprite=336> cuando el alma amarilla este sobre un enemigo para hacerle daÃ±o. Puedes lanzar rayos hasta que vuelva.
 combat_player_special_lifesteal_name$Robo de vida
 combat_player_special_lifesteal_sp$3 PA
-combat_player_special_lifesteal_description$Gana robo de vida, curándote dañando a los enemigos.
-combat_player_special_lifesteal_action$Reúne el mayor número de almas rojas que puedas usando <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> para moverte.
+combat_player_special_lifesteal_description$Gana robo de vida, curÃ¡ndote daÃ±ando a los enemigos.
+combat_player_special_lifesteal_action$ReÃºne el mayor nÃºmero de almas rojas que puedas usando <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> para moverte.
 combat_player_special_ghost_name$Fantasma
 combat_player_special_ghost_sp$3 PA
 combat_player_special_ghost_description$Esquiva todos los ataques enemigos por algunos turnos.
 combat_player_special_ghost_action$Usa <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> para esquivar las paredes mientras el alma desaparece.
 combat_player_special_lightup_name$Encenderse
 combat_player_special_lightup_sp$2 PA
-combat_player_special_lightup_description$Gana poder para un ataque. Se puede usar más de una vez seguida.
-combat_player_special_lightup_action$Usa <sprite=198>, <sprite=214>, <sprite=246> y <sprite=230> para mover el alma y recolectar los trozos de alma. Puedes incrementar el área de visión presionando <sprite=336> repetidamente.
+combat_player_special_lightup_description$Gana poder para un ataque. Se puede usar mÃ¡s de una vez seguida.
+combat_player_special_lightup_action$Usa <sprite=198>, <sprite=214>, <sprite=246> y <sprite=230> para mover el alma y recolectar los trozos de alma. Puedes incrementar el Ã¡rea de visiÃ³n presionando <sprite=336> repetidamente.
+combat_attack_name$Atacar
 combat_adventurer_name$Aventurero
 combat_adventurer_attack_sword_name$Espada
 combat_adventurer_attack_sword_lp$
@@ -54,7 +58,7 @@ combat_adventurer_attack_sword_description$Usa tu espada para atacar a un enemig
 combat_adventurer_attack_sword_action$Pulsa <sprite=336> justo antes de pegar al enemigo.
 combat_adventurer_attack_glance_name$Vistazo
 combat_adventurer_attack_glance_lp$
-combat_adventurer_attack_glance_description$Pega un vistazo al enemigo para ver sus puntos débiles y sus PV.
+combat_adventurer_attack_glance_description$Pega un vistazo al enemigo para ver sus puntos dÃ©biles y sus PV.
 combat_adventurer_attack_glance_action$Presiona <sprite=336> cuando <sprite=361> llegue a <sprite=362>.
 combat_adventurer_attack_swordspin_name$Espada giratoria
 combat_adventurer_attack_swordspin_lp$3 PL
@@ -62,48 +66,50 @@ combat_adventurer_attack_swordspin_description$Golpea a un enemigo cuantas veces
 combat_adventurer_attack_swordspin_action$Pulsa <sprite=336> justo antes de pegar al enemigo hasta que falles.
 combat_adventurer_attack_dragonslayerbow_name$Arco mata dragones
 combat_adventurer_attack_dragonslayerbow_lp$4 PL
-combat_adventurer_attack_dragonslayerbow_description$Usa tu arco mata dragones para disparar una flecha a todos los enemigos que estén en el suelo.
+combat_adventurer_attack_dragonslayerbow_description$Usa tu arco mata dragones para disparar una flecha a todos los enemigos que estÃ©n en el suelo.
 combat_adventurer_attack_dragonslayerbow_action$Presiona <sprite=336> hasta que <sprite=360> se ilumine.
 combat_adventurer_attack_bk-47_name$BK-47
 combat_adventurer_attack_bk-47_lp$7 PL
-combat_adventurer_attack_bk-47_description$Dispara cinco flechas que golpearán al primer enemigo que encuentren en su camino.
+combat_adventurer_attack_bk-47_description$Dispara cinco flechas que golpearÃ¡n al primer enemigo que encuentren en su camino.
 combat_adventurer_attack_bk-47_action$Presiona <sprite=336> cuando el aventurero apunte a un objetivo.
 combat_wizard_name$Mago
-combat_wizard_attack_magicball_name$Bola mágica
+combat_wizard_attack_magicball_name$Bola mÃ¡gica
 combat_wizard_attack_magicball_lp$
-combat_wizard_attack_magicball_description$Genera una bola mágica para golpear a un enemigo.
+combat_wizard_attack_magicball_description$Genera una bola mÃ¡gica para golpear a un enemigo.
 combat_wizard_attack_magicball_action$Presiona <sprite=198>, <sprite=214>, <sprite=246> o <sprite=230> cuando aparezca.
 combat_wizard_attack_barrier_name$Barrera
 combat_wizard_attack_barrier_lp$1 PL
-combat_wizard_attack_barrier_description$Protege al jugador usando un escudo mágico y haz que todo el daño vaya al mago. Si completas el comando de acción correctamente puedes bloquear todo el daño si te defiendes correctamente.
+combat_wizard_attack_barrier_description$Protege al jugador usando un escudo mÃ¡gico y haz que todo el daÃ±o vaya al mago. Si completas el comando de acciÃ³n correctamente puedes bloquear todo el daÃ±o si te defiendes correctamente.
 combat_wizard_attack_barrier_action$Presiona <sprite=198>, <sprite=214>, <sprite=246> o <sprite=230> en secuencia.
 combat_wizard_attack_pulsingmagic_name$Magia pulsante
 combat_wizard_attack_pulsingmagic_lp$3 PL
-combat_wizard_attack_pulsingmagic_description$Usa tus poderes mágicos para golpear a un enemigo varias veces.
+combat_wizard_attack_pulsingmagic_description$Usa tus poderes mÃ¡gicos para golpear a un enemigo varias veces.
 combat_wizard_attack_pulsingmagic_action$Presiona <sprite=246> repetidamente hasta que llenes la barra.
-combat_wizard_attack_magicspear_name$Lanza mágica 
+combat_wizard_attack_magicspear_name$Lanza mÃ¡gica 
 combat_wizard_attack_magicspear_lp$4 PL
-combat_wizard_attack_magicspear_description$Crea una lanza mágica y lánzasela a un enemigo.
+combat_wizard_attack_magicspear_description$Crea una lanza mÃ¡gica y lÃ¡nzasela a un enemigo.
 combat_wizard_attack_magicspear_action$Presiona <sprite=198>, <sprite=214>, <sprite=246> o <sprite=230> cada vez que aparezcan.
-combat_wizard_attack_energybomb_name$Bomba de energía
+combat_wizard_attack_energybomb_name$Bomba de energÃ­a
 combat_wizard_attack_energybomb_lp$9 PL
-combat_wizard_attack_energybomb_description$Genera una bola mágica enorme que dañará a todos los enemigos.
+combat_wizard_attack_energybomb_description$Genera una bola mÃ¡gica enorme que daÃ±arÃ¡ a todos los enemigos.
 combat_wizard_attack_energybomb_action$Presiona o suelta <sprite=336> cuando se te diga.
+combat_item_name$Objetos
 combat_item_apple_name$Manzana
 combat_item_apple_description$Come esta manzana para curarte 5 PV.
-combat_item_apple_action$Elije quién quieres que se coma la manzana.
-combat_item_lightpotion_name$Poción de luz
-combat_item_lightpotion_description$Bebe esta poción para recuperar 5 PL.
-combat_item_lightpotion_action$Elije quién quieres que beba la poción de luz.
-combat_item_resurrectionpotion_name$Poción de resurrección
-combat_item_resurrectionpotion_description$Bébela para resucitar a un compañero con 10 PV.
-combat_item_resurrectionpotion_action$Elije quién quieres que beba la poción de resurrección.
-combat_other_changepartner_name$Cambiar de compañero
-combat_other_changepartner_description$Cambia tu compañero por otro del grupo.
-combat_other_changepartner_adventurer$Un aventurero que puede atacar usando sus armas o fijarse en los enemigos para ver sus puntos débiles.
-combat_other_changepartner_wizard$Un mago experto en recibir golpes que también puede atacar usando sus hechizos mágicos.
+combat_item_apple_action$Elije quiÃ©n quieres que se coma la manzana.
+combat_item_lightpotion_name$PociÃ³n de luz
+combat_item_lightpotion_description$Bebe esta pociÃ³n para recuperar 5 PL.
+combat_item_lightpotion_action$Elije quiÃ©n quieres que beba la pociÃ³n de luz.
+combat_item_resurrectionpotion_name$PociÃ³n de resurrecciÃ³n
+combat_item_resurrectionpotion_description$BÃ©bela para resucitar a un compaÃ±ero con 10 PV.
+combat_item_resurrectionpotion_action$Elije quiÃ©n quieres que beba la pociÃ³n de resurrecciÃ³n.
+combat_other_name$Otros
+combat_other_changepartner_name$Cambiar de compaÃ±ero
+combat_other_changepartner_description$Cambia tu compaÃ±ero por otro del grupo.
+combat_other_changepartner_adventurer$Un aventurero que puede atacar usando sus armas o fijarse en los enemigos para ver sus puntos dÃ©biles.
+combat_other_changepartner_wizard$Un mago experto en recibir golpes que tambiÃ©n puede atacar usando sus hechizos mÃ¡gicos.
 combat_other_defend_name$Defenderse
-combat_other_defend_description$Gana +1 de defensa en el próximo turno enemigo.
+combat_other_defend_description$Gana +1 de defensa en el prÃ³ximo turno enemigo.
 combat_other_flee_name$Huir
 combat_other_flee_description$Intenta escapar de la pelea.
 combat_other_flee_action$Presiona <sprite=336> repetidamente para llenar la barra.
@@ -111,33 +117,37 @@ combat_enemy_bandit$Bandido
 combat_enemy_evilwizard$Mago malvado
 combat_enemy_king$Rey
 combat_glance_bandit_1$Este bandido usa su espada para dar un potente golpe.
-combat_glance_bandit_2$PV: 4\nDaño: 2\nDefensa: 0
-combat_glance_evilwizard_1$Este mago usa sus poderes mágicos para quemar a sus enemigos.
-combat_glance_evilwizard_2$PV: 4\nDaño: 2\nDefensa: 0
-combat_glance_king_1$El rey ataca usando su maza y sus poderes de teleportación. Ten cuidado con su ataque de teleportación, tendrá que prepararse antes de hacerlo, así que mantenlo vigilado.
-combat_glance_king_2$PV: 40\nDaño: 3\nDefensa: 0
-combat_lvlup_title$¡SUBES DE NIVEL!
-combat_lvlup_select$¡Selecciona cuál quieres mejorar!
-combat_lvlup_hp$¡Incrementa tus PV en 5! Ideal para poder aguantar más daño.
-combat_lvlup_lp$¡Incrementa tus PL en 5! Perfecto si te gusta usar habilidades de forma habitual.
-combat_lvlup_gp$¡Incrementa tus PG en 3! Útil si quieres usar más gemas.
-world_rest_main_player$Mira las estadísticas, cambia las gemas o comprueba tus objetos.
+combat_glance_bandit_2$PV: 4\nDaÃ±o: 2\nDefensa: 0
+combat_glance_evilwizard_1$Este mago usa sus poderes mÃ¡gicos para quemar a sus enemigos.
+combat_glance_evilwizard_2$PV: 4\nDaÃ±o: 2\nDefensa: 0
+combat_glance_king_1$El rey ataca usando su maza y sus poderes de teleportaciÃ³n. Ten cuidado con su ataque de teleportaciÃ³n, tendrÃ¡ que prepararse antes de hacerlo, asÃ­ que mantenlo vigilado.
+combat_glance_king_2$PV: 40\nDaÃ±o: 3\nDefensa: 0
+combat_victory_1$Â¡Has ganado
+combat_victory_2$puntos de experiencia!
+combat_lvlup_title$Â¡SUBES DE NIVEL!
+combat_lvlup_select$Â¡Selecciona cuÃ¡l quieres mejorar!
+combat_lvlup_hp$Â¡Incrementa tus PV en 5! Ideal para poder aguantar mÃ¡s daÃ±o.
+combat_lvlup_lp$Â¡Incrementa tus PL en 5! Perfecto si te gusta usar habilidades de forma habitual.
+combat_lvlup_gp$Â¡Incrementa tus PG en 3! Ãštil si quieres usar mÃ¡s gemas.
+world_pickup_1$Has encontrado 
+world_pickup_2$!
+world_rest_main_player$Mira las estadÃ­sticas, cambia las gemas o comprueba tus objetos.
 world_rest_main_save$Guarda la partida.
-world_rest_main_change$Cambia de compañero.
-world_rest_player_stats$Mira las estadísticas del jugador.
+world_rest_main_change$Cambia de compaÃ±ero.
+world_rest_player_stats$Mira las estadÃ­sticas del jugador.
 world_rest_player_gems$Cambia las gemas equipadas.
 world_rest_player_items$Comprueba tus objetos.
-world_rest_stats$Aquí puedes ver las estadísticas del jugador, desde los puntos de alma disponibles en el momento hasta la experiencia y las monedas.
-world_rest_gems_lightsword$Permite al jugador usar la espada de luz, un poderoso ataque de un único golpe que cuesta 2 PL.
+world_rest_stats$AquÃ­ puedes ver las estadÃ­sticas del jugador, desde los puntos de alma disponibles en el momento hasta la experiencia y las monedas.
+world_rest_gems_lightsword$Permite al jugador usar la espada de luz, un poderoso ataque de un Ãºnico golpe que cuesta 2 PL.
 world_rest_gems_multistrikesword$Permite al jugador usar la espada de multiataque, un ataque que golpea repetidamente a un enemigo por 3 PL.
 world_rest_gems_lightshuriken$Permite al jugador usar el shuriken de luz, con el que puede lanzar un shuriken con poder de luz que cuesta 2 PL.
-world_rest_gems_fireshuriken$Permite al jugador usar el shuriken de fuego, con el que puede dañar a todos los enemigos que se encuentran en el suelo por 3 PL.
+world_rest_gems_fireshuriken$Permite al jugador usar el shuriken de fuego, con el que puede daÃ±ar a todos los enemigos que se encuentran en el suelo por 3 PL.
 world_rest_gems_hpup$Aumenta los puntos de vida del jugador en 5.
 world_rest_gems_lpup$Aumenta los puntos de luz del jugador en 5.
-world_rest_gems_comphpup$Aumenta los puntos de vida de los compañeros en 5.
+world_rest_gems_comphpup$Aumenta los puntos de vida de los compaÃ±eros en 5.
 world_rest_items_apple$Una manzana que cura 5 puntos de vida.
-world_rest_items_lightpotion$Una poción que regenera 5 puntos de luz.
-world_rest_items_resurrectpotion$Una poción que revive al usuario que la tome curándole 10 puntos de vida.
-world_rest_companions_adventurer$Un aventurero que puede atacar usando sus armas o fijarse en los enemigos para ver sus puntos débiles.
-world_rest_companions_wizard$Un mago experto en recibir golpes que también puede atacar usando sus hechizos mágicos.
-adventurer_explanation_TestScene2$Esta es la zona de testeo principal. Es un poco rara, pero sirve para lo que se creó.
+world_rest_items_lightpotion$Una pociÃ³n que regenera 5 puntos de luz.
+world_rest_items_resurrectpotion$Una pociÃ³n que revive al usuario que la tome curÃ¡ndole 10 puntos de vida.
+world_rest_companions_adventurer$Un aventurero que puede atacar usando sus armas o fijarse en los enemigos para ver sus puntos dÃ©biles.
+world_rest_companions_wizard$Un mago experto en recibir golpes que tambiÃ©n puede atacar usando sus hechizos mÃ¡gicos.
+adventurer_explanation_TestScene2$Esta es la zona de testeo principal. Es un poco rara, pero sirve para lo que se creÃ³.

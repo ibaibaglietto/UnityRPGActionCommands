@@ -1,4 +1,5 @@
 combat_player_name$Player
+combat_player_sword_name$Sword
 combat_player_sword_normalsword_name$Normal sword
 combat_player_sword_normalsword_lp$
 combat_player_sword_normalsword_description$Use your sword to hit an enemy twice.
@@ -11,6 +12,7 @@ combat_player_sword_multistrikesword_name$Multistrike sword
 combat_player_sword_multistrikesword_lp$3 LP
 combat_player_sword_multistrikesword_description$Hit an enemy as many times as you can with your sword.
 combat_player_sword_multistrikesword_action$Press <sprite=336> just before hitting an enemy until you fail.
+combat_player_shuriken_name$Shuriken
 combat_player_shuriken_normalshuriken_name$Normal shuriken
 combat_player_shuriken_normalshuriken_lp$
 combat_player_shuriken_normalshuriken_description$Throw your shuriken to an enemy.
@@ -23,6 +25,7 @@ combat_player_shuriken_fireshuriken_name$Fire shuriken
 combat_player_shuriken_fireshuriken_lp$3 LP
 combat_player_shuriken_fireshuriken_description$Throw a fire shuriken to all the grounded enemies.
 combat_player_shuriken_fireshuriken_action$Press <sprite=214> and <sprite=246> repeatedly until <sprite=360> lights up.
+combat_player_special_name$Special
 combat_player_special_soulmusic_name$Soul music
 combat_player_special_soulmusic_sp$1 SP
 combat_player_special_soulmusic_description$Play some soul music to sleep the enemies. That was a silly joke, sorry.
@@ -47,6 +50,7 @@ combat_player_special_lightup_name$Light up
 combat_player_special_lightup_sp$2 SP
 combat_player_special_lightup_description$Power up for one attack. Stackable.
 combat_player_special_lightup_action$Use <sprite=198>, <sprite=214>, <sprite=246> and <sprite=230> to move the soul and collect the soul shards. You can increase the visible area pressing <sprite=336> repeatedly.
+combat_attack_name$Attack
 combat_adventurer_name$Adventurer
 combat_adventurer_attack_sword_name$Sword
 combat_adventurer_attack_sword_lp$
@@ -89,6 +93,7 @@ combat_wizard_attack_energybomb_name$Energy bomb
 combat_wizard_attack_energybomb_lp$9 LP
 combat_wizard_attack_energybomb_description$Cast an enormous magic ball to damage all the enemies.
 combat_wizard_attack_energybomb_action$Press or release <sprite=336> when you are said so.
+combat_item_name$Items
 combat_item_apple_name$Apple
 combat_item_apple_description$Eat this apple to restore 5 HP.
 combat_item_apple_action$Select who you want to eat the apple.
@@ -98,6 +103,7 @@ combat_item_lightpotion_action$Select who you want to drink the light potion.
 combat_item_resurrectionpotion_name$Resurrection potion
 combat_item_resurrectionpotion_description$Drink this to resurrect a party member with 10 HP.
 combat_item_resurrectionpotion_action$Select who you want to drink the resurrection potion.
+combat_other_name$Other
 combat_other_changepartner_name$Change partner
 combat_other_changepartner_description$Change your partner with another from your party.
 combat_other_changepartner_adventurer$An adventurer that can attack using his weapons or look at the enemies to know their weaknesses.
@@ -116,24 +122,28 @@ combat_glance_evilwizard_1$This wizard uses his magical power to burn his enemie
 combat_glance_evilwizard_2$HP: 4\nDamage: 2\nDefence: 0
 combat_glance_king_1$The king attacks using his maze and his teleportation powers. Be careful about his teleportation attack, he'll have to prepare before doing it, so watch him carefully.
 combat_glance_king_2$HP: 40\nDamage: 3\nDefence: 0
+combat_victory_1$You gained
+combat_victory_2$experience points!
 combat_lvlup_title$LEVEL UP!
 combat_lvlup_select$Select one to upgrade!
 combat_lvlup_hp$Increase your HP by 5! Great to tank more damage.
 combat_lvlup_lp$Increase your LP by 5! Perfect if you love to use abilities often.
 combat_lvlup_gp$Increase your GP by 3! Ideal if you want to use more gems.
+world_pickup_1$You found 
+world_pickup_2$!
 world_rest_main_player$Look at your stats, change the gems or check your items.
 world_rest_main_save$Save the game.
 world_rest_main_change$Change partner.
-world_rest_player_stats$Check player’s stats.
+world_rest_player_stats$Check playerâ€™s stats.
 world_rest_player_gems$Change the equipped gems.
 world_rest_player_items$Check your items.
-world_rest_stats$Here you can check player’s stats, from the soul points to the experience and coins.
+world_rest_stats$Here you can check playerâ€™s stats, from the soul points to the experience and coins.
 world_rest_gems_lightsword$Allows the player to use the light sword, a powerful one hit attack that spends 2 LP.
 world_rest_gems_multistrikesword$Allows the player to use the multiattack sword, an attack that continuously hits an enemy for 3 LP.
 world_rest_gems_lightshuriken$Allows the player to use the light shuriken, allowing the player to throw a shuriken with light power that spends 2 LP.
 world_rest_gems_fireshuriken$Allows the player to use the fire shuriken, allowing the player to damage all the grounded enemies for 3 LP.
-world_rest_gems_hpup$Increases player’s maximum health points by 5.
-world_rest_gems_lpup$Increases player’s maximum light points by 5.
+world_rest_gems_hpup$Increases playerâ€™s maximum health points by 5.
+world_rest_gems_lpup$Increases playerâ€™s maximum light points by 5.
 world_rest_gems_comphpup$Increases the health points of every companions by 5.
 world_rest_items_apple$An apple that heals 5 health points.
 world_rest_items_lightpotion$A potion that regenerates 5 light points.
