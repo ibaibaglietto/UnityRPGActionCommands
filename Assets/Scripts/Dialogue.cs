@@ -13,16 +13,13 @@ public class Dialogue
     //A boolean to know if the dialogue is in a shop
     public bool shop;
 
-    //The sentence name
-    public string[] sentenceName;
-
-    //Text in english
-    [TextArea(3, 10)]
-    public string[] sentencesEnglish;
-    //Text in spanish
-    [TextArea(3, 10)]
-    public string[] sentencesSpanish;
-    //Text in basque
-    [TextArea(3, 10)]
-    public string[] sentencesBasque;
+    public string[] sentences;
+     
+    public Dialogue(Transform sp, string[] se)
+    {
+        speaker = sp;
+        prevRest = false;
+        shop = false;
+        sentences = se;
+    }
 }

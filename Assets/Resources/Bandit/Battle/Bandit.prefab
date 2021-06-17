@@ -850,18 +850,9 @@ MonoBehaviour:
     speaker: {fileID: 0}
     prevRest: 0
     shop: 0
-    sentenceName:
-    - 
-    - 
-    sentencesEnglish:
-    - This bandit uses his sword to give a powerful strike.
-    - "HP: 4\r\nDamage: 2\r\nDefence: 0\r"
-    sentencesSpanish:
-    - Este bandido usa su espada para dar un potente golpe.
-    - "PV: 4\r\nDa\xF1o: 2\r\nDefensa: 0\r"
-    sentencesBasque:
-    - 'Bidelapur honek bere ezpata erabiliko du kolpe indartsu bat emateko. '
-    - "BP: 4\r\nMina: 2\r\nDefentsa: 0\r"
+    sentences:
+    - combat_glance_bandit_1
+    - combat_glance_bandit_2
   attackAudio: {fileID: 8300000, guid: fa931e2f5823a5248b806057f1d4f309, type: 3}
   hitAudio: {fileID: 8300000, guid: c346d38432a045e49a699616d460d7b9, type: 3}
   dieAudio: {fileID: 8300000, guid: 495c2cff734db314eb229d71040a1fae, type: 3}

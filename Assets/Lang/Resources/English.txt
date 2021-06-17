@@ -117,11 +117,11 @@ combat_enemy_bandit$Bandit
 combat_enemy_evilwizard$Evil wizard
 combat_enemy_king$King
 combat_glance_bandit_1$This bandit uses his sword to give a powerful strike.
-combat_glance_bandit_2$HP: 4\nDamage: 2\nDefence: 0
+combat_glance_bandit_2$HP: 4 /Damage: 2 /Defence: 0
 combat_glance_evilwizard_1$This wizard uses his magical power to burn his enemies.
-combat_glance_evilwizard_2$HP: 4\nDamage: 2\nDefence: 0
+combat_glance_evilwizard_2$HP: 4 /Damage: 2 /Defence: 0
 combat_glance_king_1$The king attacks using his maze and his teleportation powers. Be careful about his teleportation attack, he'll have to prepare before doing it, so watch him carefully.
-combat_glance_king_2$HP: 40\nDamage: 3\nDefence: 0
+combat_glance_king_2$HP: 40 /Damage: 3 /Defence: 0
 combat_victory_1$You gained
 combat_victory_2$experience points!
 combat_lvlup_title$LEVEL UP!
@@ -129,6 +129,8 @@ combat_lvlup_select$Select one to upgrade!
 combat_lvlup_hp$Increase your HP by 5! Great to tank more damage.
 combat_lvlup_lp$Increase your LP by 5! Perfect if you love to use abilities often.
 combat_lvlup_gp$Increase your GP by 3! Ideal if you want to use more gems.
+combat_firststrike_player$You made the first strike!
+combat_firststrike_enemy$The enemy made the first strike!
 world_pickup_1$You found 
 world_pickup_2$!
 world_rest_main_player$Look at your stats, change the gems or check your items.
@@ -138,6 +140,7 @@ world_rest_player_stats$Check player’s stats.
 world_rest_player_gems$Change the equipped gems.
 world_rest_player_items$Check your items.
 world_rest_stats$Here you can check player’s stats, from the soul points to the experience and coins.
+world_rest_gems_GP$PG
 world_rest_gems_lightsword$Allows the player to use the light sword, a powerful one hit attack that spends 2 LP.
 world_rest_gems_multistrikesword$Allows the player to use the multiattack sword, an attack that continuously hits an enemy for 3 LP.
 world_rest_gems_lightshuriken$Allows the player to use the light shuriken, allowing the player to throw a shuriken with light power that spends 2 LP.
@@ -148,6 +151,28 @@ world_rest_gems_comphpup$Increases the health points of every companions by 5.
 world_rest_items_apple$An apple that heals 5 health points.
 world_rest_items_lightpotion$A potion that regenerates 5 light points.
 world_rest_items_resurrectpotion$A potion that revives the user healing them 10 health points.
+world_rest_save_saving$Saving...
+world_rest_save_completed$The game has been saved.
 world_rest_companions_adventurer$An adventurer that can attack using his weapons or look at the enemies to know their weaknesses.
 world_rest_companions_wizard$A tanking expert wizard that can also attack using his magic spells.
+world_shop_buy_select$Select the item you want to buy.
+world_shop_buy_instructions$Buy what you want from a wide variety of items.
+world_shop_buy_sure$Are you sure you want to buy this?
+world_shop_buy_nospacenomoney$You don’t have enough coins to afford this nor space in the inventory.
+world_shop_buy_nocoins$You don’t have enough coins to afford this.
+world_shop_buy_nospace$You don’t have space in the inventory.
+world_shop_sell_select$Select the item you want to sell.
+world_shop_sell_instructions$Sell the items you no longer need to gain some coins.
+world_shop_sell_sure$Are you sure you want to sell this?
+world_shop_sell_noitems$You can’t sell items if you don’t have any.
+world_shop_store_select$Select the item you want to store.
+world_shop_store_instructions$Store items to use them in the future.
+world_shop_store_sure$Are you sure you want to store this?
+world_shop_store_noitems$You can’t store items if you don’t have any or if you already stored 99.
+world_shop_takeout_select$Select the item you want to take out.
+world_shop_takeout_instructions$Take out previously stored items.
+world_shop_takeout_sure$Are you sure you want to take this out?
+world_shop_takeout_noitems$You can’t take out items if you didn’t store any or if you have the inventory full.
 adventurer_explanation_TestScene2$This is the test zone. It is a bit weird, but it works.
+adventurer_explanation_TestScene2_ShopGirl$She is the shop girl. You can talk to her to buy, sell, store or take out items. Really usefull.
+adventurer_explanation_TestScene2_Sign$It’s a sign. Read it yourself.

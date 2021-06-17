@@ -22888,11 +22888,7 @@ MonoBehaviour:
     speaker: {fileID: 1388333444}
     prevRest: 0
     shop: 1
-    sentenceName: []
-    sentencesEnglish: []
-    sentencesSpanish:
-    - Pues buenos dias.
-    sentencesBasque: []
+    sentences: []
 --- !u!114 &1388333449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30938,7 +30934,7 @@ MonoBehaviour:
   fullScreen: 0
   resolutionX: 0
   resolutionY: 0
-  language: 3
+  language: 2
   fled: 0
   playerFirstAttack: 0
   companionFirstAttack: 0

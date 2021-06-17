@@ -117,11 +117,11 @@ combat_enemy_bandit$Bidelapurra
 combat_enemy_evilwizard$Mago gaiztoa
 combat_enemy_king$Erregea
 combat_glance_bandit_1$Bidelapur honek bere ezpata erabiliko du kolpe indartsu bat emateko.
-combat_glance_bandit_2$BP: 4\nMina: 2\nDefentsa: 0
+combat_glance_bandit_2$BP: 4 /Mina: 2 /Defentsa: 0
 combat_glance_evilwizard_1$Mago honek botere magikoak erabiltzen ditu bere etsaiak erretzeko.
-combat_glance_evilwizard_2$BP: 4\nMina: 2\nDefentsa: 0
+combat_glance_evilwizard_2$BP: 4 /Mina: 2 /Defentsa: 0
 combat_glance_king_1$Erregeak bere maza eta teleportazio botereak erabiliz erasotzen du. Kontuz ibili bere teleportazio erasoarekin, hau erabili baino lehen prestatu egin beharko da, beraz ondo bigilatu. 
-combat_glance_king_2$BP: 40\nMina: 3\nDefentsa: 0
+combat_glance_king_2$BP: 40 /Mina: 3 /Defentsa: 0
 combat_victory_1$
 combat_victory_2$experientzia puntu irabazi dituzu!
 combat_lvlup_title$NIBELA IGO DUZU!
@@ -129,6 +129,8 @@ combat_lvlup_select$Erabaki zein nahi duzun hobetzea!
 combat_lvlup_hp$Gehitu 5 zure BP maximoari! Ideala kolpe gehiago jasan ahal izateko.
 combat_lvlup_lp$Gehitu 5 zure AP maximoari! Perfektua abilitate asko erabiltzea gustuko baduzu.
 combat_lvlup_gp$Gehitu 3 zure GP maximoari! Erabilgarria gema gehiago erabili nahi badituzu.
+combat_firststrike_player$Lehen kolpea eman duzu! 
+combat_firststrike_enemy$Lehen kolpea jaso duzu!
 world_pickup_1$
 world_pickup_2$ aurkitu duzu!
 world_rest_main_player$Estatistikak begiratu, gemak aldatu edo zer objektu dituzun egiaztatu.
@@ -138,6 +140,7 @@ world_rest_player_stats$Jokalariaren estatistikak begiratu.
 world_rest_player_gems$Ekipatutako gemak aldatu.
 world_rest_player_items$Zure objektuak begiratu.
 world_rest_stats$Hemen jokalariaren estatistikak begira ditzakezu, momentuan dituzun arima puntuetatik esperientzia eta dirurarte.
+world_rest_gems_GP$GP
 world_rest_gems_lightsword$Jokalariak argizko ezpata erabili ahal du, kolpe bakarreko eraso boteretsu bat, 2 AP erabiliz.
 world_rest_gems_multistrikesword$Jokalariak multieraso ezpata erabili ahal du, hainbat aldiz etsai berdina kolpatuz, 3 AP erabiliz.
 world_rest_gems_lightshuriken$Jokalariak argizko shurikena erabili ahal du, argizko boteredun shuriken bat jaurtiz, 2 AP erabiliz.
@@ -148,6 +151,28 @@ world_rest_gems_comphpup$Taldekide guztien bizi puntuak 5en igotzen ditu.
 world_rest_items_apple$5 bizi puntu sendatzen dituen sagarra.
 world_rest_items_lightpotion$5 argi puntu birsortzen dituen pozioa.
 world_rest_items_resurrectpotion$Erabiltzailea berpizten duen pozioa, 10 bizi puntu sendatuz.
+world_rest_save_saving$Gordetzen...
+world_rest_save_completed$Partida gorde da.
 world_rest_companions_adventurer$Bere armak erabiliz eraso ahal duen edo etsaien puntu debilak ikus ditzakeen abenturazalea.
 world_rest_companions_wizard$Kolpeak jasotzen aditua den eta bere magiak erabiliz eraso ahal duen magoa.
+world_shop_buy_select$Erabaki ze objektu erosi nahi duzun.
+world_shop_buy_instructions$Erosi nahi duzuna objektu barietate handi batetik.
+world_shop_buy_sure$Ziur zaude hau erostea nahi duzula?
+world_shop_buy_nospacenomoney$Ez duzu tokirik inbentarioan ezta moneta nahikorik. 
+world_shop_buy_nocoins$Ez duzu moneta nahikorik hau erosteko.
+world_shop_buy_nospace$Ez duzu tokirik inbentarioan.
+world_shop_sell_select$Erabaki ze objektu saldu nahi duzun.
+world_shop_sell_instructions$Gehiago behar ez dituzun objektuak saldu moneta batzuk irabazteko.
+world_shop_sell_sure$Ziur zaude hau saltzea nahi duzula?
+world_shop_sell_noitems$Ezin duzu saldu objekturik ez baduzu bat ere ez.
+world_shop_store_select$Erabaki ze objektu gorde nahi duzun.
+world_shop_store_instructions$Objektuak gorde aurrerago erabili ahal izateko.
+world_shop_store_sure$Ziur zaude hau gordetzea nahi duzula?
+world_shop_store_noitems$Ezin duzu objekturik gorde ez baduzu bat ere ez edo jadanik 99 gorde badituzu.
+world_shop_takeout_select$Erabaki ze objektu atera nahi duzun.
+world_shop_takeout_instructions$Atera lehenago gordetako objektuak.
+world_shop_takeout_sure$Ziur zaude hau ateratzea nahi duzula?
+world_shop_takeout_noitems$Ezin duzu objekturik atera ez baduzu bat ere ez gordeta edo inbentarioa betea baduzu.
 adventurer_explanation_TestScene2$Hau testeoko zona printzipala da. Pixkat arraroa da, baina egin zenerako balio du.
+adventurer_explanation_TestScene2_ShopGirl$Hau dendako neska da. Berarekin hitz egin dezakezu objektuak erosi, saldu, gorde edo berreskuratzeko. Oso erabilgarria da.
+adventurer_explanation_TestScene2_Sign$Kartel bat da. Zuk irakurri.

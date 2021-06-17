@@ -117,11 +117,11 @@ combat_enemy_bandit$Bandido
 combat_enemy_evilwizard$Mago malvado
 combat_enemy_king$Rey
 combat_glance_bandit_1$Este bandido usa su espada para dar un potente golpe.
-combat_glance_bandit_2$PV: 4\nDaño: 2\nDefensa: 0
+combat_glance_bandit_2$PV: 4 /Daño: 2 /Defensa: 0
 combat_glance_evilwizard_1$Este mago usa sus poderes mágicos para quemar a sus enemigos.
-combat_glance_evilwizard_2$PV: 4\nDaño: 2\nDefensa: 0
+combat_glance_evilwizard_2$PV: 4 /Daño: 2 /Defensa: 0
 combat_glance_king_1$El rey ataca usando su maza y sus poderes de teleportación. Ten cuidado con su ataque de teleportación, tendrá que prepararse antes de hacerlo, así que mantenlo vigilado.
-combat_glance_king_2$PV: 40\nDaño: 3\nDefensa: 0
+combat_glance_king_2$PV: 40 /Daño: 3 /Defensa: 0
 combat_victory_1$¡Has ganado
 combat_victory_2$puntos de experiencia!
 combat_lvlup_title$¡SUBES DE NIVEL!
@@ -129,6 +129,8 @@ combat_lvlup_select$¡Selecciona cuál quieres mejorar!
 combat_lvlup_hp$¡Incrementa tus PV en 5! Ideal para poder aguantar más daño.
 combat_lvlup_lp$¡Incrementa tus PL en 5! Perfecto si te gusta usar habilidades de forma habitual.
 combat_lvlup_gp$¡Incrementa tus PG en 3! Útil si quieres usar más gemas.
+combat_firststrike_player$¡Has dado el primer golpe!
+combat_firststrike_enemy$¡Recibes el primer golpe!
 world_pickup_1$Has encontrado 
 world_pickup_2$!
 world_rest_main_player$Mira las estadísticas, cambia las gemas o comprueba tus objetos.
@@ -138,6 +140,7 @@ world_rest_player_stats$Mira las estadísticas del jugador.
 world_rest_player_gems$Cambia las gemas equipadas.
 world_rest_player_items$Comprueba tus objetos.
 world_rest_stats$Aquí puedes ver las estadísticas del jugador, desde los puntos de alma disponibles en el momento hasta la experiencia y las monedas.
+world_rest_gems_GP$GP
 world_rest_gems_lightsword$Permite al jugador usar la espada de luz, un poderoso ataque de un único golpe que cuesta 2 PL.
 world_rest_gems_multistrikesword$Permite al jugador usar la espada de multiataque, un ataque que golpea repetidamente a un enemigo por 3 PL.
 world_rest_gems_lightshuriken$Permite al jugador usar el shuriken de luz, con el que puede lanzar un shuriken con poder de luz que cuesta 2 PL.
@@ -148,6 +151,28 @@ world_rest_gems_comphpup$Aumenta los puntos de vida de los compañeros en 5.
 world_rest_items_apple$Una manzana que cura 5 puntos de vida.
 world_rest_items_lightpotion$Una poción que regenera 5 puntos de luz.
 world_rest_items_resurrectpotion$Una poción que revive al usuario que la tome curándole 10 puntos de vida.
+world_rest_save_saving$Guardando...
+world_rest_save_completed$Se ha guardado la partida.
 world_rest_companions_adventurer$Un aventurero que puede atacar usando sus armas o fijarse en los enemigos para ver sus puntos débiles.
 world_rest_companions_wizard$Un mago experto en recibir golpes que también puede atacar usando sus hechizos mágicos.
+world_shop_buy_select$Decide qué objeto quieres comprar.
+world_shop_buy_instructions$Compra lo que quieras entre una gran variedad de objetos.
+world_shop_buy_sure$¿Estás seguro de que quieres comprar esto?
+world_shop_buy_nospacenomoney$No tienes ni espacio en el inventario ni suficientes monedas.
+world_shop_buy_nocoins$No tienes suficientes monedas para comprar esto.
+world_shop_buy_nospace$No tienes suficiente espacio en el inventario.
+world_shop_sell_select$Decide qué objeto quieres vender.
+world_shop_sell_instructions$Vende los objetos que ya no necesites para ganar algunas monedas.
+world_shop_sell_sure$¿Estás seguro de que quieres vender esto?
+world_shop_sell_noitems$No puedes vender objetos si no tienes ninguno.
+world_shop_store_select$Decide qué objeto quieres guardar.
+world_shop_store_instructions$Guarda objetos para poder usarlos más adelante.
+world_shop_store_sure$¿Estás seguro de que quieres guardar esto?
+world_shop_store_noitems$No puedes guardar objetos si no tienes ninguno o si ya has guardado 99.
+world_shop_takeout_select$Decide qué objeto quieres sacar.
+world_shop_takeout_instructions$Saca objetos anteriormente depositados.
+world_shop_takeout_sure$¿Estás seguro de que quieres sacar esto?
+world_shop_takeout_noitems$No puedes sacar objetos si no tienes ninguno guardado o si ya tienes el inventario lleno.
 adventurer_explanation_TestScene2$Esta es la zona de testeo principal. Es un poco rara, pero sirve para lo que se creó.
+adventurer_explanation_TestScene2_ShopGirl$Esta es la niña de la tienda. Puedes hablar con ella para comprar, vender, guardar o recuperar objetos. Es muy útil.
+adventurer_explanation_TestScene2_Sign$Es un cartel. Léelo tú mismo.

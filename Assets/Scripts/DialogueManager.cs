@@ -59,28 +59,11 @@ public class DialogueManager : MonoBehaviour
         //Clear the previous sentences
         sentences.Clear();
         dialogueBox.GetComponent<DialogueBox>().SetSpeaker(dialogue.speaker);
-        //Check the language and enqueue the sentences
-        if (currentData.GetComponent<CurrentDataScript>().language == 1)
+        //enqueue the sentences
+        foreach (string sentence in dialogue.sentences)
         {
-            foreach (string sentence in dialogue.sentencesEnglish)
-            {
-                sentences.Enqueue(sentence);
-            }
-        }
-        else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-        {
-            foreach (string sentence in dialogue.sentencesSpanish)
-            {
-                sentences.Enqueue(sentence);
-            }
-        }
-        else if (currentData.GetComponent<CurrentDataScript>().language == 3)
-        {
-            foreach (string sentence in dialogue.sentencesBasque)
-            {
-                sentences.Enqueue(sentence);
-            }
-        }
+            sentences.Enqueue(currentData.GetComponent<LangResolverScript>().ResolveText(sentence));
+        } 
         //Display the next sentence
         DisplayNextSentence();
     }
@@ -97,27 +80,10 @@ public class DialogueManager : MonoBehaviour
         //Clear the previous sentences
         sentences.Clear();
         dialogueBox.GetComponent<DialogueBox>().SetSpeaker(GameObject.FindGameObjectWithTag("Adventurer").transform);
-        //Check the language and enqueue the sentences
-        if (currentData.GetComponent<CurrentDataScript>().language == 1)
+        //enqueue the sentences
+        foreach (string sentence in dialogue.sentences)
         {
-            foreach (string sentence in dialogue.sentencesEnglish)
-            {
-                sentences.Enqueue(sentence);
-            }
-        }
-        else if (currentData.GetComponent<CurrentDataScript>().language == 2)
-        {
-            foreach (string sentence in dialogue.sentencesSpanish)
-            {
-                sentences.Enqueue(sentence);
-            }
-        }
-        else if (currentData.GetComponent<CurrentDataScript>().language == 3)
-        {
-            foreach (string sentence in dialogue.sentencesBasque)
-            {
-                sentences.Enqueue(sentence);
-            }
+            sentences.Enqueue(currentData.GetComponent<LangResolverScript>().ResolveText(sentence));
         }
         //Display the next sentence
         DisplayNextSentence();

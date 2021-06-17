@@ -967,22 +967,12 @@ MonoBehaviour:
   sleepSprite: {fileID: -3877204253021290591, guid: 9b361e3522856904390736bcbc9aa048, type: 3}
   dustObject: {fileID: 6059004063304751159, guid: a215ffc94008a1c4183b153383ae3d46, type: 3}
   dialogue:
-    nameEnglish: Adventurer
-    nameSpanish: Aventurero
-    nameBasque: Abenturazalea
-    sentencesEnglish:
-    - This wizard uses his magical power to burn his enemies.
-    - 'HP: 4
-
-      Damage: 2
-
-      Defence: 0'
-    sentencesSpanish:
-    - "Este mago usa sus poderes m\xE1gicos para quemar a sus enemigos."
-    - "HP: 4\r\nDa\xF1o: 2\r\nDefensa: 0\r"
-    sentencesBasque:
-    - Mago honek botere magikoak erabiltzen ditu bere etsaiak erretzeko.
-    - "BP: 4\r\nMina: 2\r\nDefentsa: 0\r"
+    speaker: {fileID: 0}
+    prevRest: 0
+    shop: 0
+    sentences:
+    - combat_glance_evilwizard_1
+    - combat_glance_evilwizard_2
   attackAudio: {fileID: 8300000, guid: 7741d6028ec61f7418e4ec1f0e62da59, type: 3}
   hitAudio: {fileID: 8300000, guid: 666352433493545438cd9a9743cbe1f8, type: 3}
   dieAudio: {fileID: 8300000, guid: dcab82aac75af76448692ca0679554dd, type: 3}
