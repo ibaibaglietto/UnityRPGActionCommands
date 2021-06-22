@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 7581912704014928793}
   - component: {fileID: 2962685939598205561}
   - component: {fileID: 988489617487145296}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: EvilWizardWorld
   m_TagString: enemy
   m_Icon: {fileID: 0}

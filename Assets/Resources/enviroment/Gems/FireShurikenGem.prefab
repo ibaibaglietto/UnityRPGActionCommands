@@ -129,13 +129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 4
-  nameEnglish: 
-  nameSpanish: shuriken de fuego
-  nameBasque: 
-  descriptionEnglish: 
-  descriptionSpanish: "Permite al jugador usar el shuriken de fuego, que permite
-    da\xF1ar a todos los enemigos que se encuentran en el suelo."
-  descriptionBasque: 
+  itemName: combat_player_shuriken_fireshuriken_name
+  itemDescription: world_rest_gems_fireshuriken
 --- !u!65 &5971972954080345525
 BoxCollider:
   m_ObjectHideFlags: 0

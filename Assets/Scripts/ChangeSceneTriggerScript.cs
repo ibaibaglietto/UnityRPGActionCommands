@@ -25,7 +25,7 @@ public class ChangeSceneTriggerScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if(other.tag == "Player" || other.tag == "PlayerSphere")
         {
             if(currentData.GetComponent<CurrentDataScript>().changingScene == 0)
             {
@@ -35,7 +35,8 @@ public class ChangeSceneTriggerScript : MonoBehaviour
                 currentData.GetComponent<CurrentDataScript>().spawnY = pos.y;
                 currentData.GetComponent<CurrentDataScript>().spawnZ = pos.z;
             }
-            other.GetComponent<WorldPlayerMovementScript>().SetChangingScene(dir);
+            if(other.tag == "PlayerSphere") other.transform.parent.GetComponent<WorldPlayerMovementScript>().SetChangingScene(dir);
+            else other.GetComponent<WorldPlayerMovementScript>().SetChangingScene(dir);
         }
     }
 }

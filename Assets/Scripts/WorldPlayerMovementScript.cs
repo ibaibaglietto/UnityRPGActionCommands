@@ -49,6 +49,10 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private bool movingToRest;
     //A boolean to know if the player is resting
     private bool resting;
+    //A boolean to know if the player is starting to fly
+    private bool startFly;
+    //A boolean to know if the player is flying
+    private bool flying;
     //The rest position
     private Vector2 restPos;
     //The X position of the fire
@@ -232,6 +236,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
         canRest = false;
         movingToRest = false;
         resting = false;
+        startFly = false;
+        flying = false;
         dialogue = false;
         canSpeak = false;
         speaking = false;
@@ -295,7 +301,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //Detect the direction we want the player to move and save it
         if (currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
-            if (!movingToRest && !resting && !changingScene && !speaking && !pickingObject && !shopOpened)
+            if (!movingToRest && !resting && !changingScene && !speaking && !pickingObject && !shopOpened & !startFly)
             {
                 if (currentData.GetComponent<CurrentDataScript>().movUp) speedZ = 1.0f;
                 else if (currentData.GetComponent<CurrentDataScript>().movDown) speedZ = -1.0f;
@@ -321,19 +327,19 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 animator.SetFloat("SpeedZ", speedZ);
                 animator.SetFloat("SpeedX", speedX);
                 //make the player attack when X is pressed
-                if (Input.GetKeyDown(KeyCode.X) && !attacking && !canRest && !canSpeak)
+                if (Input.GetKeyDown(KeyCode.X) && !attacking && !canRest && !canSpeak && !flying)
                 {
                     attacking = true;
                     animator.SetTrigger("Melee");
                 }
                 //Make the player jump when space is pressed
-                if (Input.GetKeyDown(KeyCode.Space) && grounded && gameObject.GetComponent<Rigidbody>().velocity.y > -0.1f && !attacking)
+                if (Input.GetKeyDown(KeyCode.Space) && grounded && gameObject.GetComponent<Rigidbody>().velocity.y > -0.1f && !attacking && !flying)
                 {
                     gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 600.0f, 0.0f));
                     animator.SetBool("isJumping", true);
                 }
                 //If the E key is pressed we starts the special ability of the companion
-                if (Input.GetKeyDown(KeyCode.E) && grounded && !attacking)
+                if (Input.GetKeyDown(KeyCode.E) && grounded && !attacking && !flying)
                 {
                     if (currentData.GetComponent<CurrentDataScript>().currentCompanion == 1)
                     {
@@ -342,6 +348,24 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         speaking = true; 
                         if(canSpeak) dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(new Dialogue(companion.transform, new string[] { "adventurer_explanation_" + SceneManager.GetActiveScene().name + "_" + nextDialogue.speaker.gameObject.name }));
                         else dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(new Dialogue(companion.transform, new string[] { "adventurer_explanation_" + SceneManager.GetActiveScene().name}));
+                    }
+                    else
+                    {
+                        speedX = 0.0f;
+                        speedZ = 0.0f;
+                        animator.SetBool("Moving", false);
+                        animator.SetFloat("SpeedZ", speedZ);
+                        animator.SetFloat("SpeedX", speedX);
+                        companion.transform.position = new Vector3(transform.position.x, companion.transform.position.y, transform.position.z - 0.7f);
+                        companion.transform.GetChild(0).GetComponent<Animator>().SetBool("Fly", true);
+                        transform.GetChild(7).GetComponent<Animator>().SetBool("Fly", true);
+                        companion.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
+                        companion.GetComponent<SphereCollider>().enabled = false;
+                        companion.GetComponent<BoxCollider>().enabled = false;
+                        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
+                        GetComponent<SphereCollider>().enabled = false;
+                        GetComponent<BoxCollider>().enabled = false;
+                        startFly = true;
                     }
                 }
                 //We check if the player is falling
@@ -1478,7 +1502,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
             fledTime = Time.fixedTime;
         }
         if ((Time.fixedTime - fledTime) >= 3.05f) fled = false;
-        if (canRest && Input.GetKeyDown(KeyCode.X))
+        if (canRest && Input.GetKeyDown(KeyCode.X) && !speaking)
         {
             movingToRest = true;
             SetCanRest(false);
@@ -2247,15 +2271,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
             {
                 pickedObject.transform.position = new Vector3(transform.position.x + 0.5f, transform.position.y + 0.52f, transform.position.z);
                 pickedObject.transform.localScale = new Vector3(0.15f, 0.15f, 1.0f);
-                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_1") + pickedObject.GetComponent<WorldObjectScript>().itemName + currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_2");
-                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().itemDescription;
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_1") + currentData.GetComponent<LangResolverScript>().ResolveText(pickedObject.GetComponent<WorldObjectScript>().itemName) + currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_2");
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText(pickedObject.GetComponent<WorldObjectScript>().itemDescription);
             }
             else if (pickedObject.tag == "Item")
             {
                 pickedObject.transform.position = new Vector3(transform.position.x + 0.5f, transform.position.y + 0.52f, transform.position.z);
                 pickedObject.transform.localScale = new Vector3(0.2f, 0.2f, 1.0f);
-                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_1") + pickedObject.GetComponent<WorldObjectScript>().itemName + currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_2");
-                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().itemDescription;
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_1") + currentData.GetComponent<LangResolverScript>().ResolveText(pickedObject.GetComponent<WorldObjectScript>().itemName) + currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_2");
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText(pickedObject.GetComponent<WorldObjectScript>().itemDescription);
                 itemRight = true;
             }
         }
@@ -2266,15 +2290,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
             {
                 pickedObject.transform.position = new Vector3(transform.position.x - 0.5f, transform.position.y + 0.52f, transform.position.z);
                 pickedObject.transform.localScale = new Vector3(0.15f, 0.15f, 1.0f);
-                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_1") + pickedObject.GetComponent<WorldObjectScript>().itemName + currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_2");
-                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().itemDescription;
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_1") + currentData.GetComponent<LangResolverScript>().ResolveText(pickedObject.GetComponent<WorldObjectScript>().itemName) + currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_2");
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText(pickedObject.GetComponent<WorldObjectScript>().itemDescription);
             }
             else if (pickedObject.tag == "Item")
             {
                 pickedObject.transform.position = new Vector3(transform.position.x - 0.5f, transform.position.y + 0.52f, transform.position.z);
                 pickedObject.transform.localScale = new Vector3(0.2f, 0.2f, 1.0f);
-                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_1") + pickedObject.GetComponent<WorldObjectScript>().itemName + currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_2");
-                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = pickedObject.GetComponent<WorldObjectScript>().itemDescription;
+                pickItemUI.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_1") + currentData.GetComponent<LangResolverScript>().ResolveText(pickedObject.GetComponent<WorldObjectScript>().itemName) + currentData.GetComponent<LangResolverScript>().ResolveText("world_pickup_2");
+                pickItemUI.transform.GetChild(1).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText(pickedObject.GetComponent<WorldObjectScript>().itemDescription);
                 itemRight = false;
             }
         }
@@ -2308,4 +2332,46 @@ public class WorldPlayerMovementScript : MonoBehaviour
     {
         firstStrikeUI.SetActive(false);
     }
+
+    //Function to start the flight
+    public void StartFlight()
+    {
+        startFly = false;
+        flying = true;
+    }
+
+    //Function to end the flight
+    public void StartEndFlight()
+    {
+        startFly = true;
+        flying = false;
+        speedX = 0.0f;
+        speedZ = 0.0f;
+        animator.SetBool("Moving", false);
+        animator.SetFloat("SpeedZ", speedZ);
+        animator.SetFloat("SpeedX", speedX);
+        companion.transform.position = new Vector3(transform.position.x, companion.transform.position.y, transform.position.z - 0.7f);
+        companion.transform.GetChild(0).GetComponent<Animator>().SetBool("Fly", false);
+        transform.GetChild(7).GetComponent<Animator>().SetBool("Fly", false);
+        companion.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+        companion.GetComponent<SphereCollider>().enabled = true;
+        companion.GetComponent<BoxCollider>().enabled = true;
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+        GetComponent<SphereCollider>().enabled = true;
+        GetComponent<BoxCollider>().enabled = true;
+    }
+
+    //Function to end the flight
+    public void EndFlight()
+    {
+        startFly = false;
+        flying = false;
+    }
+
+    //Function to get if the player is flying
+    public bool IsFlying()
+    {
+        return flying;
+    }
+
 }

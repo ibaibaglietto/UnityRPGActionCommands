@@ -63,7 +63,7 @@ public class WorldEnemy : MonoBehaviour
     {
         if(currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
-            if (!inBattle && (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z))<5.0f && (((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 10.0f && seeingPlayer) || ((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 5.0f && !seeingPlayer)))
+            if (!inBattle && !player.GetComponent<WorldPlayerMovementScript>().IsFlying() && (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z))<5.0f && (((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 10.0f && seeingPlayer) || ((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 5.0f && !seeingPlayer)))
             {
                 animator.SetFloat("RunSpeed", 1.0f);
                 if (!seeingPlayer)

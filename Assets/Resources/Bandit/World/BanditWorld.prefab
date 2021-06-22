@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 7383387794512479971}
   - component: {fileID: 2761513964373307139}
   - component: {fileID: 214096261667644458}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: BanditWorld
   m_TagString: enemy
   m_Icon: {fileID: 0}
