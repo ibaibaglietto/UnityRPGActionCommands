@@ -176,3 +176,4 @@ world_shop_takeout_noitems$You can’t take out items if you didn’t store any 
 adventurer_explanation_TestScene2$This is the test zone. It is a bit weird, but it works.
 adventurer_explanation_TestScene2_ShopGirl$She is the shop girl. You can talk to her to buy, sell, store or take out items. Really usefull.
 adventurer_explanation_TestScene2_Sign$It’s a sign. Read it yourself.
+adventurer_explanation_TestScene2_Sign_Text$

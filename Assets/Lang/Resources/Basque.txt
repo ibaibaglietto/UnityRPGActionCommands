@@ -176,3 +176,4 @@ world_shop_takeout_noitems$Ezin duzu objekturik atera ez baduzu bat ere ez gorde
 adventurer_explanation_TestScene2$Hau testeoko zona printzipala da. Pixkat arraroa da, baina egin zenerako balio du.
 adventurer_explanation_TestScene2_ShopGirl$Hau dendako neska da. Berarekin hitz egin dezakezu objektuak erosi, saldu, gorde edo berreskuratzeko. Oso erabilgarria da.
 adventurer_explanation_TestScene2_Sign$Kartel bat da. Zuk irakurri.
+adventurer_explanation_TestScene2_Sign_Text$

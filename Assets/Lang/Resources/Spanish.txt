@@ -176,3 +176,4 @@ world_shop_takeout_noitems$No puedes sacar objetos si no tienes ninguno guardado
 adventurer_explanation_TestScene2$Esta es la zona de testeo principal. Es un poco rara, pero sirve para lo que se creó.
 adventurer_explanation_TestScene2_ShopGirl$Esta es la niña de la tienda. Puedes hablar con ella para comprar, vender, guardar o recuperar objetos. Es muy útil.
 adventurer_explanation_TestScene2_Sign$Es un cartel. Léelo tú misma.
+adventurer_explanation_TestScene2_Sign_Text$Los carteles se pueden leer./De nada por la data.

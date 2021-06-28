@@ -19584,6 +19584,14 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1550828951937821497, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
+      propertyPath: noObjectiveLockedMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: b44e4d7935236004ca9168e9784ae794, type: 2}
+    - target: {fileID: 1550828951937821497, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
+      propertyPath: objectiveLockedMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 27dc55cbb9b341446ae5b102f3381286, type: 2}
     - target: {fileID: 1577287996557969246, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
       propertyPath: side
       value: Right
@@ -19666,6 +19674,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2215723681896468821, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
       propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3518304002759712364, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4111499587819068943, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
@@ -35416,8 +35428,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5070991388465194055, guid: 56f5f7893fd436143a8946098a6e542f, type: 3}
+      propertyPath: dialogue.sentences.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070991388465194055, guid: 56f5f7893fd436143a8946098a6e542f, type: 3}
       propertyPath: dialogue.sentencesSpanish.Array.data[0]
       value: Los carteles se pueden leer, de nada por la data.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070991388465194055, guid: 56f5f7893fd436143a8946098a6e542f, type: 3}
+      propertyPath: dialogue.sentences.Array.data[0]
+      value: adventurer_explanation_TestScene2_Sign_Text
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56f5f7893fd436143a8946098a6e542f, type: 3}
