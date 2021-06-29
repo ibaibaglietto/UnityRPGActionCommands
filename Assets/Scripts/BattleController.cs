@@ -592,6 +592,8 @@ public class BattleController : MonoBehaviour
             canSelect = false;
             fleeing = false;
             fled = false;
+            attackType = currentData.GetComponent<CurrentDataScript>().playerAttack;
+            usingStyle = currentData.GetComponent<CurrentDataScript>().playerStyle;
             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
             changePosAction.SetActive(false);
         }

@@ -38,6 +38,9 @@ public class WorldPlayerMovementScript : MonoBehaviour
     //The melee attack prefab and the attack itself
     [SerializeField] private Transform meleePrefab;
     private Transform melee;
+    //The shuriken prefab and the shuriken itself
+    [SerializeField] private Transform shurikenPrefab;
+    private Transform shuriken;
     //A boolean to know if the player has fled a battle
     private bool fled;
     private float fledTime;
@@ -57,10 +60,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private bool spin;
     //The arrow that shows the direction the shuriken will follow
     private GameObject shurikenArrow;
-    //The material of the arrow when no objective is locked
-    public Material noObjectiveLockedMaterial;
-    //The material of the arrow when an objective is locked
-    public Material objectiveLockedMaterial;
+    //A boolean to know if the arrow is locked or not
+    private bool lockedArrow;
     //The rest position
     private Vector2 restPos;
     //The X position of the fire
@@ -267,6 +268,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         shopConfirming = false;
         shopGems = false;
         shopGemsNotEmpty = false;
+        lockedArrow = false;
         restUIState = 1;
         restUISelecting = 1;
         restPlayerMainUISelecting = 1;
@@ -498,9 +500,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 if (Input.GetKeyUp(KeyCode.Z))
                 {
                     transform.GetComponent<Animator>().SetTrigger("EndSpin");
+                    shuriken = Instantiate(shurikenPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
+                    shuriken.GetComponent<WorldShurikenScript>().SetObjective(shurikenArrow.GetComponent<WorldShurikenArrowScript>().GetObjective().transform.position);
+                    shurikenArrow.GetComponent<WorldShurikenArrowScript>().ResetArrow();
                     shurikenArrow.SetActive(false);
                 }
-                else MoveArrow(Input.GetKey(KeyCode.UpArrow), Input.GetKey(KeyCode.LeftArrow), Input.GetKey(KeyCode.RightArrow), Input.GetKey(KeyCode.DownArrow));
+                if (lockedArrow && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow))) lockedArrow = false;
             }
             if (pickingObject)
             {
@@ -1552,7 +1557,15 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //move the player on the direction we saved previously
         if(!attacking && currentData.GetComponent<CurrentDataScript>().battle == 0) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
         else gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0.0f, gameObject.GetComponent<Rigidbody>().velocity.y, 0.0f);
-        if (spin) MoveArrow(Input.GetKey(KeyCode.UpArrow), Input.GetKey(KeyCode.LeftArrow), Input.GetKey(KeyCode.RightArrow), Input.GetKey(KeyCode.DownArrow)); 
+        if (spin && !lockedArrow)
+        {
+            //We move the arrow 5º looking each time if we found an objective
+            MoveArrow(Input.GetKey(KeyCode.UpArrow), Input.GetKey(KeyCode.LeftArrow), Input.GetKey(KeyCode.RightArrow), Input.GetKey(KeyCode.DownArrow));
+            if(!lockedArrow) MoveArrow(Input.GetKey(KeyCode.UpArrow), Input.GetKey(KeyCode.LeftArrow), Input.GetKey(KeyCode.RightArrow), Input.GetKey(KeyCode.DownArrow));
+            if (!lockedArrow) MoveArrow(Input.GetKey(KeyCode.UpArrow), Input.GetKey(KeyCode.LeftArrow), Input.GetKey(KeyCode.RightArrow), Input.GetKey(KeyCode.DownArrow));
+            if (!lockedArrow) MoveArrow(Input.GetKey(KeyCode.UpArrow), Input.GetKey(KeyCode.LeftArrow), Input.GetKey(KeyCode.RightArrow), Input.GetKey(KeyCode.DownArrow));
+            if (!lockedArrow) MoveArrow(Input.GetKey(KeyCode.UpArrow), Input.GetKey(KeyCode.LeftArrow), Input.GetKey(KeyCode.RightArrow), Input.GetKey(KeyCode.DownArrow));
+        }
     }
 
     public bool IsFleeing()
@@ -1654,7 +1667,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
     }
 
     //Function to start the spin
-    public void StartSpin(int rot)
+    public void StartSpin(float rot)
     {
         shurikenArrow.SetActive(true);
         shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, rot, shurikenArrow.transform.localEulerAngles.z);
@@ -1679,24 +1692,24 @@ public class WorldPlayerMovementScript : MonoBehaviour
             {
                 if (!(shurikenArrow.transform.localEulerAngles.y > 44.9 && shurikenArrow.transform.localEulerAngles.y < 45.1))
                 {
-                    if (shurikenArrow.transform.localEulerAngles.y < 45 || shurikenArrow.transform.localEulerAngles.y > 225) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y + 1, shurikenArrow.transform.localEulerAngles.z);
-                    else if (shurikenArrow.transform.localEulerAngles.y > 45 && shurikenArrow.transform.localEulerAngles.y < 225) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y - 1, shurikenArrow.transform.localEulerAngles.z);
+                    if (shurikenArrow.transform.localEulerAngles.y < 45 || shurikenArrow.transform.localEulerAngles.y > 225) shurikenArrow.transform.Rotate(new Vector3(0,1,0),1);
+                    else if (shurikenArrow.transform.localEulerAngles.y > 45 && shurikenArrow.transform.localEulerAngles.y < 225) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), -1);
                 }
             }
             else if (right)
             {
                 if (!(shurikenArrow.transform.localEulerAngles.y > 134.9 && shurikenArrow.transform.localEulerAngles.y < 135.1))
                 {
-                    if (shurikenArrow.transform.localEulerAngles.y < 135 || shurikenArrow.transform.localEulerAngles.y > 315) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y + 1, shurikenArrow.transform.localEulerAngles.z);
-                    else if (shurikenArrow.transform.localEulerAngles.y > 135 && shurikenArrow.transform.localEulerAngles.y < 315) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y - 1, shurikenArrow.transform.localEulerAngles.z);
+                    if (shurikenArrow.transform.localEulerAngles.y < 135 || shurikenArrow.transform.localEulerAngles.y > 315) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), 1);
+                    else if (shurikenArrow.transform.localEulerAngles.y > 135 && shurikenArrow.transform.localEulerAngles.y < 315) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), -1);
                 }
             }
             else
             {
                 if(!(shurikenArrow.transform.localEulerAngles.y > 89.9 && shurikenArrow.transform.localEulerAngles.y < 90.1))
                 {
-                    if (shurikenArrow.transform.localEulerAngles.y < 90 || shurikenArrow.transform.localEulerAngles.y > 270) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y + 1, shurikenArrow.transform.localEulerAngles.z);
-                    else if (shurikenArrow.transform.localEulerAngles.y > 90 && shurikenArrow.transform.localEulerAngles.y < 270) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y - 1, shurikenArrow.transform.localEulerAngles.z);
+                    if (shurikenArrow.transform.localEulerAngles.y < 90 || shurikenArrow.transform.localEulerAngles.y > 270) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), 1);
+                    else if (shurikenArrow.transform.localEulerAngles.y > 90 && shurikenArrow.transform.localEulerAngles.y < 270) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), -1);
                 }
             }
         }
@@ -1706,24 +1719,24 @@ public class WorldPlayerMovementScript : MonoBehaviour
             {
                 if (!(shurikenArrow.transform.localEulerAngles.y > 314.9 && shurikenArrow.transform.localEulerAngles.y < 315.1))
                 {
-                    if (shurikenArrow.transform.localEulerAngles.y < 315 && shurikenArrow.transform.localEulerAngles.y > 135) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y + 1, shurikenArrow.transform.localEulerAngles.z);
-                    else if (shurikenArrow.transform.localEulerAngles.y > 315 || shurikenArrow.transform.localEulerAngles.y < 135) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y - 1, shurikenArrow.transform.localEulerAngles.z);
+                    if (shurikenArrow.transform.localEulerAngles.y < 315 && shurikenArrow.transform.localEulerAngles.y > 135) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), 1);
+                    else if (shurikenArrow.transform.localEulerAngles.y > 315 || shurikenArrow.transform.localEulerAngles.y < 135) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), -1);
                 }
             }
             else if (right)
             {
                 if (!(shurikenArrow.transform.localEulerAngles.y > 224.9 && shurikenArrow.transform.localEulerAngles.y < 225.1))
                 {
-                    if (shurikenArrow.transform.localEulerAngles.y < 225 && shurikenArrow.transform.localEulerAngles.y > 45) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y + 1, shurikenArrow.transform.localEulerAngles.z);
-                    else if (shurikenArrow.transform.localEulerAngles.y > 225 || shurikenArrow.transform.localEulerAngles.y < 45) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y - 1, shurikenArrow.transform.localEulerAngles.z);
+                    if (shurikenArrow.transform.localEulerAngles.y < 225 && shurikenArrow.transform.localEulerAngles.y > 45) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), 1);
+                    else if (shurikenArrow.transform.localEulerAngles.y > 225 || shurikenArrow.transform.localEulerAngles.y < 45) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), -1);
                 }
             }
             else
             {
                 if (!(shurikenArrow.transform.localEulerAngles.y > 269.9 && shurikenArrow.transform.localEulerAngles.y < 270.1))
                 {
-                    if (shurikenArrow.transform.localEulerAngles.y > 270 || shurikenArrow.transform.localEulerAngles.y < 90) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y - 1, shurikenArrow.transform.localEulerAngles.z);
-                    else if (shurikenArrow.transform.localEulerAngles.y < 270 && shurikenArrow.transform.localEulerAngles.y > 90) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y + 1, shurikenArrow.transform.localEulerAngles.z);
+                    if (shurikenArrow.transform.localEulerAngles.y > 270 || shurikenArrow.transform.localEulerAngles.y < 90) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), -1);
+                    else if (shurikenArrow.transform.localEulerAngles.y < 270 && shurikenArrow.transform.localEulerAngles.y > 90) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), 1);
                 }                    
             }
         }
@@ -1731,18 +1744,24 @@ public class WorldPlayerMovementScript : MonoBehaviour
         {
             if (!(shurikenArrow.transform.localEulerAngles.y > 359.9 || shurikenArrow.transform.localEulerAngles.y < 0.1))
             {
-                if (shurikenArrow.transform.localEulerAngles.y > 0 && shurikenArrow.transform.localEulerAngles.y < 180) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y - 1, shurikenArrow.transform.localEulerAngles.z);
-                else if (shurikenArrow.transform.localEulerAngles.y < 360 && shurikenArrow.transform.localEulerAngles.y > 180) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y + 1, shurikenArrow.transform.localEulerAngles.z);
+                if (shurikenArrow.transform.localEulerAngles.y > 0 && shurikenArrow.transform.localEulerAngles.y < 180) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), -1);
+                else if (shurikenArrow.transform.localEulerAngles.y < 360 && shurikenArrow.transform.localEulerAngles.y > 180) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), 1);
             }
         }
         else if (right)
         {
             if (!(shurikenArrow.transform.localEulerAngles.y > 179.9 && shurikenArrow.transform.localEulerAngles.y < 180.1))
             {
-                if (shurikenArrow.transform.localEulerAngles.y > 180) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y - 1, shurikenArrow.transform.localEulerAngles.z);
-                else if (shurikenArrow.transform.localEulerAngles.y < 180) shurikenArrow.transform.rotation = Quaternion.Euler(shurikenArrow.transform.localEulerAngles.x, shurikenArrow.transform.localEulerAngles.y + 1, shurikenArrow.transform.localEulerAngles.z);
+                if (shurikenArrow.transform.localEulerAngles.y > 180) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), -1);
+                else if (shurikenArrow.transform.localEulerAngles.y < 180) shurikenArrow.transform.Rotate(new Vector3(0, 1, 0), 1);
             }
         }
+    }
+
+    //Function to lock the arrow movement
+    public void LockArrow(bool lA)
+    {
+        lockedArrow = lA;
     }
 
     //Function to set the X position of the fire place

@@ -27,14 +27,14 @@ public class WorldBattleTrigger : MonoBehaviour
         {
             inBattle = true;
             other.GetComponent<Animator>().SetTrigger("Damage");
-            user.GetComponent<WorldEnemy>().StartBattle(3, 1);
+            user.GetComponent<WorldEnemy>().StartBattle(3, 1,0);
             user.GetComponent<WorldEnemy>().SetInBattle(true);
         }
         else if (other.transform.tag == "Companion" && !other.GetComponent<WorldCompanionMovementScript>().IsFleeing() && !inBattle)
         {
             inBattle = true;
             other.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Damage");
-            user.GetComponent<WorldEnemy>().StartBattle(3, 2);
+            user.GetComponent<WorldEnemy>().StartBattle(3, 2,0);
             user.GetComponent<WorldEnemy>().SetInBattle(true);
         }
     }

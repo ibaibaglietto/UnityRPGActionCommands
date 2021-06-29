@@ -213,8 +213,7 @@ MonoBehaviour:
     m_Bits: 512
   groundCheck: {fileID: 1656951681665174916}
   meleePrefab: {fileID: 3737689849737592926, guid: 0cc1d464750346c408f74d31e75a4ee7, type: 3}
-  noObjectiveLockedMaterial: {fileID: 0}
-  objectiveLockedMaterial: {fileID: 0}
+  shurikenPrefab: {fileID: 3194789301759182513, guid: 30ce17b463a632b44bdbbc2580911411, type: 3}
   gems:
     gems:
     - id: 1
@@ -636,6 +635,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3518304002759712364}
+  - component: {fileID: 3526325591758522094}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Untagged
@@ -658,6 +658,19 @@ Transform:
   m_Father: {fileID: 2215723681896468820}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3526325591758522094
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4944756780122211478}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 8, y: 3.66, z: 0.11}
+  m_Center: {x: -4.43, y: 0, z: 0}
 --- !u!1 &5134153816344127438
 GameObject:
   m_ObjectHideFlags: 0

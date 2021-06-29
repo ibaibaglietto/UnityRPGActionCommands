@@ -79,6 +79,6 @@ AnimationClip:
     functionName: StartSpin
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
+    floatParameter: 180.01
     intParameter: 180
     messageOptions: 0

@@ -157,7 +157,7 @@ public class WorldEnemy : MonoBehaviour
     {
         if ((collision.transform.tag == "Player" && !collision.transform.GetComponent<WorldPlayerMovementScript>().IsFleeing()) || (collision.transform.tag == "Companion" && !collision.transform.GetComponent<WorldCompanionMovementScript>().IsFleeing()))
         {
-            StartBattle(0, 0);
+            StartBattle(0, 0,0);
             inBattle = true;
         }
     }
@@ -172,8 +172,15 @@ public class WorldEnemy : MonoBehaviour
         if (other.transform.tag == "Attack")
         {
             animator.SetTrigger("Hurt");
-            StartBattle(1, 0);
+            StartBattle(1, 0,0);
             inBattle = true;
+        }
+        if (other.transform.tag == "shuriken")
+        {
+            animator.SetTrigger("Hurt");
+            StartBattle(1, 0,1);
+            inBattle = true;
+            other.GetComponent<WorldShurikenScript>().SelfDestroy();
         }
     }
     //Function to spawn the attack area
@@ -203,7 +210,7 @@ public class WorldEnemy : MonoBehaviour
     }
 
     //A function to start the battle. User: 0-> no first attack, 1-> player first attack, 2-> companion first attack, 3 -> enemy first attack. objective in case of enemy attack: 1-> player, 2-> companion
-    public void StartBattle(int user, int objective)
+    public void StartBattle(int user, int objective, int attack)
     {
         if (SceneManager.sceneCount < 2)
         {
@@ -229,7 +236,7 @@ public class WorldEnemy : MonoBehaviour
                 currentData.GetComponent<CurrentDataScript>().enemyStart = 0;
                 currentData.GetComponent<CurrentDataScript>().firstAttackObjective = 0;
                 currentData.GetComponent<CurrentDataScript>().playerFirstAttack = 1;
-                currentData.GetComponent<CurrentDataScript>().playerAttack = 0;
+                currentData.GetComponent<CurrentDataScript>().playerAttack = attack;
                 currentData.GetComponent<CurrentDataScript>().playerStyle = 0;
                 currentData.GetComponent<CurrentDataScript>().companionFirstAttack = 0;
                 currentData.GetComponent<CurrentDataScript>().companionAttack = 0;

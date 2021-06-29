@@ -23,6 +23,8 @@ TagManager:
   - Gem
   - Item
   - PlayerSphere
+  - target
+  - shuriken
   layers:
   - Default
   - TransparentFX
