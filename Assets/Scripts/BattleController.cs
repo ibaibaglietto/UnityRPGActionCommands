@@ -5187,8 +5187,8 @@ public class BattleController : MonoBehaviour
                 victoryXP.transform.GetChild(19).gameObject.SetActive(true);
                 victoryXP.transform.GetChild(20).gameObject.SetActive(true);
                 victoryXP.transform.GetChild(21).gameObject.SetActive(true);
-                victoryXP.transform.GetChild(19).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("");
-                victoryXP.transform.GetChild(20).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("");
+                victoryXP.transform.GetChild(19).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_victory_1");
+                victoryXP.transform.GetChild(20).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_victory_2");
                 victoryXP.transform.GetChild(21).GetComponent<Text>().text = currentFightXP.ToString();
                 //We end the player turn and enter the victory state
                 playerTeamTurn = false;

@@ -122,7 +122,7 @@ combat_glance_evilwizard_1$Mago honek botere magikoak erabiltzen ditu bere etsai
 combat_glance_evilwizard_2$BP: 4 /Mina: 2 /Defentsa: 0
 combat_glance_king_1$Erregeak bere maza eta teleportazio botereak erabiliz erasotzen du. Kontuz ibili bere teleportazio erasoarekin, hau erabili baino lehen prestatu egin beharko da, beraz ondo bigilatu. 
 combat_glance_king_2$BP: 40 /Mina: 3 /Defentsa: 0
-combat_victory_1$
+combat_victory_1$ 
 combat_victory_2$experientzia puntu irabazi dituzu!
 combat_lvlup_title$NIBELA IGO DUZU!
 combat_lvlup_select$Erabaki zein nahi duzun hobetzea! 
@@ -131,7 +131,7 @@ combat_lvlup_lp$Gehitu 5 zure AP maximoari! Perfektua abilitate asko erabiltzea 
 combat_lvlup_gp$Gehitu 3 zure GP maximoari! Erabilgarria gema gehiago erabili nahi badituzu.
 combat_firststrike_player$Lehen kolpea eman duzu! 
 combat_firststrike_enemy$Lehen kolpea jaso duzu!
-world_pickup_1$
+world_pickup_1$ 
 world_pickup_2$ aurkitu duzu!
 world_rest_main_player$Estatistikak begiratu, gemak aldatu edo zer objektu dituzun egiaztatu.
 world_rest_main_save$Partida gorde.
@@ -176,4 +176,4 @@ world_shop_takeout_noitems$Ezin duzu objekturik atera ez baduzu bat ere ez gorde
 adventurer_explanation_TestScene2$Hau testeoko zona printzipala da. Pixkat arraroa da, baina egin zenerako balio du.
 adventurer_explanation_TestScene2_ShopGirl$Hau dendako neska da. Berarekin hitz egin dezakezu objektuak erosi, saldu, gorde edo berreskuratzeko. Oso erabilgarria da.
 adventurer_explanation_TestScene2_Sign$Kartel bat da. Zuk irakurri.
-adventurer_explanation_TestScene2_Sign_Text$
+adventurer_explanation_TestScene2_Sign_Text$ 
