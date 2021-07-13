@@ -4705,13 +4705,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 236403934931551294, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2686392326873371056, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2686392326873371058, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
       propertyPath: m_Name
       value: KnightWorld
       objectReference: {fileID: 0}
     - target: {fileID: 2686392326873371063, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9
+      value: -10.41
       objectReference: {fileID: 0}
     - target: {fileID: 2686392326873371063, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4719,7 +4727,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2686392326873371063, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.799
+      value: -6.6
       objectReference: {fileID: 0}
     - target: {fileID: 2686392326873371063, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4739,7 +4747,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2686392326873371063, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2686392326873371063, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4751,6 +4759,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2686392326873371063, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4855494359971720670, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
+      propertyPath: enemy1
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4855494359971720670, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
+      propertyPath: enemy2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7478349633848534775, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409205073539409159, guid: d93dc83c072e2f54c83acb0f8f653d26, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -26979,9 +27003,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1262009830944286682, guid: 0882adf9baf7f3b4981fc1b703d0872d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4645194332366295914, guid: 0882adf9baf7f3b4981fc1b703d0872d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.2189026
+      value: 11.843
       objectReference: {fileID: 0}
     - target: {fileID: 4645194332366295914, guid: 0882adf9baf7f3b4981fc1b703d0872d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -31166,6 +31194,7 @@ MonoBehaviour:
   bandit: 0
   wizard: 0
   king: 0
+  knight: 0
   firstAttackObjective: 0
   playerAttackFirst: 0
   playerAttack: 0

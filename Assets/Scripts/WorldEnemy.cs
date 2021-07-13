@@ -134,6 +134,8 @@ public class WorldEnemy : MonoBehaviour
                     animator.SetTrigger("Die");
                     inBattle = false;
                     currentData.GetComponent<CurrentDataScript>().enemyDied = 0;
+                    speedX = 0.0f;
+                    speedZ = 0.0f;
                 }
                 else
                 {

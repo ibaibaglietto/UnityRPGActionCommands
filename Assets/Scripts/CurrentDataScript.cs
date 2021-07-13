@@ -77,6 +77,7 @@ public class CurrentDataScript : MonoBehaviour
     public int bandit;
     public int wizard;
     public int king;
+    public int knight;
     public int firstAttackObjective;
     public int playerAttackFirst;
     public int playerAttack;
@@ -264,6 +265,7 @@ public class CurrentDataScript : MonoBehaviour
         bandit = data.bandit;
         wizard = data.wizard;
         king = data.king;
+        knight = data.knight;
         firstAttackObjective = data.firstAttackObjective;
         playerAttackFirst = data.playerAttackFirst;
         playerAttack = data.playerAttack;

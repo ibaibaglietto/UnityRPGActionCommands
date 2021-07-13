@@ -77,6 +77,7 @@ public class GameDataScript
     public int bandit;
     public int wizard;
     public int king;
+    public int knight;
     public int firstAttackObjective;
     public int playerAttackFirst;
     public int playerAttack;
@@ -153,6 +154,7 @@ public class GameDataScript
         bandit = current.bandit;
         wizard = current.wizard;
         king = current.king;
+        knight = current.knight;
         firstAttackObjective = current.firstAttackObjective;
         playerAttackFirst = current.playerAttackFirst;
         playerAttack = current.playerAttack;

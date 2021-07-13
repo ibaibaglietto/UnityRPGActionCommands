@@ -154,13 +154,35 @@ public class EnemyTeamScript : MonoBehaviour
                 transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
             }
         }
+        //Knight
+        if (enemyType == 3)
+        {
+            grounded = true;
+            //We check if the player already knows the health points of this enemy
+            if (currentData.GetComponent<CurrentDataScript>().knight == 1)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 1.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 1.0f);
+            }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 0.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
+            }
+        }
     }
 
 
     void FixedUpdate()
     {
         //If the enemy is a bandit or a wizard
-        if(enemyType == 0 || enemyType == 1 || enemyType == 2)
+        if(enemyType == 0 || enemyType == 1 || enemyType == 2 || enemyType == 3)
         {
             //We move the enemy to the move position if it has to move towards it
             if (movingToEnemy)
@@ -265,6 +287,16 @@ public class EnemyTeamScript : MonoBehaviour
                     transform.position = new Vector3(transform.position.x, transform.position.y-0.03f, transform.position.z);
                     if (transform.eulerAngles.x >= 90.0f) Destroy(dust.gameObject);
                 }
+            }//Knight
+            if (enemyType == 3)
+            {
+                if (transform.eulerAngles.x == 0.0f) dust = Instantiate(dustObject, new Vector3(transform.position.x + 0.5f, -1.57f, -0.3f), Quaternion.identity);
+                if (transform.eulerAngles.x < 90.0f)
+                {
+                    transform.rotation = Quaternion.Euler(transform.eulerAngles.x + 1.8f, transform.eulerAngles.y, transform.eulerAngles.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y - 0.04f, transform.position.z);
+                    if (transform.eulerAngles.x >= 90.0f) Destroy(dust.gameObject);
+                }
             }
         }
     }
@@ -340,6 +372,27 @@ public class EnemyTeamScript : MonoBehaviour
                 transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
             }
         }
+        //Knight
+        else if (enemyType == 3)
+        {
+            //We check if the player already knows the health of the enemy
+            if (currentData.GetComponent<CurrentDataScript>().knight == 1)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 1.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 1.0f);
+            }
+            else
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.r, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.g, transform.GetChild(0).GetChild(2).GetChild(i).GetComponent<Image>().color.b, 0.0f);
+                }
+                transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color = new Color(transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.r, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.g, transform.GetChild(0).GetChild(2).GetChild(3).GetComponent<Text>().color.b, 0.0f);
+            }
+        }
     }
     //Function to know if the enemy is on the ground
     public bool IsGrounded()
@@ -369,6 +422,13 @@ public class EnemyTeamScript : MonoBehaviour
         {
             duration = Mathf.FloorToInt((lvl-1) / 2.0f);
             rand = ((lvl-1) / 2.0f) - Mathf.FloorToInt((lvl - 1) / 2.0f);
+            if (rand >= Random.Range(0.0f, 1.0f)) duration += 1;
+        }
+        //The knight is less affected
+        else if (enemyType == 3)
+        {
+            duration = Mathf.FloorToInt((lvl - 1) / 2.5f);
+            rand = ((lvl - 1) / 2.5f) - Mathf.FloorToInt((lvl - 1) / 2.5f);
             if (rand >= Random.Range(0.0f, 1.0f)) duration += 1;
         }
         //The king is less affected
@@ -489,8 +549,8 @@ public class EnemyTeamScript : MonoBehaviour
             attackTeam = new Transform[1];
             attackTeam[0] = objective[0];
             transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
-            //If the enemy is a bandit or a wizard we make it move towards the player
-            if (enemyType == 0 || enemyType == 1)
+            //If the enemy is a bandit or a wizard or a knight we make it move towards the player
+            if (enemyType == 0 || enemyType == 1 || enemyType == 3)
             {
                 startPos = transform.position.x;
                 movePos = attackTeam[0].position.x + 1.1f;
@@ -1087,6 +1147,25 @@ public class EnemyTeamScript : MonoBehaviour
             else
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(10);
+            }
+        }
+        else if (enemyType == 3)
+        {
+            if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(10);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 2)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(5);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 3)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(3);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 4)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(1);
             }
         }
     }
