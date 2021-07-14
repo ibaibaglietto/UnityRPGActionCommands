@@ -37,7 +37,7 @@ public class PlayerTeamScript : MonoBehaviour
     //The attack style
     private int attackStyle;
     //The objective of the shuriken
-    public Vector3 shurikenObjective;
+    public Transform shurikenObjective;
     //The battle controller
     private GameObject battleController;
     //The player life
@@ -240,7 +240,6 @@ public class PlayerTeamScript : MonoBehaviour
         //The player moves to the enemy to attack it
         if (movingToEnemy)
         {
-            Debug.Log("ola");
             if (transform.position.x < movePos)
             {
                 transform.position = new Vector3(transform.position.x + 0.10f, transform.position.y, transform.position.z);
@@ -930,7 +929,7 @@ public class PlayerTeamScript : MonoBehaviour
                 if (style == 0)
                 {
                     transform.GetChild(2).GetComponent<Light>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                    shurikenObjective = attackObjective.position;
+                    shurikenObjective = attackObjective;
                     GetComponent<Animator>().SetBool("isSpinning", true);
                 }
                 //Light shuriken
@@ -938,7 +937,7 @@ public class PlayerTeamScript : MonoBehaviour
                 {
                     transform.GetChild(2).GetComponent<Light>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                     lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(2);
-                    shurikenObjective = attackObjective.position;
+                    shurikenObjective = attackObjective;
                     GetComponent<Animator>().SetBool("isSpinning", true);
                 }
                 //Fire shuriken
@@ -947,7 +946,7 @@ public class PlayerTeamScript : MonoBehaviour
                     transform.GetChild(2).GetComponent<Light>().color = new Vector4(0.8862745f, 0.345098f, 0.1333333f, 1.0f);
                     lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(3);
                     //We save where the shuriken will be destroyed
-                    shurikenObjective = new Vector3(12.0f, attackObjective.position.y, attackObjective.position.z);
+                    shurikenObjective = attackObjective;
                     GetComponent<Animator>().SetBool("isSpinning", true);
                 }
             }
@@ -1010,113 +1009,105 @@ public class PlayerTeamScript : MonoBehaviour
         //Adventurer
         else if (playerTeamType == 1)
         {
-            //Attack
-            if (type == 0)
+            //Normal Sword
+            if (style == 0)
             {
-                //Normal Sword
-                if (style == 0)
-                {
-                    //We save the attack position and the adventurer starts moving towards it
-                    attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
-                    startPos = transform.position.x;
-                    movePos = attackObjective.position.x - 1.1f;
-                    movingToEnemy = true;
-                }
-                //Glance
-                else if(style == 1)
-                {
-                    //We instantiate the glance action with a random rotation and start the attack
-                    glanceAction = Instantiate(glanceActionPrefab, attackObjective.GetChild(0));
-                    glanceAction.position = attackObjective.position;
-                    glanceAction.rotation = Quaternion.Euler(0.0f,0.0f, Random.Range(-45.0f,10.0f));
-                    gameObject.GetComponent<Animator>().SetBool("IsGlancing", true);
-                    battleController.GetComponent<BattleController>().finalAttack = true;
-                }
-                //Multistrike
-                else if(style == 2)
-                {
-                    //We save the attack position and the adventurer starts moving towards it
-                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(3);
-                    attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
-                    startPos = transform.position.x;
-                    movePos = attackObjective.position.x - 1.1f;
-                    movingToEnemy = true;
-                    repeatingDamage = currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1;
-                }
-                //Dragonslayer bow
-                else if(style == 3)
-                {
-                    //We activate the dragonslayer action, save the objective and start the attack
-                    transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", true);
-                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(4);
-                    shurikenObjective = new Vector3(12.0f, attackObjective.position.y, attackObjective.position.z);
-                    gameObject.GetComponent<Animator>().SetTrigger("ChargeBow");
-                    battleController.GetComponent<BattleController>().finalAttack = true;
-                }
-                //BK-47
-                else if(style == 4)
-                {
-                    //We activate the BK-47 action
-                    transform.GetChild(0).transform.GetChild(4).gameObject.SetActive(true);
-                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(7);
-                    gameObject.GetComponent<Animator>().SetTrigger("ChargeBow");
-                    //Boolean to be able to shoot faster than normal
-                    GetComponent<Animator>().SetBool("ShootFast",true);
-                    battleController.GetComponent<BattleController>().finalAttack = true;
-                }
+                //We save the attack position and the adventurer starts moving towards it
+                attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
+                startPos = transform.position.x;
+                movePos = attackObjective.position.x - 1.1f;
+                movingToEnemy = true;
             }
+            //Glance
+            else if(style == 1)
+            {
+                //We instantiate the glance action with a random rotation and start the attack
+                glanceAction = Instantiate(glanceActionPrefab, attackObjective.GetChild(0));
+                glanceAction.position = attackObjective.position;
+                glanceAction.rotation = Quaternion.Euler(0.0f,0.0f, Random.Range(-45.0f,10.0f));
+                gameObject.GetComponent<Animator>().SetBool("IsGlancing", true);
+                battleController.GetComponent<BattleController>().finalAttack = true;
+            }
+            //Multistrike
+            else if(style == 2)
+            {
+                //We save the attack position and the adventurer starts moving towards it
+                lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(3);
+                attackObjective.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
+                startPos = transform.position.x;
+                movePos = attackObjective.position.x - 1.1f;
+                movingToEnemy = true;
+                repeatingDamage = currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1;
+            }
+            //Dragonslayer bow
+            else if(style == 3)
+            {
+                //We activate the dragonslayer action, save the objective and start the attack
+                transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", true);
+                lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(4);
+                shurikenObjective = attackObjective;
+                gameObject.GetComponent<Animator>().SetTrigger("ChargeBow");
+                battleController.GetComponent<BattleController>().finalAttack = true;
+            }
+            //BK-47
+            else if(style == 4)
+            {
+                //We activate the BK-47 action
+                transform.GetChild(0).transform.GetChild(4).gameObject.SetActive(true);
+                lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(7);
+                gameObject.GetComponent<Animator>().SetTrigger("ChargeBow");
+                //Boolean to be able to shoot faster than normal
+                GetComponent<Animator>().SetBool("ShootFast",true);
+                battleController.GetComponent<BattleController>().finalAttack = true;
+            }        
         }
         //Wizard
         else if(playerTeamType == 2)
         {
-            //Attack
-            if(type == 0)
+            //Magic Ball
+            if (style == 0)
             {
-                //Magic Ball
-                if (style == 0)
-                {
-                    //We save the objective and start the attack
-                    GetComponent<Animator>().SetBool("magicBall", true);
-                    shurikenObjective = attackObjective.position;
-                }
-                //Barrier
-                else if(style == 1)
-                {
-                    //We save the position of the player and the starting position and start the attack
-                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(1);
-                    startPos = transform.position.x;
-                    movePos = attackObjective.position.x + 0.9f;
-                    movingToAlly = true;
-                }
-                //Pulsing Magic
-                else if(style == 2)
-                {
-                    //We save the position of the enemy and the wizard starts moving towards them
-                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(3);
-                    startPos = transform.position.x;
-                    movePos = attackObjective.position.x - 1.5f;
-                    movingToEnemy = true;
-                    //We save the number of hits
-                    repeatingDamage = currentData.GetComponent<CurrentDataScript>().wizardLvl - 1;
-                }
-                //Magic Spear
-                else if(style == 3)
-                {
-                    //We save the objective and start the attack
-                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(4);
-                    GetComponent<Animator>().SetBool("magicBall", true);
-                    shurikenObjective = attackObjective.position;
-                }
-                //Explode
-                else if(style == 4)
-                {
-                    //We save the position of the attack and the wizard starts moving towards it
-                    lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(9);
-                    startPos = transform.position.x;
-                    movePos = 3.75f;
-                    movingToEnemy = true;
-                }
+                //We save the objective and start the attack
+                GetComponent<Animator>().SetBool("magicBall", true);
+                shurikenObjective = attackObjective;
             }
+            //Barrier
+            else if(style == 1)
+            {
+                //We save the position of the player and the starting position and start the attack
+                lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(1);
+                startPos = transform.position.x;
+                movePos = attackObjective.position.x + 0.9f;
+                movingToAlly = true;
+            }
+            //Pulsing Magic
+            else if(style == 2)
+            {
+                //We save the position of the enemy and the wizard starts moving towards them
+                lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(3);
+                startPos = transform.position.x;
+                movePos = attackObjective.position.x - 1.5f;
+                movingToEnemy = true;
+                //We save the number of hits
+                repeatingDamage = currentData.GetComponent<CurrentDataScript>().wizardLvl - 1;
+            }
+            //Magic Spear
+            else if(style == 3)
+            {
+                //We save the objective and start the attack
+                lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(4);
+                GetComponent<Animator>().SetBool("magicBall", true);
+                shurikenObjective = attackObjective;
+            }
+            //Explode
+            else if(style == 4)
+            {
+                //We save the position of the attack and the wizard starts moving towards it
+                lightPointsUI.GetComponent<LightPointsScript>().ReduceLight(9);
+                startPos = transform.position.x;
+                movePos = 3.75f;
+                movingToEnemy = true;
+            }        
         }
     }
     //Function to get the health

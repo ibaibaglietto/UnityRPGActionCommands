@@ -31,6 +31,8 @@ public class EnemyTeamScript : MonoBehaviour
     private bool idle;
     //A bool to know if the enemy is on the ground
     private bool grounded;
+    //An int to know for how much rounds is the enemy stunned
+    private int stunned;
     //An int to see for how much rounds is the enemy asleep
     private int asleep;
     //The gameobject of the asleep UI
@@ -52,6 +54,8 @@ public class EnemyTeamScript : MonoBehaviour
     private float teleportPos;
     //A bool to know that the next attack is a ground attack
     private bool groundAttack;
+    //A bool to know that if the knight has the shield up
+    private bool shield;
     //The audio source of the enemy
     private AudioSource enemySource;
     //A boolean to know if the die animation has finished
@@ -87,6 +91,7 @@ public class EnemyTeamScript : MonoBehaviour
         dieAnimationFinished = false;
         groundAttack = false;
         returnHeight = false;
+        shield = false;
         attackTeam = new Transform[1];
         //Bandit
         if (enemyType == 0)
@@ -181,8 +186,7 @@ public class EnemyTeamScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        //If the enemy is a bandit or a wizard
-        if(enemyType == 0 || enemyType == 1 || enemyType == 2 || enemyType == 3)
+        if (enemyType == 0 || enemyType == 1 || enemyType == 2 || enemyType == 3)
         {
             //We move the enemy to the move position if it has to move towards it
             if (movingToEnemy)
@@ -226,6 +230,13 @@ public class EnemyTeamScript : MonoBehaviour
                     else if (enemyNumber == 2) transform.position = new Vector3(transform.position.x, transform.position.y, -2.02f);
                     else if (enemyNumber == 3) transform.position = new Vector3(transform.position.x, transform.position.y, -2.01f);
                     else if (enemyNumber == 4) transform.position = new Vector3(transform.position.x, transform.position.y, -2.00f);
+                    //When the knight returns he defends himself
+                    if (enemyType == 3)
+                    {
+                        Debug.Log("ola");
+                        shield = true;
+                        GetComponent<Animator>().SetBool("Shield", true);
+                    }
                     //When the king returns to the starting pos there is a chance that they will charge the teleportation attack
                     if (enemyType == 2 && Random.Range(0.0f,1.0f)<0.4f)
                     {
@@ -542,7 +553,7 @@ public class EnemyTeamScript : MonoBehaviour
     //Function to attack an objective
     public void Attack(Transform[] objective)
     {
-        if (asleep == 0)
+        if (asleep == 0 && stunned == 0)
         {
             //We put the enemy in the attack position
             transform.position = new Vector3(transform.position.x, transform.position.y, -2.06f);
@@ -552,6 +563,12 @@ public class EnemyTeamScript : MonoBehaviour
             //If the enemy is a bandit or a wizard or a knight we make it move towards the player
             if (enemyType == 0 || enemyType == 1 || enemyType == 3)
             {
+                //When the knight attacks he lowers his shield 
+                if (enemyType == 3)
+                {
+                    shield = false;
+                    GetComponent<Animator>().SetBool("Shield", false);
+                }
                 startPos = transform.position.x;
                 movePos = attackTeam[0].position.x + 1.1f;
                 movingToEnemy = true;
@@ -581,23 +598,35 @@ public class EnemyTeamScript : MonoBehaviour
             }
         }
         //If the enemy is asleep we reduce the asleep timer 
-        else
-        {            
-            asleep -= 1;
-            if (asleep == 0)
+        else 
+        {
+            if (asleep > 0)
             {
-                EndBuffDebuff(sleepPos);
-                GetComponent<Animator>().SetBool("IsAsleep", false);
+                asleep -= 1;
+                if (asleep == 0)
+                {
+                    EndBuffDebuff(sleepPos);
+                    GetComponent<Animator>().SetBool("IsAsleep", false);
+                }
+                else
+                {
+                    buffDebuffUI.transform.GetChild(sleepPos).GetChild(1).GetComponent<Text>().text = asleep.ToString();
+                }
+            }         
+            if (stunned > 0)
+            {
+                stunned -= 1;
+                GetComponent<Animator>().SetInteger("StunTurns", stunned);
+                GetComponent<Animator>().SetTrigger("TryRecover");
             }
             else
             {
-                buffDebuffUI.transform.GetChild(sleepPos).GetChild(1).GetComponent<Text>().text = asleep.ToString();
+                if (enemyNumber < battleController.GetComponent<BattleController>().GetNumberOfEnemies())
+                {
+                    battleController.GetComponent<BattleController>().NextEnemy(enemyNumber);
+                }
+                else battleController.GetComponent<BattleController>().EndEnemyTurn();
             }
-            if (enemyNumber < battleController.GetComponent<BattleController>().GetNumberOfEnemies())
-            {
-                battleController.GetComponent<BattleController>().NextEnemy(enemyNumber);
-            }
-            else battleController.GetComponent<BattleController>().EndEnemyTurn();
         }
     }
 
@@ -619,6 +648,36 @@ public class EnemyTeamScript : MonoBehaviour
         {
             defended = 0;
         }
+    }
+
+    //A function to know if the knight is shielded
+    public bool IsShielded()
+    {
+        return shield;
+    }
+
+    //A function to change the shielded state of the knight
+    public void SetShielded(bool s)
+    {
+        shield = s;
+        GetComponent<Animator>().SetBool("Shield", shield);
+    }
+
+    //A function to set the stun turns
+    public void SetStun(int s)
+    {
+        stunned = s;
+        GetComponent<Animator>().SetInteger("StunTurns", s);
+    }
+
+    //A function to end the turn of the actual enemy
+    public void EndActualEnemyTurn()
+    {
+        if (enemyNumber < battleController.GetComponent<BattleController>().GetNumberOfEnemies())
+        {
+            battleController.GetComponent<BattleController>().NextEnemy(enemyNumber);
+        }
+        else battleController.GetComponent<BattleController>().EndEnemyTurn();
     }
 
     //Function to prepare a second defense

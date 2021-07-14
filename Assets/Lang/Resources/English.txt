@@ -116,6 +116,7 @@ combat_other_flee_action$Press <sprite=336> repeatedly to fill the bar.
 combat_enemy_bandit$Bandit
 combat_enemy_evilwizard$Evil wizard
 combat_enemy_king$King
+combat_enemy_knight$Knight
 combat_glance_bandit_1$This bandit uses his sword to give a powerful strike.
 combat_glance_bandit_2$HP: 4 /Damage: 2 /Defence: 0
 combat_glance_evilwizard_1$This wizard uses his magical power to burn his enemies.

@@ -6,7 +6,7 @@ using UnityEngine.Animations;
 public class ShurikenScript : MonoBehaviour
 {
     //The objective of the shuriken
-    private Vector3 objective;
+    private Transform objective;
     //The objectives of the fire shuriken
     private Transform[] fireObjectives;
     //The battle controller
@@ -43,19 +43,29 @@ public class ShurikenScript : MonoBehaviour
         if (!BK47)
         {
             //if the shuriken hasn't arrived to the objective it keeps moving
-            if (gameObject.transform.position.x < objective.x) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.39f * Mathf.Cos(rotation), gameObject.transform.position.y + 0.39f * Mathf.Sin(rotation), gameObject.transform.position.z);
+            if ((gameObject.transform.position.x < objective.position.x && !fire) || (gameObject.transform.position.x < 12.0f && fire)) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.39f * Mathf.Cos(rotation), gameObject.transform.position.y + 0.39f * Mathf.Sin(rotation), gameObject.transform.position.z);
             //When the shuriken arrives it deals damage and self destroys
             else
             {
                 //We deal the damage
                 if (!fire && !exploded)
                 {
-                    battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), shurikenDamage, true);
-                    if (shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.1f);
-                    else if (shurikenDamage == 2) battleController.GetComponent<BattleController>().FillSouls(0.3f);
-                    else battleController.GetComponent<BattleController>().FillSouls(0.4f);
+                    if (objective.GetComponent<EnemyTeamScript>().enemyType == 3 && objective.GetComponent<EnemyTeamScript>().IsShielded())
+                    {
+                        battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), shurikenDamage - 2, true);
+                        if (shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.05f);
+                        else if (shurikenDamage == 2) battleController.GetComponent<BattleController>().FillSouls(0.15f);
+                        else battleController.GetComponent<BattleController>().FillSouls(0.2f);
+                    }
+                    else
+                    {
+                        battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), shurikenDamage, true);
+                        if (shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.1f);
+                        else if (shurikenDamage == 2) battleController.GetComponent<BattleController>().FillSouls(0.3f);
+                        else battleController.GetComponent<BattleController>().FillSouls(0.4f);
+                    }                        
                 }
-                //We destroy the magic ball
+                //We destroy the projectile
                 if (!magic) Destroy(gameObject);
                 //Else we explode it
                 else
@@ -67,10 +77,20 @@ public class ShurikenScript : MonoBehaviour
             //If the projectile will hit more than one enemy we count the hit and continue moving it
             if (fire && fireObjectives.Length > hit && gameObject.transform.position.x > (fireObjectives[hit].transform.position.x - 0.2f) && gameObject.transform.position.x <= (fireObjectives[hit].transform.position.x + 0.2f))
             {
-                if (shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.075f);
-                else battleController.GetComponent<BattleController>().FillSouls(0.15f);
-                battleController.GetComponent<BattleController>().DealDamage(fireObjectives[hit], shurikenDamage, true);
-                hit += 1;
+                if(fireObjectives[hit].GetComponent<EnemyTeamScript>().enemyType == 3 && fireObjectives[hit].GetComponent<EnemyTeamScript>().IsShielded())
+                {
+                    if (shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.037f);
+                    else battleController.GetComponent<BattleController>().FillSouls(0.075f);
+                    battleController.GetComponent<BattleController>().DealDamage(fireObjectives[hit], shurikenDamage - 2, true);
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    if (shurikenDamage == 1) battleController.GetComponent<BattleController>().FillSouls(0.075f);
+                    else battleController.GetComponent<BattleController>().FillSouls(0.15f);
+                    battleController.GetComponent<BattleController>().DealDamage(fireObjectives[hit], shurikenDamage, true);
+                    hit += 1;
+                }
             }
         }
         //If it is a bk-47 projectile 
@@ -78,7 +98,7 @@ public class ShurikenScript : MonoBehaviour
         {
             //We move it depending on the rotation
             if(gameObject.transform.position.x < 10.0f) gameObject.transform.position = new Vector3(gameObject.transform.position.x + 0.39f * Mathf.Cos(rotation), gameObject.transform.position.y + 0.39f * Mathf.Sin(rotation), gameObject.transform.position.z);
-            //we destroy it if it gets too fat away
+            //we destroy it if it gets too far away
             else Destroy(gameObject);
         }      
         
@@ -88,21 +108,34 @@ public class ShurikenScript : MonoBehaviour
     {
         if(BK47 && collision.tag.Equals("enemy") && collision.GetComponent<EnemyTeamScript>().IsAlive())
         {
-            battleController.GetComponent<BattleController>().FillSouls(0.1f);
-            battleController.GetComponent<BattleController>().DealDamage(collision.transform, shurikenDamage, true);
-            Destroy(gameObject);
+            if (collision.GetComponent<EnemyTeamScript>().enemyType == 3 && collision.GetComponent<EnemyTeamScript>().IsShielded())
+            {
+                battleController.GetComponent<BattleController>().FillSouls(0.05f);
+                battleController.GetComponent<BattleController>().DealDamage(collision.transform, shurikenDamage - 2, true);
+                Destroy(gameObject);
+            }
+            else
+            {
+                battleController.GetComponent<BattleController>().FillSouls(0.1f);
+                battleController.GetComponent<BattleController>().DealDamage(collision.transform, shurikenDamage, true);
+                Destroy(gameObject);
+            }                
         }
     }
 
     //A function to set the objective
-    public void SetObjective(Vector3 obj)
+    public void SetObjective(Transform obj)
     {
-        objective = obj;
-        if (!BK47 && !fire) 
+        if (!BK47 && !fire)
         {
-            rotation = Mathf.Atan2(objective.y - transform.position.y, objective.x - transform.position.x);
+            objective = obj;
+            rotation = Mathf.Atan2(objective.position.y - transform.position.y, objective.position.x - transform.position.x);
             transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotation * Mathf.Rad2Deg);
         } 
+        else if (fire)
+        {
+            objective = obj;
+        }
     }
     //A function to set the objectives of the fire shuriken
     public void SetFireObjectives(Transform[] objs)

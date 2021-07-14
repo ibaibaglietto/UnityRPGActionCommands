@@ -116,6 +116,7 @@ combat_other_flee_action$Presiona <sprite=336> repetidamente para llenar la barr
 combat_enemy_bandit$Bandido
 combat_enemy_evilwizard$Mago malvado
 combat_enemy_king$Rey
+combat_enemy_knight$Caballero
 combat_glance_bandit_1$Este bandido usa su espada para dar un potente golpe.
 combat_glance_bandit_2$PV: 4 /Daño: 2 /Defensa: 0
 combat_glance_evilwizard_1$Este mago usa sus poderes mágicos para quemar a sus enemigos.

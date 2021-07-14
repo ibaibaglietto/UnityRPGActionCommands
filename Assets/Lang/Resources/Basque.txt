@@ -116,6 +116,7 @@ combat_other_flee_action$Pultsatu behin eta berriz barra betetzeko.
 combat_enemy_bandit$Bidelapurra
 combat_enemy_evilwizard$Mago gaiztoa
 combat_enemy_king$Erregea
+combat_enemy_knight$Zalduna
 combat_glance_bandit_1$Bidelapur honek bere ezpata erabiliko du kolpe indartsu bat emateko.
 combat_glance_bandit_2$BP: 4 /Mina: 2 /Defentsa: 0
 combat_glance_evilwizard_1$Mago honek botere magikoak erabiltzen ditu bere etsaiak erretzeko.

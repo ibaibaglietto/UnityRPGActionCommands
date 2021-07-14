@@ -1362,6 +1362,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                         else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
@@ -1370,6 +1371,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                         else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
@@ -1378,6 +1380,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                     else
@@ -1390,6 +1393,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                 }
@@ -1416,6 +1420,7 @@ public class BattleController : MonoBehaviour
                                     if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                     else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                     else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                    else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                 }
                                 if (Input.GetKeyDown(KeyCode.RightArrow))
                                 {
@@ -1428,6 +1433,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                         else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
@@ -1436,6 +1442,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                     else if(!enemy1.GetComponent<EnemyTeamScript>().IsAlive())
@@ -1448,6 +1455,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }                                    
                                 }
@@ -1478,6 +1486,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                         else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
@@ -1486,6 +1495,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                     else if(enemy1.GetComponent<EnemyTeamScript>().IsAlive() || enemy2.GetComponent<EnemyTeamScript>().IsAlive())
@@ -1498,6 +1508,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                 }
@@ -1512,6 +1523,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                     else if (!enemy1.GetComponent<EnemyTeamScript>().IsAlive() && !enemy2.GetComponent<EnemyTeamScript>().IsAlive())
@@ -1524,6 +1536,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                 }
@@ -1554,6 +1567,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                         else if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
@@ -1562,6 +1576,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                         else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((selectingAction == 0 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || selectingAction == 1))
                                         {
@@ -1570,6 +1585,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                     else
@@ -1582,6 +1598,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                 }
@@ -2495,12 +2512,31 @@ public class BattleController : MonoBehaviour
                                     companionChoosingAction = false;
                                     actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
                                     actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_sword_action");
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_glance_action");
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_swordspin_action");
-                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_dragonslayerbow_action");
-                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_bk-47_action");
-                                    attackType = 0;
+                                    if (usingStyle == 0)
+                                    {
+                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_sword_action");
+                                        attackType = 0;
+                                    }
+                                    else if (usingStyle == 1)
+                                    {
+                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_glance_action");
+                                        attackType = 2;
+                                    }
+                                    else if (usingStyle == 2)
+                                    {
+                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_swordspin_action");
+                                        attackType = 0;
+                                    }
+                                    else if (usingStyle == 3)
+                                    {
+                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_dragonslayerbow_action");
+                                        attackType = 1;
+                                    }
+                                    else if (usingStyle == 4)
+                                    {
+                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_bk-47_action");
+                                        attackType = 1;
+                                    }
                                     selectingEnemyCompanion = true;
                                     enemyName.SetActive(true);
                                     if (usingStyle < 3) SelectFirstEnemy();
@@ -2533,13 +2569,17 @@ public class BattleController : MonoBehaviour
                                     companionChoosingAction = false;
                                     actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
                                     actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
+                                    attackType = 1;
                                     if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicball_action");
-                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_barrier_action");
+                                    else if (usingStyle == 1)
+                                    {
+                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_barrier_action");
+                                        attackType = 2;
+                                    }
                                     else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_pulsingmagic_action");
                                     else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicspear_action");
                                     else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_energybomb_action");
 
-                                    attackType = 0;
                                     enemyName.SetActive(true);
                                     if (usingStyle == 0 || usingStyle == 2 || usingStyle == 3)
                                     {
@@ -2912,6 +2952,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                         else if (enemyNumber > 2 && enemy3.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy3.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
@@ -2920,6 +2961,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                         else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
@@ -2928,6 +2970,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }                                        
                                     else 
@@ -2940,6 +2983,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                 }
@@ -2966,6 +3010,7 @@ public class BattleController : MonoBehaviour
                                     if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                     else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                     else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                    else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                 }
                                 if (Input.GetKeyDown(KeyCode.RightArrow))
                                 {
@@ -2978,6 +3023,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                         else if (enemyNumber > 3 && enemy4.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy4.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
@@ -2986,6 +3032,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }                                    
                                     else if (!enemy1.GetComponent<EnemyTeamScript>().IsAlive())
@@ -2998,6 +3045,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                 }
@@ -3028,6 +3076,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                         else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
@@ -3036,6 +3085,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }                                    
                                     else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() || enemy2.GetComponent<EnemyTeamScript>().IsAlive())
@@ -3048,6 +3098,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                 }
@@ -3062,6 +3113,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy4.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }                                        
                                     else if (!enemy1.GetComponent<EnemyTeamScript>().IsAlive() && !enemy2.GetComponent<EnemyTeamScript>().IsAlive())
@@ -3074,6 +3126,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                 }
@@ -3104,6 +3157,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy3.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                         else if (enemy2.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy2.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
@@ -3112,6 +3166,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy2.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                         else if (enemy1.GetComponent<EnemyTeamScript>().IsAlive() && ((usingStyle != 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded()) || (usingStyle == 1 && companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 1) || (companion.GetComponent<PlayerTeamScript>().GetPlayerType() == 2 && usingStyle == 2 && enemy1.GetComponent<EnemyTeamScript>().IsGrounded())))
                                         {
@@ -3120,6 +3175,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy1.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }                                        
                                     else
@@ -3132,6 +3188,7 @@ public class BattleController : MonoBehaviour
                                             if (enemy.GetComponent<EnemyTeamScript>().enemyType == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_bandit");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_evilwizard");
                                             else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 2) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                                            else if (enemy.GetComponent<EnemyTeamScript>().enemyType == 3) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                                         }
                                     }
                                 }
@@ -4888,7 +4945,15 @@ public class BattleController : MonoBehaviour
         }
         else
         {
-            objective.GetComponent<Animator>().SetTrigger("TakeDamage");
+            if (!objective.GetComponent<EnemyTeamScript>().IsShielded() || attackType == 0)
+            {
+                if (objective.GetComponent<EnemyTeamScript>().IsShielded() && attackType == 0)
+                {
+                    objective.GetComponent<EnemyTeamScript>().SetStun(2);
+                    objective.GetComponent<EnemyTeamScript>().SetShielded(false);
+                }
+                else objective.GetComponent<Animator>().SetTrigger("TakeDamage");
+            }
         }
     }
     //Function to know if the wizard is taunting
@@ -5333,13 +5398,16 @@ public class BattleController : MonoBehaviour
             //We activate the next enemy turn
             if (numb == 1)
             {
-                if(currentData.GetComponent<CurrentDataScript>().enemyStart == 1)
+                if (currentData.GetComponent<CurrentDataScript>().enemyStart == 1)
                 {
                     currentData.GetComponent<CurrentDataScript>().enemyStart = 0;
                     currentData.GetComponent<CurrentDataScript>().firstAttackObjective = 0;
                     EndEnemyTurn();
                 }
-                else enemy2Turn = true;
+                else
+                {
+                    enemy2Turn = true;
+                }
             }
             else if (numb == 2)
             {
@@ -5916,6 +5984,13 @@ public class BattleController : MonoBehaviour
                 enemyName.transform.GetChild(i).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
                 lastI = i;
             }
+            else if (groundEnemies[i].GetComponent<EnemyTeamScript>().enemyType == 3)
+            {
+                groundEnemies[i].GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                enemyName.transform.GetChild(i).gameObject.SetActive(true);
+                enemyName.transform.GetChild(i).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
+                lastI = i;
+            }
         }
         for (int i = lastI+1; i < 5; i++)
         {
@@ -5953,6 +6028,13 @@ public class BattleController : MonoBehaviour
                 groundEnemies[i].GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                 enemyName.transform.GetChild(i).gameObject.SetActive(true);
                 enemyName.transform.GetChild(i).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_king");
+                lastI = i;
+            }
+            else if (groundEnemies[i].GetComponent<EnemyTeamScript>().enemyType == 3)
+            {
+                groundEnemies[i].GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                enemyName.transform.GetChild(i).gameObject.SetActive(true);
+                enemyName.transform.GetChild(i).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_enemy_knight");
                 lastI = i;
             }
         }
