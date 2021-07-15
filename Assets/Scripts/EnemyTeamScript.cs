@@ -55,7 +55,7 @@ public class EnemyTeamScript : MonoBehaviour
     //A bool to know that the next attack is a ground attack
     private bool groundAttack;
     //A bool to know that if the knight has the shield up
-    private bool shield;
+    private bool shield = false;
     //The audio source of the enemy
     private AudioSource enemySource;
     //A boolean to know if the die animation has finished
@@ -91,7 +91,6 @@ public class EnemyTeamScript : MonoBehaviour
         dieAnimationFinished = false;
         groundAttack = false;
         returnHeight = false;
-        shield = false;
         attackTeam = new Transform[1];
         //Bandit
         if (enemyType == 0)
@@ -207,7 +206,8 @@ public class EnemyTeamScript : MonoBehaviour
                     attacking = true;
                     GetComponent<Animator>().SetFloat("Speed", 0.0f);
                     movingToEnemy = false;
-                    GetComponent<Animator>().SetBool("IsAttacking", true);
+                    if (enemyType == 3 && Random.Range(0.0f, 1.0f) < 0.4f) GetComponent<Animator>().SetBool("IsTripleAttack",true);
+                    GetComponent<Animator>().SetBool("IsAttacking", true); 
                 }
             }
             //We move the enemy to the start position after it attacks
@@ -233,7 +233,6 @@ public class EnemyTeamScript : MonoBehaviour
                     //When the knight returns he defends himself
                     if (enemyType == 3)
                     {
-                        Debug.Log("ola");
                         shield = true;
                         GetComponent<Animator>().SetBool("Shield", true);
                     }
@@ -460,6 +459,19 @@ public class EnemyTeamScript : MonoBehaviour
         {
             if(asleep == 0)
             {
+                if(enemyType == 3)
+                {
+                    if (shield)
+                    {
+                        shield = false;
+                        GetComponent<Animator>().SetBool("Shield", false);
+                    }
+                    if (stunned > 0)
+                    {
+                        stunned = 0;
+                        GetComponent<Animator>().SetInteger("StunTurns", 0);
+                    }
+                }
                 GetComponent<Animator>().SetBool("IsAsleep", true);
                 sleepPos = 3 - buffDebuffNumb;
                 asleep = duration;
@@ -607,6 +619,11 @@ public class EnemyTeamScript : MonoBehaviour
                 {
                     EndBuffDebuff(sleepPos);
                     GetComponent<Animator>().SetBool("IsAsleep", false);
+                    if(enemyType == 3)
+                    {
+                        shield = true;
+                        GetComponent<Animator>().SetBool("Shield", true);
+                    }
                 }
                 else
                 {
@@ -696,11 +713,15 @@ public class EnemyTeamScript : MonoBehaviour
     public void MidMeleeAttack()
     {
         //If the player defends correctly while using the barrier there is no damage
-        if(battleController.GetComponent<BattleController>().IsTaunting() && battleController.GetComponent<BattleController>().GetDefense(1) == 1.0f && defended == 1.0f)
+        if (battleController.GetComponent<BattleController>().IsTaunting() && battleController.GetComponent<BattleController>().GetDefense(1) == 1.0f && defended == 1.0f)
         {
             attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(0);
         }
-        else attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+        else
+        {
+            if(enemyType == 2) attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+            else if (enemyType == 3) attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(1 - defended);
+        }
         //If the player doesnt defend correctly the damage animation is plaied
         if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
         {
@@ -740,6 +761,7 @@ public class EnemyTeamScript : MonoBehaviour
     //Funtion to return to the start pos
     public void ReturnStartPos()
     {
+        if(enemyType == 3) GetComponent<Animator>().SetBool("IsTripleAttack", false);
         attacking = false;
         gameObject.GetComponent<Animator>().SetBool("IsAttacking", false);
         movingToEnemy = false;
@@ -1094,11 +1116,21 @@ public class EnemyTeamScript : MonoBehaviour
         enemySource.clip = hitAudio;
         enemySource.Play();
         idle = false;
+    }
+
+    //A function to wake up the enemy when they are hit
+    public void WakeUp()
+    {
         if (asleep > 0)
         {
             GetComponent<Animator>().SetBool("IsAsleep", false);
             asleep = 0;
             EndBuffDebuff(sleepPos);
+            if (enemyType == 3)
+            {
+                shield = true;
+                GetComponent<Animator>().SetBool("Shield", true);
+            }
         }
     }
 
