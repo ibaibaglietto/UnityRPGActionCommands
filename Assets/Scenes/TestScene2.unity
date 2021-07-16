@@ -28494,7 +28494,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2518188754690314776, guid: 6ae1b1b46b37d714bb49080677f01638, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 139.076
+      value: 139.156
       objectReference: {fileID: 0}
     - target: {fileID: 2518188754690314776, guid: 6ae1b1b46b37d714bb49080677f01638, type: 3}
       propertyPath: m_LocalPosition.z
@@ -31154,7 +31154,7 @@ MonoBehaviour:
   movRight: 0
   movUp: 0
   movDown: 0
-  currentCompanion: 2
+  currentCompanion: 1
   unlockedCompanions: 2
   adventurerCurrentHealth: 27
   wizardCurrentHealth: 28

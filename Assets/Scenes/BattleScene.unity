@@ -7190,6 +7190,7 @@ MonoBehaviour:
   kingBattle: {fileID: 5865716693940188595, guid: 5afa77bc54af49e4aba403227e5ad0a6, type: 3}
   knightBattle: {fileID: 3877302658384341422, guid: 53fff3cabf3334a4bac6bb79e0d547ab, type: 3}
   damageUI: {fileID: 2003888347808236252, guid: ba485e94df23bb6459b7ed70110d5086, type: 3}
+  correctCommandUIPrefab: {fileID: 7292759003230660220, guid: bf9c3f339ac1f3148b42c2da84e334ca, type: 3}
   normalSword: {fileID: 21300000, guid: 016fa064988a4ad409e0708b60a94625, type: 3}
   lightSword: {fileID: 21300000, guid: c8c7a5f5e1930be4dae588b05dab6a64, type: 3}
   multiStrikeSword: {fileID: 21300000, guid: 80e3e3e4ba7bcd243bb76e0a20742180, type: 3}

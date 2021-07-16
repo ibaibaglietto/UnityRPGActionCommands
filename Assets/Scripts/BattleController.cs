@@ -18,6 +18,9 @@ public class BattleController : MonoBehaviour
     [SerializeField] private Transform knightBattle;
     //The prefabs of the damage UI, heart and light
     [SerializeField] private Transform damageUI;
+    //The prefab of the correct command text and the actual transform
+    [SerializeField] private Transform correctCommandUIPrefab;
+    private Transform correctCommandUI;
     //The main camera
     private GameObject mainCamera;
     //The canvas
@@ -6177,6 +6180,16 @@ public class BattleController : MonoBehaviour
     {
         UISource.clip = correctCommandAudio;
         UISource.Play();
+        Debug.Log("ola");
+        if (playerTurn)
+        {            
+            correctCommandUI = Instantiate(correctCommandUIPrefab, canvas.GetComponent<RectTransform>());
+            Vector2 ViewportPosition = mainCamera.GetComponent<Camera>().WorldToViewportPoint(player.transform.position);
+            Vector2 WorldObject_ScreenPosition = new Vector2(
+            ((ViewportPosition.x * canvas.GetComponent<RectTransform>().sizeDelta.x) - (canvas.GetComponent<RectTransform>().sizeDelta.x * 0.5f)),
+            ((ViewportPosition.y * canvas.GetComponent<RectTransform>().sizeDelta.y) - (canvas.GetComponent<RectTransform>().sizeDelta.y * 0.5f)));
+            correctCommandUI.GetComponent<RectTransform>().anchoredPosition = new Vector2(WorldObject_ScreenPosition.x, 0.0f);
+        }
     }
 
     //Function to make the bad command action sound

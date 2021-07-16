@@ -231,11 +231,7 @@ public class EnemyTeamScript : MonoBehaviour
                     else if (enemyNumber == 3) transform.position = new Vector3(transform.position.x, transform.position.y, -2.01f);
                     else if (enemyNumber == 4) transform.position = new Vector3(transform.position.x, transform.position.y, -2.00f);
                     //When the knight returns he defends himself
-                    if (enemyType == 3)
-                    {
-                        shield = true;
-                        GetComponent<Animator>().SetBool("Shield", true);
-                    }
+                    if (enemyType == 3) SetShielded(true); 
                     //When the king returns to the starting pos there is a chance that they will charge the teleportation attack
                     if (enemyType == 2 && Random.Range(0.0f,1.0f)<0.4f)
                     {
@@ -461,11 +457,7 @@ public class EnemyTeamScript : MonoBehaviour
             {
                 if(enemyType == 3)
                 {
-                    if (shield)
-                    {
-                        shield = false;
-                        GetComponent<Animator>().SetBool("Shield", false);
-                    }
+                    if (shield) SetShielded(false);  
                     if (stunned > 0)
                     {
                         stunned = 0;
@@ -576,11 +568,7 @@ public class EnemyTeamScript : MonoBehaviour
             if (enemyType == 0 || enemyType == 1 || enemyType == 3)
             {
                 //When the knight attacks he lowers his shield 
-                if (enemyType == 3)
-                {
-                    shield = false;
-                    GetComponent<Animator>().SetBool("Shield", false);
-                }
+                if (enemyType == 3) SetShielded(false); 
                 startPos = transform.position.x;
                 movePos = attackTeam[0].position.x + 1.1f;
                 movingToEnemy = true;
@@ -619,11 +607,7 @@ public class EnemyTeamScript : MonoBehaviour
                 {
                     EndBuffDebuff(sleepPos);
                     GetComponent<Animator>().SetBool("IsAsleep", false);
-                    if(enemyType == 3)
-                    {
-                        shield = true;
-                        GetComponent<Animator>().SetBool("Shield", true);
-                    }
+                    if(enemyType == 3) SetShielded(true); 
                 }
                 else
                 {
@@ -635,6 +619,7 @@ public class EnemyTeamScript : MonoBehaviour
                 stunned -= 1;
                 GetComponent<Animator>().SetInteger("StunTurns", stunned);
                 GetComponent<Animator>().SetTrigger("TryRecover");
+                if(stunned == 0 && enemyType == 3) SetShielded(true);
             }
             else
             {
@@ -676,9 +661,16 @@ public class EnemyTeamScript : MonoBehaviour
     //A function to change the shielded state of the knight
     public void SetShielded(bool s)
     {
-        shield = s;
-        GetComponent<Animator>().SetBool("Shield", shield);
+        if(!s) shield = s;
+        GetComponent<Animator>().SetBool("Shield", s);
     }
+
+    //A function to make the shield boolean true
+    public void ShieldUp()
+    {
+        shield = true;
+    }
+
 
     //A function to set the stun turns
     public void SetStun(int s)
@@ -1115,22 +1107,13 @@ public class EnemyTeamScript : MonoBehaviour
     {
         enemySource.clip = hitAudio;
         enemySource.Play();
-        idle = false;
-    }
-
-    //A function to wake up the enemy when they are hit
-    public void WakeUp()
-    {
+        idle = false; 
         if (asleep > 0)
         {
             GetComponent<Animator>().SetBool("IsAsleep", false);
             asleep = 0;
             EndBuffDebuff(sleepPos);
-            if (enemyType == 3)
-            {
-                shield = true;
-                GetComponent<Animator>().SetBool("Shield", true);
-            }
+            if (enemyType == 3) SetShielded(true);
         }
     }
 
