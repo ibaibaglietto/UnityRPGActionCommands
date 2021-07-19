@@ -31137,7 +31137,7 @@ MonoBehaviour:
   spawnZ: -2
   playerCurrentHealth: 10
   playerCurrentLight: 10
-  souls: 1
+  souls: 6
   playerLvl: 6
   playerHeartLvl: 2
   playerLightLvl: 2
@@ -31154,7 +31154,7 @@ MonoBehaviour:
   movRight: 0
   movUp: 0
   movDown: 0
-  currentCompanion: 1
+  currentCompanion: 2
   unlockedCompanions: 2
   adventurerCurrentHealth: 27
   wizardCurrentHealth: 28

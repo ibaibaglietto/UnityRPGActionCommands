@@ -123,6 +123,8 @@ combat_glance_evilwizard_1$Mago honek botere magikoak erabiltzen ditu bere etsai
 combat_glance_evilwizard_2$BP: 4 /Mina: 2 /Defentsa: 0
 combat_glance_king_1$Erregeak bere maza eta teleportazio botereak erabiliz erasotzen du. Kontuz ibili bere teleportazio erasoarekin, hau erabili baino lehen prestatu egin beharko da, beraz ondo bigilatu. 
 combat_glance_king_2$BP: 40 /Mina: 3 /Defentsa: 0
+combat_glance_knight_1$Zaldunak bere ezpata hiru eraso bizkor egiteko edo atake bortitz bat jaurtitzeko erabiliko du. Erasoan ez dagoenean bere ezkutua erabiliko du babesteko, gorputzez gorpuzko atakeak erabili bere defentsa apurtzeko!
+combat_glance_knight_2$BP: 6 /Mina: 3 /Defentsa: 2 ezkutuarekin, 0 hau gabe.
 combat_victory_1$ 
 combat_victory_2$experientzia puntu irabazi dituzu!
 combat_lvlup_title$NIBELA IGO DUZU!
@@ -132,6 +134,11 @@ combat_lvlup_lp$Gehitu 5 zure AP maximoari! Perfektua abilitate asko erabiltzea 
 combat_lvlup_gp$Gehitu 3 zure GP maximoari! Erabilgarria gema gehiago erabili nahi badituzu.
 combat_firststrike_player$Lehen kolpea eman duzu! 
 combat_firststrike_enemy$Lehen kolpea jaso duzu!
+combat_goodcommand_1$Ona
+combat_goodcommand_2$Ondo
+combat_goodcommand_3$Oso ondo
+combat_goodcommand_4$Liluragarri
+combat_goodcommand_5$Sinestezin
 world_pickup_1$ 
 world_pickup_2$ aurkitu duzu!
 world_rest_main_player$Estatistikak begiratu, gemak aldatu edo zer objektu dituzun egiaztatu.

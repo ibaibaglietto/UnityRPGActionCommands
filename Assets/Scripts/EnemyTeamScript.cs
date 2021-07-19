@@ -182,7 +182,6 @@ public class EnemyTeamScript : MonoBehaviour
         }
     }
 
-
     void FixedUpdate()
     {
         if (enemyType == 0 || enemyType == 1 || enemyType == 2 || enemyType == 3)

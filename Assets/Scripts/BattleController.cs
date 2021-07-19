@@ -1692,7 +1692,7 @@ public class BattleController : MonoBehaviour
                             }
                             if (Input.GetKeyUp(KeyCode.X) && attackAction)
                             {
-                                GoodCommand();
+                                GoodCommand(true,1);
                                 player.GetComponent<Animator>().SetTrigger("goodChargeMelee");
                                 player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("charging", false);
                                 player.transform.GetChild(0).transform.GetChild(2).GetComponent<Animator>().SetBool("active", false);
@@ -1748,7 +1748,7 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).transform.GetChild(1).GetComponent<Animator>().SetBool("Active", false);
                                 if (attackAction)
                                 {
-                                    GoodCommand();
+                                    GoodCommand(true,1);
                                     player.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
                                 }
                                 else
@@ -2229,8 +2229,8 @@ public class BattleController : MonoBehaviour
                                         }
                                         else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
                                         {
-                                            UISource.clip = correctCommandAudio;
-                                            UISource.Play();
+                                            if(soulMusic == 4) GoodCommand(true,4);
+                                            else GoodCommand(true, 5);
                                             Destroy(key1.gameObject);
                                             Destroy(key2.gameObject);
                                             Destroy(key3.gameObject);
@@ -2255,8 +2255,7 @@ public class BattleController : MonoBehaviour
                                     }
                                     else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
                                     {
-                                        UISource.clip = correctCommandAudio;
-                                        UISource.Play();
+                                        GoodCommand(true,3);
                                         Destroy(key1.gameObject);
                                         Destroy(key2.gameObject);
                                         Destroy(key3.gameObject);
@@ -2279,8 +2278,7 @@ public class BattleController : MonoBehaviour
                                 }
                                 else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
                                 {
-                                    UISource.clip = correctCommandAudio;
-                                    UISource.Play();
+                                    GoodCommand(true,2);
                                     Destroy(key1.gameObject);
                                     Destroy(key2.gameObject);
                                     Destroy(key3.gameObject);
@@ -2301,8 +2299,7 @@ public class BattleController : MonoBehaviour
                             }
                             else if (player.GetChild(0).transform.GetChild(7).transform.GetChild(1).GetComponent<Image>().fillAmount == 1.0f)
                             {
-                                UISource.clip = correctCommandAudio;
-                                UISource.Play();
+                                GoodCommand(true,1);
                                 Destroy(key1.gameObject);
                                 Destroy(key2.gameObject);
                                 Destroy(key3.gameObject);
@@ -3250,104 +3247,101 @@ public class BattleController : MonoBehaviour
                 {
                     //Adventurer
                     if(currentCompanion == 0)
-                    {
-                        //Attack
-                        if (attackType == 0)
+                    { 
+                        //Normal sword or Multi strike sword
+                        if (usingStyle == 0 || usingStyle == 2)
                         {
-                            //Normal sword or Multi strike sword
-                            if (usingStyle == 0 || usingStyle == 2)
+                            //We check if the player presses the button when it is asked to be pressed
+                            if (!attackAction && Input.GetKeyDown(KeyCode.X)) badAttack = true;
+                            if (attackAction)
                             {
-                                //We check if the player presses the button when it is asked to be pressed
-                                if (!attackAction && Input.GetKeyDown(KeyCode.X)) badAttack = true;
-                                if (attackAction)
+                                selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", true);
+                                if (Input.GetKeyDown(KeyCode.X) && !badAttack)
                                 {
-                                    selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", true);
-                                    if (Input.GetKeyDown(KeyCode.X) && !badAttack)
-                                    {
-                                        goodAttack = true;
-                                    }
-                                }
-                                else
-                                {
-                                    selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
+                                    goodAttack = true;
                                 }
                             }
-                            //Glance
-                            else if (usingStyle == 1)
+                            else
                             {
-                                //We check that the player presses X when it is said so
-                                if (!attackAction && Input.GetKeyDown(KeyCode.X))
-                                {
-                                    BadCommand();
-                                    badAttack = true;
-                                    companion.GetComponent<PlayerTeamScript>().EndGlance();
-                                    badAttack = false;
-                                }
-                                if (attackAction)
-                                {
-                                    if (Input.GetKeyDown(KeyCode.X) && !badAttack)
-                                    {
-                                        goodAttack = true;
-                                        attackAction = false;
-                                        companion.GetComponent<PlayerTeamScript>().EndGlance();
-                                        goodAttack = false;
-                                    }
-                                }
-                            }
-                            //Dragonslayer bow
-                            else if (usingStyle == 3)
-                            {
-                                //We check that the player releases the X button when it is said so
-                                if (Input.GetKey(KeyCode.X) && !companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().GetBool("charging"))
-                                {
-                                    DeactivateActionInstructions();
-                                    companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", true);
-                                }
-                                if (Input.GetKeyUp(KeyCode.X) && attackAction)
-                                {
-                                    GoodCommand();
-                                    companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
-                                    companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
-                                    companion.GetComponent<Animator>().SetTrigger("ShootArrow");
-                                    companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
-                                    attackAction = false;
-                                    finalAttack = false;
-                                }
-                                else if (Input.GetKeyUp(KeyCode.X) && !attackAction && !attackFinished)
-                                {
-                                    BadCommand();
-                                    companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
-                                    companion.GetComponent<Animator>().SetTrigger("ShootArrow");
-                                    companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
-                                    companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
-                                    finalAttack = false;
-                                }
-                                else if (attackFinished)
-                                {
-                                    BadCommand();
-                                    companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
-                                    companion.GetComponent<Animator>().SetTrigger("ShootArrow");
-                                    companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
-                                    companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
-                                    finalAttack = false;
-                                }
-                            }
-                            //BK-47
-                            else if (usingStyle == 4)
-                            {
-                                //We shot an arrow when the player presses X
-                                if (GetAllEnemies() != null)
-                                {
-                                    if (readyShoot && Input.GetKeyDown(KeyCode.X))
-                                    {
-                                        DeactivateActionInstructions();
-                                        companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(3);
-                                        companion.GetComponent<Animator>().SetTrigger("ShootArrow");
-                                    }
-                                }
-                                else companion.GetComponent<PlayerTeamScript>().EndShurikenThrow();
+                                selectedEnemy.GetChild(0).transform.GetChild(1).gameObject.GetComponent<Animator>().SetBool("Pressed", false);
                             }
                         }
+                        //Glance
+                        else if (usingStyle == 1)
+                        {
+                            //We check that the player presses X when it is said so
+                            if (!attackAction && Input.GetKeyDown(KeyCode.X))
+                            {
+                                BadCommand();
+                                badAttack = true;
+                                companion.GetComponent<PlayerTeamScript>().EndGlance();
+                                badAttack = false;
+                            }
+                            if (attackAction)
+                            {
+                                if (Input.GetKeyDown(KeyCode.X) && !badAttack)
+                                {
+                                    goodAttack = true;
+                                    attackAction = false;
+                                    companion.GetComponent<PlayerTeamScript>().EndGlance();
+                                    goodAttack = false;
+                                }
+                            }
+                        }
+                        //Dragonslayer bow
+                        else if (usingStyle == 3)
+                        {
+                            //We check that the player releases the X button when it is said so
+                            if (Input.GetKey(KeyCode.X) && !companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().GetBool("charging"))
+                            {
+                                DeactivateActionInstructions();
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", true);
+                            }
+                            if (Input.GetKeyUp(KeyCode.X) && attackAction)
+                            {
+                                GoodCommand(true,1);
+                                companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
+                                companion.GetComponent<Animator>().SetTrigger("ShootArrow");
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
+                                attackAction = false;
+                                finalAttack = false;
+                            }
+                            else if (Input.GetKeyUp(KeyCode.X) && !attackAction && !attackFinished)
+                            {
+                                BadCommand();
+                                companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                                companion.GetComponent<Animator>().SetTrigger("ShootArrow");
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
+                                finalAttack = false;
+                            }
+                            else if (attackFinished)
+                            {
+                                BadCommand();
+                                companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(1);
+                                companion.GetComponent<Animator>().SetTrigger("ShootArrow");
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("charging", false);
+                                companion.transform.GetChild(0).transform.GetChild(3).GetComponent<Animator>().SetBool("active", false);
+                                finalAttack = false;
+                            }
+                        }
+                        //BK-47
+                        else if (usingStyle == 4)
+                        {
+                            //We shot an arrow when the player presses X
+                            if (GetAllEnemies() != null)
+                            {
+                                if (readyShoot && Input.GetKeyDown(KeyCode.X))
+                                {
+                                    DeactivateActionInstructions();
+                                    companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(3);
+                                    companion.GetComponent<Animator>().SetTrigger("ShootArrow");
+                                }
+                            }
+                            else companion.GetComponent<PlayerTeamScript>().EndShurikenThrow();
+                        }
+                        
                     }
                     //Wizard
                     else if(currentCompanion == 1)
@@ -3367,7 +3361,7 @@ public class BattleController : MonoBehaviour
                             {
                                 if (Input.GetKeyDown(magicKey) && !badAttack)
                                 {
-                                    GoodCommand();
+                                    GoodCommand(true,1);
                                     companion.transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
                                     companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(2);
                                     companion.GetComponent<Animator>().SetBool("magicBall", false);
@@ -3422,7 +3416,7 @@ public class BattleController : MonoBehaviour
                                 }
                                 else
                                 {
-                                    GoodCommand();
+                                    GoodCommand(true,1);
                                     actionInstructions.SetActive(false);
                                     barrierNumber = 0;
                                     defenseCompanion = 1;
@@ -3462,7 +3456,7 @@ public class BattleController : MonoBehaviour
                                 {
                                     if(magicSpearKey == 3)
                                     {
-                                        GoodCommand();
+                                        GoodCommand(true,1);
                                         companion.GetChild(0).GetChild(6).GetComponent<Animator>().SetBool("charge", false);
                                         companion.GetChild(0).GetChild(6).gameObject.SetActive(false);
                                         companion.GetComponent<PlayerTeamScript>().SetShurikenDamage(3);
@@ -3952,7 +3946,7 @@ public class BattleController : MonoBehaviour
             }
             else if (player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
             {
-                GoodCommand();
+                GoodCommand(true,1);
                 finalAttack = false;
                 player.transform.GetChild(0).transform.GetChild(3).transform.GetChild(2).GetComponent<Image>().sprite = emptyIcon;
                 player.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
@@ -3988,7 +3982,7 @@ public class BattleController : MonoBehaviour
             }
             else if (player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
             {
-                GoodCommand();
+                GoodCommand(true,1);
                 finalAttack = false;
                 player.GetComponent<Animator>().SetFloat("attackSpeed", 1.0f);
                 player.transform.GetChild(0).transform.GetChild(4).transform.GetChild(2).GetComponent<Image>().sprite = emptyIcon;
@@ -4118,7 +4112,7 @@ public class BattleController : MonoBehaviour
                 if (blueSoul.GetComponent<Image>().color.a > 0.05) blueSoul.GetComponent<Image>().color = new Color(blueSoul.GetComponent<Image>().color.r, blueSoul.GetComponent<Image>().color.g, blueSoul.GetComponent<Image>().color.b, blueSoul.GetComponent<Image>().color.a - 0.0006f);
                 else
                 {
-                    GoodCommand();
+                    GoodCommand(true,1);
                     EndDisappearAttack();
                 }
             }
@@ -4222,7 +4216,7 @@ public class BattleController : MonoBehaviour
                     }
                     else if (companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Image>().fillAmount >= 1.0f)
                     {
-                        GoodCommand();
+                        GoodCommand(true,1);
                         finalAttack = false;
                         companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Animator>().SetBool("pulse", false);
                         companion.transform.GetChild(0).transform.GetChild(5).transform.GetChild(1).GetComponent<Image>().fillAmount = 0.0f;
@@ -4937,22 +4931,25 @@ public class BattleController : MonoBehaviour
     //Function to deal damage to an enemy, giving the enemy, the amount of damage and a boolean that says if it is the last attack
     public void DealDamage(Transform objective, int damage, bool last)
     {
+        Vector3 damagepos;
         if (objective.GetComponent<EnemyTeamScript>().IsShielded()) damage -= 2;
         if (damage < 0) damage = 0;
         if (playerTurn && player.GetComponent<PlayerTeamScript>().HasLifesteal()) player.GetComponent<PlayerTeamScript>().Heal(damage, false,false, true, true);
         if (companionTurn && companion.GetComponent<PlayerTeamScript>().HasLifesteal()) companion.GetComponent<PlayerTeamScript>().Heal(damage, false, false, true, true);
         //We instantiate the damage UI and save the damage amount
-        damageImage = Instantiate(damageUI, new Vector3(objective.transform.position.x -0.25f, objective.transform.position.y + 1.0f, objective.transform.position.z), Quaternion.identity, objective.transform.GetChild(0));
+        if(objective.GetComponent<EnemyTeamScript>().enemyType != 3) damagepos = new Vector3(objective.transform.position.x - 0.25f, objective.transform.position.y + 1.0f, objective.transform.position.z);
+        else damagepos = new Vector3(objective.transform.position.x - 0.8f, objective.transform.position.y + 1.4f, objective.transform.position.z);
+        damageImage = Instantiate(damageUI, damagepos, Quaternion.identity, objective.transform.GetChild(0));
         damageImage.GetChild(0).GetComponent<Text>().text = damage.ToString();
+        objective.transform.GetChild(0).transform.GetChild(2).GetComponent<EnemyLifeControllerScript>().DealDamage(damage);
         //if the enemy is dead and it is the last attack we play the die animation, else we play the damage animation
-        if(objective.transform.GetChild(0).transform.GetChild(2).GetComponent<EnemyLifeControllerScript>().GetHealth() <= 0 && last)
+        if (objective.transform.GetChild(0).transform.GetChild(2).GetComponent<EnemyLifeControllerScript>().GetHealth() <= 0 && last)
         {
             objective.GetComponent<Animator>().SetBool("IsDead", true);
             objective.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
         }
         else
-        {
-            objective.transform.GetChild(0).transform.GetChild(2).GetComponent<EnemyLifeControllerScript>().DealDamage(damage);
+        {            
             if (!objective.GetComponent<EnemyTeamScript>().IsShielded() || attackType == 0)
             {
                 if (objective.GetComponent<EnemyTeamScript>().IsShielded() && attackType == 0)
@@ -4988,10 +4985,20 @@ public class BattleController : MonoBehaviour
     public void IncreaseRegenerationHeal()
     {
         soulRegenHeal += 1;
+        if((soulRegenHeal + soulRegenLight)/5<1) GoodCommand(true,1);
+        else if ((soulRegenHeal + soulRegenLight) / 5 < 2) GoodCommand(true, 2);
+        else if ((soulRegenHeal + soulRegenLight) / 5 < 3) GoodCommand(true, 3);
+        else if ((soulRegenHeal + soulRegenLight) / 5 < 4) GoodCommand(true, 4);
+        else GoodCommand(true, 5);
     }
     public void IncreaseRegenerationLight()
     {
         soulRegenLight += 1;
+        if ((soulRegenHeal + soulRegenLight) / 5 < 1) GoodCommand(true, 1);
+        else if ((soulRegenHeal + soulRegenLight) / 5 < 2) GoodCommand(true, 2);
+        else if ((soulRegenHeal + soulRegenLight) / 5 < 3) GoodCommand(true, 3);
+        else if ((soulRegenHeal + soulRegenLight) / 5 < 4) GoodCommand(true, 4);
+        else GoodCommand(true, 5);
     }
 
     //Functions to end the regeneration attack
@@ -5777,6 +5784,11 @@ public class BattleController : MonoBehaviour
     public void GatherRedSoul()
     {
         soulLifestealNumb += 1;
+        if (soulLifestealNumb < 4) GoodCommand(true,1);
+        else if (soulLifestealNumb < 7) GoodCommand(true, 2);
+        else if (soulLifestealNumb < 10) GoodCommand(true, 3);
+        else if (soulLifestealNumb == 10) GoodCommand(true, 4);
+
     }
 
     //Functions to end the lifsteal attack
@@ -5904,6 +5916,11 @@ public class BattleController : MonoBehaviour
     public void IncrementFogSize()
     {
         minFogScale += 0.5f;
+        if(minFogScale == 1.5f) GoodCommand(false,1);
+        else if (minFogScale == 2.0f) GoodCommand(false, 2);
+        else if (minFogScale == 2.5f) GoodCommand(false, 3);
+        else if (minFogScale == 3.0f) GoodCommand(false, 4);
+        else GoodCommand(false, 5);
     }
     //A function to select the next flying or grounded enemy.
     private Transform SelectNextShuriken(bool grounded)
@@ -6013,8 +6030,6 @@ public class BattleController : MonoBehaviour
         }
         canSelect = false;
     }
-
-
 
     //A function to select all enemies
     private void SelectAllEnemies()
@@ -6176,19 +6191,52 @@ public class BattleController : MonoBehaviour
         }
     }
     //Function to make the good command action sound
-    public void GoodCommand()
+    public void GoodCommand(bool audio, int lvl)
     {
-        UISource.clip = correctCommandAudio;
-        UISource.Play();
-        Debug.Log("ola");
+        if (audio)
+        {
+            UISource.clip = correctCommandAudio;
+            UISource.Play();
+        }
         if (playerTurn)
-        {            
+        {
             correctCommandUI = Instantiate(correctCommandUIPrefab, canvas.GetComponent<RectTransform>());
-            Vector2 ViewportPosition = mainCamera.GetComponent<Camera>().WorldToViewportPoint(player.transform.position);
-            Vector2 WorldObject_ScreenPosition = new Vector2(
-            ((ViewportPosition.x * canvas.GetComponent<RectTransform>().sizeDelta.x) - (canvas.GetComponent<RectTransform>().sizeDelta.x * 0.5f)),
-            ((ViewportPosition.y * canvas.GetComponent<RectTransform>().sizeDelta.y) - (canvas.GetComponent<RectTransform>().sizeDelta.y * 0.5f)));
-            correctCommandUI.GetComponent<RectTransform>().anchoredPosition = new Vector2(WorldObject_ScreenPosition.x, 0.0f);
+            correctCommandUI.GetComponent<RectTransform>().anchoredPosition = new Vector2(new Vector2((mainCamera.GetComponent<Camera>().WorldToViewportPoint(player.transform.position).x * canvas.GetComponent<RectTransform>().sizeDelta.x) - (canvas.GetComponent<RectTransform>().sizeDelta.x * 0.5f), (mainCamera.GetComponent<Camera>().WorldToViewportPoint(player.transform.position).y * canvas.GetComponent<RectTransform>().sizeDelta.y) - (canvas.GetComponent<RectTransform>().sizeDelta.y * 0.5f)).x, 0.0f);
+        }
+        else if (companionTurn)
+        {
+            correctCommandUI = Instantiate(correctCommandUIPrefab, canvas.GetComponent<RectTransform>());
+            correctCommandUI.GetComponent<RectTransform>().anchoredPosition = new Vector2(new Vector2((mainCamera.GetComponent<Camera>().WorldToViewportPoint(companion.transform.position).x * canvas.GetComponent<RectTransform>().sizeDelta.x) - (canvas.GetComponent<RectTransform>().sizeDelta.x * 0.5f), (mainCamera.GetComponent<Camera>().WorldToViewportPoint(companion.transform.position).y * canvas.GetComponent<RectTransform>().sizeDelta.y) - (canvas.GetComponent<RectTransform>().sizeDelta.y * 0.5f)).x, 0.0f);
+        }
+        if (lvl == 1)
+        {
+            correctCommandUI.GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_goodcommand_1");
+            correctCommandUI.GetComponent<TextMeshProUGUI>().color = new Color(0.0f, 0.7264151f, 0.1601567f, 1.0f);
+            correctCommandUI.GetComponent<TextMeshProUGUI>().outlineColor = new Color32(0, 31, 5, 255);
+        }
+        else if (lvl == 2)
+        {
+            correctCommandUI.GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_goodcommand_2");
+            correctCommandUI.GetComponent<TextMeshProUGUI>().color = new Color(0.7254902f, 0.6703757f, 0.0f, 1.0f);
+            correctCommandUI.GetComponent<TextMeshProUGUI>().outlineColor = new Color32(31, 30, 0, 255);
+        }
+        else if (lvl == 3)
+        {
+            correctCommandUI.GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_goodcommand_3");
+            correctCommandUI.GetComponent<TextMeshProUGUI>().color = new Color(0.0f, 0.7264151f, 0.1601567f, 1.0f);
+            correctCommandUI.GetComponent<TextMeshProUGUI>().outlineColor = new Color32(0, 31, 5, 255);
+        }
+        else if (lvl == 4)
+        {
+            correctCommandUI.GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_goodcommand_4");
+            correctCommandUI.GetComponent<TextMeshProUGUI>().color = new Color(0.0f, 0.7264151f, 0.1601567f, 1.0f);
+            correctCommandUI.GetComponent<TextMeshProUGUI>().outlineColor = new Color32(0, 31, 5, 255);
+        }
+        else if (lvl == 5)
+        {
+            correctCommandUI.GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_goodcommand_5");
+            correctCommandUI.GetComponent<TextMeshProUGUI>().color = new Color(0.0f, 0.7264151f, 0.1601567f, 1.0f);
+            correctCommandUI.GetComponent<TextMeshProUGUI>().outlineColor = new Color32(0, 31, 5, 255);
         }
     }
 

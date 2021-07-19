@@ -851,8 +851,8 @@ MonoBehaviour:
     prevRest: 0
     shop: 0
     sentences:
-    - combat_glance_bandit_1
-    - combat_glance_bandit_2
+    - combat_glance_knight_1
+    - combat_glance_knight_2
   attackAudio: {fileID: 8300000, guid: fa931e2f5823a5248b806057f1d4f309, type: 3}
   hitAudio: {fileID: 8300000, guid: c346d38432a045e49a699616d460d7b9, type: 3}
   dieAudio: {fileID: 8300000, guid: 495c2cff734db314eb229d71040a1fae, type: 3}

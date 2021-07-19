@@ -123,6 +123,8 @@ combat_glance_evilwizard_1$Este mago usa sus poderes mágicos para quemar a sus 
 combat_glance_evilwizard_2$PV: 4 /Daño: 2 /Defensa: 0
 combat_glance_king_1$El rey ataca usando su maza y sus poderes de teleportación. Ten cuidado con su ataque de teleportación, tendrá que prepararse antes de hacerlo, así que mantenlo vigilado.
 combat_glance_king_2$PV: 40 /Daño: 3 /Defensa: 0
+combat_glance_knight_1$El caballero usa su espada para lanzar tres rápidos ataques o un poderoso golpe. Cuando no está atacando usara su escudo para protegerse, ¡usa ataques cuerpo a cuerpo para romper su defensa!
+combat_glance_knight_2$PV: 6 /Daño: 3 /Defensa: 2 con escudo, 0 sin él.
 combat_victory_1$¡Has ganado
 combat_victory_2$puntos de experiencia!
 combat_lvlup_title$¡SUBES DE NIVEL!
@@ -132,6 +134,11 @@ combat_lvlup_lp$¡Incrementa tus PL en 5! Perfecto si te gusta usar habilidades 
 combat_lvlup_gp$¡Incrementa tus PG en 3! Útil si quieres usar más gemas.
 combat_firststrike_player$¡Has dado el primer golpe!
 combat_firststrike_enemy$¡Recibes el primer golpe!
+combat_goodcommand_1$Buena
+combat_goodcommand_2$Bien
+combat_goodcommand_3$Muy bien
+combat_goodcommand_4$Maravilloso
+combat_goodcommand_5$Increíble
 world_pickup_1$Has encontrado 
 world_pickup_2$!
 world_rest_main_player$Mira las estadísticas, cambia las gemas o comprueba tus objetos.

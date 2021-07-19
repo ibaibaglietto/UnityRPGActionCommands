@@ -38,6 +38,8 @@ public class PlayerTeamScript : MonoBehaviour
     private int attackStyle;
     //The objective of the shuriken
     public Transform shurikenObjective;
+    //The number of times the multistrike sword has hit
+    private int multistrikeHitNumb;
     //The battle controller
     private GameObject battleController;
     //The player life
@@ -187,6 +189,7 @@ public class PlayerTeamScript : MonoBehaviour
         lightUp = 0;
         attackSpeed = 1.0f;
         arrowNumb = 0;
+        multistrikeHitNumb = 0;
         recovered = true;
         companionOut = false;
         companionIn = false;
@@ -1164,6 +1167,7 @@ public class PlayerTeamScript : MonoBehaviour
                     battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (currentData.GetComponent<CurrentDataScript>().swordLvl - 1), false);
                     source.clip = playerNormalSwordAudio;
                     source.Play();
+                    battleController.GetComponent<BattleController>().GoodCommand(false,1);
                 }
                 //Adventurer
                 else if (playerTeamType == 1)
@@ -1171,6 +1175,7 @@ public class PlayerTeamScript : MonoBehaviour
                     battleController.GetComponent<BattleController>().DealDamage(battleController.GetComponent<BattleController>().GetSelectedEnemy(), 1 + lightUp + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1), false);
                     source.clip = adventurerNormalSwordAudio;
                     source.Play();
+                    battleController.GetComponent<BattleController>().GoodCommand(false,1);
                 }
             }
             //else we end the attack and the player or the adventurer return to the starting position
@@ -1209,11 +1214,13 @@ public class PlayerTeamScript : MonoBehaviour
             //If the attack is good
             if (battleController.GetComponent<BattleController>().goodAttack == true)
             {
+                if(multistrikeHitNumb < 5)multistrikeHitNumb += 1;
                 //player
                 if (playerTeamType == 0)
                 {
                     source.clip = playerNormalSwordAudio;
                     source.Play();
+                    battleController.GetComponent<BattleController>().GoodCommand(false, multistrikeHitNumb);
                 }
                 //adventurer
                 else if (playerTeamType == 1)
@@ -1221,6 +1228,7 @@ public class PlayerTeamScript : MonoBehaviour
                     gameObject.GetComponent<Animator>().SetBool("Melee3", true);
                     source.clip = adventurerNormalSwordAudio;
                     source.Play();
+                    battleController.GetComponent<BattleController>().GoodCommand(false, multistrikeHitNumb);
                 }
                 battleController.GetComponent<BattleController>().FillSouls(0.1f);
                 //We increase the speed of the attack each time until it arrives to 1.8
@@ -1244,6 +1252,9 @@ public class PlayerTeamScript : MonoBehaviour
             //else we end the attack and the player or the adventurer return to the starting position
             else
             {
+                if (multistrikeHitNumb < 5) multistrikeHitNumb += 1;
+                battleController.GetComponent<BattleController>().GoodCommand(false, multistrikeHitNumb);
+                multistrikeHitNumb = 0;
                 battleController.GetComponent<BattleController>().FillSouls(0.1f);
                 attackSpeed = 1.0f;
                 gameObject.GetComponent<Animator>().SetFloat("attackSpeed", attackSpeed);
@@ -1655,7 +1666,7 @@ public class PlayerTeamScript : MonoBehaviour
             //If the second one is good too we start the dialogue 
             if (battleController.GetComponent<BattleController>().goodAttack == true)
             {
-                battleController.GetComponent<BattleController>().GoodCommand();
+                battleController.GetComponent<BattleController>().GoodCommand(true,1);
                 source.clip = adventurerGlanceAudio;
                 source.Play();
                 battleController.GetComponent<DialogueManager>().StartBattleDialogue(attackObjective.GetComponent<EnemyTeamScript>().dialogue);
@@ -1665,6 +1676,8 @@ public class PlayerTeamScript : MonoBehaviour
                 else if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 1) currentData.GetComponent<CurrentDataScript>().wizard = 1;
                 //King
                 else if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 2) currentData.GetComponent<CurrentDataScript>().king = 1;
+                //Knight
+                else if (attackObjective.GetComponent<EnemyTeamScript>().enemyType == 3) currentData.GetComponent<CurrentDataScript>().knight = 1;
                 battleController.GetComponent<BattleController>().KnowHealth();
             }
             //If one of them is wrongly done we end the turn

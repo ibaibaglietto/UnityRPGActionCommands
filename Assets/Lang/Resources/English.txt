@@ -123,6 +123,8 @@ combat_glance_evilwizard_1$This wizard uses his magical power to burn his enemie
 combat_glance_evilwizard_2$HP: 4 /Damage: 2 /Defence: 0
 combat_glance_king_1$The king attacks using his maze and his teleportation powers. Be careful about his teleportation attack, he'll have to prepare before doing it, so watch him carefully.
 combat_glance_king_2$HP: 40 /Damage: 3 /Defence: 0
+combat_glance_knight_1$The knight uses his sword to throw three quick attacks or one powerful strike. When he isn’t attacking he will use his shield to protect himself, use melee attacks to break his defence!
+combat_glance_knight_2$HP: 6 /Damage: 3 /Defence: 2 with shield, 0 without it.
 combat_victory_1$You gained
 combat_victory_2$experience points!
 combat_lvlup_title$LEVEL UP!
@@ -132,6 +134,11 @@ combat_lvlup_lp$Increase your LP by 5! Perfect if you love to use abilities ofte
 combat_lvlup_gp$Increase your GP by 3! Ideal if you want to use more gems.
 combat_firststrike_player$You made the first strike!
 combat_firststrike_enemy$The enemy made the first strike!
+combat_goodcommand_1$Nice
+combat_goodcommand_2$Good
+combat_goodcommand_3$Great
+combat_goodcommand_4$Wonderful
+combat_goodcommand_5$Incredible
 world_pickup_1$You found 
 world_pickup_2$!
 world_rest_main_player$Look at your stats, change the gems or check your items.
