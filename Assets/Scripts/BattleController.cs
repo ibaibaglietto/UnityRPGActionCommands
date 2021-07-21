@@ -6223,20 +6223,20 @@ public class BattleController : MonoBehaviour
         else if (lvl == 3)
         {
             correctCommandUI.GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_goodcommand_3");
-            correctCommandUI.GetComponent<TextMeshProUGUI>().color = new Color(0.0f, 0.7264151f, 0.1601567f, 1.0f);
-            correctCommandUI.GetComponent<TextMeshProUGUI>().outlineColor = new Color32(0, 31, 5, 255);
+            correctCommandUI.GetComponent<TextMeshProUGUI>().color = new Color(0.7254902f, 0.0f, 0.5383924f, 1.0f);
+            correctCommandUI.GetComponent<TextMeshProUGUI>().outlineColor = new Color32(31, 0, 22, 255);
         }
         else if (lvl == 4)
         {
             correctCommandUI.GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_goodcommand_4");
-            correctCommandUI.GetComponent<TextMeshProUGUI>().color = new Color(0.0f, 0.7264151f, 0.1601567f, 1.0f);
-            correctCommandUI.GetComponent<TextMeshProUGUI>().outlineColor = new Color32(0, 31, 5, 255);
+            correctCommandUI.GetComponent<TextMeshProUGUI>().color = new Color(0.3601789f, 0.0f, 0.7254902f, 1.0f);
+            correctCommandUI.GetComponent<TextMeshProUGUI>().outlineColor = new Color32(16, 0, 31, 255);
         }
         else if (lvl == 5)
         {
             correctCommandUI.GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_goodcommand_5");
-            correctCommandUI.GetComponent<TextMeshProUGUI>().color = new Color(0.0f, 0.7264151f, 0.1601567f, 1.0f);
-            correctCommandUI.GetComponent<TextMeshProUGUI>().outlineColor = new Color32(0, 31, 5, 255);
+            correctCommandUI.GetComponent<TextMeshProUGUI>().color = new Color(0.0f, 0.2961406f, 0.7254902f, 1.0f);
+            correctCommandUI.GetComponent<TextMeshProUGUI>().outlineColor = new Color32(0, 15, 31, 255);
         }
     }
 

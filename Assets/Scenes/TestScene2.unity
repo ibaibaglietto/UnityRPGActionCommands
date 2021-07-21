@@ -31154,7 +31154,7 @@ MonoBehaviour:
   movRight: 0
   movUp: 0
   movDown: 0
-  currentCompanion: 2
+  currentCompanion: 1
   unlockedCompanions: 2
   adventurerCurrentHealth: 27
   wizardCurrentHealth: 28
