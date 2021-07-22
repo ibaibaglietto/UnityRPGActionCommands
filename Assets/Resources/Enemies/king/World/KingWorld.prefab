@@ -137,10 +137,10 @@ MonoBehaviour:
   areaPrefab: {fileID: 1780450934971576681, guid: 08623860d178042439bb1c095db1d514, type: 3}
   coinPrefab: {fileID: 878143310500713995, guid: 24d1fd07ba9bf2444b838a93277240cf, type: 3}
   coinNumb: 3
-  enemy1: 1
+  enemy1: 4
   enemy2: 1
-  enemy3: 0
-  enemy4: 0
+  enemy3: 2
+  enemy4: 3
 --- !u!54 &7008135108221380239
 Rigidbody:
   m_ObjectHideFlags: 0

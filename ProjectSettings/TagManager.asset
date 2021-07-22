@@ -25,6 +25,7 @@ TagManager:
   - PlayerSphere
   - target
   - shuriken
+  - MAST_Holder
   layers:
   - Default
   - TransparentFX
