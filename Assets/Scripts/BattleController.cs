@@ -4985,20 +4985,20 @@ public class BattleController : MonoBehaviour
     public void IncreaseRegenerationHeal()
     {
         soulRegenHeal += 1;
-        if((soulRegenHeal + soulRegenLight)/5<1) GoodCommand(true,1);
-        else if ((soulRegenHeal + soulRegenLight) / 5 < 2) GoodCommand(true, 2);
-        else if ((soulRegenHeal + soulRegenLight) / 5 < 3) GoodCommand(true, 3);
-        else if ((soulRegenHeal + soulRegenLight) / 5 < 4) GoodCommand(true, 4);
-        else GoodCommand(true, 5);
+        if((soulRegenHeal + soulRegenLight)/5.0f == 1.0f) GoodCommand(true,1);
+        else if ((soulRegenHeal + soulRegenLight) / 5.0f == 2.0f) GoodCommand(true, 2);
+        else if ((soulRegenHeal + soulRegenLight) / 5.0f == 3.0f) GoodCommand(true, 3);
+        else if ((soulRegenHeal + soulRegenLight) / 5.0f == 4.0f) GoodCommand(true, 4);
+        else if ((soulRegenHeal + soulRegenLight) / 5.0f == 5.0f) GoodCommand(true, 5);
     }
     public void IncreaseRegenerationLight()
     {
         soulRegenLight += 1;
-        if ((soulRegenHeal + soulRegenLight) / 5 < 1) GoodCommand(true, 1);
-        else if ((soulRegenHeal + soulRegenLight) / 5 < 2) GoodCommand(true, 2);
-        else if ((soulRegenHeal + soulRegenLight) / 5 < 3) GoodCommand(true, 3);
-        else if ((soulRegenHeal + soulRegenLight) / 5 < 4) GoodCommand(true, 4);
-        else GoodCommand(true, 5);
+        if ((soulRegenHeal + soulRegenLight) / 5.0f == 1.0f) GoodCommand(true, 1);
+        else if ((soulRegenHeal + soulRegenLight) / 5.0f == 2.0f) GoodCommand(true, 2);
+        else if ((soulRegenHeal + soulRegenLight) / 5.0f == 3.0f) GoodCommand(true, 3);
+        else if ((soulRegenHeal + soulRegenLight) / 5.0f == 4.0f) GoodCommand(true, 4);
+        else if ((soulRegenHeal + soulRegenLight) / 5.0f == 5.0f) GoodCommand(true, 5);
     }
 
     //Functions to end the regeneration attack
@@ -5784,9 +5784,9 @@ public class BattleController : MonoBehaviour
     public void GatherRedSoul()
     {
         soulLifestealNumb += 1;
-        if (soulLifestealNumb < 4) GoodCommand(true,1);
-        else if (soulLifestealNumb < 7) GoodCommand(true, 2);
-        else if (soulLifestealNumb < 10) GoodCommand(true, 3);
+        if (soulLifestealNumb == 1) GoodCommand(true,1);
+        else if (soulLifestealNumb == 4) GoodCommand(true, 2);
+        else if (soulLifestealNumb == 7) GoodCommand(true, 3);
         else if (soulLifestealNumb == 10) GoodCommand(true, 4);
 
     }

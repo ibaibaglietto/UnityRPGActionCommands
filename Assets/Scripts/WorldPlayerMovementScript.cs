@@ -238,7 +238,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         restInstructions.SetActive(false);
         pickItemUI.SetActive(false);
         firstStrikeUI.SetActive(false);
-        shopUI.SetActive(false);
+        if(shopUI != null) shopUI.SetActive(false);
         shurikenArrow.SetActive(false);
         //We initialize the variables
         speedX = 0.0f;
