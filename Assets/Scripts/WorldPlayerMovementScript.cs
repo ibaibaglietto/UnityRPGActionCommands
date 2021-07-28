@@ -212,6 +212,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
 
     void Start()
     {
+        Debug.Log(Screen.currentResolution);
         //We find the gameobjects and deactivate some of them
         canvas = GameObject.Find("Canvas");
         dialogueManager = GameObject.Find("WorldDialogueManager");
