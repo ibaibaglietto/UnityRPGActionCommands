@@ -26,7 +26,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private int changingSceneMov;
 
     //Radius of the overlap circle to determine if grounded
-    const float groundedRadius = 0.07f;
+    const float groundedRadius = 0.1f;
     //Whether or not the player is grounded.
     private bool grounded;
     //A boonean to know if the player is attacking or not

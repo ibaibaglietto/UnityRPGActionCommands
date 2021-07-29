@@ -13,6 +13,8 @@ public class WorldEnemy : MonoBehaviour
     private float startZ;
     //The animator
     Animator animator;
+    //A boolean to know the idle side of the enemy
+    public bool idleRight;
     //The player and the companion
     private GameObject player;
     private GameObject companion;
@@ -124,7 +126,7 @@ public class WorldEnemy : MonoBehaviour
                 animator.SetFloat("SpeedX", speedX);
                 if (speedX != 0 || speedZ != 0) animator.SetBool("Moving", true);
                 else animator.SetBool("Moving", false);
-                if ((startX - gameObject.transform.position.x) >= 0.0f) animator.SetBool("FacingRight", true);
+                if (idleRight) animator.SetBool("FacingRight", true);
                 else animator.SetBool("FacingRight", false);
             }
             else

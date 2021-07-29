@@ -128,12 +128,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1
-  nameEnglish: 
-  nameSpanish: Manzana
-  nameBasque: 
-  descriptionEnglish: 
-  descriptionSpanish: Una manzana que cura 5 puntos de vida.
-  descriptionBasque: 
+  itemName: combat_item_apple_name
+  itemDescription: world_rest_items_apple
 --- !u!65 &4352492559552024076
 BoxCollider:
   m_ObjectHideFlags: 0

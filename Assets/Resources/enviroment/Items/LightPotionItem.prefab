@@ -128,12 +128,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 2
-  nameEnglish: 
-  nameSpanish: "Poci\xF3n de luz"
-  nameBasque: 
-  descriptionEnglish: 
-  descriptionSpanish: "Una poci\xF3n que regenera 5 puntos de luz."
-  descriptionBasque: 
+  itemName: combat_item_lightpotion_name
+  itemDescription: world_rest_items_lightpotion
 --- !u!65 &4578228321671947388
 BoxCollider:
   m_ObjectHideFlags: 0
