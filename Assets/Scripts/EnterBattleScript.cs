@@ -23,7 +23,7 @@ public class EnterBattleScript : MonoBehaviour
     private void StartBattle()
     {
         worldPlayer.GetComponent<WorldPlayerMovementScript>().DeactivateFirstStrikeUI();
-        SceneManager.LoadScene(1,LoadSceneMode.Additive);
+        SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
         cam.GetComponent<WorldCameraScript>().ChangeBattleCamera(true);
     }
 
@@ -31,7 +31,7 @@ public class EnterBattleScript : MonoBehaviour
     {
         currentData.GetComponent<CurrentDataScript>().battle = 0;
         cam.GetComponent<WorldCameraScript>().ChangeBattleCamera(false);
-        SceneManager.UnloadSceneAsync(1);
+        SceneManager.UnloadSceneAsync("BattleScene");
     }
 
     private void LoadScene()
