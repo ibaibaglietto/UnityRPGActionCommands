@@ -79,6 +79,13 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "com.whinarn.unitymeshsimplifier": {
+      "version": "https://github.com/Whinarn/UnityMeshSimplifier.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "81eca0b867221b745cff9c9d79a5e7b1110a36ef"
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
