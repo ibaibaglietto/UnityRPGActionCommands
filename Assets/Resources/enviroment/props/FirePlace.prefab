@@ -1,5 +1,53 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8696351201412535154
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2550077448052981394}
+  - component: {fileID: 2156720393208025801}
+  m_Layer: 0
+  m_Name: Light Probe Group
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2550077448052981394
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8696351201412535154}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.79}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8868297127648146868}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!220 &2156720393208025801
+LightProbeGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8696351201412535154}
+  m_Enabled: 1
+  m_SourcePositions:
+  - {x: 0.030628523, y: -0.44930014, z: -0.52592653}
+  - {x: 1.0918331, y: -0.49062094, z: -0.1327284}
+  - {x: 1.1513733, y: -1, z: 0.5878649}
+  - {x: 1.1149356, y: -1, z: -0.7125855}
+  - {x: -1.1379633, y: -0.45067343, z: -0.15401697}
+  - {x: -1, y: -1, z: 0.47490954}
+  - {x: -1, y: -1, z: -0.7393611}
+  m_Dering: 1
 --- !u!1 &8868297127305760337
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,7 +130,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -127,6 +175,7 @@ Transform:
   - {fileID: 8868297127305760336}
   - {fileID: 8977992091145302599}
   - {fileID: 2812457575437038948}
+  - {fileID: 2550077448052981394}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -242,6 +291,11 @@ MonoBehaviour:
   leftChairZ: 1.589
   rightChairX: 6.55
   rightChairZ: 1.589
+  dialogue:
+    speaker: {fileID: 0}
+    prevRest: 0
+    shop: 0
+    sentences: []
 --- !u!1001 &2345639002005568280
 PrefabInstance:
   m_ObjectHideFlags: 0
