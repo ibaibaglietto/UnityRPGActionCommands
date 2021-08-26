@@ -129,13 +129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 3
-  nameEnglish: 
-  nameSpanish: shuriken de luz
-  nameBasque: 
-  descriptionEnglish: 
-  descriptionSpanish: Permite al jugador usar el shuriken de luz, con el que puede
-    lanzar un shuriken con poder de luz.
-  descriptionBasque: 
+  itemName: combat_player_shuriken_lightshuriken_name
+  itemDescription: world_rest_gems_lightshuriken
 --- !u!65 &3918929794583035478
 BoxCollider:
   m_ObjectHideFlags: 0
