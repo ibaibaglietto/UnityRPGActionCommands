@@ -26,6 +26,7 @@ public class DialogueBox : MonoBehaviour
     void Start()
     {
         dialogueText = GameObject.Find("DialogueText").GetComponent<Text>();
+        dialogueText.enabled = false;
         next = GameObject.Find("DialogueNext");
         canvas = GameObject.Find("Canvas");
         arrow = transform.GetChild(2).GetComponent<RectTransform>(); 
