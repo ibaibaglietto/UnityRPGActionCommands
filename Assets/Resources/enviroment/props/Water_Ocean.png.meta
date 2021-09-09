@@ -1,0 +1,592 @@
+fileFormatVersion: 2
+guid: c4699ab5e207d7c45bf5ad182075669f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4114849230650883549
+    second: Water_Ocean_0
+  - first:
+      213: 5941792172596391398
+    second: Water_Ocean_1
+  - first:
+      213: 6071658758453721070
+    second: Water_Ocean_2
+  - first:
+      213: -2518216062726665849
+    second: Water_Ocean_3
+  - first:
+      213: 7945363203227977674
+    second: Water_Ocean_4
+  - first:
+      213: 5197107676413903149
+    second: Water_Ocean_5
+  - first:
+      213: 1095061933410163083
+    second: Water_Ocean_6
+  - first:
+      213: -7233798754748175746
+    second: Water_Ocean_7
+  - first:
+      213: -1659203408414639025
+    second: Water_Ocean_8
+  - first:
+      213: -3656482961898352203
+    second: Water_Ocean_9
+  - first:
+      213: 7509847842445886010
+    second: Water_Ocean_10
+  - first:
+      213: -1285245948687068490
+    second: Water_Ocean_11
+  - first:
+      213: -7715440864079098327
+    second: Water_Ocean_12
+  - first:
+      213: -2556241029880347966
+    second: Water_Ocean_13
+  - first:
+      213: 7452426323703880948
+    second: Water_Ocean_14
+  - first:
+      213: 2511984127114734
+    second: Water_Ocean_15
+  - first:
+      213: 8506582689379722211
+    second: Water_Ocean_16
+  - first:
+      213: 8200825241227042788
+    second: Water_Ocean_17
+  - first:
+      213: 8519609090931974014
+    second: Water_Ocean_18
+  - first:
+      213: 9050231842054360327
+    second: Water_Ocean_19
+  - first:
+      213: -3870186233623218420
+    second: Water_Ocean_20
+  - first:
+      213: -4730450427950694067
+    second: Water_Ocean_21
+  - first:
+      213: 3565608829994478035
+    second: Water_Ocean_22
+  - first:
+      213: 3278426525100371954
+    second: Water_Ocean_23
+  - first:
+      213: 6448995073282860740
+    second: Water_Ocean_24
+  - first:
+      213: 157608871013247839
+    second: Water_Ocean_25
+  - first:
+      213: 8621198994995757198
+    second: Water_Ocean_26
+  - first:
+      213: 2372671579245267544
+    second: Water_Ocean_27
+  - first:
+      213: 2320943220718772778
+    second: Water_Ocean_28
+  - first:
+      213: 4910848420356120826
+    second: Water_Ocean_29
+  - first:
+      213: 782970177047609870
+    second: Water_Ocean_30
+  - first:
+      213: 8747776183388076827
+    second: Water_Ocean_31
+  - first:
+      213: 5426785390039443100
+    second: Water_Ocean_32
+  - first:
+      213: 6138331412819319819
+    second: Water_Ocean_33
+  - first:
+      213: 3723640281303655836
+    second: Water_Ocean_34
+  - first:
+      213: -2250521253764518434
+    second: Water_Ocean_35
+  - first:
+      213: -4315215421170820722
+    second: Water_Ocean_36
+  - first:
+      213: 7387148250997644227
+    second: Water_Ocean_37
+  - first:
+      213: 6147375315687052938
+    second: Water_Ocean_38
+  - first:
+      213: -3911925813492337392
+    second: Water_Ocean_39
+  - first:
+      213: -8063090682537657805
+    second: Water_Ocean_40
+  - first:
+      213: 341275402085353074
+    second: Water_Ocean_41
+  - first:
+      213: -5747329963553397905
+    second: Water_Ocean_42
+  - first:
+      213: 8956946126902728507
+    second: Water_Ocean_43
+  - first:
+      213: 8369704039879792515
+    second: Water_Ocean_44
+  - first:
+      213: -4580907940065956662
+    second: Water_Ocean_45
+  - first:
+      213: 8288553100186115754
+    second: Water_Ocean_46
+  - first:
+      213: 2587936090973843735
+    second: Water_Ocean_47
+  - first:
+      213: 1466660168920552905
+    second: Water_Ocean_48
+  - first:
+      213: 8242109873322419353
+    second: Water_Ocean_49
+  - first:
+      213: -1266835341356892062
+    second: Water_Ocean_50
+  - first:
+      213: -352934577085866955
+    second: Water_Ocean_51
+  - first:
+      213: -8302424785530767796
+    second: Water_Ocean_52
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Water_Ocean_38
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a861888874ddf4550800000000000000
+      internalID: 6147375315687052938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_39
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 015bb1be23c06b9c0800000000000000
+      internalID: -3911925813492337392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_40
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33ab49b8eb52a1090800000000000000
+      internalID: -8063090682537657805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_41
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27640e78b247cb400800000000000000
+      internalID: 341275402085353074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_42
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f63e07b49d16d30b0800000000000000
+      internalID: -5747329963553397905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_43
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b371956eb077d4c70800000000000000
+      internalID: 8956946126902728507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_44
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 387df2cca79272470800000000000000
+      internalID: 8369704039879792515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_45
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: acc2a9bcf785d60c0800000000000000
+      internalID: -4580907940065956662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_46
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aae5e86412bd60370800000000000000
+      internalID: 8288553100186115754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_47
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 711b8ebc9223ae320800000000000000
+      internalID: 2587936090973843735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_48
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c559b627af9a5410800000000000000
+      internalID: 1466660168920552905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_49
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9946f1fd24bd16270800000000000000
+      internalID: 8242109873322419353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_50
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 260038118fb4b6ee0800000000000000
+      internalID: -1266835341356892062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_51
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53c18df3fdf1a1bf0800000000000000
+      internalID: -352934577085866955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water_Ocean_52
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c463a0c45acd7cc80800000000000000
+      internalID: -8302424785530767796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 9b5ad37dc09f95042b2205fa56b20ce0
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
