@@ -8,6 +8,9 @@ public class WorldCameraScript : MonoBehaviour
     private GameObject player;
     //The new position of the camera
     private float posY;
+    private float posZ;
+    //A bool to know if the camera is in platforming state
+    private bool platforming;
 
     //Camera states in battle
     private bool idle;
@@ -29,6 +32,7 @@ public class WorldCameraScript : MonoBehaviour
         idleToVictory = false;
         victoryToIdle = false;
         isInBattle = false;
+        platforming = false;
     }
     private void Update()
     {
@@ -36,11 +40,26 @@ public class WorldCameraScript : MonoBehaviour
         {
             if (!player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest() && !player.GetComponent<WorldPlayerMovementScript>().GetResting())
             {
-                if (Mathf.Abs(player.GetComponent<Rigidbody>().velocity.y) < 0.1f && player.GetComponent<WorldPlayerMovementScript>().IsGrounded() && ((player.transform.position.y + 3.0f) > (gameObject.transform.position.y + 0.20f))) posY = Vector3.Lerp(gameObject.transform.position, new Vector3(player.transform.position.x, player.transform.position.y + 3.0f, player.transform.position.z - 8.0f), Time.deltaTime * 20).y;
-                else if ((player.transform.position.y + 3.0f) < gameObject.transform.position.y - 0.1f) posY = player.transform.position.y + 3.0f;
-                else posY = gameObject.transform.position.y;
-                gameObject.transform.position = new Vector3(player.transform.position.x, posY, player.transform.position.z - 8.0f);
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(5, 0, 0), Time.deltaTime);
+                
+                if (!platforming)
+                {
+                    if (Mathf.Abs(player.GetComponent<Rigidbody>().velocity.y) < 0.1f && player.GetComponent<WorldPlayerMovementScript>().IsGrounded() && ((player.transform.position.y + 3.0f) > (gameObject.transform.position.y + 0.20f))) posY = Vector3.Lerp(gameObject.transform.position, new Vector3(player.transform.position.x, player.transform.position.y + 3.0f, player.transform.position.z - 8.0f), Time.deltaTime * 20).y;
+                    else if ((player.transform.position.y + 3.0f) < gameObject.transform.position.y - 0.1f) posY = player.transform.position.y + 3.0f;
+                    else posY = gameObject.transform.position.y;
+                    transform.position = new Vector3(player.transform.position.x, posY, player.transform.position.z - 8.0f);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(5, 0, 0), Time.deltaTime);
+                }
+                else
+                {
+                    if (Mathf.Abs(player.GetComponent<Rigidbody>().velocity.y) < 0.1f && player.GetComponent<WorldPlayerMovementScript>().IsGrounded() && ((player.transform.position.y + 5.0f) > (gameObject.transform.position.y + 0.20f))) posY = Vector3.Lerp(gameObject.transform.position, new Vector3(player.transform.position.x, player.transform.position.y + 5.0f, player.transform.position.z - 8.0f), Time.deltaTime * 20).y;
+                    else if ((player.transform.position.y + 5.0f) < gameObject.transform.position.y - 0.1f) posY = player.transform.position.y + 5.0f;
+                    else posY = gameObject.transform.position.y;
+                    if(player.transform.position.z - 10.0f < gameObject.transform.position.z + 0.1 && player.transform.position.z - 10.0f > gameObject.transform.position.z - 0.1) posZ = player.transform.position.z - 10.0f;
+                    else posZ = Vector3.Lerp(transform.position, new Vector3(player.transform.position.x, posY, player.transform.position.z - 10.0f), Time.deltaTime).z;
+
+                    transform.position = new Vector3(player.transform.position.x, posY, posZ);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(25, 0, 0), Time.deltaTime);
+                }
             }
             else if (player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest()) gameObject.transform.position = new Vector3(player.GetComponent<WorldPlayerMovementScript>().GetFireXPos(), posY, player.transform.position.z - 8.0f);
             else if (player.GetComponent<WorldPlayerMovementScript>().GetResting())
@@ -113,6 +132,12 @@ public class WorldCameraScript : MonoBehaviour
                 idleToVictory = true;
             }
         }
+    }
+
+    //Function to set the camera to platforming or back to normal
+    public void SetPlatforming(bool plat)
+    {
+        platforming = plat;
     }
 
     //Function to get the camera state
