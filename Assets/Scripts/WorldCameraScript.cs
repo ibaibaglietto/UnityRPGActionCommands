@@ -54,7 +54,7 @@ public class WorldCameraScript : MonoBehaviour
                     if (Mathf.Abs(player.GetComponent<Rigidbody>().velocity.y) < 0.1f && player.GetComponent<WorldPlayerMovementScript>().IsGrounded() && ((player.transform.position.y + 5.0f) > (gameObject.transform.position.y + 0.20f))) posY = Vector3.Lerp(gameObject.transform.position, new Vector3(player.transform.position.x, player.transform.position.y + 5.0f, player.transform.position.z - 8.0f), Time.deltaTime * 20).y;
                     else if ((player.transform.position.y + 5.0f) < gameObject.transform.position.y - 0.1f) posY = player.transform.position.y + 5.0f;
                     else posY = gameObject.transform.position.y;
-                    if(player.transform.position.z - 10.0f < gameObject.transform.position.z + 0.1 && player.transform.position.z - 10.0f > gameObject.transform.position.z - 0.1) posZ = player.transform.position.z - 10.0f;
+                    if(player.transform.position.z - 10.0f < gameObject.transform.position.z + 0.05f && player.transform.position.z - 10.0f > gameObject.transform.position.z - 0.05f) posZ = player.transform.position.z - 10.0f;
                     else posZ = Vector3.Lerp(transform.position, new Vector3(player.transform.position.x, posY, player.transform.position.z - 10.0f), Time.deltaTime).z;
 
                     transform.position = new Vector3(player.transform.position.x, posY, posZ);
