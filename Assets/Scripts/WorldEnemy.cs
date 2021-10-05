@@ -118,9 +118,9 @@ public class WorldEnemy : MonoBehaviour
                 animator.SetFloat("RunSpeed", 0.5f);
                 seeingPlayer = false;
                 //Detect where the starting point is and move the enemy towards it
-                if (Mathf.Abs(startX- gameObject.transform.position.x) > 0.2f) speedX = (startX - gameObject.transform.position.x) / (Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) * 0.5f;
+                if (Mathf.Abs(startX- gameObject.transform.position.x) > 0.5f) speedX = (startX - gameObject.transform.position.x) / (Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) * 0.5f;
                 else speedX = 0.0f;
-                if (Mathf.Abs(startZ - gameObject.transform.position.z) > 0.2f) speedZ = (startZ - gameObject.transform.position.z) / (Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) * 0.5f;
+                if (Mathf.Abs(startZ - gameObject.transform.position.z) > 0.5f) speedZ = (startZ - gameObject.transform.position.z) / (Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) * 0.5f;
                 else speedZ = 0.0f;
                 //We put the correct values on the animator variables
                 animator.SetFloat("SpeedX", speedX);
@@ -152,7 +152,7 @@ public class WorldEnemy : MonoBehaviour
     void FixedUpdate()
     {
         //move the enemy on the direction we saved previously
-        if(animator.GetBool("Attack") || currentData.GetComponent<CurrentDataScript>().battle == 1) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0.0f, gameObject.GetComponent<Rigidbody>().velocity.y, 0.0f);
+        if (animator.GetBool("Attack") || currentData.GetComponent<CurrentDataScript>().battle == 1) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0.0f, gameObject.GetComponent<Rigidbody>().velocity.y, 0.0f);
         else gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
 
     }
