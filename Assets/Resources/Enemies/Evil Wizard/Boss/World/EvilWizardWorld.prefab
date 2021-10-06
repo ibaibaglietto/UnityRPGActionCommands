@@ -449,12 +449,12 @@ SpriteRenderer:
   m_SortingLayerID: 1469699909
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4723107735738678597, guid: 6ae8d5423fdbaef47b2ee0f480d35dbe, type: 3}
+  m_Sprite: {fileID: 4723107735738678597, guid: c8d6faf29c4dcb34589895c3f9e76770, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.4, y: 2.4}
+  m_Size: {x: 6, y: 6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -470,7 +470,7 @@ Animator:
   m_GameObject: {fileID: 5708390428857998869}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4d27790ab26d859428fe3fa720518dc6, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2de8bb1724002ef4e9a6ee7447c7164b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -504,6 +504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa17839171f3254baa360c3240c8385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleRight: 0
   areaPrefab: {fileID: 1780450934971576681, guid: 08623860d178042439bb1c095db1d514, type: 3}
   coinPrefab: {fileID: 878143310500713995, guid: 24d1fd07ba9bf2444b838a93277240cf, type: 3}
   coinNumb: 5
