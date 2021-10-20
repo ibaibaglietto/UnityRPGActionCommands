@@ -5,13 +5,15 @@ using UnityEngine;
 [System.Serializable]
 public class Dialogue
 {
-    //Name of the speaker
+    //The speaker
     public Transform speaker;
 
     //A boolean to know if the dialogue is previous a rest or not
     public bool prevRest;
     //A boolean to know if the dialogue is in a shop
     public bool shop;
+    //A boolean to know if the dialogue is previous a battle
+    public bool prevBattle;
 
     public string[] sentences;
      
@@ -20,6 +22,7 @@ public class Dialogue
         speaker = sp;
         prevRest = false;
         shop = false;
+        prevBattle = false;
         sentences = se;
     }
 }

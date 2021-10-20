@@ -2385,7 +2385,13 @@ public class WorldPlayerMovementScript : MonoBehaviour
         nextDialogue = d;
     }
 
-    
+    //Function to start a dialogue
+    public void StartDialogue(Dialogue d)
+    {
+        dialogue = true;
+        speaking = true;
+        dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(d);
+    }
 
     //Function to set the picked object
     public void SetPickedObject(GameObject o)

@@ -14014,6 +14014,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gate: {fileID: 5825153209350489659}
   pressed: {fileID: 2100000, guid: 59419baa8d385134ab5483525c4c32f2, type: 2}
+  dialogue:
+    speaker: {fileID: 1187288124}
+    prevRest: 0
+    shop: 0
+    prevBattle: 1
+    sentences:
+    - npc_prisoner1_1
+    - npc_prisoner1_2
 --- !u!54 &499232578
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -28906,7 +28914,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1058432325201483513, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.5102539
+      value: 1.5101318
       objectReference: {fileID: 0}
     - target: {fileID: 1058432325993556212, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -31197,6 +31205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prevRest: 0
+  prevBattle: 0
   shop: 0
 --- !u!4 &1100136953
 Transform:
@@ -33163,7 +33172,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4645194332366295914, guid: 0882adf9baf7f3b4981fc1b703d0872d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.49
+      value: -0.42
       objectReference: {fileID: 0}
     - target: {fileID: 4645194332366295914, guid: 0882adf9baf7f3b4981fc1b703d0872d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -33171,7 +33180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4645194332366295914, guid: 0882adf9baf7f3b4981fc1b703d0872d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.61
+      value: -1.62
       objectReference: {fileID: 0}
     - target: {fileID: 4645194332366295914, guid: 0882adf9baf7f3b4981fc1b703d0872d, type: 3}
       propertyPath: m_LocalRotation.x
@@ -33211,6 +33220,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0882adf9baf7f3b4981fc1b703d0872d, type: 3}
+--- !u!4 &1187288124 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4645194332366295914, guid: 0882adf9baf7f3b4981fc1b703d0872d, type: 3}
+  m_PrefabInstance: {fileID: 1187288123}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1189028939
 GameObject:
   m_ObjectHideFlags: 0
@@ -51643,6 +51657,7 @@ MonoBehaviour:
     speaker: {fileID: 1732164132}
     prevRest: 0
     shop: 0
+    prevBattle: 0
     sentences:
     - npc_prisoner1_1
     - npc_prisoner1_2
@@ -57402,6 +57417,7 @@ MonoBehaviour:
     speaker: {fileID: 1951446235}
     prevRest: 0
     shop: 0
+    prevBattle: 0
     sentences:
     - npc_prisoner1_1
     - npc_prisoner1_2
@@ -61158,6 +61174,7 @@ MonoBehaviour:
     speaker: {fileID: 2081794795}
     prevRest: 0
     shop: 0
+    prevBattle: 0
     sentences:
     - npc_prisoner1_1
     - npc_prisoner1_2

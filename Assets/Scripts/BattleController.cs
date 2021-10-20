@@ -3876,7 +3876,7 @@ public class BattleController : MonoBehaviour
             companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
             canvas.GetComponent<Animator>().SetBool("Hide", false);
             mainCamera.GetComponent<CameraScript>().ChangeCameraState(1);
-            xpObject.SetActive(false);
+            ResetXP();
             victoryXP.transform.GetChild(18).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
             victoryXP.transform.GetChild(19).gameObject.SetActive(true);
             victoryXP.transform.GetChild(20).gameObject.SetActive(true);
@@ -5293,8 +5293,8 @@ public class BattleController : MonoBehaviour
                 canvas.GetComponent<Animator>().SetBool("Hide", false);
                 //We put the camera on the victory position
                 mainCamera.GetComponent<CameraScript>().ChangeCameraState(1);
-                //We deactivate the actual xp and activate the victory xp
-                xpObject.SetActive(false);
+                //We reset the actual xp and activate the victory xp
+                ResetXP();
                 victoryXP.transform.GetChild(18).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.4f);
                 victoryXP.transform.GetChild(19).gameObject.SetActive(true);
                 victoryXP.transform.GetChild(20).gameObject.SetActive(true);
@@ -6423,6 +6423,11 @@ public class BattleController : MonoBehaviour
     {
         currentFightXP += xp;
         ShowCurrentXP();
+    }
+    //Function to reset the xp
+    private void ResetXP()
+    {
+        for (int i = 0; i<18; i++) xpObject.transform.GetChild(i).GetComponent<Image>().color = new Color(xpObject.transform.GetChild(0).GetComponent<Image>().color.r, xpObject.transform.GetChild(0).GetComponent<Image>().color.g, xpObject.transform.GetChild(0).GetComponent<Image>().color.b, 0.0f);
     }
     //Function to show the current xp
     private void ShowCurrentXP()

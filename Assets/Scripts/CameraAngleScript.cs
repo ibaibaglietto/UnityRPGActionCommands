@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraAngleScript : MonoBehaviour
 {
-    //The player
+    //The Camera
     private GameObject cam;
 
 
