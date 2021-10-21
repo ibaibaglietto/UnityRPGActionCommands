@@ -185,3 +185,9 @@ adventurer_explanation_TestScene2$This is the test zone. It is a bit weird, but 
 adventurer_explanation_TestScene2_ShopGirl$She is the shop girl. You can talk to her to buy, sell, store or take out items. Really usefull.
 adventurer_explanation_TestScene2_Sign$It’s a sign. Read it yourself.
 adventurer_explanation_TestScene2_Sign_Text$ 
+npc_prisoner1_1$Test1
+npc_prisoner1_2$Test2
+npc_prisoner1_3$Test3
+npc_prisonerAdventurer_1$Test1
+npc_prisonerAdventurer_2$Test2
+npc_prisonerAdventurer_3$Test3

@@ -32,8 +32,14 @@ public class DialogueManager : MonoBehaviour
     public bool prevBattle;
     //A boolean to know if the dialogue is in a shop
     public bool shop;
-    //The speaker
-    private Transform speaker;
+    //The speakers
+    private Transform[] speakers;
+    //The dialogue changes
+    private int[] dialogueChanges;
+    //An int to know the number of the actual dialogue
+    private int actualDialogueNumb;
+    //An int to know the number of the actual speaker
+    private int actualSpeaker;
 
     void Start()
     {
@@ -46,6 +52,8 @@ public class DialogueManager : MonoBehaviour
         next = GameObject.Find("DialogueNext");
         dialogueText.enabled = false;
         speak = GameObject.Find("SpeakSource").GetComponent<AudioSource>();
+        actualDialogueNumb = 0;
+        actualSpeaker = 0;
     }
 
     //Function to start the world dialogue
@@ -54,14 +62,15 @@ public class DialogueManager : MonoBehaviour
         prevRest = dialogue.prevRest;
         shop = dialogue.shop;
         prevBattle = dialogue.prevBattle;
-        speaker = dialogue.speaker;
+        speakers = dialogue.speakers;
+        dialogueChanges = dialogue.dialogueChanges;
         battle = false;
         player = GameObject.Find("PlayerWorld");
         //We open the dialogue box
         animator.SetBool("Open", true);
         //Clear the previous sentences
         sentences.Clear();
-        dialogueBox.GetComponent<DialogueBox>().SetSpeaker(dialogue.speaker);
+        dialogueBox.GetComponent<DialogueBox>().SetSpeaker(dialogue.speakers[0]);
         //enqueue the sentences
         foreach (string sentence in dialogue.sentences)
         {
@@ -94,6 +103,12 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNextSentence()
     {
+        actualDialogueNumb += 1;
+        if(dialogueChanges != null && actualSpeaker<dialogueChanges.Length && dialogueChanges[actualSpeaker] == actualDialogueNumb)
+        {
+            actualSpeaker += 1;
+            dialogueBox.GetComponent<DialogueBox>().SetSpeaker(speakers[actualSpeaker]);
+        }
         next.GetComponent<Image>().color = new Color(next.GetComponent<Image>().color.r, next.GetComponent<Image>().color.g, next.GetComponent<Image>().color.b, 0.0f);
         //When we dont have more sentences we end the dialogue
         if (sentences.Count == 0)
@@ -101,6 +116,8 @@ public class DialogueManager : MonoBehaviour
             if (battle) EndBattleDialogue();
             else EndWorldDialogue();
             StopAllCoroutines();
+            actualDialogueNumb = 0;
+            actualSpeaker = 0;
             return;
         }
         //If we have more sentences we dequeue them and type them
@@ -139,14 +156,14 @@ public class DialogueManager : MonoBehaviour
         if (prevRest) player.GetComponent<WorldPlayerMovementScript>().ShowRestUI();
         else if (shop)
         {
-            player.GetComponent<WorldPlayerMovementScript>().SetShopItems(speaker.GetComponent<ShopInventoryScript>().items);
+            player.GetComponent<WorldPlayerMovementScript>().SetShopItems(speakers[0].GetComponent<ShopInventoryScript>().items);
             player.GetComponent<WorldPlayerMovementScript>().ShowShopUI();
         }
         else if (prevBattle)
         {
             player.GetComponent<WorldPlayerMovementScript>().EndDialogue();
-            speaker.GetComponent<WorldEnemy>().StartBattle(0, 0, 0);
-            speaker.GetComponent<WorldEnemy>().SetInBattle(true);
+            speakers[0].GetComponent<WorldEnemy>().StartBattle(0, 0, 0);
+            speakers[0].GetComponent<WorldEnemy>().SetInBattle(true);
         }
         else
         {

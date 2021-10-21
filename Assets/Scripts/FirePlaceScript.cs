@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class FirePlaceScript : MonoBehaviour
 {
-    [SerializeField] private float leftChairX;
-    [SerializeField] private float leftChairZ;
-    [SerializeField] private float rightChairX;
-    [SerializeField] private float rightChairZ;
     private GameObject companion;
     //The dialogue
     public Dialogue dialogue;
@@ -27,10 +23,10 @@ public class FirePlaceScript : MonoBehaviour
         if (other.transform.tag == "Player")
         {            
             other.GetComponent<WorldPlayerMovementScript>().SetCanRest(true);
-            other.GetComponent<WorldPlayerMovementScript>().SetRestPosition(leftChairX,leftChairZ);
+            other.GetComponent<WorldPlayerMovementScript>().SetRestPosition(transform.position.x - 1.531f, transform.position.z + 0.65f);
             other.GetComponent<WorldPlayerMovementScript>().SetFireXPos(transform.position.x);
             other.GetComponent<WorldPlayerMovementScript>().SetFirePlace(gameObject);
-            companion.GetComponent<WorldCompanionMovementScript>().SetRestPosition(rightChairX, rightChairZ);
+            companion.GetComponent<WorldCompanionMovementScript>().SetRestPosition(transform.position.x + 1.531f, transform.position.z + 0.65f);
         }
     }
 

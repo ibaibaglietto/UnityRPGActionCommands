@@ -185,3 +185,9 @@ adventurer_explanation_TestScene2$Hau testeoko zona printzipala da. Pixkat arrar
 adventurer_explanation_TestScene2_ShopGirl$Hau dendako neska da. Berarekin hitz egin dezakezu objektuak erosi, saldu, gorde edo berreskuratzeko. Oso erabilgarria da.
 adventurer_explanation_TestScene2_Sign$Kartel bat da. Zuk irakurri.
 adventurer_explanation_TestScene2_Sign_Text$ 
+npc_prisoner1_1$Test1
+npc_prisoner1_2$Test2
+npc_prisoner1_3$Test2
+npc_prisonerAdventurer_1$Test1
+npc_prisonerAdventurer_2$Test2
+npc_prisonerAdventurer_3$Test3

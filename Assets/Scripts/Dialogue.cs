@@ -5,8 +5,10 @@ using UnityEngine;
 [System.Serializable]
 public class Dialogue
 {
-    //The speaker
-    public Transform speaker;
+    //The speakers
+    public Transform[] speakers;
+    //The dialogue number where the speaker changes
+    public int[] dialogueChanges;
 
     //A boolean to know if the dialogue is previous a rest or not
     public bool prevRest;
@@ -17,12 +19,13 @@ public class Dialogue
 
     public string[] sentences;
      
-    public Dialogue(Transform sp, string[] se)
+    public Dialogue(Transform[] sp, string[] se)
     {
-        speaker = sp;
+        speakers = sp;
         prevRest = false;
         shop = false;
         prevBattle = false;
+        dialogueChanges = null;
         sentences = se;
     }
 }

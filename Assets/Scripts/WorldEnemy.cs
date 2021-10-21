@@ -59,6 +59,8 @@ public class WorldEnemy : MonoBehaviour
         player = GameObject.Find("PlayerWorld");
         //We find the companion
         companion = GameObject.Find("CompanionWorld");
+        if (idleRight) animator.SetBool("FacingRight", true);
+        else animator.SetBool("FacingRight", false);
     }
 
     private void Update()
@@ -126,8 +128,6 @@ public class WorldEnemy : MonoBehaviour
                 animator.SetFloat("SpeedX", speedX);
                 if (speedX != 0 || speedZ != 0) animator.SetBool("Moving", true);
                 else animator.SetBool("Moving", false);
-                if (idleRight) animator.SetBool("FacingRight", true);
-                else animator.SetBool("FacingRight", false);
             }
             else
             {

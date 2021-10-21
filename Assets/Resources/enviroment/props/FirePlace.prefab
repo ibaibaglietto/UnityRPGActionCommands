@@ -287,14 +287,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54385d52bec670d40bff55bebf9e6b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftChairX: 3.465
-  leftChairZ: 1.589
-  rightChairX: 6.55
-  rightChairZ: 1.589
   dialogue:
     speaker: {fileID: 0}
-    prevRest: 0
+    prevRest: 1
     shop: 0
+    prevBattle: 0
     sentences: []
 --- !u!1001 &2345639002005568280
 PrefabInstance:

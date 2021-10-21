@@ -360,8 +360,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         canvas.GetComponent<Animator>().SetBool("Hide", true);
                         dialogue = true;
                         speaking = true; 
-                        if(canSpeak) dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(new Dialogue(companion.transform, new string[] { "adventurer_explanation_" + SceneManager.GetActiveScene().name + "_" + nextDialogue.speaker.gameObject.name }));
-                        else dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(new Dialogue(companion.transform, new string[] { "adventurer_explanation_" + SceneManager.GetActiveScene().name}));
+                        if(canSpeak) dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(new Dialogue(new Transform[] { companion.transform }, new string[] { "adventurer_explanation_" + SceneManager.GetActiveScene().name + "_" + nextDialogue.speakers[0].gameObject.name }));
+                        else dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(new Dialogue(new Transform[] { companion.transform }, new string[] { "adventurer_explanation_" + SceneManager.GetActiveScene().name}));
                     }
                     else
                     {
