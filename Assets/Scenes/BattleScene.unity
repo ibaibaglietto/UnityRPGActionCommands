@@ -7186,9 +7186,12 @@ MonoBehaviour:
   adventurerBattle: {fileID: 3162316843376333020, guid: 40023355911a3ce4cadd203438298a8b, type: 3}
   companionWizardBattle: {fileID: 4486233812575140428, guid: 6233991c119b967419c28b5a53912582, type: 3}
   banditBattle: {fileID: 3877302658384341422, guid: 5d8eb0b2f1de23c46ba3ea7b614f4dd8, type: 3}
-  wizardBattle: {fileID: 6119504698528858195, guid: 83986c8c45739944ea4460a458413eec, type: 3}
+  banditBossBattle: {fileID: 3877302658384341422, guid: 37fa560d4ab61814c9ceb820e5bc7846, type: 3}
+  wizardBattle: {fileID: 6119504698528858195, guid: 5cdf91f9ad9fb1945b2684d902636368, type: 3}
+  wizardBossBattle: {fileID: 6119504698528858195, guid: d98eee90ef8004346bc5cdb3655d1103, type: 3}
+  knightBattle: {fileID: 3877302658384341422, guid: d19c5189a02f1b741a7e753d800f099f, type: 3}
+  knightBossBattle: {fileID: 3877302658384341422, guid: fd898bf2a71e73b4ea6876fffc17e9fb, type: 3}
   kingBattle: {fileID: 5865716693940188595, guid: 5afa77bc54af49e4aba403227e5ad0a6, type: 3}
-  knightBattle: {fileID: 3877302658384341422, guid: 53fff3cabf3334a4bac6bb79e0d547ab, type: 3}
   damageUI: {fileID: 2003888347808236252, guid: ba485e94df23bb6459b7ed70110d5086, type: 3}
   correctCommandUIPrefab: {fileID: 7292759003230660220, guid: bf9c3f339ac1f3148b42c2da84e334ca, type: 3}
   normalSword: {fileID: 21300000, guid: 016fa064988a4ad409e0708b60a94625, type: 3}
@@ -7281,6 +7284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prevRest: 0
+  prevBattle: 0
   shop: 0
 --- !u!1 &1006954632
 GameObject:

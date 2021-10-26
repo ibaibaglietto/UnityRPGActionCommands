@@ -84,6 +84,8 @@ public class GameDataScript
     public int playerStyle;
     public int companionAttack;
     public int companionStyle;
+    //Flags
+    public int clearJail;
 
     //Contructor to use when saving the game
     public GameDataScript (CurrentDataScript current)
@@ -161,6 +163,7 @@ public class GameDataScript
         playerStyle = current.playerStyle;
         companionAttack = current.companionAttack;
         companionStyle = current.companionStyle;
+        clearJail = current.clearJail;
     }
 
 }

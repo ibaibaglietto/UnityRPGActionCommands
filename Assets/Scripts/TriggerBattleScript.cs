@@ -8,6 +8,8 @@ public class TriggerBattleScript : MonoBehaviour
     private GameObject player;
     //The dialogue
     public Dialogue dialogue;
+    //The other trigger
+    public GameObject otherTrigger;
 
     void Start()
     {
@@ -22,6 +24,8 @@ public class TriggerBattleScript : MonoBehaviour
             if (player.transform.position.x>dialogue.speakers[0].position.x) dialogue.speakers[0].GetComponent<Animator>().SetBool("FacingRight", true);
             else dialogue.speakers[0].GetComponent<Animator>().SetBool("FacingRight", false);
             player.GetComponent<WorldPlayerMovementScript>().StartDialogue(dialogue);
+            Destroy(gameObject);
+            if (otherTrigger != null) Destroy(otherTrigger);
         }
     }
 }

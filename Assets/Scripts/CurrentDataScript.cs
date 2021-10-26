@@ -84,6 +84,8 @@ public class CurrentDataScript : MonoBehaviour
     public int playerStyle;
     public int companionAttack;
     public int companionStyle;
+    //Flags
+    public int clearJail;
 
     private void Awake()
     {
@@ -272,6 +274,7 @@ public class CurrentDataScript : MonoBehaviour
         playerStyle = data.playerStyle;
         companionAttack = data.companionAttack;
         companionStyle = data.companionStyle;
+        clearJail = data.clearJail;
     }
 
 

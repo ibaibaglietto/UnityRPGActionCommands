@@ -70,7 +70,7 @@ public class DialogueManager : MonoBehaviour
         animator.SetBool("Open", true);
         //Clear the previous sentences
         sentences.Clear();
-        dialogueBox.GetComponent<DialogueBox>().SetSpeaker(dialogue.speakers[0]);
+        if(dialogue.speakers.Length != 0) dialogueBox.GetComponent<DialogueBox>().SetSpeaker(dialogue.speakers[0]);
         //enqueue the sentences
         foreach (string sentence in dialogue.sentences)
         {

@@ -27,10 +27,14 @@ public class WorldEnemy : MonoBehaviour
     private bool inBattle;
     //A boolean to know if the enemy has seen the player
     private bool seeingPlayer;
+    //A boolean to know if the enemy has died
+    private bool died;
     //The prefab of the coin
     [SerializeField] private Transform coinPrefab;
     //The number of coins the enemy will spawn
     [SerializeField] private int coinNumb;
+    //The enemy linked to this one, if one dies, the other dies too
+    [SerializeField] private Transform linkedEnemy;
 
     //The enemies of the battle. 1-> bandit, 2-> evil wizard, 3-> king
     [SerializeField] private int enemy1;
@@ -51,6 +55,7 @@ public class WorldEnemy : MonoBehaviour
         speedZ = 0.0f;
         inBattle = false;
         seeingPlayer = false;
+        died = false;
         startX = transform.position.x;
         startZ = transform.position.z;
         //We find the animator
@@ -67,7 +72,7 @@ public class WorldEnemy : MonoBehaviour
     {
         if(currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
-            if (!inBattle && !player.GetComponent<WorldPlayerMovementScript>().IsFlying() && (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z))<5.0f && (((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 10.0f && seeingPlayer) || ((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 5.0f && !seeingPlayer)))
+            if (!died && !inBattle && !player.GetComponent<WorldPlayerMovementScript>().IsFlying() && (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z))<5.0f && (((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 10.0f && seeingPlayer) || ((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 5.0f && !seeingPlayer)))
             {
                 animator.SetFloat("RunSpeed", 1.0f);
                 if (!seeingPlayer)
@@ -134,6 +139,8 @@ public class WorldEnemy : MonoBehaviour
                 if (currentData.GetComponent<CurrentDataScript>().enemyDied == 1)
                 {
                     animator.SetTrigger("Die");
+                    died = true;
+                    if(linkedEnemy != null) linkedEnemy.GetComponent<WorldEnemy>().KillEnemy();
                     inBattle = false;
                     currentData.GetComponent<CurrentDataScript>().enemyDied = 0;
                     speedX = 0.0f;
@@ -142,6 +149,7 @@ public class WorldEnemy : MonoBehaviour
                 else
                 {
                     inBattle = false;
+                    if (linkedEnemy != null) linkedEnemy.GetComponent<WorldEnemy>().SetInBattle(false);
                 }
             }
         } 
@@ -187,6 +195,16 @@ public class WorldEnemy : MonoBehaviour
             other.GetComponent<WorldShurikenScript>().SelfDestroy();
         }
     }
+    //Function to kill the enemy
+    public void KillEnemy()
+    {
+        animator.SetTrigger("Die");
+        died = true;
+        inBattle = false;
+        speedX = 0.0f;
+        speedZ = 0.0f;
+    }
+
     //Function to spawn the attack area
     private void SpawnAttack()
     {
@@ -197,7 +215,11 @@ public class WorldEnemy : MonoBehaviour
     //Function to set the enemy in battle
     public void SetInBattle(bool battle)
     {
-        inBattle = battle;
+        if(inBattle != battle)
+        {
+            inBattle = battle;
+            if (linkedEnemy != null) linkedEnemy.GetComponent<WorldEnemy>().SetInBattle(false);
+        }
     }
 
     //Function to end the attack animation

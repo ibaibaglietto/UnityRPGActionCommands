@@ -13,9 +13,12 @@ public class BattleController : MonoBehaviour
     [SerializeField] private Transform adventurerBattle;
     [SerializeField] private Transform companionWizardBattle;
     [SerializeField] private Transform banditBattle;
+    [SerializeField] private Transform banditBossBattle;
     [SerializeField] private Transform wizardBattle;
-    [SerializeField] private Transform kingBattle;
+    [SerializeField] private Transform wizardBossBattle;
     [SerializeField] private Transform knightBattle;
+    [SerializeField] private Transform knightBossBattle;
+    [SerializeField] private Transform kingBattle;
     //The prefabs of the damage UI, heart and light
     [SerializeField] private Transform damageUI;
     //The prefab of the correct command text and the actual transform
@@ -4392,6 +4395,26 @@ public class BattleController : MonoBehaviour
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
                 enemy1.GetComponent<EnemyTeamScript>().SetShielded(true);
             }
+            else if (type == 4)
+            {
+                enemy1 = Instantiate(banditBossBattle, new Vector3(2.1f, -0.64f, -2.03f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+            }
+            else if (type == 5)
+            {
+                if (currentData.GetComponent<CurrentDataScript>().playerFirstAttack == 1 && currentData.GetComponent<CurrentDataScript>().playerAttack == 0) enemy1 = Instantiate(wizardBossBattle, new Vector3(2.1f, -0.5f, -2.03f), Quaternion.identity);
+                else enemy1 = Instantiate(wizardBossBattle, new Vector3(2.1f, 1.0f, -2.03f), Quaternion.identity);
+            }
+            else if (type == 6)
+            {
+                enemy1 = Instantiate(knightBossBattle, new Vector3(2.1f, -1.034f, -2.03f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                enemy1.GetComponent<EnemyTeamScript>().SetShielded(true);
+            }
             enemyNumber += 1;
             enemy1.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
@@ -4416,6 +4439,22 @@ public class BattleController : MonoBehaviour
             else if (type == 3)
             {
                 enemy2 = Instantiate(knightBattle, new Vector3(3.6f, -1.034f, -2.02f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                enemy2.GetComponent<EnemyTeamScript>().SetShielded(true);
+            }
+            else if (type == 4)
+            {
+                enemy2 = Instantiate(banditBossBattle, new Vector3(2.1f, -0.64f, -2.03f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+            }
+            else if (type == 5) enemy2 = Instantiate(wizardBossBattle, new Vector3(3.6f, 1.0f, -2.02f), Quaternion.identity);
+            else if (type == 6)
+            {
+                enemy2 = Instantiate(knightBossBattle, new Vector3(2.1f, -1.034f, -2.03f), Quaternion.identity);
                 player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
@@ -4450,6 +4489,22 @@ public class BattleController : MonoBehaviour
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
                 enemy3.GetComponent<EnemyTeamScript>().SetShielded(true);
             }
+            else if (type == 4)
+            {
+                enemy3 = Instantiate(banditBossBattle, new Vector3(2.1f, -0.64f, -2.03f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+            }
+            else if (type == 5) enemy3 = Instantiate(wizardBossBattle, new Vector3(3.6f, 1.0f, -2.02f), Quaternion.identity);
+            else if (type == 6)
+            {
+                enemy3 = Instantiate(knightBossBattle, new Vector3(2.1f, -1.034f, -2.03f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                enemy3.GetComponent<EnemyTeamScript>().SetShielded(true);
+            }
             enemyNumber += 1;
             enemy3.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
         }
@@ -4477,7 +4532,23 @@ public class BattleController : MonoBehaviour
                 player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
-                //enemy4.GetComponent<EnemyTeamScript>().SetShielded(true);
+                enemy4.GetComponent<EnemyTeamScript>().SetShielded(true);
+            }
+            else if (type == 4)
+            {
+                enemy4 = Instantiate(banditBossBattle, new Vector3(2.1f, -0.64f, -2.03f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+            }
+            else if (type == 5) enemy4 = Instantiate(wizardBossBattle, new Vector3(3.6f, 1.0f, -2.02f), Quaternion.identity);
+            else if (type == 6)
+            {
+                enemy4 = Instantiate(knightBossBattle, new Vector3(2.1f, -1.034f, -2.03f), Quaternion.identity);
+                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                enemy4.GetComponent<EnemyTeamScript>().SetShielded(true);
             }
             enemyNumber += 1;
             enemy4.GetComponent<EnemyTeamScript>().SetNumber(enemyNumber);
