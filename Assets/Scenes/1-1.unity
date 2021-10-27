@@ -28938,7 +28938,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1058432325201483513, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.5080566
+      value: 1.5080261
       objectReference: {fileID: 0}
     - target: {fileID: 1058432325993556212, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -39378,7 +39378,7 @@ MonoBehaviour:
   playerStyle: 0
   companionAttack: 0
   companionStyle: 0
-  clearJail: 1
+  clearJail: 0
 --- !u!4 &1362992188
 Transform:
   m_ObjectHideFlags: 0
@@ -59523,7 +59523,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogue:
-    speakers: []
+    speakers:
+    - {fileID: 1187288124}
     dialogueChanges: 
     prevRest: 0
     shop: 0

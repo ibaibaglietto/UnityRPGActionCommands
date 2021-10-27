@@ -16,6 +16,8 @@ public class WorldObjectScript : MonoBehaviour
     public string itemName;
     //The description of the gem in every language
     public string itemDescription;
+    //The name of the flag 
+    public string flag;
 
     void Start()
     {
@@ -35,6 +37,7 @@ public class WorldObjectScript : MonoBehaviour
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().velocity = new Vector3(0.0f, 0.0f, 0.0f);
             picked = true;
+            SetFlag();
             if (gameObject.tag == "Gem") currentData.GetComponent<CurrentDataScript>().SetGemFound(id,1);
             else if (gameObject.tag == "Item")
             {
@@ -62,6 +65,12 @@ public class WorldObjectScript : MonoBehaviour
     public void SetPicked(bool p)
     {
         picked = p;
+    }
+
+    //Function to set the picked flag
+    public void SetFlag()
+    {
+        currentData.GetComponent<CurrentDataScript>().SetFlag(flag);
     }
 
 }

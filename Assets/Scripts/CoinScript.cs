@@ -10,6 +10,8 @@ public class CoinScript : MonoBehaviour
     private bool picked;
     //The current data
     private GameObject currentData;
+    //the flag
+    public string flag;
 
     void Start()
     {
@@ -27,6 +29,7 @@ public class CoinScript : MonoBehaviour
             currentData.GetComponent<CurrentDataScript>().currentCoins = currentData.GetComponent<CurrentDataScript>().currentCoins + 1;
             canvas.GetComponent<WorldCanvasScript>().UpdateCoins();
             picked = true;
+            SetFlag();
             GetComponent<Animator>().SetTrigger("Pick");
         }
     }
@@ -35,4 +38,12 @@ public class CoinScript : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+
+    //Function to set the picked flag
+    public void SetFlag()
+    {
+        currentData.GetComponent<CurrentDataScript>().SetFlag(flag);
+    }
+
 }

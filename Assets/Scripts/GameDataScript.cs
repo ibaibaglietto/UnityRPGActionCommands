@@ -85,7 +85,27 @@ public class GameDataScript
     public int companionAttack;
     public int companionStyle;
     //Flags
+    //1-1
     public int clearJail;
+    //1-2
+    public int storageItem1;
+    public int storageItem2;
+    //1-3
+    public int cityItem1;
+    public int cityGem1;
+    public int cityCoin1;
+    public int cityCoin2;
+    public int cityCoin3;
+    public int cityCoin4;
+    public int cityCoin5;
+    public int cityCoin6;
+    public int cityCoin7;
+    public int cityCoin8;
+    public int cityCoin9;
+    public int cityCoin10;
+    public int cityCoin11;
+    public int cityCoin12;
+
 
     //Contructor to use when saving the game
     public GameDataScript (CurrentDataScript current)
@@ -164,6 +184,8 @@ public class GameDataScript
         companionAttack = current.companionAttack;
         companionStyle = current.companionStyle;
         clearJail = current.clearJail;
+        storageItem1 = current.storageItem1;
+        storageItem2 = current.storageItem2;
     }
 
 }

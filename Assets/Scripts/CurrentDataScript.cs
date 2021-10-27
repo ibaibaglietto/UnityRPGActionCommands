@@ -85,7 +85,26 @@ public class CurrentDataScript : MonoBehaviour
     public int companionAttack;
     public int companionStyle;
     //Flags
+    //1-1
     public int clearJail;
+    //1-2
+    public int storageItem1;
+    public int storageItem2;
+    //1-3
+    public int cityItem1;
+    public int cityGem1;
+    public int cityCoin1;
+    public int cityCoin2;
+    public int cityCoin3;
+    public int cityCoin4;
+    public int cityCoin5;
+    public int cityCoin6;
+    public int cityCoin7;
+    public int cityCoin8;
+    public int cityCoin9;
+    public int cityCoin10;
+    public int cityCoin11;
+    public int cityCoin12;
 
     private void Awake()
     {
@@ -198,6 +217,27 @@ public class CurrentDataScript : MonoBehaviour
         }
     }
 
+    //Function to set a flag
+    public void SetFlag(string flag)
+    {
+        if (flag == "storageItem1") storageItem1 = 1;
+        else if (flag == "storageItem2") storageItem2 = 1;
+        else if (flag == "cityItem1") storageItem2 = 1;
+        else if (flag == "cityGem1") storageItem2 = 1;
+        else if (flag == "cityCoin1") cityCoin1 = 1;
+        else if (flag == "cityCoin2") cityCoin2 = 1;
+        else if (flag == "cityCoin3") cityCoin3 = 1;
+        else if (flag == "cityCoin4") cityCoin4 = 1;
+        else if (flag == "cityCoin5") cityCoin5 = 1;
+        else if (flag == "cityCoin6") cityCoin6 = 1;
+        else if (flag == "cityCoin7") cityCoin7 = 1;
+        else if (flag == "cityCoin8") cityCoin8 = 1;
+        else if (flag == "cityCoin9") cityCoin9 = 1;
+        else if (flag == "cityCoin10") cityCoin10 = 1;
+        else if (flag == "cityCoin11") cityCoin11 = 1;
+        else if (flag == "cityCoin12") cityCoin12 = 1;
+    }
+
     //Function to load the data
     public void LoadData(GameDataScript data)
     {
@@ -275,6 +315,8 @@ public class CurrentDataScript : MonoBehaviour
         companionAttack = data.companionAttack;
         companionStyle = data.companionStyle;
         clearJail = data.clearJail;
+        storageItem1 = data.storageItem1;
+        storageItem2 = data.storageItem2;
     }
 
 
