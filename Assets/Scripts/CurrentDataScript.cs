@@ -105,6 +105,80 @@ public class CurrentDataScript : MonoBehaviour
     public int cityCoin10;
     public int cityCoin11;
     public int cityCoin12;
+    //1-4
+    public int brokenBridgeItem1;
+    public int brokenBridgeItem2;
+    public int brokenBridgeCoin1;
+    public int brokenBridgeCoin2;
+    public int brokenBridgeCoin3;
+    public int brokenBridgeCoin4;
+    public int brokenBridgeCoin5;
+    public int brokenBridgeCoin6;
+    public int brokenBridgeCoin7;
+    public int brokenBridgeCoin8;
+    public int brokenBridgeCoin9;
+    public int brokenBridgeCoin10;
+    public int brokenBridgeCoin11;
+    public int brokenBridgeCoin12;
+    public int brokenBridgeCoin13;
+    public int brokenBridgeCoin14;
+    public int brokenBridgeCoin15;
+    public int brokenBridgeCoin16;
+    //1-5
+    public int citySideItem1;
+    public int citySideGem1;
+    public int citySideCoin1;
+    public int citySideCoin2;
+    public int citySideCoin3;
+    public int citySideCoin4;
+    public int citySideCoin5;
+    public int citySideCoin6;
+    public int citySideCoin7;
+    public int citySideCoin8;
+    public int citySideCoin9;
+    public int citySideCoin10;
+    public int citySideCoin11;
+    public int citySideCoin12;
+    public int citySideCoin13;
+    public int citySideCoin14;
+    public int citySideCoin15;
+    public int citySideCoin16;
+    public int citySideCoin17;
+    public int citySideCoin18;
+    public int citySideCoin19;
+    public int citySideCoin20;
+    public int citySideCoin21;
+    public int citySideCoin22;
+    public int citySideCoin23;
+    public int citySideCoin24;
+    //1-6
+    public int waterItem1;
+    public int waterClear;
+    //1-7
+    public int bridge1Coin1;
+    public int bridge1Coin2;
+    public int bridge1Coin3;
+    public int bridge1Coin4;
+    public int bridge1Coin5;
+    public int bridge1Coin6;
+    public int bridge1Coin7;
+    public int bridge1Coin8;
+    public int bridge1Coin9;
+    public int bridge1Coin10;
+    public int bridge1Coin11;
+    public int bridge1Coin12;
+    public int bridge1Coin13;
+    public int bridge1Coin14;
+    public int bridge1Coin15;
+    public int bridge1Coin16;
+    public int bridge1Coin17;
+    public int bridge1Coin18;
+    public int bridge1Coin19;
+    public int bridge1Coin20;
+    public int bridge1Coin21;
+    public int bridge1Coin22;
+    public int bridge1Coin23;
+    public int bridge1Coin24;
 
     private void Awake()
     {
@@ -220,10 +294,12 @@ public class CurrentDataScript : MonoBehaviour
     //Function to set a flag
     public void SetFlag(string flag)
     {
+        //1-2
         if (flag == "storageItem1") storageItem1 = 1;
         else if (flag == "storageItem2") storageItem2 = 1;
-        else if (flag == "cityItem1") storageItem2 = 1;
-        else if (flag == "cityGem1") storageItem2 = 1;
+        //1-3
+        else if (flag == "cityItem1") cityItem1 = 1;
+        else if (flag == "cityGem1") cityGem1 = 1;
         else if (flag == "cityCoin1") cityCoin1 = 1;
         else if (flag == "cityCoin2") cityCoin2 = 1;
         else if (flag == "cityCoin3") cityCoin3 = 1;
@@ -236,6 +312,79 @@ public class CurrentDataScript : MonoBehaviour
         else if (flag == "cityCoin10") cityCoin10 = 1;
         else if (flag == "cityCoin11") cityCoin11 = 1;
         else if (flag == "cityCoin12") cityCoin12 = 1;
+        //1-4
+        else if (flag == "brokenBridgeItem1") brokenBridgeItem1 = 1;
+        else if (flag == "brokenBridgeItem2") brokenBridgeItem2 = 1;
+        else if (flag == "brokenBridgeCoin1") brokenBridgeCoin1 = 1;
+        else if (flag == "brokenBridgeCoin2") brokenBridgeCoin2 = 1;
+        else if (flag == "brokenBridgeCoin3") brokenBridgeCoin3 = 1;
+        else if (flag == "brokenBridgeCoin4") brokenBridgeCoin4 = 1;
+        else if (flag == "brokenBridgeCoin5") brokenBridgeCoin5 = 1;
+        else if (flag == "brokenBridgeCoin6") brokenBridgeCoin6 = 1;
+        else if (flag == "brokenBridgeCoin7") brokenBridgeCoin7 = 1;
+        else if (flag == "brokenBridgeCoin8") brokenBridgeCoin8 = 1;
+        else if (flag == "brokenBridgeCoin9") brokenBridgeCoin9 = 1;
+        else if (flag == "brokenBridgeCoin10") brokenBridgeCoin10 = 1;
+        else if (flag == "brokenBridgeCoin11") brokenBridgeCoin11 = 1;
+        else if (flag == "brokenBridgeCoin12") brokenBridgeCoin12 = 1;
+        else if (flag == "brokenBridgeCoin13") brokenBridgeCoin13 = 1;
+        else if (flag == "brokenBridgeCoin14") brokenBridgeCoin14 = 1;
+        else if (flag == "brokenBridgeCoin15") brokenBridgeCoin15 = 1;
+        else if (flag == "brokenBridgeCoin16") brokenBridgeCoin16 = 1;
+        //1-5
+        else if (flag == "citySideItem1") citySideItem1 = 1;
+        else if (flag == "citySideGem1") citySideGem1 = 1;
+        else if (flag == "citySideCoin1") citySideCoin1 = 1;
+        else if (flag == "citySideCoin2") citySideCoin2 = 1;
+        else if (flag == "citySideCoin3") citySideCoin3 = 1;
+        else if (flag == "citySideCoin4") citySideCoin4 = 1;
+        else if (flag == "citySideCoin5") citySideCoin5 = 1;
+        else if (flag == "citySideCoin6") citySideCoin6 = 1;
+        else if (flag == "citySideCoin7") citySideCoin7 = 1;
+        else if (flag == "citySideCoin8") citySideCoin8 = 1;
+        else if (flag == "citySideCoin9") citySideCoin9 = 1;
+        else if (flag == "citySideCoin10") citySideCoin10 = 1;
+        else if (flag == "citySideCoin11") citySideCoin11 = 1;
+        else if (flag == "citySideCoin12") citySideCoin12 = 1;
+        else if (flag == "citySideCoin13") citySideCoin13 = 1;
+        else if (flag == "citySideCoin14") citySideCoin14 = 1;
+        else if (flag == "citySideCoin15") citySideCoin15 = 1;
+        else if (flag == "citySideCoin16") citySideCoin16 = 1;
+        else if (flag == "citySideCoin17") citySideCoin17 = 1;
+        else if (flag == "citySideCoin18") citySideCoin18 = 1;
+        else if (flag == "citySideCoin19") citySideCoin19 = 1;
+        else if (flag == "citySideCoin20") citySideCoin20 = 1;
+        else if (flag == "citySideCoin21") citySideCoin21 = 1;
+        else if (flag == "citySideCoin22") citySideCoin22 = 1;
+        else if (flag == "citySideCoin23") citySideCoin23 = 1;
+        else if (flag == "citySideCoin24") citySideCoin24 = 1;
+        //1-6
+        else if (flag == "waterItem1") waterItem1 = 1;
+        //1-7
+        else if (flag == "bridge1Coin1") bridge1Coin1 = 1;
+        else if (flag == "bridge1Coin2") bridge1Coin2 = 1;
+        else if (flag == "bridge1Coin3") bridge1Coin3 = 1;
+        else if (flag == "bridge1Coin4") bridge1Coin4 = 1;
+        else if (flag == "bridge1Coin5") bridge1Coin5 = 1;
+        else if (flag == "bridge1Coin6") bridge1Coin6 = 1;
+        else if (flag == "bridge1Coin7") bridge1Coin7 = 1;
+        else if (flag == "bridge1Coin8") bridge1Coin8 = 1;
+        else if (flag == "bridge1Coin9") bridge1Coin9 = 1;
+        else if (flag == "bridge1Coin10") bridge1Coin10 = 1;
+        else if (flag == "bridge1Coin11") bridge1Coin11 = 1;
+        else if (flag == "bridge1Coin12") bridge1Coin12 = 1;
+        else if (flag == "bridge1Coin13") bridge1Coin13 = 1;
+        else if (flag == "bridge1Coin14") bridge1Coin14 = 1;
+        else if (flag == "bridge1Coin15") bridge1Coin15 = 1;
+        else if (flag == "bridge1Coin16") bridge1Coin16 = 1;
+        else if (flag == "bridge1Coin17") bridge1Coin17 = 1;
+        else if (flag == "bridge1Coin18") bridge1Coin18 = 1;
+        else if (flag == "bridge1Coin19") bridge1Coin19 = 1;
+        else if (flag == "bridge1Coin20") bridge1Coin20 = 1;
+        else if (flag == "bridge1Coin21") bridge1Coin21 = 1;
+        else if (flag == "bridge1Coin22") bridge1Coin22 = 1;
+        else if (flag == "bridge1Coin23") bridge1Coin23 = 1;
+        else if (flag == "bridge1Coin24") bridge1Coin24 = 1;
     }
 
     //Function to load the data
@@ -317,6 +466,76 @@ public class CurrentDataScript : MonoBehaviour
         clearJail = data.clearJail;
         storageItem1 = data.storageItem1;
         storageItem2 = data.storageItem2;
+        brokenBridgeItem1 = data.brokenBridgeItem1;
+        brokenBridgeItem2 = data.brokenBridgeItem2;
+        brokenBridgeCoin1 = data.brokenBridgeCoin1;
+        brokenBridgeCoin2 = data.brokenBridgeCoin2;
+        brokenBridgeCoin3 = data.brokenBridgeCoin3;
+        brokenBridgeCoin4 = data.brokenBridgeCoin4;
+        brokenBridgeCoin5 = data.brokenBridgeCoin5;
+        brokenBridgeCoin6 = data.brokenBridgeCoin6;
+        brokenBridgeCoin7 = data.brokenBridgeCoin7;
+        brokenBridgeCoin8 = data.brokenBridgeCoin8;
+        brokenBridgeCoin9 = data.brokenBridgeCoin9;
+        brokenBridgeCoin10 = data.brokenBridgeCoin10;
+        brokenBridgeCoin11 = data.brokenBridgeCoin11;
+        brokenBridgeCoin12 = data.brokenBridgeCoin12;
+        brokenBridgeCoin13 = data.brokenBridgeCoin13;
+        brokenBridgeCoin14 = data.brokenBridgeCoin14;
+        brokenBridgeCoin15 = data.brokenBridgeCoin15;
+        brokenBridgeCoin16 = data.brokenBridgeCoin16;
+        citySideItem1 = data.citySideItem1;
+        citySideGem1 = data.citySideGem1;
+        citySideCoin1 = data.citySideCoin1;
+        citySideCoin2 = data.citySideCoin2;
+        citySideCoin3 = data.citySideCoin3;
+        citySideCoin4 = data.citySideCoin4;
+        citySideCoin5 = data.citySideCoin5;
+        citySideCoin6 = data.citySideCoin6;
+        citySideCoin7 = data.citySideCoin7;
+        citySideCoin8 = data.citySideCoin8;
+        citySideCoin9 = data.citySideCoin9;
+        citySideCoin10 = data.citySideCoin10;
+        citySideCoin11 = data.citySideCoin11;
+        citySideCoin12 = data.citySideCoin12;
+        citySideCoin13 = data.citySideCoin13;
+        citySideCoin14 = data.citySideCoin14;
+        citySideCoin15 = data.citySideCoin15;
+        citySideCoin16 = data.citySideCoin16;
+        citySideCoin17 = data.citySideCoin17;
+        citySideCoin18 = data.citySideCoin18;
+        citySideCoin19 = data.citySideCoin19;
+        citySideCoin20 = data.citySideCoin20;
+        citySideCoin21 = data.citySideCoin21;
+        citySideCoin22 = data.citySideCoin22;
+        citySideCoin23 = data.citySideCoin23;
+        citySideCoin24 = data.citySideCoin24;
+        waterItem1 = data.waterItem1;
+        waterClear = data.waterClear;
+        bridge1Coin1 = data.bridge1Coin1;
+        bridge1Coin2 = data.bridge1Coin2;
+        bridge1Coin3 = data.bridge1Coin3;
+        bridge1Coin4 = data.bridge1Coin4;
+        bridge1Coin5 = data.bridge1Coin5;
+        bridge1Coin6 = data.bridge1Coin6;
+        bridge1Coin7 = data.bridge1Coin7;
+        bridge1Coin8 = data.bridge1Coin8;
+        bridge1Coin9 = data.bridge1Coin9;
+        bridge1Coin10 = data.bridge1Coin10;
+        bridge1Coin11 = data.bridge1Coin11;
+        bridge1Coin12 = data.bridge1Coin12;
+        bridge1Coin13 = data.bridge1Coin13;
+        bridge1Coin14 = data.bridge1Coin14;
+        bridge1Coin15 = data.bridge1Coin15;
+        bridge1Coin16 = data.bridge1Coin16;
+        bridge1Coin17 = data.bridge1Coin17;
+        bridge1Coin18 = data.bridge1Coin18;
+        bridge1Coin19 = data.bridge1Coin19;
+        bridge1Coin20 = data.bridge1Coin20;
+        bridge1Coin21 = data.bridge1Coin21;
+        bridge1Coin22 = data.bridge1Coin22;
+        bridge1Coin23 = data.bridge1Coin23;
+        bridge1Coin24 = data.bridge1Coin24;
     }
 
 
