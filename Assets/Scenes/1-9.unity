@@ -14429,6 +14429,7 @@ GameObject:
   - component: {fileID: 314101400}
   - component: {fileID: 314101399}
   - component: {fileID: 314101398}
+  - component: {fileID: 314101401}
   m_Layer: 0
   m_Name: CurrentData
   m_TagString: Data
@@ -14533,6 +14534,155 @@ MonoBehaviour:
   playerStyle: 0
   companionAttack: 0
   companionStyle: 0
+  clearJail: 0
+  storageItem1: 0
+  storageItem2: 0
+  cityItem1: 0
+  cityGem1: 0
+  cityCoin1: 0
+  cityCoin2: 0
+  cityCoin3: 0
+  cityCoin4: 0
+  cityCoin5: 0
+  cityCoin6: 0
+  cityCoin7: 0
+  cityCoin8: 0
+  cityCoin9: 0
+  cityCoin10: 0
+  cityCoin11: 0
+  cityCoin12: 0
+  brokenBridgeItem1: 0
+  brokenBridgeItem2: 0
+  brokenBridgeCoin1: 0
+  brokenBridgeCoin2: 0
+  brokenBridgeCoin3: 0
+  brokenBridgeCoin4: 0
+  brokenBridgeCoin5: 0
+  brokenBridgeCoin6: 0
+  brokenBridgeCoin7: 0
+  brokenBridgeCoin8: 0
+  brokenBridgeCoin9: 0
+  brokenBridgeCoin10: 0
+  brokenBridgeCoin11: 0
+  brokenBridgeCoin12: 0
+  brokenBridgeCoin13: 0
+  brokenBridgeCoin14: 0
+  brokenBridgeCoin15: 0
+  brokenBridgeCoin16: 0
+  citySideItem1: 0
+  citySideGem1: 0
+  citySideCoin1: 0
+  citySideCoin2: 0
+  citySideCoin3: 0
+  citySideCoin4: 0
+  citySideCoin5: 0
+  citySideCoin6: 0
+  citySideCoin7: 0
+  citySideCoin8: 0
+  citySideCoin9: 0
+  citySideCoin10: 0
+  citySideCoin11: 0
+  citySideCoin12: 0
+  citySideCoin13: 0
+  citySideCoin14: 0
+  citySideCoin15: 0
+  citySideCoin16: 0
+  citySideCoin17: 0
+  citySideCoin18: 0
+  citySideCoin19: 0
+  citySideCoin20: 0
+  citySideCoin21: 0
+  citySideCoin22: 0
+  citySideCoin23: 0
+  citySideCoin24: 0
+  waterItem1: 0
+  waterClear: 0
+  bridge1Coin1: 0
+  bridge1Coin2: 0
+  bridge1Coin3: 0
+  bridge1Coin4: 0
+  bridge1Coin5: 0
+  bridge1Coin6: 0
+  bridge1Coin7: 0
+  bridge1Coin8: 0
+  bridge1Coin9: 0
+  bridge1Coin10: 0
+  bridge1Coin11: 0
+  bridge1Coin12: 0
+  bridge1Coin13: 0
+  bridge1Coin14: 0
+  bridge1Coin15: 0
+  bridge1Coin16: 0
+  bridge1Coin17: 0
+  bridge1Coin18: 0
+  bridge1Coin19: 0
+  bridge1Coin20: 0
+  bridge1Coin21: 0
+  bridge1Coin22: 0
+  bridge1Coin23: 0
+  bridge1Coin24: 0
+  bridge2Coin1: 0
+  bridge2Coin2: 0
+  bridge2Coin3: 0
+  bridge2Coin4: 0
+  bridge2Coin5: 0
+  bridge2Coin6: 0
+  bridge2Coin7: 0
+  bridge2Coin8: 0
+  bridge2Coin9: 0
+  bridge2Coin10: 0
+  bridge2Coin11: 0
+  bridge2Coin12: 0
+  bridge2Coin13: 0
+  bridge2Coin14: 0
+  bridge2Coin15: 0
+  bridge2Coin16: 0
+  bridge2Coin17: 0
+  bridge2Coin18: 0
+  bridge2Coin19: 0
+  bridge2Coin20: 0
+  bridge2Coin21: 0
+  bridge2Coin22: 0
+  bridge2Coin23: 0
+  bridge2Coin24: 0
+  bridge2Coin25: 0
+  bridge2Coin26: 0
+  bridge2Coin27: 0
+  bridge2Coin28: 0
+  bridge2Coin29: 0
+  bridge2Coin30: 0
+  bridge2Coin31: 0
+  bridge2Coin32: 0
+  bridge2Coin33: 0
+  bridge2Coin34: 0
+  bridge2Coin35: 0
+  bridge2Coin36: 0
+  doorItem1: 0
+  doorCoin1: 0
+  doorCoin2: 0
+  doorCoin3: 0
+  doorCoin4: 0
+  doorCoin5: 0
+  doorCoin6: 0
+  doorCoin7: 0
+  doorCoin8: 0
+  doorCoin9: 0
+  doorCoin10: 0
+  doorCoin11: 0
+  doorCoin12: 0
+  doorCoin13: 0
+  doorCoin14: 0
+  base1Item1: 0
+  base1Item2: 0
+  base1Coin1: 0
+  base1Coin2: 0
+  base1Coin3: 0
+  base1Coin4: 0
+  base1Coin5: 0
+  base1Coin6: 0
+  base1Coin7: 0
+  base1Coin8: 0
+  base1Coin9: 0
 --- !u!4 &314101400
 Transform:
   m_ObjectHideFlags: 0
@@ -14547,6 +14697,45 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &314101401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 314101397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9366b1b6d544f9418b91dd618cb2fd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonPressed: {fileID: 2100000, guid: 59419baa8d385134ab5483525c4c32f2, type: 2}
+  doorItem1: {fileID: 0}
+  doorCoin1: {fileID: 0}
+  doorCoin2: {fileID: 0}
+  doorCoin3: {fileID: 0}
+  doorCoin4: {fileID: 0}
+  doorCoin5: {fileID: 0}
+  doorCoin6: {fileID: 0}
+  doorCoin7: {fileID: 0}
+  doorCoin8: {fileID: 0}
+  doorCoin9: {fileID: 0}
+  doorCoin10: {fileID: 0}
+  doorCoin11: {fileID: 0}
+  doorCoin12: {fileID: 0}
+  doorCoin13: {fileID: 0}
+  doorCoin14: {fileID: 0}
+  base1Item1: {fileID: 0}
+  base1Item2: {fileID: 0}
+  base1Coin1: {fileID: 0}
+  base1Coin2: {fileID: 0}
+  base1Coin3: {fileID: 0}
+  base1Coin4: {fileID: 0}
+  base1Coin5: {fileID: 0}
+  base1Coin6: {fileID: 0}
+  base1Coin7: {fileID: 0}
+  base1Coin8: {fileID: 0}
+  base1Coin9: {fileID: 0}
 --- !u!1 &314654552
 GameObject:
   m_ObjectHideFlags: 0
@@ -32268,11 +32457,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7265291125816800156, guid: 8077726928e712146b10585b9f187d5b, type: 3}
   m_PrefabInstance: {fileID: 742325735}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &742325737 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2432510197073434861, guid: 8077726928e712146b10585b9f187d5b, type: 3}
-  m_PrefabInstance: {fileID: 742325735}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &742325738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32286,9 +32470,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogue:
-    speaker: {fileID: 742325737}
+    speakers: []
+    dialogueChanges: 
     prevRest: 0
     shop: 0
+    prevBattle: 0
     sentences:
     - npc_prisoner1_1
     - npc_prisoner1_2
@@ -62382,11 +62568,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7265291125816800156, guid: 8077726928e712146b10585b9f187d5b, type: 3}
   m_PrefabInstance: {fileID: 1369100546}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1369100548 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2432510197073434861, guid: 8077726928e712146b10585b9f187d5b, type: 3}
-  m_PrefabInstance: {fileID: 1369100546}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1369100549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62400,9 +62581,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogue:
-    speaker: {fileID: 1369100548}
+    speakers: []
+    dialogueChanges: 
     prevRest: 0
     shop: 0
+    prevBattle: 0
     sentences:
     - npc_prisoner1_1
     - npc_prisoner1_2
@@ -62505,11 +62688,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7265291125816800156, guid: 8077726928e712146b10585b9f187d5b, type: 3}
   m_PrefabInstance: {fileID: 1372884383}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1372884385 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2432510197073434861, guid: 8077726928e712146b10585b9f187d5b, type: 3}
-  m_PrefabInstance: {fileID: 1372884383}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1372884386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62523,9 +62701,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogue:
-    speaker: {fileID: 1372884385}
+    speakers: []
+    dialogueChanges: 
     prevRest: 0
     shop: 0
+    prevBattle: 0
     sentences:
     - npc_prisoner1_1
     - npc_prisoner1_2
@@ -63880,11 +64060,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7265291125816800156, guid: 8077726928e712146b10585b9f187d5b, type: 3}
   m_PrefabInstance: {fileID: 1393099529}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1393099531 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2432510197073434861, guid: 8077726928e712146b10585b9f187d5b, type: 3}
-  m_PrefabInstance: {fileID: 1393099529}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1393099532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63898,9 +64073,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogue:
-    speaker: {fileID: 1393099531}
+    speakers: []
+    dialogueChanges: 
     prevRest: 0
     shop: 0
+    prevBattle: 0
     sentences:
     - npc_prisoner1_1
     - npc_prisoner1_2
@@ -87174,6 +87351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prevRest: 0
+  prevBattle: 0
   shop: 0
 --- !u!4 &1878802983
 Transform:
@@ -91824,7 +92002,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1058432325201483513, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.5102234
+      value: 1.5101624
       objectReference: {fileID: 0}
     - target: {fileID: 1058432325993556212, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
       propertyPath: m_AnchoredPosition.y
