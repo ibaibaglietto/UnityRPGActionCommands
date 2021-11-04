@@ -29,8 +29,10 @@ public class WorldPlayerMovementScript : MonoBehaviour
     const float groundedRadius = 0.1f;
     //Whether or not the player is grounded.
     private bool grounded;
-    //A boonean to know if the player is attacking or not
+    //A boolean to know if the player is attacking or not
     private bool attacking;
+    //A boolean to know if the player is seeing a cutscene
+    private bool cutscene;
     //The animator
     Animator animator;
     //The melee attack direction. 0-> right, 1-> left, 2 -> up, 3-> down
@@ -270,6 +272,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         shopGems = false;
         shopGemsNotEmpty = false;
         lockedArrow = false;
+        cutscene = false;
         restUIState = 1;
         restUISelecting = 1;
         restPlayerMainUISelecting = 1;
@@ -313,7 +316,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
     void Update()
     {
         //Detect the direction we want the player to move and save it
-        if (currentData.GetComponent<CurrentDataScript>().battle == 0)
+        if (currentData.GetComponent<CurrentDataScript>().battle == 0 && !cutscene)
         {
             if (!movingToRest && !resting && !changingScene && !speaking && !pickingObject && !shopOpened & !startFly && !spin)
             {
@@ -1530,6 +1533,14 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            speedX = 0.0f;
+            speedZ = 0.0f;
+            animator.SetBool("Moving", false);
+            animator.SetFloat("SpeedZ", speedZ);
+            animator.SetFloat("SpeedX", speedX);
+        }
         if (currentData.GetComponent<CurrentDataScript>().fled == 1 && currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
             GetComponent<Animator>().SetTrigger("Fleeing");
@@ -1556,11 +1567,11 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private void FixedUpdate()
     {
         //move the player on the direction we saved previously
-        if(!attacking && currentData.GetComponent<CurrentDataScript>().battle == 0) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
+        if(!attacking && currentData.GetComponent<CurrentDataScript>().battle == 0 && !cutscene) gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
         else gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0.0f, gameObject.GetComponent<Rigidbody>().velocity.y, 0.0f);
         if (spin && !lockedArrow)
         {
-            //We move the arrow 5º looking each time if we found an objective
+            //We move the arrow looking each time if we found an objective
             MoveArrow(Input.GetKey(KeyCode.UpArrow), Input.GetKey(KeyCode.LeftArrow), Input.GetKey(KeyCode.RightArrow), Input.GetKey(KeyCode.DownArrow));
             if(!lockedArrow) MoveArrow(Input.GetKey(KeyCode.UpArrow), Input.GetKey(KeyCode.LeftArrow), Input.GetKey(KeyCode.RightArrow), Input.GetKey(KeyCode.DownArrow));
             if (!lockedArrow) MoveArrow(Input.GetKey(KeyCode.UpArrow), Input.GetKey(KeyCode.LeftArrow), Input.GetKey(KeyCode.RightArrow), Input.GetKey(KeyCode.DownArrow));
@@ -2391,6 +2402,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
         dialogue = true;
         speaking = true;
         dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(d);
+    }
+
+    //Function to start or end a cutscene
+    public void CutsceneState(bool state)
+    {
+        cutscene = state;
     }
 
     //Function to set the picked object

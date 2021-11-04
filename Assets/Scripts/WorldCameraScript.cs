@@ -6,11 +6,17 @@ public class WorldCameraScript : MonoBehaviour
 {
     //The player
     private GameObject player;
+    //The canvas
+    private GameObject canvas;
     //The new position of the camera
     private float posY;
     private float posZ;
     //A bool to know if the camera is in platforming state
     private bool platforming;
+    //A bool to know if the cutscene has ended
+    private bool endCutscene;
+    //The dialogue after the cutscene
+    private Dialogue cutsceneDialogue;
 
     //Camera states in battle
     private bool idle;
@@ -23,22 +29,25 @@ public class WorldCameraScript : MonoBehaviour
 
     void Start()
     {
-        //We find the player
+        //We find the player and the canvas
         player = GameObject.Find("PlayerWorld");
+        canvas = GameObject.Find("Canvas");
+        //We initialize the camera position
         gameObject.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 3.0f, player.transform.position.z - 8.0f);
-        //The starting variables in battle
+        //We initialize the variables
         idle = true;
         victory = false;
         idleToVictory = false;
         victoryToIdle = false;
         isInBattle = false;
         platforming = false;
+        endCutscene = false;
     }
     private void Update()
     {
         if (!isInBattle)
         {
-            if (!player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest() && !player.GetComponent<WorldPlayerMovementScript>().GetResting())
+            if (!player.GetComponent<WorldPlayerMovementScript>().GetMovingToRest() && !player.GetComponent<WorldPlayerMovementScript>().GetResting() && !endCutscene)
             {
                 
                 if (!platforming)
@@ -69,6 +78,14 @@ public class WorldCameraScript : MonoBehaviour
             {
                 transform.position = Vector3.Lerp(transform.position, new Vector3(player.GetComponent<WorldPlayerMovementScript>().GetFireXPos(), posY, player.transform.position.z - 5.0f), Time.deltaTime);
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(20, 0, 0), Time.deltaTime);
+            }
+            else if (endCutscene)
+            {
+                posY = player.transform.position.y + 3.0f;
+                posZ = player.transform.position.z - 8.0f;
+                transform.position = new Vector3(player.transform.position.x, posY, posZ);
+                transform.rotation = Quaternion.Euler(5, 0, 0);
+                endCutscene = false;
             }
         }
     }
@@ -135,6 +152,27 @@ public class WorldCameraScript : MonoBehaviour
                 idleToVictory = true;
             }
         }
+    }
+    //Function to start the animation
+    public void StartAnimation()
+    {
+        gameObject.GetComponent<Animator>().enabled = true;
+    }
+
+    //Function to end the animation and return to the normal state
+    public void EndAnimation()
+    {
+        gameObject.GetComponent<Animator>().enabled = false;
+        player.GetComponent<WorldPlayerMovementScript>().CutsceneState(false);
+        canvas.SetActive(true);
+        endCutscene = true;
+        player.GetComponent<WorldPlayerMovementScript>().StartDialogue(cutsceneDialogue);
+    }
+
+    //Function to set the cutscene dialogue
+    public void SetDialogue(Dialogue d)
+    {
+        cutsceneDialogue = d;
     }
 
     //Function to set the camera to platforming or back to normal
