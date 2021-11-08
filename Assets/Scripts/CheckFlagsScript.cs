@@ -198,6 +198,7 @@ public class CheckFlagsScript : MonoBehaviour
     private GameObject base2Coin19;
     private GameObject base2Coin20;
     private GameObject base2Coin21;
+    private GameObject base2Door;
 
     void OnEnable()
     {
@@ -592,6 +593,7 @@ public class CheckFlagsScript : MonoBehaviour
             base2Coin19 = GameObject.Find("Coin19");
             base2Coin20 = GameObject.Find("Coin20");
             base2Coin21 = GameObject.Find("Coin21");
+            base2Door = GameObject.Find("Door");
             if (gameObject.GetComponent<CurrentDataScript>().base2Item1 == 1) Destroy(base2Item1);
             if (gameObject.GetComponent<CurrentDataScript>().base2Item2 == 1) Destroy(base2Item2);
             if (gameObject.GetComponent<CurrentDataScript>().base2Gem1 == 1) Destroy(base2Gem1);
@@ -616,6 +618,7 @@ public class CheckFlagsScript : MonoBehaviour
             if (gameObject.GetComponent<CurrentDataScript>().base2Coin19 == 1) Destroy(base2Coin19);
             if (gameObject.GetComponent<CurrentDataScript>().base2Coin20 == 1) Destroy(base2Coin20);
             if (gameObject.GetComponent<CurrentDataScript>().base2Coin21 == 1) Destroy(base2Coin21);
+            if (gameObject.GetComponent<CurrentDataScript>().base2DoorOpened == 1) base2Door.GetComponent<Animator>().SetBool("Opened", true);
         }
     }
 

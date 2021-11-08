@@ -269,6 +269,7 @@ public class CurrentDataScript : MonoBehaviour
     public int base2Coin19;
     public int base2Coin20;
     public int base2Coin21;
+    public int base2DoorOpened;
 
     private void Awake()
     {
@@ -565,6 +566,7 @@ public class CurrentDataScript : MonoBehaviour
         else if (flag == "base2Coin19") base2Coin19 = 1;
         else if (flag == "base2Coin20") base2Coin20 = 1;
         else if (flag == "base2Coin21") base2Coin21 = 1;
+        else if (flag == "base2DoorOpened") base2DoorOpened = 1;
     }
 
     //Function to load the data
@@ -802,6 +804,7 @@ public class CurrentDataScript : MonoBehaviour
         base2Coin19 = data.base2Coin19;
         base2Coin20 = data.base2Coin20;
         base2Coin21 = data.base2Coin21;
+        base2DoorOpened = data.base2DoorOpened;
     }
 
 

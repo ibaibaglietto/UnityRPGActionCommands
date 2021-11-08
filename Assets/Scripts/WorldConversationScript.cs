@@ -19,6 +19,14 @@ public class WorldConversationScript : MonoBehaviour
         
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag == "Player")
+        {
+            other.transform.GetComponent<WorldPlayerMovementScript>().StartDialogue(dialogue);
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.tag == "Player")

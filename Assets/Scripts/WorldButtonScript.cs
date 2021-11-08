@@ -10,11 +10,16 @@ public class WorldButtonScript : MonoBehaviour
     private GameObject player;
     //The dialogue
     public Dialogue dialogue;
+    //The flag
+    public string flag;
+    //The current data
+    private GameObject currentData;
 
     void Start()
     {
-        //We find the player
+        //We find the player and the current data
         player = GameObject.Find("PlayerWorld");
+        currentData = GameObject.Find("CurrentData");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -25,6 +30,7 @@ public class WorldButtonScript : MonoBehaviour
             GetComponent<MeshRenderer>().material = pressed;
             other.GetComponent<WorldShurikenScript>().SelfDestroy();
             player.GetComponent<WorldPlayerMovementScript>().StartDialogue(dialogue);
+            if(flag != "") currentData.GetComponent<CurrentDataScript>().SetFlag(flag);
         }
     }
 }

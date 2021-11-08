@@ -98,6 +98,25 @@ AnimationClip:
     path: PlatformCompanionComeTrigger2
     classID: 65
     script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_Enabled
+    path: WaitCompanionTrigger
+    classID: 65
+    script: {fileID: 0}
   m_PPtrCurves: []
   m_SampleRate: 20
   m_WrapMode: 0
@@ -122,6 +141,13 @@ AnimationClip:
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 2345362454
+      attribute: 3305885265
+      script: {fileID: 0}
+      typeID: 65
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 2378233192
       attribute: 3305885265
       script: {fileID: 0}
       typeID: 65
@@ -288,6 +314,25 @@ AnimationClip:
     attribute: localEulerAnglesRaw.z
     path: Left
     classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_Enabled
+    path: WaitCompanionTrigger
+    classID: 65
     script: {fileID: 0}
   m_EulerEditorCurves:
   - curve:

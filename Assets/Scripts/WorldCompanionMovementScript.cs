@@ -100,7 +100,7 @@ public class WorldCompanionMovementScript : MonoBehaviour
             }
             else
             {
-                if ((Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(followZ - gameObject.transform.position.z) > 1.5f && !animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(followZ - gameObject.transform.position.z) > 1.25f && animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(followZ - gameObject.transform.position.z) > 0.75f && animator.GetBool("isJumping")))
+                if ((transform.position.x > -76.0f || player.transform.position.x > transform.position.x) && ((Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(followZ - gameObject.transform.position.z) > 1.5f && !animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(followZ - gameObject.transform.position.z) > 1.25f && animator.GetBool("Moving")) || (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(followZ - gameObject.transform.position.z) > 0.75f && animator.GetBool("isJumping"))))
                 {
                     //Detect where the player is and move the companion towards them
                     speedX = (player.transform.position.x - gameObject.transform.position.x) / (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(followZ - gameObject.transform.position.z)) * (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) / 1.5f);

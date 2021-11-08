@@ -16,6 +16,10 @@ public class Dialogue
     public bool shop;
     //A boolean to know if the dialogue is previous a battle
     public bool prevBattle;
+    //A boolean to know if the player must move after the conversation
+    public bool move;
+    //An int to know the direction of the movement. 0-> left, 1-> right, 2-> up, 3-> down
+    public int moveDir;
 
     public string[] sentences;
      
@@ -25,6 +29,8 @@ public class Dialogue
         prevRest = false;
         shop = false;
         prevBattle = false;
+        move = false;
+        moveDir = 0;
         dialogueChanges = null;
         sentences = se;
     }

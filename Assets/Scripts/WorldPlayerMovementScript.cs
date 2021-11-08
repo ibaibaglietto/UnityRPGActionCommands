@@ -80,6 +80,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private bool dialogue;
     //The dialogue that will be displayed
     private Dialogue nextDialogue;
+    //A boolean to know if the player is moving after a dialogue
+    private bool movePostDialogue;
+    //An int to know the direction of the movement
+    private int movePostDialogueDir;
+    //A vector2 to know the position the player must reach after the dialogue (x,z)
+    private Vector2 movePostDialoguePos;
     //The rest UI
     private GameObject restUI;
     //The player rest UI
@@ -318,7 +324,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //Detect the direction we want the player to move and save it
         if (currentData.GetComponent<CurrentDataScript>().battle == 0 && !cutscene)
         {
-            if (!movingToRest && !resting && !changingScene && !speaking && !pickingObject && !shopOpened & !startFly && !spin)
+            if (!movingToRest && !resting && !changingScene && !speaking && !pickingObject && !shopOpened & !startFly && !spin && !movePostDialogue)
             {
                 if (currentData.GetComponent<CurrentDataScript>().movUp) speedZ = 1.0f;
                 else if (currentData.GetComponent<CurrentDataScript>().movDown) speedZ = -1.0f;
@@ -449,6 +455,42 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     resting = true;
                     dialogue = true;
                     dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(firePlace.GetComponent<FirePlaceScript>().dialogue);
+                }
+                animator.SetFloat("SpeedZ", speedZ);
+                animator.SetFloat("SpeedX", speedX);
+            }
+            else if (movePostDialogue)
+            {
+                if(movePostDialogueDir == 0 && transform.position.x > movePostDialoguePos[0])
+                {
+                    speedX = -1.0f;
+                    speedZ = 0.0f;
+                    animator.SetBool("Moving", true);
+                }
+                else if(movePostDialogueDir == 1 && transform.position.x < movePostDialoguePos[0])
+                {
+                    speedX = 1.0f;
+                    speedZ = 0.0f;
+                    animator.SetBool("Moving", true);
+                }
+                else if (movePostDialogueDir == 2 && transform.position.z < movePostDialoguePos[1])
+                {
+                    speedX = 0.0f;
+                    speedZ = 1.0f;
+                    animator.SetBool("Moving", true); 
+                }
+                else if (movePostDialogueDir == 3 && transform.position.z > movePostDialoguePos[1])
+                { 
+                    speedX = 0.0f;
+                    speedZ = -1.0f;
+                    animator.SetBool("Moving", true); 
+                }
+                else
+                {
+                    speedX = 0.0f;
+                    speedZ = 0.0f;
+                    animator.SetBool("Moving", false);
+                    movePostDialogue = false;
                 }
                 animator.SetFloat("SpeedZ", speedZ);
                 animator.SetFloat("SpeedX", speedX);
@@ -2402,6 +2444,17 @@ public class WorldPlayerMovementScript : MonoBehaviour
         dialogue = true;
         speaking = true;
         dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(d);
+    }
+
+    //Function to move the player
+    public void MovePlayer(int direction)
+    {
+        movePostDialogue = true;
+        movePostDialogueDir = direction;
+        if(direction == 0) movePostDialoguePos = new Vector2(transform.position.x - 2.0f,transform.position.z);
+        else if(direction == 1) movePostDialoguePos = new Vector2(transform.position.x + 2.0f, transform.position.z);
+        else if (direction == 2) movePostDialoguePos = new Vector2(transform.position.x, transform.position.z + 2.0f);
+        else if (direction == 3) movePostDialoguePos = new Vector2(transform.position.x, transform.position.z - 2.0f);
     }
 
     //Function to start or end a cutscene

@@ -32,6 +32,11 @@ public class DialogueManager : MonoBehaviour
     public bool prevBattle;
     //A boolean to know if the dialogue is in a shop
     public bool shop;
+    //A boolean to know if the player must move after the conversation
+    public bool move;
+    //An int to know the direction of the movement. 0-> left, 1-> right, 2-> up, 3-> down
+    public int moveDir;
+
     //The speakers
     private Transform[] speakers;
     //The dialogue changes
@@ -64,6 +69,8 @@ public class DialogueManager : MonoBehaviour
         prevBattle = dialogue.prevBattle;
         speakers = dialogue.speakers;
         dialogueChanges = dialogue.dialogueChanges;
+        move = dialogue.move;
+        moveDir = dialogue.moveDir;
         battle = false;
         player = GameObject.Find("PlayerWorld");
         //We open the dialogue box
@@ -153,6 +160,10 @@ public class DialogueManager : MonoBehaviour
     void EndWorldDialogue()
     {
         animator.SetBool("Open", false);
+        if (move) 
+        {
+            player.GetComponent<WorldPlayerMovementScript>().MovePlayer(moveDir);
+        }
         if (prevRest) player.GetComponent<WorldPlayerMovementScript>().ShowRestUI();
         else if (shop)
         {
