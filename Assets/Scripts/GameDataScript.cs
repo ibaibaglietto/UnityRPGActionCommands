@@ -270,6 +270,9 @@ public class GameDataScript
     public int base2Coin20;
     public int base2Coin21;
     public int base2DoorOpened;
+    public int base2Dialogue;
+    //1-13
+    public int base3BossDefeated;
 
 
     //Contructor to use when saving the game
@@ -508,5 +511,7 @@ public class GameDataScript
         base2Coin20 = current.base2Coin20;
         base2Coin21 = current.base2Coin21;
         base2DoorOpened = current.base2DoorOpened;
+        base2Dialogue = current.base2Dialogue;
+        base3BossDefeated = current.base3BossDefeated;
     }
 }

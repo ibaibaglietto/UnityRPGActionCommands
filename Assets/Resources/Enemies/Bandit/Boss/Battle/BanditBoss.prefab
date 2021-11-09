@@ -844,12 +844,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
+  miniboss: 1
   sleepSprite: {fileID: -3877204253021290591, guid: 9b361e3522856904390736bcbc9aa048, type: 3}
   dustObject: {fileID: 6059004063304751159, guid: a215ffc94008a1c4183b153383ae3d46, type: 3}
   dialogue:
-    speaker: {fileID: 0}
+    speakers: []
+    dialogueChanges: 
     prevRest: 0
     shop: 0
+    prevBattle: 0
+    move: 0
+    moveDir: 0
+    movePos: {x: 0, y: 0}
     sentences:
     - combat_glance_bandit_1
     - combat_glance_bandit_2
@@ -1316,7 +1322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f4daba12478c44dacabc26c3531ed0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 4
+  maxHealth: 20
 --- !u!1 &6660381685872784070
 GameObject:
   m_ObjectHideFlags: 0
@@ -1576,7 +1582,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 4
+  m_Text: 20
 --- !u!1 &7833548827698344771
 GameObject:
   m_ObjectHideFlags: 0

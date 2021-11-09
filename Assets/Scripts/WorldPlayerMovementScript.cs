@@ -461,36 +461,54 @@ public class WorldPlayerMovementScript : MonoBehaviour
             }
             else if (movePostDialogue)
             {
-                if(movePostDialogueDir == 0 && transform.position.x > movePostDialoguePos[0])
+                if(movePostDialoguePos == new Vector2(0, 0))
                 {
-                    speedX = -1.0f;
-                    speedZ = 0.0f;
-                    animator.SetBool("Moving", true);
-                }
-                else if(movePostDialogueDir == 1 && transform.position.x < movePostDialoguePos[0])
-                {
-                    speedX = 1.0f;
-                    speedZ = 0.0f;
-                    animator.SetBool("Moving", true);
-                }
-                else if (movePostDialogueDir == 2 && transform.position.z < movePostDialoguePos[1])
-                {
-                    speedX = 0.0f;
-                    speedZ = 1.0f;
-                    animator.SetBool("Moving", true); 
-                }
-                else if (movePostDialogueDir == 3 && transform.position.z > movePostDialoguePos[1])
-                { 
-                    speedX = 0.0f;
-                    speedZ = -1.0f;
-                    animator.SetBool("Moving", true); 
+                    if (movePostDialogueDir == 0 && transform.position.x > movePostDialoguePos[0])
+                    {
+                        speedX = -1.0f;
+                        speedZ = 0.0f;
+                        animator.SetBool("Moving", true);
+                    }
+                    else if (movePostDialogueDir == 1 && transform.position.x < movePostDialoguePos[0])
+                    {
+                        speedX = 1.0f;
+                        speedZ = 0.0f;
+                        animator.SetBool("Moving", true);
+                    }
+                    else if (movePostDialogueDir == 2 && transform.position.z < movePostDialoguePos[1])
+                    {
+                        speedX = 0.0f;
+                        speedZ = 1.0f;
+                        animator.SetBool("Moving", true);
+                    }
+                    else if (movePostDialogueDir == 3 && transform.position.z > movePostDialoguePos[1])
+                    {
+                        speedX = 0.0f;
+                        speedZ = -1.0f;
+                        animator.SetBool("Moving", true);
+                    }
+                    else
+                    {
+                        speedX = 0.0f;
+                        speedZ = 0.0f;
+                        animator.SetBool("Moving", false);
+                        movePostDialogue = false;
+                    }
                 }
                 else
                 {
-                    speedX = 0.0f;
-                    speedZ = 0.0f;
-                    animator.SetBool("Moving", false);
-                    movePostDialogue = false;
+                    if(transform.position.x > movePostDialoguePos[0] + 0.5f) speedX = -1.0f; 
+                    else if((transform.position.x < movePostDialoguePos[0] - 0.5f)) speedX = 1.0f; 
+                    else speedX = 0.0f;
+                    if (transform.position.z > movePostDialoguePos[1] + 0.5f) speedZ = -1.0f;
+                    else if ((transform.position.z < movePostDialoguePos[1] - 0.5f)) speedZ = 1.0f;
+                    else speedZ = 0.0f;
+                    if (speedX != 0.0f || speedZ != 0.0f) animator.SetBool("Moving", true);
+                    else
+                    {
+                        animator.SetBool("Moving", false);
+                        movePostDialogue = false;
+                    }
                 }
                 animator.SetFloat("SpeedZ", speedZ);
                 animator.SetFloat("SpeedX", speedX);
@@ -2455,6 +2473,14 @@ public class WorldPlayerMovementScript : MonoBehaviour
         else if(direction == 1) movePostDialoguePos = new Vector2(transform.position.x + 2.0f, transform.position.z);
         else if (direction == 2) movePostDialoguePos = new Vector2(transform.position.x, transform.position.z + 2.0f);
         else if (direction == 3) movePostDialoguePos = new Vector2(transform.position.x, transform.position.z - 2.0f);
+    }
+
+    //Function to move the player to an exact pos
+    public void MovePlayerPos(int direction, Vector2 pos)
+    {
+        movePostDialogue = true;
+        movePostDialogueDir = direction;
+        movePostDialoguePos = pos;
     }
 
     //Function to start or end a cutscene

@@ -36,6 +36,8 @@ public class DialogueManager : MonoBehaviour
     public bool move;
     //An int to know the direction of the movement. 0-> left, 1-> right, 2-> up, 3-> down
     public int moveDir;
+    //A vector2(x,z) to know the position the player must move (optional)
+    public Vector2 movePos;
 
     //The speakers
     private Transform[] speakers;
@@ -71,6 +73,7 @@ public class DialogueManager : MonoBehaviour
         dialogueChanges = dialogue.dialogueChanges;
         move = dialogue.move;
         moveDir = dialogue.moveDir;
+        movePos = dialogue.movePos;
         battle = false;
         player = GameObject.Find("PlayerWorld");
         //We open the dialogue box
@@ -162,7 +165,8 @@ public class DialogueManager : MonoBehaviour
         animator.SetBool("Open", false);
         if (move) 
         {
-            player.GetComponent<WorldPlayerMovementScript>().MovePlayer(moveDir);
+            if(movePos == new Vector2(0,0)) player.GetComponent<WorldPlayerMovementScript>().MovePlayer(moveDir);
+            else player.GetComponent<WorldPlayerMovementScript>().MovePlayerPos(moveDir, movePos);
         }
         if (prevRest) player.GetComponent<WorldPlayerMovementScript>().ShowRestUI();
         else if (shop)

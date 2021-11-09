@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class EnemyTeamScript : MonoBehaviour
 {
-    //The enemy type. 0-> Bandit, 1-> EvilWizard
-    public int enemyType; 
+    //The enemy type. 0-> Bandit, 1-> EvilWizard, 2-> king, 3-> knight
+    public int enemyType;
+    //An int to know if the enemy is a miniboss
+    public int miniboss;
     //The objective of the attack when it hits all the team
     private Transform[] attackTeam;
     //The starting position
@@ -711,7 +713,7 @@ public class EnemyTeamScript : MonoBehaviour
         else
         {
             if(enemyType == 2) attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
-            else if (enemyType == 3) attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(1 - defended);
+            else if (enemyType == 3) attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(1 + miniboss - defended);
         }
         //If the player doesnt defend correctly the damage animation is plaied
         if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
@@ -1019,7 +1021,7 @@ public class EnemyTeamScript : MonoBehaviour
         {
             attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(0);
         }
-        else attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(2 - defended);
+        else attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(2 + miniboss - defended);
         if (!attackTeam[0].GetComponent<PlayerTeamScript>().IsInvisible() && !attackTeam[0].GetComponent<PlayerTeamScript>().IsDead())
         {
             if (!battleController.GetComponent<BattleController>().IsTaunting())

@@ -20,6 +20,8 @@ public class Dialogue
     public bool move;
     //An int to know the direction of the movement. 0-> left, 1-> right, 2-> up, 3-> down
     public int moveDir;
+    //A vector2(x,z) to know the position the player must move (optional)
+    public Vector2 movePos;
 
     public string[] sentences;
      
@@ -31,6 +33,7 @@ public class Dialogue
         prevBattle = false;
         move = false;
         moveDir = 0;
+        movePos = new Vector2(0, 0);
         dialogueChanges = null;
         sentences = se;
     }

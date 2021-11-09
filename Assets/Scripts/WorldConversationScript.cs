@@ -24,6 +24,7 @@ public class WorldConversationScript : MonoBehaviour
         if (other.transform.tag == "Player")
         {
             other.transform.GetComponent<WorldPlayerMovementScript>().StartDialogue(dialogue);
+            Destroy(gameObject);
         }
     }
 

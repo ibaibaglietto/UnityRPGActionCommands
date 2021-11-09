@@ -199,6 +199,14 @@ public class CheckFlagsScript : MonoBehaviour
     private GameObject base2Coin20;
     private GameObject base2Coin21;
     private GameObject base2Door;
+    private GameObject base2DialogueTrigger;
+    //1-13
+    private GameObject base3Trigger1;
+    private GameObject base3Trigger2;
+    private GameObject base3Boss;
+    private GameObject base3Enemy1;
+    private GameObject base3Enemy2;
+    private GameObject base3Enemy3;
 
     void OnEnable()
     {
@@ -594,6 +602,7 @@ public class CheckFlagsScript : MonoBehaviour
             base2Coin20 = GameObject.Find("Coin20");
             base2Coin21 = GameObject.Find("Coin21");
             base2Door = GameObject.Find("Door");
+            base2DialogueTrigger = GameObject.Find("PlatformCompanionDialogueTrigger");
             if (gameObject.GetComponent<CurrentDataScript>().base2Item1 == 1) Destroy(base2Item1);
             if (gameObject.GetComponent<CurrentDataScript>().base2Item2 == 1) Destroy(base2Item2);
             if (gameObject.GetComponent<CurrentDataScript>().base2Gem1 == 1) Destroy(base2Gem1);
@@ -619,6 +628,25 @@ public class CheckFlagsScript : MonoBehaviour
             if (gameObject.GetComponent<CurrentDataScript>().base2Coin20 == 1) Destroy(base2Coin20);
             if (gameObject.GetComponent<CurrentDataScript>().base2Coin21 == 1) Destroy(base2Coin21);
             if (gameObject.GetComponent<CurrentDataScript>().base2DoorOpened == 1) base2Door.GetComponent<Animator>().SetBool("Opened", true);
+            if (gameObject.GetComponent<CurrentDataScript>().base2Dialogue == 1) Destroy(base2DialogueTrigger);
+        }
+        else if (SceneManager.GetActiveScene().name == "1-13")
+        {
+            base3Trigger1 = GameObject.Find("Conversation1");
+            base3Trigger2 = GameObject.Find("Conversation2");
+            base3Boss = GameObject.Find("BanditBossWorld");
+            base3Enemy1 = GameObject.Find("BanditNPCBoss1");
+            base3Enemy2 = GameObject.Find("BanditNPCBoss2");
+            base3Enemy3 = GameObject.Find("BanditNPCBoss3");
+            if (gameObject.GetComponent<CurrentDataScript>().base3BossDefeated == 1) 
+            {
+                Destroy(base3Trigger1);
+                Destroy(base3Trigger2);
+                Destroy(base3Boss);
+                Destroy(base3Enemy1);
+                Destroy(base3Enemy2);
+                Destroy(base3Enemy3);
+            }
         }
     }
 
