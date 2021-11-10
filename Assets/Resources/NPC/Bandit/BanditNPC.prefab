@@ -138,6 +138,9 @@ MonoBehaviour:
     prevRest: 0
     shop: 0
     prevBattle: 0
+    move: 0
+    moveDir: 0
+    movePos: {x: 0, y: 0}
     sentences: []
 --- !u!54 &9175282171317147052
 Rigidbody:
@@ -153,7 +156,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &816980989965007865
 BoxCollider:

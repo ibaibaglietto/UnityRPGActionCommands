@@ -35,6 +35,8 @@ public class WorldEnemy : MonoBehaviour
     [SerializeField] private int coinNumb;
     //The enemy linked to this one, if one dies, the other dies too
     [SerializeField] private Transform linkedEnemy;
+    //The NPCs linked to this enemy
+    [SerializeField] private Transform[] linkedNPCs;
     //The flag the enemy will rise when they die
     [SerializeField] private string flag;
 
@@ -143,6 +145,10 @@ public class WorldEnemy : MonoBehaviour
                     animator.SetTrigger("Die");
                     died = true;
                     if(linkedEnemy != null) linkedEnemy.GetComponent<WorldEnemy>().KillEnemy();
+                    if(linkedNPCs.Length != 0)
+                    {
+                        for (int i = 0; i < linkedNPCs.Length; i++) Destroy(linkedNPCs[i].gameObject);
+                    }
                     inBattle = false;
                     currentData.GetComponent<CurrentDataScript>().enemyDied = 0;
                     speedX = 0.0f;
@@ -175,6 +181,13 @@ public class WorldEnemy : MonoBehaviour
             inBattle = true;
         }
     }
+
+    //Function to start the flee after the miniboss fight
+    public void StartFlee()
+    {
+        transform.parent.GetComponent<Animator>().SetTrigger("Flee");
+    }
+
 
     private void SelfDestroy()
     {
