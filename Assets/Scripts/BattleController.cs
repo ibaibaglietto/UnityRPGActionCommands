@@ -4496,7 +4496,7 @@ public class BattleController : MonoBehaviour
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
             }
-            else if (type == 5) enemy3 = Instantiate(wizardBossBattle, new Vector3(5.1f, -0.64f, -2.01f), Quaternion.identity);
+            else if (type == 5) enemy3 = Instantiate(wizardBossBattle, new Vector3(5.1f, 1.0f, -2.01f), Quaternion.identity);
             else if (type == 6)
             {
                 enemy3 = Instantiate(knightBossBattle, new Vector3(5.1f, -0.64f, -2.01f), Quaternion.identity);
@@ -4541,7 +4541,7 @@ public class BattleController : MonoBehaviour
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
             }
-            else if (type == 5) enemy4 = Instantiate(wizardBossBattle, new Vector3(6.6f, -0.64f, -2.0f), Quaternion.identity);
+            else if (type == 5) enemy4 = Instantiate(wizardBossBattle, new Vector3(6.6f, 1.0f, -2.0f), Quaternion.identity);
             else if (type == 6)
             {
                 enemy4 = Instantiate(knightBossBattle, new Vector3(6.6f, -0.64f, -2.0f), Quaternion.identity);

@@ -207,6 +207,10 @@ public class CheckFlagsScript : MonoBehaviour
     private GameObject base3Enemy1;
     private GameObject base3Enemy2;
     private GameObject base3Enemy3;
+    //1-14
+    private GameObject base4Trigger1;
+    private GameObject base4Trigger2;
+    private GameObject base4Boss;
 
     void OnEnable()
     {
@@ -634,7 +638,7 @@ public class CheckFlagsScript : MonoBehaviour
         {
             base3Trigger1 = GameObject.Find("Conversation1");
             base3Trigger2 = GameObject.Find("Conversation2");
-            base3Boss = GameObject.Find("BanditBossWorld");
+            base3Boss = GameObject.Find("FleeTeam");
             base3Enemy1 = GameObject.Find("BanditNPCBoss1");
             base3Enemy2 = GameObject.Find("BanditNPCBoss2");
             base3Enemy3 = GameObject.Find("BanditNPCBoss3");

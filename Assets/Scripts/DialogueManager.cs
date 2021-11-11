@@ -76,6 +76,8 @@ public class DialogueManager : MonoBehaviour
         movePos = dialogue.movePos;
         battle = false;
         player = GameObject.Find("PlayerWorld");
+        //We end the move post dialogue mode when the player enters a dialogue before finishing the movement
+        player.GetComponent<WorldPlayerMovementScript>().EndMovePostDialogue();
         //We open the dialogue box
         animator.SetBool("Open", true);
         //Clear the previous sentences

@@ -38643,6 +38643,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d7732119442a8e44b65132a8045c875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogue:
+    speakers:
+    - {fileID: 752092913}
+    dialogueChanges: 
+    prevRest: 0
+    shop: 0
+    prevBattle: 0
+    move: 0
+    moveDir: 0
+    movePos: {x: 0, y: 0}
+    sentences:
+    - npc_prisonerAdventurer_1
 --- !u!1 &703783858
 GameObject:
   m_ObjectHideFlags: 0
@@ -41035,6 +41047,11 @@ MeshFilter:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 62df5e59c91695f45ac01a4c1dffa831, type: 3}
   m_PrefabInstance: {fileID: 1084778995}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &752092913 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2518188754690314776, guid: 6ae1b1b46b37d714bb49080677f01638, type: 3}
+  m_PrefabInstance: {fileID: 1398464063}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &753055941
 GameObject:

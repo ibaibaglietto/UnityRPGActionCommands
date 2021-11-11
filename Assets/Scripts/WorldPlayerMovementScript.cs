@@ -1585,7 +1585,10 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 animator.SetFloat("SpeedX", speedX);
                 if (dialogue)
                 {
-                    if (Input.GetKeyDown(KeyCode.X)) dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
+                    if (Input.GetKeyDown(KeyCode.X))
+                    {
+                        dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
+                    }
                 }
                 else
                 {
@@ -2481,6 +2484,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
         movePostDialogue = true;
         movePostDialogueDir = direction;
         movePostDialoguePos = pos;
+    }
+
+    //Function to end the move post dialogue mode when the player enters a dialogue before finishing the movement
+    public void EndMovePostDialogue()
+    {
+        movePostDialogue = false;
     }
 
     //Function to start or end a cutscene
