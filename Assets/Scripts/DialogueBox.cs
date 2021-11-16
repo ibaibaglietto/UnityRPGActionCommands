@@ -51,6 +51,7 @@ public class DialogueBox : MonoBehaviour
     {
         if (dialogueText.enabled)
         {
+            //Debug.Log(speaker.position);
             viewportPosition = Camera.main.WorldToViewportPoint(speaker.position);
             proportionalPosition = new Vector2(viewportPosition.x * canvas.transform.GetComponent<RectTransform>().sizeDelta.x, 0.0f);
 

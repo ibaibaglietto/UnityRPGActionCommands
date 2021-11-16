@@ -211,6 +211,16 @@ public class CheckFlagsScript : MonoBehaviour
     private GameObject base4Trigger1;
     private GameObject base4Trigger2;
     private GameObject base4Boss;
+    private GameObject base4Enemy1;
+    private GameObject base4Enemy2;
+    private GameObject base4Enemy3;
+    //1-15
+    private GameObject base5Trigger1;
+    private GameObject base5Trigger2;
+    private GameObject base5Boss;
+    private GameObject base5Enemy1;
+    private GameObject base5Enemy2;
+    private GameObject base5Enemy3;
 
     void OnEnable()
     {
@@ -650,6 +660,42 @@ public class CheckFlagsScript : MonoBehaviour
                 Destroy(base3Enemy1);
                 Destroy(base3Enemy2);
                 Destroy(base3Enemy3);
+            }
+        }
+        else if (SceneManager.GetActiveScene().name == "1-14")
+        {
+            base4Trigger1 = GameObject.Find("Conversation1");
+            base4Trigger2 = GameObject.Find("Conversation2");
+            base4Boss = GameObject.Find("FleeBoss");
+            base4Enemy1 = GameObject.Find("EvilWizardNPC1");
+            base4Enemy2 = GameObject.Find("EvilWizardNPC2");
+            base4Enemy3 = GameObject.Find("EvilWizardNPC3");
+            if (gameObject.GetComponent<CurrentDataScript>().base4BossDefeated == 1)
+            {
+                Destroy(base4Trigger1);
+                Destroy(base4Trigger2);
+                Destroy(base4Boss);
+                Destroy(base4Enemy1);
+                Destroy(base4Enemy2);
+                Destroy(base4Enemy3);
+            }
+        }
+        else if (SceneManager.GetActiveScene().name == "1-15")
+        {
+            base5Trigger1 = GameObject.Find("Conversation1");
+            base5Trigger2 = GameObject.Find("Conversation2");
+            base5Boss = GameObject.Find("FleeBoss");
+            base5Enemy1 = GameObject.Find("KnightNPC (16)");
+            base5Enemy2 = GameObject.Find("KnightNPC (15)");
+            base5Enemy3 = GameObject.Find("KnightNPC (14)");
+            if (gameObject.GetComponent<CurrentDataScript>().base5BossDefeated == 1)
+            {
+                Destroy(base5Trigger1);
+                Destroy(base5Trigger2);
+                Destroy(base5Boss);
+                Destroy(base5Enemy1);
+                Destroy(base5Enemy2);
+                Destroy(base5Enemy3);
             }
         }
     }

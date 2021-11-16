@@ -49,6 +49,8 @@ public class WorldEnemy : MonoBehaviour
     private GameObject startBattleScreen;
     //The current data
     private GameObject currentData;
+    //A bool to know if the enemy is rolling
+    private bool rolling;
 
     void Start()
     {
@@ -60,6 +62,7 @@ public class WorldEnemy : MonoBehaviour
         inBattle = false;
         seeingPlayer = false;
         died = false;
+        rolling = false;
         startX = transform.position.x;
         startZ = transform.position.z;
         //We find the animator
@@ -76,7 +79,7 @@ public class WorldEnemy : MonoBehaviour
     {
         if(currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
-            if (!died && !inBattle && !player.GetComponent<WorldPlayerMovementScript>().IsFlying() && (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z))<5.0f && (((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 10.0f && seeingPlayer) || ((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 5.0f && !seeingPlayer)))
+            if (!rolling && !died && !inBattle && !player.GetComponent<WorldPlayerMovementScript>().IsFlying() && (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z))<5.0f && (((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 10.0f && seeingPlayer) || ((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 5.0f && !seeingPlayer)))
             {
                 animator.SetFloat("RunSpeed", 1.0f);
                 if (!seeingPlayer)
@@ -188,6 +191,12 @@ public class WorldEnemy : MonoBehaviour
         transform.parent.GetComponent<Animator>().SetTrigger("Flee");
     }
 
+    //Function to set the enemy rolling 
+    public void SetRolling(bool right)
+    {
+        animator.SetBool("Rolling", true);
+        animator.SetBool("FacingRight", right);
+    }
 
     private void SelfDestroy()
     {

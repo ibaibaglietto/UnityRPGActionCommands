@@ -273,6 +273,11 @@ public class CurrentDataScript : MonoBehaviour
     public int base2Dialogue;
     //1-13
     public int base3BossDefeated;
+    //1-14
+    public int base4BossDefeated;
+    //1-15
+    public int base5BossDefeated;
+
 
     private void Awake()
     {
@@ -573,6 +578,10 @@ public class CurrentDataScript : MonoBehaviour
         else if (flag == "base2Dialogue") base2Dialogue = 1;
         //1-13
         else if (flag == "base3BossDefeated") base3BossDefeated = 1;
+        //1-14
+        else if (flag == "base4BossDefeated") base4BossDefeated = 1;
+        //1-14
+        else if (flag == "base5BossDefeated") base5BossDefeated = 1;
     }
 
     //Function to load the data
@@ -813,6 +822,8 @@ public class CurrentDataScript : MonoBehaviour
         base2DoorOpened = data.base2DoorOpened;
         base2Dialogue = data.base2Dialogue;
         base3BossDefeated = data.base3BossDefeated;
+        base4BossDefeated = data.base4BossDefeated;
+        base5BossDefeated = data.base5BossDefeated;
     }
 
 

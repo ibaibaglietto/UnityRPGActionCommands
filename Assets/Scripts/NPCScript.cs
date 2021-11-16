@@ -17,6 +17,10 @@ public class NPCScript : MonoBehaviour
     private bool runRight;
     //A bool to set the NPC running to the left
     private bool runLeft;
+    //A bool to set the NPC rolling to the right
+    private bool rollRight;
+    //A bool to set the NPC rolling to the left
+    private bool rollLeft;
 
 
     // Start is called before the first frame update
@@ -69,6 +73,18 @@ public class NPCScript : MonoBehaviour
             GetComponent<Animator>().SetBool("Moving", true);
             GetComponent<Animator>().SetBool("FacingRight", false);
         }
+        else if (rollRight)
+        {
+            GetComponent<Animator>().SetBool("Rolling", true);
+            GetComponent<Animator>().SetBool("FacingRight", true);
+            GetComponent<Animator>().SetBool("Moving", false);
+        }
+        else if (rollLeft)
+        {
+            GetComponent<Animator>().SetBool("Rolling", true);
+            GetComponent<Animator>().SetBool("FacingRight", false);
+            GetComponent<Animator>().SetBool("Moving", false);
+        }
         else GetComponent<Animator>().SetBool("Moving", false);
     }
 
@@ -86,6 +102,20 @@ public class NPCScript : MonoBehaviour
     {
         runLeft = true;
         runRight = false;
+    }
+    public void RollLeft()
+    {
+        runLeft = false;
+        runRight = false;
+        rollLeft = true;
+        runRight = false;
+    }
+    public void RollRight()
+    {
+        runLeft = false;
+        runRight = false;
+        rollLeft = false;
+        runRight = true;
     }
     public void StopRunning()
     {

@@ -273,6 +273,10 @@ public class GameDataScript
     public int base2Dialogue;
     //1-13
     public int base3BossDefeated;
+    //1-14
+    public int base4BossDefeated;
+    //1-15
+    public int base5BossDefeated;
 
 
     //Contructor to use when saving the game
@@ -513,5 +517,7 @@ public class GameDataScript
         base2DoorOpened = current.base2DoorOpened;
         base2Dialogue = current.base2Dialogue;
         base3BossDefeated = current.base3BossDefeated;
+        base4BossDefeated = current.base4BossDefeated;
+        base5BossDefeated = current.base5BossDefeated;
     }
 }

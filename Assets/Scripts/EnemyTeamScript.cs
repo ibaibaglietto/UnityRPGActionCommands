@@ -617,10 +617,7 @@ public class EnemyTeamScript : MonoBehaviour
             }         
             if (stunned > 0)
             {
-                stunned -= 1;
-                GetComponent<Animator>().SetInteger("StunTurns", stunned);
                 GetComponent<Animator>().SetTrigger("TryRecover");
-                if(stunned == 0 && enemyType == 3) SetShielded(true);
             }
             else
             {
@@ -631,6 +628,14 @@ public class EnemyTeamScript : MonoBehaviour
                 else battleController.GetComponent<BattleController>().EndEnemyTurn();
             }
         }
+    }
+
+    //A function to check the stun 
+    public void CheckStun()
+    {
+        stunned -= 1;
+        GetComponent<Animator>().SetInteger("StunTurns", stunned);
+        if (stunned == 0 && enemyType == 3) SetShielded(true);
     }
 
     //A function to save if the player has defended or not
@@ -683,6 +688,7 @@ public class EnemyTeamScript : MonoBehaviour
     //A function to end the turn of the actual enemy
     public void EndActualEnemyTurn()
     {
+        Debug.Log("ei");
         if (enemyNumber < battleController.GetComponent<BattleController>().GetNumberOfEnemies())
         {
             battleController.GetComponent<BattleController>().NextEnemy(enemyNumber);

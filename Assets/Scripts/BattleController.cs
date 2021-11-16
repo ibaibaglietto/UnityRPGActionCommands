@@ -4251,6 +4251,7 @@ public class BattleController : MonoBehaviour
                     {
                         actionInstructions.SetActive(false);
                         finalAttack = false;
+                        companion.GetChild(0).GetChild(7).GetChild(6).GetComponent<Image>().fillAmount = 0.0f;
                         companion.GetComponent<PlayerTeamScript>().EndExplosion(int.Parse(companion.GetChild(0).GetChild(7).GetChild(8).GetChild(0).GetComponent<Text>().text));
                     }
                 }
@@ -4499,7 +4500,7 @@ public class BattleController : MonoBehaviour
             else if (type == 5) enemy3 = Instantiate(wizardBossBattle, new Vector3(5.1f, 1.0f, -2.01f), Quaternion.identity);
             else if (type == 6)
             {
-                enemy3 = Instantiate(knightBossBattle, new Vector3(5.1f, -0.64f, -2.01f), Quaternion.identity);
+                enemy3 = Instantiate(knightBossBattle, new Vector3(5.1f, -1.034f, -2.01f), Quaternion.identity);
                 player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
@@ -4544,7 +4545,7 @@ public class BattleController : MonoBehaviour
             else if (type == 5) enemy4 = Instantiate(wizardBossBattle, new Vector3(6.6f, 1.0f, -2.0f), Quaternion.identity);
             else if (type == 6)
             {
-                enemy4 = Instantiate(knightBossBattle, new Vector3(6.6f, -0.64f, -2.0f), Quaternion.identity);
+                enemy4 = Instantiate(knightBossBattle, new Vector3(6.6f, -1.034f, -2.0f), Quaternion.identity);
                 player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                 player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
@@ -5505,6 +5506,10 @@ public class BattleController : MonoBehaviour
             else if (numb == 3)
             {
                 enemy4Turn = true;
+            }
+            else if (numb == 4)
+            {
+                EndEnemyTurn();
             }
         }        
     }
