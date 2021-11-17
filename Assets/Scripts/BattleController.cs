@@ -4364,6 +4364,7 @@ public class BattleController : MonoBehaviour
             currentCompanion = type;
             if(type == 0) companion = Instantiate(adventurerBattle, new Vector3(-6.4f, -0.713f, -2.04f), Quaternion.identity);
             else if(type == 1) companion = Instantiate(companionWizardBattle, new Vector3(-6.4f, -0.72f, -2.04f), Quaternion.identity);
+            if (currentData.GetComponent<CurrentDataScript>().unlockedCompanions == 0) companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f); 
         }
         //We can spawn 7 different enemies: the bandit, the evil wizard, the king, the knight and the boss versions of the bandit, the wizard and the knight
         else if (battlePos == 2)

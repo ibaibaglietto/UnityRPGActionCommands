@@ -2060,7 +2060,7 @@ MonoBehaviour:
   lightUI: {fileID: 2510748878334399226, guid: 76b82cdca63c3864f813a3b75e9427e0, type: 3}
   shadowMaterial: {fileID: 2100000, guid: bde19a1b6e49cf346a3470389a181f3a, type: 2}
   transparentMaterial: {fileID: 2100000, guid: fb0b3ef489abb5a439a5984c39fdda61, type: 2}
-  shurikenObjective: {x: 0, y: 0, z: 0}
+  shurikenObjective: {fileID: 0}
   playerTeamType: 1
   sleepSprite: {fileID: -3877204253021290591, guid: 9b361e3522856904390736bcbc9aa048, type: 3}
   lifestealSprite: {fileID: 21300000, guid: a3b085f0f5d568a4988230eed103f717, type: 3}

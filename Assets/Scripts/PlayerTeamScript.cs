@@ -1648,7 +1648,11 @@ public class PlayerTeamScript : MonoBehaviour
     public bool IsDead()
     {
         if (playerTeamType == 0) return playerLife.GetComponent<PlayerLifeScript>().IsDead() || !recovered;
-        else return companionLife.GetComponent<PlayerLifeScript>().IsDead();       
+        else
+        {
+            if (currentData.GetComponent<CurrentDataScript>().unlockedCompanions > 0) return companionLife.GetComponent<PlayerLifeScript>().IsDead();
+            else return true;
+        }
     }
     //A function to end the glance
     public void EndGlance()

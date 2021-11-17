@@ -45,6 +45,9 @@ public class WorldEnemy : MonoBehaviour
     [SerializeField] private int enemy2;
     [SerializeField] private int enemy3;
     [SerializeField] private int enemy4;
+
+    //A boolean to make the enemy not attack the player
+    [SerializeField] private bool passive;
     //The start battle screen
     private GameObject startBattleScreen;
     //The current data
@@ -77,7 +80,7 @@ public class WorldEnemy : MonoBehaviour
 
     private void Update()
     {
-        if(currentData.GetComponent<CurrentDataScript>().battle == 0)
+        if(currentData.GetComponent<CurrentDataScript>().battle == 0 && !passive)
         {
             if (!rolling && !died && !inBattle && !player.GetComponent<WorldPlayerMovementScript>().IsFlying() && (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z))<5.0f && (((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 10.0f && seeingPlayer) || ((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 5.0f && !seeingPlayer)))
             {
