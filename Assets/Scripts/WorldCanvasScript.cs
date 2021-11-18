@@ -57,6 +57,14 @@ public class WorldCanvasScript : MonoBehaviour
         soul4 = GameObject.Find("Soul4Fill");
         soul5 = GameObject.Find("Soul5Fill");
         soul6 = GameObject.Find("Soul6Fill");
+        if (currentData.GetComponent<CurrentDataScript>().unlockedCompanions < 1)
+        {
+            companionLife.GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            companionLife.transform.GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            companionLife.transform.GetChild(1).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            companionLife.transform.GetChild(2).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            companionLife.transform.GetChild(3).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        }
         if (currentData.GetComponent<CurrentDataScript>().souls == 1)
         {
             soul1.GetComponent<Image>().color = new Color(soul1.GetComponent<Image>().color.r, soul1.GetComponent<Image>().color.g, soul1.GetComponent<Image>().color.b, 1.0f);

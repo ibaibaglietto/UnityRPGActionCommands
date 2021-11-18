@@ -85,6 +85,8 @@ public class GameDataScript
     public int companionAttack;
     public int companionStyle;
     //Flags
+    //Tutorial
+    public int tutorialState;
     //1-1
     public int clearJail;
     //1-2
@@ -355,6 +357,7 @@ public class GameDataScript
         playerStyle = current.playerStyle;
         companionAttack = current.companionAttack;
         companionStyle = current.companionStyle;
+        tutorialState = current.tutorialState;
         clearJail = current.clearJail;
         storageItem1 = current.storageItem1;
         storageItem2 = current.storageItem2;

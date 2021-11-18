@@ -271,7 +271,7 @@ public class EnemyTeamScript : MonoBehaviour
                 dust = Instantiate(dustObject, new Vector3(transform.position.x + 0.5f, -1.57f, -0.3f), Quaternion.identity);
             }
         }
-        //The normal die animation 
+        //The normal death animation 
         if (!alive && grounded && dieAnimationFinished)
         {
             //Bandit

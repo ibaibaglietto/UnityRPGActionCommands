@@ -71,6 +71,14 @@ public class WorldCompanionMovementScript : MonoBehaviour
         animator.SetInteger("User", user);
         //We find the companion health UI
         companionLife = GameObject.Find("CompanionLifeBckImage");
+        //We make the companion disappear if we haven't unlocked them
+        if (currentData.GetComponent<CurrentDataScript>().unlockedCompanions < 1)
+        {
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<BoxCollider>().enabled = false;
+            GetComponent<SphereCollider>().enabled = false;
+            transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        }
     }
 
 

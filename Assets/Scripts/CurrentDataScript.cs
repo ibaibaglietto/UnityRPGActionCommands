@@ -85,6 +85,8 @@ public class CurrentDataScript : MonoBehaviour
     public int companionAttack;
     public int companionStyle;
     //Flags
+    //Tutorial
+    public int tutorialState;
     //1-1
     public int clearJail;
     //1-2
@@ -660,6 +662,7 @@ public class CurrentDataScript : MonoBehaviour
         playerStyle = data.playerStyle;
         companionAttack = data.companionAttack;
         companionStyle = data.companionStyle;
+        tutorialState = data.tutorialState;
         clearJail = data.clearJail;
         storageItem1 = data.storageItem1;
         storageItem2 = data.storageItem2;

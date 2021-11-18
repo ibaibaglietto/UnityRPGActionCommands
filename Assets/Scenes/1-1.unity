@@ -3536,15 +3536,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2518188754690314853, guid: 6ae1b1b46b37d714bb49080677f01638, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2518188754690314854, guid: 6ae1b1b46b37d714bb49080677f01638, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2518188754690314855, guid: 6ae1b1b46b37d714bb49080677f01638, type: 3}
       propertyPath: m_UseGravity
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5325671922269186296, guid: 6ae1b1b46b37d714bb49080677f01638, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3560,7 +3560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5325671922269186297, guid: 6ae1b1b46b37d714bb49080677f01638, type: 3}
       propertyPath: m_Color.a
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6608041045526984183, guid: 6ae1b1b46b37d714bb49080677f01638, type: 3}
       propertyPath: m_Intensity
@@ -14957,7 +14957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1058432326124774135, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.73443604
+      value: 0.7344971
       objectReference: {fileID: 0}
     - target: {fileID: 1058432326124774135, guid: c8f150944bd0c234d99189d1317c55e8, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -39342,7 +39342,7 @@ MonoBehaviour:
   movUp: 0
   movDown: 0
   currentCompanion: 1
-  unlockedCompanions: 2
+  unlockedCompanions: 0
   adventurerCurrentHealth: 27
   wizardCurrentHealth: 28
   adventurerLvl: 3

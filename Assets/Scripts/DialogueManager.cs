@@ -38,6 +38,8 @@ public class DialogueManager : MonoBehaviour
     public int moveDir;
     //A vector2(x,z) to know the position the player must move (optional)
     public Vector2 movePos;
+    //A boolean to know if the player is in the tutorial
+    private bool tutorial;
 
     //The speakers
     private Transform[] speakers;
@@ -93,7 +95,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     //Function to start the battle dialogue
-    public void StartBattleDialogue(Dialogue dialogue)
+    public void StartBattleDialogue(Dialogue dialogue, bool glance)
     {
         battle = true;
         battleController = GameObject.Find("BattleController");
@@ -103,7 +105,8 @@ public class DialogueManager : MonoBehaviour
         animator.SetBool("Open", true);
         //Clear the previous sentences
         sentences.Clear();
-        dialogueBox.GetComponent<DialogueBox>().SetSpeaker(GameObject.FindGameObjectWithTag("Adventurer").transform);
+        if(glance) dialogueBox.GetComponent<DialogueBox>().SetSpeaker(GameObject.FindGameObjectWithTag("Adventurer").transform);
+        else dialogueBox.GetComponent<DialogueBox>().SetSpeaker(dialogue.speakers[0]);
         //enqueue the sentences
         foreach (string sentence in dialogue.sentences)
         {
@@ -146,6 +149,7 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray())
         {
+            Debug.Log(letter);
             speak.Play();
             dialogueText.text += letter;
             yield return new WaitForFixedUpdate();
@@ -158,7 +162,8 @@ public class DialogueManager : MonoBehaviour
     {
         battleController.GetComponent<BattleController>().SetTalking(false);
         animator.SetBool("Open", false);
-        battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+        if (!tutorial) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+        else battleController.GetComponent<BattleController>().EndTutorialDialogue();
     }
 
     //Function to end the world dialogue
@@ -186,5 +191,10 @@ public class DialogueManager : MonoBehaviour
         {
             player.GetComponent<WorldPlayerMovementScript>().EndDialogue();
         }
+    }
+
+    public void SetTutorial(bool t)
+    {
+        tutorial = t;
     }
 }

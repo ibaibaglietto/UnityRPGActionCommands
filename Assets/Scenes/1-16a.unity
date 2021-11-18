@@ -28468,7 +28468,7 @@ MonoBehaviour:
   movUp: 0
   movDown: 0
   currentCompanion: 1
-  unlockedCompanions: 2
+  unlockedCompanions: 0
   adventurerCurrentHealth: 27
   wizardCurrentHealth: 28
   adventurerLvl: 3
