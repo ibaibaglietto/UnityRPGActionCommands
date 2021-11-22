@@ -328,6 +328,10 @@ public class BattleController : MonoBehaviour
     private GameObject changePosAction;
     //A bool to know if the adventurer is talking
     private bool talking;
+    //A bool to know if we are waiting to start the conversation
+    private bool waitTalk;
+    //A bool to know if we have already seen a tutorial this turn
+    private bool tutorialTurn;
     //A floar to know the rotation of the aim action
     private float aimRotation;
     //A bool to know if the aim rotation is going up or down
@@ -393,6 +397,8 @@ public class BattleController : MonoBehaviour
     private Text lvlUpText;
     //The current data
     private GameObject currentData;
+    //A float to know the time, used for the tutorial
+    private float tutorialTime;
     
 
     private void Start()
@@ -703,6 +709,8 @@ public class BattleController : MonoBehaviour
         magentaSoulMovRight = false;
         magentaSoulMovDown = false;
         talking = false;
+        waitTalk = false;
+        tutorialTurn = false;
         enemy1Turn = true;
         enemy2Turn = false;
         enemy3Turn = false;
@@ -741,6 +749,7 @@ public class BattleController : MonoBehaviour
         lvlUpMenu.SetActive(false);
         //We translate the lvl up text
         lvlUpText.text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_lvlup_title");
+        if(currentData.GetComponent<CurrentDataScript>().unlockedCompanions < 1) changePosAction.SetActive(false);
     }
 
     private void Update()
@@ -756,18 +765,25 @@ public class BattleController : MonoBehaviour
                 //The fase when the player chooses what action to do
                 if (playerChoosingAction)
                 {
-                    if (currentData.GetComponent<CurrentDataScript>().tutorialState == 0)
+                    if (!tutorialTurn && currentData.GetComponent<CurrentDataScript>().tutorialState < 2)
                     {
                         if (!talking)
                         {
                             talking = true;
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                            GetComponent<DialogueManager>().SetTutorial(true);                            
+                            GetComponent<DialogueManager>().SetTutorial(true);
+                            tutorialTime = Time.fixedTime;
+                            waitTalk = true;
                         }
-                        if (Input.GetKeyDown(KeyCode.LeftArrow)) GetComponent<DialogueManager>().StartBattleDialogue(new Dialogue(new Transform[] { player.transform }, new string[] { "npc_prisonerAdventurer_1" }), true);
+                        if (Time.fixedTime - tutorialTime > 1.5f && waitTalk)
+                        {
+                            if (currentData.GetComponent<CurrentDataScript>().tutorialState == 0) GetComponent<DialogueManager>().StartBattleDialogue(new Dialogue(new Transform[] { enemy1.transform }, new string[] { "npc_prisonerAdventurer_1" }), false); 
+                            else if(currentData.GetComponent<CurrentDataScript>().tutorialState == 1) GetComponent<DialogueManager>().StartBattleDialogue(new Dialogue(new Transform[] { player.transform }, new string[] { "npc_prisonerAdventurer_1" }), false); 
+                            waitTalk = false;
+                        }
                         //When the player is talking we display the next sentece pressing X
                         if (talking && Input.GetKeyDown(KeyCode.X)) GetComponent<DialogueManager>().DisplayNextSentence();
-                    }
+                    }                    
                     else
                     {
                         //if the player attacks first
@@ -3622,6 +3638,11 @@ public class BattleController : MonoBehaviour
                     if (defenseZone)
                     {
                         enemy1.GetComponent<EnemyTeamScript>().IsDefended(true);
+                        if (currentData.GetComponent<CurrentDataScript>().tutorialState == 1)
+                        {
+                            Time.timeScale = 1.0f;
+                            GetComponent<DialogueManager>().DisplayNextSentence();
+                        }
                     }
                     else enemy1.GetComponent<EnemyTeamScript>().IsDefended(false);
                 }
@@ -5206,7 +5227,11 @@ public class BattleController : MonoBehaviour
     private void EndChangePosition(int user)
     {
         //if the companion isnt dead we reactivate the change position action
-        if(!companion.GetComponent<PlayerTeamScript>().IsDead()) changePosAction.SetActive(true);
+        if (!companion.GetComponent<PlayerTeamScript>().IsDead())
+        {
+            if (currentData.GetComponent<CurrentDataScript>().unlockedCompanions < 1) changePosAction.SetActive(false);
+            else changePosAction.SetActive(true);
+        }
         //We put the default values of the animation variables and ensure that the team members are in the correct position.
         if (user == 1)
         {
@@ -5278,7 +5303,8 @@ public class BattleController : MonoBehaviour
             if (playerTurn && !firstPosPlayer && attackType == 2) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x - 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
             //If both team mates completed their turn 
             if (playerTurnCompleted && companionTurnCompleted)
-            {                
+            {
+                if(currentData.GetComponent<CurrentDataScript>().tutorialState < 2) tutorialTurn = false;
                 //We put the color back to normal
                 player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
                 companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
@@ -5455,7 +5481,12 @@ public class BattleController : MonoBehaviour
             else
             {
                 //IF the companion isnt dead we activate the change position action
-                if (!companion.GetComponent<PlayerTeamScript>().IsDead()) changePosAction.SetActive(true);
+                if (!companion.GetComponent<PlayerTeamScript>().IsDead())
+                {
+
+                    if (currentData.GetComponent<CurrentDataScript>().unlockedCompanions < 1) changePosAction.SetActive(false);
+                    else changePosAction.SetActive(true);
+                }
                 //If they are dead we start the player turn
                 if (companion.GetComponent<PlayerTeamScript>().IsDead())
                 {
@@ -5554,6 +5585,9 @@ public class BattleController : MonoBehaviour
     //A function to start the defense zone
     public void StartDefenseZone()
     {
+        Time.timeScale = 0.0f;
+        GetComponent<DialogueManager>().SetTutorial(true);
+        if (currentData.GetComponent<CurrentDataScript>().tutorialState == 1) GetComponent<DialogueManager>().StartBattleDialogue(new Dialogue(new Transform[] { player.transform }, new string[] { "npc_prisonerAdventurer_1" }), false);
         defenseZone = true;
     }
 
@@ -6515,9 +6549,13 @@ public class BattleController : MonoBehaviour
     public void EndTutorialDialogue()
     {
         talking = false;
-        player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
         GetComponent<DialogueManager>().SetTutorial(false);
-        currentData.GetComponent<CurrentDataScript>().tutorialState += 1;
+        if (playerTeamTurn)
+        {
+            player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+            currentData.GetComponent<CurrentDataScript>().tutorialState += 1;
+            tutorialTurn = true;
+        }
     }
 
     //Function to get the soul points

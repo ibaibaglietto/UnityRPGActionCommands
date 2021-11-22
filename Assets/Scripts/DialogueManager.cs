@@ -152,7 +152,7 @@ public class DialogueManager : MonoBehaviour
             Debug.Log(letter);
             speak.Play();
             dialogueText.text += letter;
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForSecondsRealtime(0.02f);
         }
         next.GetComponent<Image>().color = new Color(next.GetComponent<Image>().color.r, next.GetComponent<Image>().color.g, next.GetComponent<Image>().color.b, 1.0f);
     }

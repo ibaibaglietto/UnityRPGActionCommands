@@ -43,8 +43,8 @@ public class DialogueBox : MonoBehaviour
         proportionalPosition = new Vector2(viewportPosition.x * canvas.transform.GetComponent<RectTransform>().sizeDelta.x, 0.0f);
 
         // Set the position and remove the screen offset
-        if((proportionalPosition.x - uiOffset.x)>-430.0f && (proportionalPosition.x - uiOffset.x) < 430.0f) arrow.localPosition = new Vector2( proportionalPosition.x - uiOffset.x, -135.09f);
-        else arrow.localPosition = new Vector2(-700.0f, -135.09f);
+        if((proportionalPosition.x - uiOffset.x)>-430.0f && (proportionalPosition.x - uiOffset.x) < 430.0f) arrow.localPosition = new Vector2( proportionalPosition.x - uiOffset.x, -104.67f);
+        else arrow.localPosition = new Vector2(-700.0f, -104.67f);
 
     }
     private void Update()
@@ -56,8 +56,8 @@ public class DialogueBox : MonoBehaviour
             proportionalPosition = new Vector2(viewportPosition.x * canvas.transform.GetComponent<RectTransform>().sizeDelta.x, 0.0f);
 
             // Set the position and remove the screen offset
-            if ((proportionalPosition.x - uiOffset.x) > -430.0f && (proportionalPosition.x - uiOffset.x) < 430.0f) arrow.localPosition = new Vector2(proportionalPosition.x - uiOffset.x, -135.09f);
-            else arrow.localPosition = new Vector2(-700.0f, -135.09f);
+            if ((proportionalPosition.x - uiOffset.x) > -430.0f && (proportionalPosition.x - uiOffset.x) < 430.0f) arrow.localPosition = new Vector2(proportionalPosition.x - uiOffset.x, -104.67f);
+            else arrow.localPosition = new Vector2(-700.0f, -104.67f);
         }
         
     }
