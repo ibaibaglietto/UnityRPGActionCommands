@@ -1146,7 +1146,7 @@ public class PlayerTeamScript : MonoBehaviour
     //A function to start the attack action
     public void StartAttackAction()
     {
-        battleController.GetComponent<BattleController>().attackAction = true;
+        battleController.GetComponent<BattleController>().StartAttackAction();
     }
     //A function to end the melee attack
     public void EndMeleeAttack()
@@ -1540,7 +1540,7 @@ public class PlayerTeamScript : MonoBehaviour
             if(playerTeamType!=0) GetComponent<Animator>().SetBool("spawnDead", false);
         }
         //If we dont have one the battle ends
-        else battleController.GetComponent<BattleController>().EndBattle();
+        else battleController.GetComponent<BattleController>().EndBattle(false);
     }
 
     //A function to continue with the enemy turn

@@ -159,15 +159,18 @@ public class WorldEnemy : MonoBehaviour
                     currentData.GetComponent<CurrentDataScript>().enemyDied = 0;
                     speedX = 0.0f;
                     speedZ = 0.0f;
-                }
+                }                
                 else
                 {
                     inBattle = false;
                     if (linkedEnemy != null) linkedEnemy.GetComponent<WorldEnemy>().SetInBattle(false);
                 }
             }
-        } 
-        
+        }
+        else if (currentData.GetComponent<CurrentDataScript>().playerCurrentHealth < 0 && currentData.GetComponent<CurrentDataScript>().tutorialState == 3)
+        {
+            transform.parent.GetComponent<Animator>().SetBool("TakePlayer", true);
+        }
     }
 
 

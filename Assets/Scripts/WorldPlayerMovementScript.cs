@@ -196,6 +196,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private GameObject pickItemUI;
     //The battle first strike UI
     private GameObject firstStrikeUI;
+    //A bool to know if the player is dead
+    private bool playerDead;
 
 
     //The on land event
@@ -279,6 +281,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         shopGemsNotEmpty = false;
         lockedArrow = false;
         cutscene = false;
+        playerDead = false;
         restUIState = 1;
         restUISelecting = 1;
         restPlayerMainUISelecting = 1;
@@ -322,7 +325,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
     void Update()
     {
         //Detect the direction we want the player to move and save it
-        if (currentData.GetComponent<CurrentDataScript>().battle == 0 && !cutscene)
+        if (currentData.GetComponent<CurrentDataScript>().battle == 0 && !cutscene && !playerDead)
         {
             if (!movingToRest && !resting && !changingScene && !speaking && !pickingObject && !shopOpened & !startFly && !spin && !movePostDialogue)
             {
@@ -1596,6 +1599,11 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 }
             }
         }
+        else if(currentData.GetComponent<CurrentDataScript>().battle == 1 && currentData.GetComponent<CurrentDataScript>().playerCurrentHealth <= 0 && currentData.GetComponent<CurrentDataScript>().tutorialState == 3)
+        {
+            animator.SetBool("Die", true);
+            playerDead = true; 
+        }
         else
         {
             speedX = 0.0f;
@@ -1624,6 +1632,10 @@ public class WorldPlayerMovementScript : MonoBehaviour
             speaking = true;
             dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(nextDialogue);
             SetCanSpeak(false);
+        }
+        if (playerDead)
+        {
+            Debug.Log("ola");
         }
     }
 

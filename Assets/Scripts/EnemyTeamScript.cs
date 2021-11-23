@@ -234,7 +234,7 @@ public class EnemyTeamScript : MonoBehaviour
                     //When the knight returns he defends himself
                     if (enemyType == 3) SetShielded(true); 
                     //When the king returns to the starting pos there is a chance that they will charge the teleportation attack
-                    if (enemyType == 2 && Random.Range(0.0f,1.0f)<0.4f)
+                    if ((enemyType == 2 && Random.Range(0.0f,1.0f)<0.4f && currentData.GetComponent<CurrentDataScript>().tutorialState > 2) || currentData.GetComponent<CurrentDataScript>().tutorialState == 2)
                     {
                         enemySource.clip = bossPowerUpAudio;
                         enemySource.Play();
@@ -718,7 +718,11 @@ public class EnemyTeamScript : MonoBehaviour
         }
         else
         {
-            if(enemyType == 2) attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+            if (enemyType == 2)
+            {
+                if(currentData.GetComponent<CurrentDataScript>().tutorialState > 1) attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(3 - defended);
+                else attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(2 - defended);
+            }
             else if (enemyType == 3) attackTeam[0].GetComponent<PlayerTeamScript>().DealDamage(1 + miniboss - defended);
         }
         //If the player doesnt defend correctly the damage animation is plaied

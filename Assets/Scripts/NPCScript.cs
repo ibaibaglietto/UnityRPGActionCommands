@@ -108,14 +108,14 @@ public class NPCScript : MonoBehaviour
         runLeft = false;
         runRight = false;
         rollLeft = true;
-        runRight = false;
+        rollRight = false;
     }
     public void RollRight()
     {
         runLeft = false;
         runRight = false;
         rollLeft = false;
-        runRight = true;
+        rollRight = true;
     }
     public void StopRunning()
     {

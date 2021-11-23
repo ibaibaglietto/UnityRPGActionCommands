@@ -17,7 +17,8 @@ public class ShurikenActionScript : MonoBehaviour
     //A function to start the shuriken action
     public void StartShurikenAction()
     {
-        battleController.GetComponent<BattleController>().attackAction = true;
+        
+        battleController.GetComponent<BattleController>().StartAttackAction();
     }
 
     //A function to end the shuriken action

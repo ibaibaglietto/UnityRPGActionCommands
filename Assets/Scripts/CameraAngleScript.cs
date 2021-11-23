@@ -15,7 +15,7 @@ public class CameraAngleScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if(other.tag.Equals("Player"))
         {
             cam.GetComponent<WorldCameraScript>().SetPlatforming(true);
         }
@@ -23,7 +23,7 @@ public class CameraAngleScript : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag.Equals("Player"))
         {
             cam.GetComponent<WorldCameraScript>().SetPlatforming(false);
         }
