@@ -8,12 +8,23 @@ public class BossFleeScript : MonoBehaviour
     private GameObject player;
     //The dialogue that will play after the miniboss flees
     public Dialogue dialogue;
+    //The camera
+    private Camera mainCamera;
+    //The canvas
+    private Canvas canvas;
+    //The change scene screen 
+    private GameObject changeSceneScreen;
+    //The current data
+    private GameObject currentData;
 
     void Start()
     {
-        //We find the player
+        //We find the player the camera, the canvas and the change scene screen
         player = GameObject.Find("PlayerWorld");
-
+        mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        currentData = GameObject.Find("CurrentData");
+        changeSceneScreen = GameObject.Find("EndBattleImage");
     }
 
     //A function to put the player in cutscene mode
@@ -54,6 +65,28 @@ public class BossFleeScript : MonoBehaviour
     {
         transform.GetChild(0).GetComponent<NPCScript>().RunRight();
         transform.GetChild(1).GetComponent<NPCScript>().RunRight();
+    }
+
+    //Function to make the camera move
+    public void MoveCamera()
+    {
+        mainCamera.GetComponent<Animator>().enabled = true;
+    }
+
+    //Function to make the title appear
+    public void AppearTitle()
+    {
+        canvas.transform.Find("Title").GetComponent<Animator>().SetBool("Show", true);
+    }
+
+    //Function to TP the player to the jail
+    public void TPJail()
+    {
+        changeSceneScreen.GetComponent<Animator>().SetTrigger("toOther");
+        changeSceneScreen.GetComponent<EnterBattleScript>().SetSceneName("1-1");
+        currentData.GetComponent<CurrentDataScript>().spawnX = 8.14f;
+        currentData.GetComponent<CurrentDataScript>().spawnY = 139.507f;
+        currentData.GetComponent<CurrentDataScript>().spawnZ = -1.609f;
     }
 
     //Function to make the knights roll right

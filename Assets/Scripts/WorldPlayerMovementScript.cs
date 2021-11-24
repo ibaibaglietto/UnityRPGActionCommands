@@ -309,8 +309,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
         SpentGP();
         if (currentData.GetComponent<CurrentDataScript>().changingScene == 1)
         {
-            changingScene = true;
-            changedScene = true;
+            if (currentData.GetComponent<CurrentDataScript>().tutorialState != 3)
+            {
+                changingScene = true;
+                changedScene = true;
+            }
+            else canvas.GetComponent<Animator>().SetBool("Hide", false);
         }
         else
         {

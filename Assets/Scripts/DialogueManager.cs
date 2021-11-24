@@ -40,6 +40,8 @@ public class DialogueManager : MonoBehaviour
     public Vector2 movePos;
     //A boolean to know if the player is in the tutorial
     private bool tutorial;
+    //The canvas animator
+    private Animator canvasAnim;
 
     //The speakers
     private Transform[] speakers;
@@ -61,6 +63,7 @@ public class DialogueManager : MonoBehaviour
         next = GameObject.Find("DialogueNext");
         dialogueText.enabled = false;
         speak = GameObject.Find("SpeakSource").GetComponent<AudioSource>();
+        canvasAnim = GameObject.Find("Canvas").GetComponent<Animator>();
         actualDialogueNumb = 0;
         actualSpeaker = 0;
     }
@@ -68,6 +71,7 @@ public class DialogueManager : MonoBehaviour
     //Function to start the world dialogue
     public void StartWorldDialogue(Dialogue dialogue)
     {
+        canvasAnim.SetBool("Hide", true);
         prevRest = dialogue.prevRest;
         shop = dialogue.shop;
         prevBattle = dialogue.prevBattle;
@@ -169,6 +173,7 @@ public class DialogueManager : MonoBehaviour
     //Function to end the world dialogue
     void EndWorldDialogue()
     {
+        canvasAnim.SetBool("Hide", false);
         animator.SetBool("Open", false);
         if (move) 
         {

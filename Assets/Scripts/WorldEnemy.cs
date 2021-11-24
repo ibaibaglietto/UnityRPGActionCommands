@@ -39,6 +39,8 @@ public class WorldEnemy : MonoBehaviour
     [SerializeField] private Transform[] linkedNPCs;
     //The flag the enemy will rise when they die
     [SerializeField] private string flag;
+    //The canvas animator
+    private Animator canvasAnim;
 
     //The enemies of the battle. 1-> bandit, 2-> evil wizard, 3-> king
     [SerializeField] private int enemy1;
@@ -76,6 +78,7 @@ public class WorldEnemy : MonoBehaviour
         companion = GameObject.Find("CompanionWorld");
         if (idleRight) animator.SetBool("FacingRight", true);
         else animator.SetBool("FacingRight", false);
+        canvasAnim = GameObject.Find("Canvas").GetComponent<Animator>();
     }
 
     private void Update()
@@ -167,9 +170,11 @@ public class WorldEnemy : MonoBehaviour
                 }
             }
         }
-        else if (currentData.GetComponent<CurrentDataScript>().playerCurrentHealth < 0 && currentData.GetComponent<CurrentDataScript>().tutorialState == 3)
+        else if (currentData.GetComponent<CurrentDataScript>().playerCurrentHealth <= 0 && currentData.GetComponent<CurrentDataScript>().tutorialState == 3)
         {
             transform.parent.GetComponent<Animator>().SetBool("TakePlayer", true);
+            canvasAnim.SetBool("Hide", true);
+            currentData.GetComponent<CurrentDataScript>().playerCurrentHealth = 10;
         }
     }
 
