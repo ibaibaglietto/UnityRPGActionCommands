@@ -101,6 +101,7 @@ public class DialogueManager : MonoBehaviour
     //Function to start the battle dialogue
     public void StartBattleDialogue(Dialogue dialogue, bool glance)
     {
+        canvasAnim.SetBool("Hide", true);
         battle = true;
         battleController = GameObject.Find("BattleController");
         //We put the talking state
@@ -153,7 +154,6 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray())
         {
-            Debug.Log(letter);
             speak.Play();
             dialogueText.text += letter;
             yield return new WaitForSecondsRealtime(0.02f);
@@ -164,6 +164,7 @@ public class DialogueManager : MonoBehaviour
     //Function to end the battle dialogue
     void EndBattleDialogue()
     {
+        canvasAnim.SetBool("Hide", false);
         battleController.GetComponent<BattleController>().SetTalking(false);
         animator.SetBool("Open", false);
         if (!tutorial) battleController.GetComponent<BattleController>().EndPlayerTurn(2);
@@ -173,7 +174,8 @@ public class DialogueManager : MonoBehaviour
     //Function to end the world dialogue
     void EndWorldDialogue()
     {
-        canvasAnim.SetBool("Hide", false);
+        if (currentData.GetComponent<CurrentDataScript>().tutorialState == 3) speakers[0].parent.GetComponent<Animator>().SetBool("TakePlayer", true); 
+        else canvasAnim.SetBool("Hide", false);
         animator.SetBool("Open", false);
         if (move) 
         {
@@ -193,7 +195,7 @@ public class DialogueManager : MonoBehaviour
             speakers[0].GetComponent<WorldEnemy>().SetInBattle(true);
         }
         else
-        {
+        {            
             player.GetComponent<WorldPlayerMovementScript>().EndDialogue();
         }
     }

@@ -314,7 +314,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 changingScene = true;
                 changedScene = true;
             }
-            else canvas.GetComponent<Animator>().SetBool("Hide", false);
+            else
+            {
+                canvas.GetComponent<Animator>().SetBool("Hide", false);
+                GetComponent<Animator>().SetBool("Die", true);
+                playerDead = true;
+            }
         }
         else
         {
@@ -1583,25 +1588,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     }
                 }
             }
-            if (speaking)
-            {
-                speedX = 0.0f;
-                speedZ = 0.0f;
-                animator.SetBool("Moving", false);
-                animator.SetFloat("SpeedZ", speedZ);
-                animator.SetFloat("SpeedX", speedX);
-                if (dialogue)
-                {
-                    if (Input.GetKeyDown(KeyCode.X))
-                    {
-                        dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
-                    }
-                }
-                else
-                {
-                    speaking = false;
-                }
-            }
         }
         else if(currentData.GetComponent<CurrentDataScript>().battle == 1 && currentData.GetComponent<CurrentDataScript>().playerCurrentHealth <= 0 && currentData.GetComponent<CurrentDataScript>().tutorialState == 3)
         {
@@ -1637,9 +1623,24 @@ public class WorldPlayerMovementScript : MonoBehaviour
             dialogueManager.GetComponent<DialogueManager>().StartWorldDialogue(nextDialogue);
             SetCanSpeak(false);
         }
-        if (playerDead)
+        if (speaking)
         {
-            Debug.Log("ola");
+            speedX = 0.0f;
+            speedZ = 0.0f;
+            animator.SetBool("Moving", false);
+            animator.SetFloat("SpeedZ", speedZ);
+            animator.SetFloat("SpeedX", speedX);
+            if (dialogue)
+            {
+                if (Input.GetKeyDown(KeyCode.X))
+                {
+                    dialogueManager.GetComponent<DialogueManager>().DisplayNextSentence();
+                }
+            }
+            else
+            {
+                speaking = false;
+            }
         }
     }
 
@@ -1754,7 +1755,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
     public void EndDialogue()
     {
         dialogue = false; 
-        canvas.GetComponent<Animator>().SetBool("Hide", false);
     }
 
     //Function to start the spin

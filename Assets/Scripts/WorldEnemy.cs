@@ -56,6 +56,8 @@ public class WorldEnemy : MonoBehaviour
     private GameObject currentData;
     //A bool to know if the enemy is rolling
     private bool rolling;
+    //A bool to know that the enemy has started talking after the first tutorial
+    private bool talking;
 
     void Start()
     {
@@ -83,9 +85,9 @@ public class WorldEnemy : MonoBehaviour
 
     private void Update()
     {
-        if(currentData.GetComponent<CurrentDataScript>().battle == 0 && !passive)
+        if (currentData.GetComponent<CurrentDataScript>().battle == 0 && !passive)
         {
-            if (!rolling && !died && !inBattle && !player.GetComponent<WorldPlayerMovementScript>().IsFlying() && (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z))<5.0f && (((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 10.0f && seeingPlayer) || ((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 5.0f && !seeingPlayer)))
+            if (!rolling && !died && !inBattle && !player.GetComponent<WorldPlayerMovementScript>().IsFlying() && (Mathf.Abs(player.transform.position.x - gameObject.transform.position.x) + Mathf.Abs(player.transform.position.z - gameObject.transform.position.z)) < 5.0f && (((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 10.0f && seeingPlayer) || ((Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) < 5.0f && !seeingPlayer)))
             {
                 animator.SetFloat("RunSpeed", 1.0f);
                 if (!seeingPlayer)
@@ -138,7 +140,7 @@ public class WorldEnemy : MonoBehaviour
                 animator.SetFloat("RunSpeed", 0.5f);
                 seeingPlayer = false;
                 //Detect where the starting point is and move the enemy towards it
-                if (Mathf.Abs(startX- gameObject.transform.position.x) > 0.5f) speedX = (startX - gameObject.transform.position.x) / (Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) * 0.5f;
+                if (Mathf.Abs(startX - gameObject.transform.position.x) > 0.5f) speedX = (startX - gameObject.transform.position.x) / (Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) * 0.5f;
                 else speedX = 0.0f;
                 if (Mathf.Abs(startZ - gameObject.transform.position.z) > 0.5f) speedZ = (startZ - gameObject.transform.position.z) / (Mathf.Abs(startX - gameObject.transform.position.x) + Mathf.Abs(startZ - gameObject.transform.position.z)) * 0.5f;
                 else speedZ = 0.0f;
@@ -153,8 +155,8 @@ public class WorldEnemy : MonoBehaviour
                 {
                     animator.SetTrigger("Die");
                     died = true;
-                    if(linkedEnemy != null) linkedEnemy.GetComponent<WorldEnemy>().KillEnemy();
-                    if(linkedNPCs.Length != 0)
+                    if (linkedEnemy != null) linkedEnemy.GetComponent<WorldEnemy>().KillEnemy();
+                    if (linkedNPCs.Length != 0)
                     {
                         for (int i = 0; i < linkedNPCs.Length; i++) Destroy(linkedNPCs[i].gameObject);
                     }
@@ -162,7 +164,7 @@ public class WorldEnemy : MonoBehaviour
                     currentData.GetComponent<CurrentDataScript>().enemyDied = 0;
                     speedX = 0.0f;
                     speedZ = 0.0f;
-                }                
+                }
                 else
                 {
                     inBattle = false;
@@ -172,8 +174,12 @@ public class WorldEnemy : MonoBehaviour
         }
         else if (currentData.GetComponent<CurrentDataScript>().playerCurrentHealth <= 0 && currentData.GetComponent<CurrentDataScript>().tutorialState == 3)
         {
-            transform.parent.GetComponent<Animator>().SetBool("TakePlayer", true);
             canvasAnim.SetBool("Hide", true);
+        }
+        if (currentData.GetComponent<CurrentDataScript>().playerCurrentHealth <= 0 && currentData.GetComponent<CurrentDataScript>().tutorialState == 3 && currentData.GetComponent<CurrentDataScript>().battle == 0 && !talking)
+        {
+            player.GetComponent<WorldPlayerMovementScript>().StartDialogue(new Dialogue(new Transform[] { transform }, new string[] { "npc_prisonerAdventurer_1" }));
+            talking = true;
             currentData.GetComponent<CurrentDataScript>().playerCurrentHealth = 10;
         }
     }
@@ -194,6 +200,12 @@ public class WorldEnemy : MonoBehaviour
             StartBattle(0, 0,0);
             inBattle = true;
         }
+    }
+
+    //Function to set the talking bool
+    public void SetTalking(bool t)
+    {
+        talking = t;
     }
 
     //Function to start the flee after the miniboss fight
