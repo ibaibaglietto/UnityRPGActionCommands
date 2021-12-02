@@ -307,6 +307,9 @@ public class WorldPlayerMovementScript : MonoBehaviour
         currentData.GetComponent<CurrentDataScript>().swordStyles = currentData.GetComponent<CurrentDataScript>().lightSword + currentData.GetComponent<CurrentDataScript>().multistrikeSword;
         currentData.GetComponent<CurrentDataScript>().shurikenStyles = currentData.GetComponent<CurrentDataScript>().lightShuriken + currentData.GetComponent<CurrentDataScript>().fireShuriken;
         SpentGP();
+        canvas.GetComponent<Animator>().SetBool("Hide", true);
+        GetComponent<Animator>().SetBool("Die", true);
+        playerDead = true;
         if (currentData.GetComponent<CurrentDataScript>().changingScene == 1)
         {
             if (currentData.GetComponent<CurrentDataScript>().tutorialState != 3)
@@ -316,7 +319,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
             }
             else
             {
-                canvas.GetComponent<Animator>().SetBool("Hide", false);
+                canvas.GetComponent<Animator>().SetBool("Hide", true);
                 GetComponent<Animator>().SetBool("Die", true);
                 playerDead = true;
             }
@@ -1870,6 +1873,21 @@ public class WorldPlayerMovementScript : MonoBehaviour
             spent = spent + currentData.GetComponent<CurrentDataScript>().GemUsing(allGems[i],allGems) * gems.gems[i].points;
         }
         currentData.GetComponent<CurrentDataScript>().spentGP = spent;
+    }
+
+    //Function to revive the player
+    public void RevivePlayer()
+    {
+        currentData.GetComponent<CurrentDataScript>().tutorialState += 1;
+        animator.SetBool("Die", false);
+        currentData.GetComponent<CurrentDataScript>().playerCurrentHealth = 10;
+    }
+
+    //Funtion to change the dead state
+    public void Alive()
+    {
+        playerDead = false;
+        StartDialogue(nextDialogue);
     }
 
     //Function to change the rest instruction text

@@ -174,7 +174,8 @@ public class DialogueManager : MonoBehaviour
     //Function to end the world dialogue
     void EndWorldDialogue()
     {
-        if (currentData.GetComponent<CurrentDataScript>().tutorialState == 3) speakers[0].parent.GetComponent<Animator>().SetBool("TakePlayer", true); 
+        if (currentData.GetComponent<CurrentDataScript>().tutorialState == 3) speakers[0].parent.GetComponent<Animator>().SetBool("TakePlayer", true);
+        else if (currentData.GetComponent<CurrentDataScript>().tutorialState == 4) speakers[0].parent.GetComponent<Animator>().SetTrigger("Button");
         else canvasAnim.SetBool("Hide", false);
         animator.SetBool("Open", false);
         if (move) 

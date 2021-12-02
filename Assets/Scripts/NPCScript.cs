@@ -93,6 +93,15 @@ public class NPCScript : MonoBehaviour
         gameObject.GetComponent<Rigidbody>().velocity = new Vector3(speedX * 4, gameObject.GetComponent<Rigidbody>().velocity.y, speedZ * 4);
     }
 
+    public void LookRight()
+    {
+        GetComponent<Animator>().SetBool("FacingRight", true);
+    }
+    public void LookLeft()
+    {
+        GetComponent<Animator>().SetBool("FacingRight", false);
+    }
+
     public void RunRight()
     {
         runRight = true;

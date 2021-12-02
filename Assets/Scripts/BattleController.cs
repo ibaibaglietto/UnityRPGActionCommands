@@ -767,7 +767,7 @@ public class BattleController : MonoBehaviour
                 //The fase when the player chooses what action to do
                 if (playerChoosingAction)
                 {
-                    if (!tutorialTurn && currentData.GetComponent<CurrentDataScript>().tutorialState < 3)
+                    if (!tutorialTurn && currentData.GetComponent<CurrentDataScript>().tutorialState < 6)
                     {
                         if (!talking)
                         {
@@ -833,6 +833,28 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).GetChild(0).GetChild(4).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                                 player.GetChild(0).GetChild(0).GetChild(4).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
                             }
+                            else if (currentData.GetComponent<CurrentDataScript>().tutorialState == 5)
+                            {
+                                currentData.GetComponent<CurrentDataScript>().unlockedCompanions = 1;
+                                Destroy(companion.gameObject);
+                                SpawnCharacter(-1, 0);
+                                GetComponent<DialogueManager>().StartBattleDialogue(new Dialogue(new Transform[] { player.transform }, new string[] { "npc_prisonerAdventurer_1" }), false);
+                                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(1).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(2).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(3).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(3).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(3).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(4).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(4).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(4).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                            }
                             waitTalk = false;
                         }
                         //When the player is talking we display the next sentece pressing X
@@ -860,7 +882,7 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Right");
                             }
                             //We press space to select the action we want to perform
-                            if (selectingAction == 0 && Input.GetKeyDown(KeyCode.Space) && GetGroundEnemies() != null && (currentData.GetComponent<CurrentDataScript>().tutorialState > 3 || currentData.GetComponent<CurrentDataScript>().tutorialState == 1))
+                            if (selectingAction == 0 && Input.GetKeyDown(KeyCode.Space) && GetGroundEnemies() != null && (currentData.GetComponent<CurrentDataScript>().tutorialState > 6 || currentData.GetComponent<CurrentDataScript>().tutorialState == 1))
                             {
                                 //if nothing is unlocked we change the UI state and open the first sword attack
                                 if (currentData.GetComponent<CurrentDataScript>().swordStyles == 0)
@@ -886,7 +908,7 @@ public class BattleController : MonoBehaviour
                                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                                 }
                             }
-                            else if (selectingAction == 1 && Input.GetKeyDown(KeyCode.Space) && (currentData.GetComponent<CurrentDataScript>().tutorialState > 3 || currentData.GetComponent<CurrentDataScript>().tutorialState == 2))
+                            else if (selectingAction == 1 && Input.GetKeyDown(KeyCode.Space) && (currentData.GetComponent<CurrentDataScript>().tutorialState > 6 || currentData.GetComponent<CurrentDataScript>().tutorialState == 2))
                             {
                                 //if nothing is unlocked we change the UI state and open the first shuriken attack
                                 if (currentData.GetComponent<CurrentDataScript>().shurikenStyles == 0)
@@ -913,7 +935,7 @@ public class BattleController : MonoBehaviour
                                 }
                             }
                             //We open the Objects menu
-                            else if (selectingAction == 2 && Input.GetKeyDown(KeyCode.Space) && currentData.GetComponent<CurrentDataScript>().itemSize() > 0 && (currentData.GetComponent<CurrentDataScript>().tutorialState > 3 || currentData.GetComponent<CurrentDataScript>().tutorialState == 3))
+                            else if (selectingAction == 2 && Input.GetKeyDown(KeyCode.Space) && currentData.GetComponent<CurrentDataScript>().itemSize() > 0 && (currentData.GetComponent<CurrentDataScript>().tutorialState > 6 || currentData.GetComponent<CurrentDataScript>().tutorialState == 3))
                             {
                                 changePosAction.SetActive(false);
                                 CreateMenu();
@@ -921,7 +943,7 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                             }
                             //We open the Special menu
-                            else if (selectingAction == 3 && Input.GetKeyDown(KeyCode.Space) && currentData.GetComponent<CurrentDataScript>().tutorialState > 3)
+                            else if (selectingAction == 3 && Input.GetKeyDown(KeyCode.Space) && (currentData.GetComponent<CurrentDataScript>().tutorialState > 6 || currentData.GetComponent<CurrentDataScript>().tutorialState == 6))
                             {
                                 changePosAction.SetActive(false);
                                 CreateMenu();
@@ -929,7 +951,7 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                             }
                             //We open the Others menu
-                            else if (selectingAction == 4 && Input.GetKeyDown(KeyCode.Space) && currentData.GetComponent<CurrentDataScript>().tutorialState > 3)
+                            else if (selectingAction == 4 && Input.GetKeyDown(KeyCode.Space) && currentData.GetComponent<CurrentDataScript>().tutorialState > 6)
                             {
                                 changePosAction.SetActive(false);
                                 CreateMenu();
@@ -2541,327 +2563,334 @@ public class BattleController : MonoBehaviour
                 //Choosing action
                 if (companionChoosingAction)
                 {
-                    //if the player attacks first
-                    if (currentData.GetComponent<CurrentDataScript>().companionFirstAttack == 1)
+                    if (currentData.GetComponent<CurrentDataScript>().tutorialState == 6)
                     {
-                        companionChoosingAction = false;
-                        selectedEnemy = enemy1;
-                        companion.GetComponent<PlayerTeamScript>().Attack(currentData.GetComponent<CurrentDataScript>().companionAttack, currentData.GetComponent<CurrentDataScript>().companionStyle, selectedEnemy);
+
                     }
-                    //When the companion is choosing the main action
-                    else if (!companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().GetBool("MenuOpened"))
-                    {
-                        //We use left and right arrows to move in the action menu
-                        if (Input.GetKeyDown(KeyCode.LeftArrow))
-                        {
-                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Left");
-                        }
-                        else if (Input.GetKeyDown(KeyCode.RightArrow))
-                        {
-                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Right");
-                        }
-                        //We press space to select the action we want to perform
-                        //Attack
-                        if (selectingAction == 0 && Input.GetKeyDown(KeyCode.Space))
-                        {
-                            changePosAction.SetActive(false);
-                            CreateMenu();
-                            actionInstructions.SetActive(true);
-                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
-                        }
-                        //Item
-                        else if (selectingAction == 1 && Input.GetKeyDown(KeyCode.Space))
-                        {
-                            changePosAction.SetActive(false);
-                            CreateMenu();
-                            actionInstructions.SetActive(true);
-                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
-                        }
-                        //Others
-                        else if (selectingAction == 2 && Input.GetKeyDown(KeyCode.Space))
-                        {
-                            changePosAction.SetActive(false);
-                            CreateMenu();
-                            actionInstructions.SetActive(true);
-                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
-                        }
-                        //We swap team position pressing Z
-                        if (!playerTurnCompleted && Input.GetKeyDown(KeyCode.Z)) StartChangePosition(2);
-                    }
-                    //When the action is already choosen
                     else
                     {
-                        //Attack
-                        if (selectingAction == 0)
+                        //if the player attacks first
+                        if (currentData.GetComponent<CurrentDataScript>().companionFirstAttack == 1)
                         {
-                            //Adventurer
-                            //We change the attack using the arrows and accept pressing space
-                            if(currentCompanion == 0)
-                            {
-                                usingStyle = menuSelectionPos;
-                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_sword_description");
-                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_glance_description");
-                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_swordspin_description");
-                                else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_dragonslayerbow_description");
-                                else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_bk-47_description");
-                                if ((menuSelectionPos < currentData.GetComponent<CurrentDataScript>().adventurerLvl + 1) && Input.GetKeyDown(KeyCode.DownArrow))
-                                {
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
-                                }
-                                else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
-                                {
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
-                                }
-                                if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
-                                {
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
-                                    companionChoosingAction = false;
-                                    actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
-                                    actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                                    if (usingStyle == 0)
-                                    {
-                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_sword_action");
-                                        attackType = 0;
-                                    }
-                                    else if (usingStyle == 1)
-                                    {
-                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_glance_action");
-                                        attackType = 2;
-                                    }
-                                    else if (usingStyle == 2)
-                                    {
-                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_swordspin_action");
-                                        attackType = 0;
-                                    }
-                                    else if (usingStyle == 3)
-                                    {
-                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_dragonslayerbow_action");
-                                        attackType = 1;
-                                    }
-                                    else if (usingStyle == 4)
-                                    {
-                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_bk-47_action");
-                                        attackType = 1;
-                                    }
-                                    selectingEnemyCompanion = true;
-                                    enemyName.SetActive(true);
-                                    if (usingStyle < 3) SelectFirstEnemy();
-                                    else if (usingStyle == 3) SelectGroundEnemies();
-                                    else SelectAllEnemies();
-                                }
-                            }
-                            //Wizard
-                            //We change the attack using the arrows and accept pressing space
-                            else if (currentCompanion == 1)
-                            {
-                                usingStyle = menuSelectionPos;
-                                if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicball_description");
-                                else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_barrier_description");
-                                else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_pulsingmagic_description");
-                                else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicspear_description");
-                                else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_energybomb_description");
-
-                                if ((menuSelectionPos < currentData.GetComponent<CurrentDataScript>().wizardLvl + 1) && Input.GetKeyDown(KeyCode.DownArrow))
-                                {
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
-                                }
-                                else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
-                                {
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
-                                }
-                                if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
-                                {
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
-                                    companionChoosingAction = false;
-                                    actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
-                                    actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
-                                    attackType = 1;
-                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicball_action");
-                                    else if (usingStyle == 1)
-                                    {
-                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_barrier_action");
-                                        attackType = 2;
-                                    }
-                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_pulsingmagic_action");
-                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicspear_action");
-                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_energybomb_action");
-
-                                    enemyName.SetActive(true);
-                                    if (usingStyle == 0 || usingStyle == 2 || usingStyle == 3)
-                                    {
-                                        selectingEnemyCompanion = true;
-                                        SelectFirstEnemy();
-                                    }
-                                    else if (usingStyle == 1)
-                                    {
-                                        player.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
-                                        enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_name");
-                                        enemyName.transform.GetChild(1).gameObject.SetActive(false);
-                                        enemyName.transform.GetChild(2).gameObject.SetActive(false);
-                                        enemyName.transform.GetChild(3).gameObject.SetActive(false);
-                                        enemyName.transform.GetChild(4).gameObject.SetActive(false);
-                                        selectingCompanion = true;
-                                        canSelect = false;
-                                    }
-                                    else
-                                    {
-                                        selectingEnemyCompanion = true;
-                                        SelectAllEnemies();
-                                    }
-                                }
-                            }
+                            companionChoosingAction = false;
+                            selectedEnemy = enemy1;
+                            companion.GetComponent<PlayerTeamScript>().Attack(currentData.GetComponent<CurrentDataScript>().companionAttack, currentData.GetComponent<CurrentDataScript>().companionStyle, selectedEnemy);
                         }
-                        //Items
-                        //We change the item using the arrows and accept pressing space
-                        else if (selectingAction == 1)
+                        //When the companion is choosing the main action
+                        else if (!companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().GetBool("MenuOpened"))
                         {
-                            if (items[menuSelectionPos + scroll] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_apple_description");
-                            else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_lightpotion_description");
-                            else if (items[menuSelectionPos + scroll] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_resurrectionpotion_description");
-
-                            if (((menuSelectionPos + scroll) < (currentData.GetComponent<CurrentDataScript>().itemSize() - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
+                            //We use left and right arrows to move in the action menu
+                            if (Input.GetKeyDown(KeyCode.LeftArrow))
                             {
-                                if (menuSelectionPos < 5) companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
-                                if (menuSelectionPos == 5)
-                                {
-                                    scroll += 1;
-                                    CreateMenu();
-                                }
+                                companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Left");
                             }
-                            else if (menuSelectionPos >= 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                            else if (Input.GetKeyDown(KeyCode.RightArrow))
                             {
-                                if (menuSelectionPos > 0) companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
-                                if (menuSelectionPos == 0 && scroll > 0)
-                                {
-                                    scroll -= 1;
-                                    CreateMenu();
-                                }
+                                companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Right");
                             }
-                            if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                            //We press space to select the action we want to perform
+                            //Attack
+                            if (selectingAction == 0 && Input.GetKeyDown(KeyCode.Space))
                             {
-                                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
-                                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.b, 0.0f);
-                                if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_name");
-                                else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_name");
-                                enemyName.transform.GetChild(1).gameObject.SetActive(false);
-                                enemyName.transform.GetChild(2).gameObject.SetActive(false);
-                                enemyName.transform.GetChild(3).gameObject.SetActive(false);
-                                enemyName.transform.GetChild(4).gameObject.SetActive(false);
-                                companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
-                                companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
-                                companionChoosingAction = false;
-                                if (items[menuSelectionPos] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_apple_action");
-                                else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_lightpotion_action");
-                                else if (items[menuSelectionPos] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_resurrectionpotion_action");
-                                selectingCompanion = true;
-                                canSelect = true;
-                                enemyName.SetActive(true);
+                                changePosAction.SetActive(false);
+                                CreateMenu();
+                                actionInstructions.SetActive(true);
+                                companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                             }
+                            //Item
+                            else if (selectingAction == 1 && Input.GetKeyDown(KeyCode.Space))
+                            {
+                                changePosAction.SetActive(false);
+                                CreateMenu();
+                                actionInstructions.SetActive(true);
+                                companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
+                            }
+                            //Others
+                            else if (selectingAction == 2 && Input.GetKeyDown(KeyCode.Space))
+                            {
+                                changePosAction.SetActive(false);
+                                CreateMenu();
+                                actionInstructions.SetActive(true);
+                                companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
+                            }
+                            //We swap team position pressing Z
+                            if (!playerTurnCompleted && Input.GetKeyDown(KeyCode.Z)) StartChangePosition(2);
                         }
-                        //Other
-                        //We change the action using the arrows and accept pressing space
-                        else if (selectingAction == 2)
+                        //When the action is already choosen
+                        else
                         {
-                            if (!changeCompanion)
+                            //Attack
+                            if (selectingAction == 0)
                             {
-                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_changepartner_description");
-                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_defend_description");
-                                else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_flee_description");
-
-                                if ((menuSelectionPos < 2) && Input.GetKeyDown(KeyCode.DownArrow))
+                                //Adventurer
+                                //We change the attack using the arrows and accept pressing space
+                                if (currentCompanion == 0)
                                 {
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
-                                }
-                                else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
-                                {
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
-                                }
-                                if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
-                                {
-                                    if (menuSelectionPos == 0)
+                                    usingStyle = menuSelectionPos;
+                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_sword_description");
+                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_glance_description");
+                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_swordspin_description");
+                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_dragonslayerbow_description");
+                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_bk-47_description");
+                                    if ((menuSelectionPos < currentData.GetComponent<CurrentDataScript>().adventurerLvl + 1) && Input.GetKeyDown(KeyCode.DownArrow))
                                     {
-                                        changeCompanion = true;
-                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("SelectCompanion");
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                                    }
+                                    else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                                    {
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                                    }
+                                    if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                                    {
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
+                                        companionChoosingAction = false;
+                                        actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
+                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
+                                        if (usingStyle == 0)
+                                        {
+                                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_sword_action");
+                                            attackType = 0;
+                                        }
+                                        else if (usingStyle == 1)
+                                        {
+                                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_glance_action");
+                                            attackType = 2;
+                                        }
+                                        else if (usingStyle == 2)
+                                        {
+                                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_swordspin_action");
+                                            attackType = 0;
+                                        }
+                                        else if (usingStyle == 3)
+                                        {
+                                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_dragonslayerbow_action");
+                                            attackType = 1;
+                                        }
+                                        else if (usingStyle == 4)
+                                        {
+                                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_bk-47_action");
+                                            attackType = 1;
+                                        }
+                                        selectingEnemyCompanion = true;
+                                        enemyName.SetActive(true);
+                                        if (usingStyle < 3) SelectFirstEnemy();
+                                        else if (usingStyle == 3) SelectGroundEnemies();
+                                        else SelectAllEnemies();
+                                    }
+                                }
+                                //Wizard
+                                //We change the attack using the arrows and accept pressing space
+                                else if (currentCompanion == 1)
+                                {
+                                    usingStyle = menuSelectionPos;
+                                    if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicball_description");
+                                    else if (usingStyle == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_barrier_description");
+                                    else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_pulsingmagic_description");
+                                    else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicspear_description");
+                                    else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_energybomb_description");
+
+                                    if ((menuSelectionPos < currentData.GetComponent<CurrentDataScript>().wizardLvl + 1) && Input.GetKeyDown(KeyCode.DownArrow))
+                                    {
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                                    }
+                                    else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                                    {
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                                    }
+                                    if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                                    {
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
+                                        companionChoosingAction = false;
+                                        actionInstructions.GetComponent<Image>().color = new Vector4(actionInstructions.GetComponent<Image>().color.r, actionInstructions.GetComponent<Image>().color.g, actionInstructions.GetComponent<Image>().color.b, 0.5f);
+                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Vector4(actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.r, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.g, actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.b, 0.5f);
+                                        attackType = 1;
+                                        if (usingStyle == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicball_action");
+                                        else if (usingStyle == 1)
+                                        {
+                                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_barrier_action");
+                                            attackType = 2;
+                                        }
+                                        else if (usingStyle == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_pulsingmagic_action");
+                                        else if (usingStyle == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_magicspear_action");
+                                        else if (usingStyle == 4) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_attack_energybomb_action");
+
+                                        enemyName.SetActive(true);
+                                        if (usingStyle == 0 || usingStyle == 2 || usingStyle == 3)
+                                        {
+                                            selectingEnemyCompanion = true;
+                                            SelectFirstEnemy();
+                                        }
+                                        else if (usingStyle == 1)
+                                        {
+                                            player.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
+                                            enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_name");
+                                            enemyName.transform.GetChild(1).gameObject.SetActive(false);
+                                            enemyName.transform.GetChild(2).gameObject.SetActive(false);
+                                            enemyName.transform.GetChild(3).gameObject.SetActive(false);
+                                            enemyName.transform.GetChild(4).gameObject.SetActive(false);
+                                            selectingCompanion = true;
+                                            canSelect = false;
+                                        }
+                                        else
+                                        {
+                                            selectingEnemyCompanion = true;
+                                            SelectAllEnemies();
+                                        }
+                                    }
+                                }
+                            }
+                            //Items
+                            //We change the item using the arrows and accept pressing space
+                            else if (selectingAction == 1)
+                            {
+                                if (items[menuSelectionPos + scroll] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_apple_description");
+                                else if (items[menuSelectionPos + scroll] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_lightpotion_description");
+                                else if (items[menuSelectionPos + scroll] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_resurrectionpotion_description");
+
+                                if (((menuSelectionPos + scroll) < (currentData.GetComponent<CurrentDataScript>().itemSize() - 1)) && Input.GetKeyDown(KeyCode.DownArrow))
+                                {
+                                    if (menuSelectionPos < 5) companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                                    if (menuSelectionPos == 5)
+                                    {
+                                        scroll += 1;
                                         CreateMenu();
                                     }
-                                    else if (menuSelectionPos == 1)
+                                }
+                                else if (menuSelectionPos >= 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                                {
+                                    if (menuSelectionPos > 0) companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                                    if (menuSelectionPos == 0 && scroll > 0)
                                     {
-                                        defenseCompanion = 1;
+                                        scroll -= 1;
+                                        CreateMenu();
+                                    }
+                                }
+                                if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                                {
+                                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+                                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.b, 0.0f);
+                                    if (currentCompanion == 0) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_name");
+                                    else if (currentCompanion == 1) enemyName.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_wizard_name");
+                                    enemyName.transform.GetChild(1).gameObject.SetActive(false);
+                                    enemyName.transform.GetChild(2).gameObject.SetActive(false);
+                                    enemyName.transform.GetChild(3).gameObject.SetActive(false);
+                                    enemyName.transform.GetChild(4).gameObject.SetActive(false);
+                                    companion.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
+                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", true);
+                                    companionChoosingAction = false;
+                                    if (items[menuSelectionPos] == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_apple_action");
+                                    else if (items[menuSelectionPos] == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_lightpotion_action");
+                                    else if (items[menuSelectionPos] == 3) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_resurrectionpotion_action");
+                                    selectingCompanion = true;
+                                    canSelect = true;
+                                    enemyName.SetActive(true);
+                                }
+                            }
+                            //Other
+                            //We change the action using the arrows and accept pressing space
+                            else if (selectingAction == 2)
+                            {
+                                if (!changeCompanion)
+                                {
+                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_changepartner_description");
+                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_defend_description");
+                                    else if (menuSelectionPos == 2) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_flee_description");
+
+                                    if ((menuSelectionPos < 2) && Input.GetKeyDown(KeyCode.DownArrow))
+                                    {
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                                    }
+                                    else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                                    {
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                                    }
+                                    if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                                    {
+                                        if (menuSelectionPos == 0)
+                                        {
+                                            changeCompanion = true;
+                                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("SelectCompanion");
+                                            CreateMenu();
+                                        }
+                                        else if (menuSelectionPos == 1)
+                                        {
+                                            defenseCompanion = 1;
+                                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
+                                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                            actionInstructions.SetActive(false);
+                                            EndPlayerTurn(2);
+                                        }
+                                        else if (menuSelectionPos == 2)
+                                        {
+                                            fleeAction.transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition = new Vector2(Random.Range(-1.425f, 1.425f), fleeAction.transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition.y);
+                                            fleeRight = Random.Range(0.0f, 100.0f) > 50.0f;
+                                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                            actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_flee_action");
+                                            companion.GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
+                                            companion.GetComponent<Animator>().SetFloat("Speed", 1.5f);
+                                            fleeTime = Time.fixedTime;
+                                            player.GetComponent<Animator>().SetFloat("Speed", -0.5f);
+                                            player.GetComponent<Animator>().SetFloat("attackSpeed", 2.0f);
+                                            fleeAction.SetActive(true);
+                                            companionChoosingAction = false;
+                                            fleeing = true;
+                                        }
+                                    }
+                                }
+                                //If we select the change companion action we can choose using the arrows and accept pressing the space
+                                else
+                                {
+                                    if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_changepartner_adventurer");
+                                    else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_changepartner_wizard");
+
+                                    if ((menuSelectionPos < currentData.GetComponent<CurrentDataScript>().unlockedCompanions - 1) && Input.GetKeyDown(KeyCode.DownArrow))
+                                    {
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
+                                    }
+                                    else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
+                                    {
+                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
+                                    }
+                                    if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
+                                    {
+                                        if (menuSelectionPos == 0)
+                                        {
+                                            companion.GetComponent<PlayerTeamScript>().ChangeCompanion(0);
+                                        }
+                                        else if (menuSelectionPos == 1)
+                                        {
+                                            companion.GetComponent<PlayerTeamScript>().ChangeCompanion(1);
+                                        }
+                                        actionInstructions.SetActive(false);
+                                        companionChoosingAction = false;
+                                        changeCompanion = false;
                                         companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                                         companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
                                         companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                        actionInstructions.SetActive(false);
-                                        EndPlayerTurn(2);
-                                    }
-                                    else if (menuSelectionPos == 2)
-                                    {
-                                        fleeAction.transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition = new Vector2(Random.Range(-1.425f, 1.425f), fleeAction.transform.GetChild(2).GetComponent<RectTransform>().anchoredPosition.y);
-                                        fleeRight = Random.Range(0.0f, 100.0f) > 50.0f;
-                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                        companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                        actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_flee_action");
-                                        companion.GetComponent<Animator>().SetFloat("RunSpeed", -0.5f);
-                                        companion.GetComponent<Animator>().SetFloat("Speed", 1.5f);
-                                        fleeTime = Time.fixedTime;
-                                        player.GetComponent<Animator>().SetFloat("Speed", -0.5f);
-                                        player.GetComponent<Animator>().SetFloat("attackSpeed", 2.0f);
-                                        fleeAction.SetActive(true);
-                                        companionChoosingAction = false;
-                                        fleeing = true;
                                     }
                                 }
                             }
-                            //If we select the change companion action we can choose using the arrows and accept pressing the space
-                            else
+                            //We can return to the previous menu pressing Q
+                            if (Input.GetKeyDown(KeyCode.Q))
                             {
-                                if (menuSelectionPos == 0) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_changepartner_adventurer");
-                                else if (menuSelectionPos == 1) actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_other_changepartner_wizard");
-
-                                if ((menuSelectionPos < currentData.GetComponent<CurrentDataScript>().unlockedCompanions - 1) && Input.GetKeyDown(KeyCode.DownArrow))
+                                if (!changeCompanion)
                                 {
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Down");
-                                }
-                                else if (menuSelectionPos > 0 && Input.GetKeyDown(KeyCode.UpArrow))
-                                {
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Up");
-                                }
-                                if (Input.GetKeyDown(KeyCode.Space) && menuCanUse[menuSelectionPos])
-                                {
-                                    if (menuSelectionPos == 0)
-                                    {
-                                        companion.GetComponent<PlayerTeamScript>().ChangeCompanion(0);
-                                    }
-                                    else if (menuSelectionPos == 1)
-                                    {
-                                        companion.GetComponent<PlayerTeamScript>().ChangeCompanion(1);
-                                    }
+                                    changePosAction.SetActive(!playerTurnCompleted);
                                     actionInstructions.SetActive(false);
-                                    companionChoosingAction = false;
-                                    changeCompanion = false;
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
-                                    companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuHide", false);
                                     companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
+                                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
+                                    companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.b, 0.0f);
+                                }
+                                else
+                                {
+                                    changeCompanion = false;
+                                    CreateMenu();
                                 }
                             }
                         }
-                        //We can return to the previous menu pressing Q
-                        if (Input.GetKeyDown(KeyCode.Q))
-                        {
-                            if (!changeCompanion)
-                            {
-                                changePosAction.SetActive(!playerTurnCompleted);
-                                actionInstructions.SetActive(false);
-                                companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
-                                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
-                                companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(8).GetComponent<Image>().color.b, 0.0f);
-                            }
-                            else
-                            {
-                                changeCompanion = false;
-                                CreateMenu();
-                            }
-                        }
-                    }
+                    }                    
                 }
                 //When we select a frindly action we give it to a party member
                 else if (selectingCompanion)

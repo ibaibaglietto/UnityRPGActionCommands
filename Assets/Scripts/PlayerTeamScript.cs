@@ -428,8 +428,11 @@ public class PlayerTeamScript : MonoBehaviour
             else
             {
                 companionIn = false;
-                if(battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().EndPlayerTurn(1);
-                else battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+                if (currentData.GetComponent<CurrentDataScript>().tutorialState != 5)
+                {
+                    if (battleController.GetComponent<BattleController>().IsPlayerFirst()) battleController.GetComponent<BattleController>().EndPlayerTurn(1);
+                    else battleController.GetComponent<BattleController>().EndPlayerTurn(2);
+                }                    
                 GetComponent<Animator>().SetFloat("RunSpeed", 0.0f);
             }
         }
