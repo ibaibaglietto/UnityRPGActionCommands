@@ -11,6 +11,7 @@ public class CheckFlagsScript : MonoBehaviour
     private GameObject JailTrigger;
     private Transform JailCompanionNPC;
     private Transform JailCompanion;
+    private GameObject JailFirePlaceTutotial;
     public Material buttonPressed;
     //1-2
     private GameObject storageItem1;
@@ -232,6 +233,7 @@ public class CheckFlagsScript : MonoBehaviour
         SceneManager.sceneLoaded -= CheckFlags;
     }
 
+    //Function to check all the flags
     void CheckFlags(Scene scene, LoadSceneMode mode)
     {
         Debug.Log(scene.name);
@@ -240,14 +242,16 @@ public class CheckFlagsScript : MonoBehaviour
             JailGuard = GameObject.Find("BanditWorld").transform;
             JailDoor = GameObject.Find("Jail").transform;
             JailTrigger = GameObject.Find("BattleTrigger");
-            JailCompanionNPC = GameObject.Find("PrisonerAdventurer").transform;
+            JailCompanionNPC = GameObject.Find("RevivePlayer").transform;
             JailCompanion = GameObject.Find("CompanionWorld").transform;
+            JailFirePlaceTutotial = GameObject.Find("FirePlaceTutorial");
             if (gameObject.GetComponent<CurrentDataScript>().clearJail == 1)
             {
                 Destroy(JailGuard.gameObject);
                 JailDoor.GetComponent<Animator>().SetBool("Opened", true);
                 Destroy(JailTrigger);
                 Destroy(JailCompanionNPC.gameObject);
+                Destroy(JailFirePlaceTutotial);
                 JailCompanion.GetComponent<Rigidbody>().useGravity = true;
                 JailCompanion.GetComponent<BoxCollider>().enabled = true;
                 JailCompanion.GetComponent<SphereCollider>().enabled = true;
@@ -700,9 +704,26 @@ public class CheckFlagsScript : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    //Function to clear the jail when we finish the tutorial
+    public void ClearJail()
     {
-        
+        JailGuard = GameObject.Find("BanditWorld").transform;
+        JailDoor = GameObject.Find("Jail").transform;
+        JailTrigger = GameObject.Find("BattleTrigger");
+        JailCompanionNPC = GameObject.Find("RevivePlayer").transform;
+        JailCompanion = GameObject.Find("CompanionWorld").transform;
+        if (gameObject.GetComponent<CurrentDataScript>().clearJail == 1)
+        {
+            Destroy(JailGuard.gameObject);
+            JailDoor.GetComponent<Animator>().SetBool("Opened", true);
+            Destroy(JailTrigger);
+            Destroy(JailCompanionNPC.gameObject);
+            JailCompanion.GetComponent<Rigidbody>().useGravity = true;
+            JailCompanion.GetComponent<BoxCollider>().enabled = true;
+            JailCompanion.GetComponent<SphereCollider>().enabled = true;
+            JailCompanion.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            JailDoor.GetChild(6).GetComponent<MeshRenderer>().material = buttonPressed;
+            JailDoor.GetChild(6).GetChild(0).GetComponent<BoxCollider>().enabled = false;
+        }
     }
 }

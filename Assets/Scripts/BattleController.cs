@@ -386,6 +386,8 @@ public class BattleController : MonoBehaviour
     private bool bossDieAnimationEnded;
     //A boolean to know if all the enemies are dead;
     private bool allEnemiesDead;
+    //The companion life
+    private GameObject companionLife;
     //The UI effects source and clips
     private AudioSource UISource;
     [SerializeField] private AudioClip correctCommandAudio;
@@ -417,6 +419,7 @@ public class BattleController : MonoBehaviour
         enemyName = GameObject.Find("EnemyNames");
         fleeAction = GameObject.Find("FleeAction");
         changePosAction = GameObject.Find("ChangeOrder");
+        companionLife = GameObject.Find("CompanionLifeBckImage");
         soul1 = GameObject.Find("Soul1Fill");
         soul2 = GameObject.Find("Soul2Fill");
         soul3 = GameObject.Find("Soul3Fill");
@@ -767,7 +770,7 @@ public class BattleController : MonoBehaviour
                 //The fase when the player chooses what action to do
                 if (playerChoosingAction)
                 {
-                    if (!tutorialTurn && currentData.GetComponent<CurrentDataScript>().tutorialState < 6)
+                    if (!tutorialTurn && currentData.GetComponent<CurrentDataScript>().tutorialState < 8)
                     {
                         if (!talking)
                         {
@@ -855,6 +858,34 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).GetChild(0).GetChild(4).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
                                 player.GetChild(0).GetChild(0).GetChild(4).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
                             }
+                            else if (currentData.GetComponent<CurrentDataScript>().tutorialState == 7)
+                            {
+                                GetComponent<DialogueManager>().StartBattleDialogue(new Dialogue(new Transform[] { player.transform }, new string[] { "npc_prisonerAdventurer_1" }), false);
+                                player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(1).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(2).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(3).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(3).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(3).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(4).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(4).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                player.GetChild(0).GetChild(0).GetChild(4).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, player.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a); 
+                                companion.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(1).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(2).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                            }
                             waitTalk = false;
                         }
                         //When the player is talking we display the next sentece pressing X
@@ -882,7 +913,7 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetTrigger("Right");
                             }
                             //We press space to select the action we want to perform
-                            if (selectingAction == 0 && Input.GetKeyDown(KeyCode.Space) && GetGroundEnemies() != null && (currentData.GetComponent<CurrentDataScript>().tutorialState > 6 || currentData.GetComponent<CurrentDataScript>().tutorialState == 1))
+                            if (selectingAction == 0 && Input.GetKeyDown(KeyCode.Space) && GetGroundEnemies() != null && (currentData.GetComponent<CurrentDataScript>().tutorialState > 7 || currentData.GetComponent<CurrentDataScript>().tutorialState == 1))
                             {
                                 //if nothing is unlocked we change the UI state and open the first sword attack
                                 if (currentData.GetComponent<CurrentDataScript>().swordStyles == 0)
@@ -895,6 +926,7 @@ public class BattleController : MonoBehaviour
                                     actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_sword_normalsword_action");
                                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                                     attackType = 0;
+                                    usingStyle = 0;
                                     selectingEnemy = true;
                                     enemyName.SetActive(true);
                                     SelectFirstEnemy();
@@ -908,7 +940,7 @@ public class BattleController : MonoBehaviour
                                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                                 }
                             }
-                            else if (selectingAction == 1 && Input.GetKeyDown(KeyCode.Space) && (currentData.GetComponent<CurrentDataScript>().tutorialState > 6 || currentData.GetComponent<CurrentDataScript>().tutorialState == 2))
+                            else if (selectingAction == 1 && Input.GetKeyDown(KeyCode.Space) && (currentData.GetComponent<CurrentDataScript>().tutorialState > 7 || currentData.GetComponent<CurrentDataScript>().tutorialState == 2))
                             {
                                 //if nothing is unlocked we change the UI state and open the first shuriken attack
                                 if (currentData.GetComponent<CurrentDataScript>().shurikenStyles == 0)
@@ -921,6 +953,7 @@ public class BattleController : MonoBehaviour
                                     actionInstructions.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_player_shuriken_normalshuriken_action");
                                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
                                     attackType = 1;
+                                    usingStyle = 0;
                                     selectingEnemy = true;
                                     enemyName.SetActive(true);
                                     SelectFirstEnemy();
@@ -935,7 +968,7 @@ public class BattleController : MonoBehaviour
                                 }
                             }
                             //We open the Objects menu
-                            else if (selectingAction == 2 && Input.GetKeyDown(KeyCode.Space) && currentData.GetComponent<CurrentDataScript>().itemSize() > 0 && (currentData.GetComponent<CurrentDataScript>().tutorialState > 6 || currentData.GetComponent<CurrentDataScript>().tutorialState == 3))
+                            else if (selectingAction == 2 && Input.GetKeyDown(KeyCode.Space) && currentData.GetComponent<CurrentDataScript>().itemSize() > 0 && (currentData.GetComponent<CurrentDataScript>().tutorialState > 7 || currentData.GetComponent<CurrentDataScript>().tutorialState == 3))
                             {
                                 changePosAction.SetActive(false);
                                 CreateMenu();
@@ -943,7 +976,7 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                             }
                             //We open the Special menu
-                            else if (selectingAction == 3 && Input.GetKeyDown(KeyCode.Space) && (currentData.GetComponent<CurrentDataScript>().tutorialState > 6 || currentData.GetComponent<CurrentDataScript>().tutorialState == 6))
+                            else if (selectingAction == 3 && Input.GetKeyDown(KeyCode.Space) && (currentData.GetComponent<CurrentDataScript>().tutorialState > 7 || currentData.GetComponent<CurrentDataScript>().tutorialState == 6))
                             {
                                 changePosAction.SetActive(false);
                                 CreateMenu();
@@ -951,7 +984,7 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                             }
                             //We open the Others menu
-                            else if (selectingAction == 4 && Input.GetKeyDown(KeyCode.Space) && currentData.GetComponent<CurrentDataScript>().tutorialState > 6)
+                            else if (selectingAction == 4 && Input.GetKeyDown(KeyCode.Space) && currentData.GetComponent<CurrentDataScript>().tutorialState > 7)
                             {
                                 changePosAction.SetActive(false);
                                 CreateMenu();
@@ -959,7 +992,7 @@ public class BattleController : MonoBehaviour
                                 player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                             }
                             //We change the party order
-                            if (!companionTurnCompleted && Input.GetKeyDown(KeyCode.Z) && !companion.GetComponent<PlayerTeamScript>().IsDead()) StartChangePosition(1);
+                            if (!companionTurnCompleted && Input.GetKeyDown(KeyCode.Z) && !companion.GetComponent<PlayerTeamScript>().IsDead() && currentData.GetComponent<CurrentDataScript>().tutorialState > 7) StartChangePosition(1);
                         }
                         else
                         {
@@ -1230,7 +1263,7 @@ public class BattleController : MonoBehaviour
                             {
                                 if (!changeCompanion)
                                 {
-                                    changePosAction.SetActive(!companionTurnCompleted && !companion.GetComponent<PlayerTeamScript>().IsDead());
+                                    changePosAction.SetActive(!companionTurnCompleted && !companion.GetComponent<PlayerTeamScript>().IsDead() && currentData.GetComponent<CurrentDataScript>().tutorialState > 7);
                                     actionInstructions.SetActive(false);
                                     player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                                     player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color = new Vector4(player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.r, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.g, player.transform.GetChild(0).transform.GetChild(0).transform.GetChild(8).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
@@ -1425,7 +1458,7 @@ public class BattleController : MonoBehaviour
                     {
                         if((selectingAction == 0 && currentData.GetComponent<CurrentDataScript>().swordStyles == 0) || (selectingAction == 1 && currentData.GetComponent<CurrentDataScript>().shurikenStyles == 0))
                         {
-                            changePosAction.SetActive(!companionTurnCompleted && !companion.GetComponent<PlayerTeamScript>().IsDead());
+                            changePosAction.SetActive(!companionTurnCompleted && !companion.GetComponent<PlayerTeamScript>().IsDead() && currentData.GetComponent<CurrentDataScript>().tutorialState > 7);
                             playerChoosingAction = true;
                             actionInstructions.SetActive(false);
                             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
@@ -2563,9 +2596,35 @@ public class BattleController : MonoBehaviour
                 //Choosing action
                 if (companionChoosingAction)
                 {
-                    if (currentData.GetComponent<CurrentDataScript>().tutorialState == 6)
+                    if (!tutorialTurn && currentData.GetComponent<CurrentDataScript>().tutorialState < 8)
                     {
-
+                        if (!talking)
+                        {
+                            talking = true;
+                            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", false);
+                            GetComponent<DialogueManager>().SetTutorial(true);
+                            tutorialTime = Time.fixedTime;
+                            waitTalk = true;
+                        }
+                        if (Time.fixedTime - tutorialTime > 1.5f && waitTalk)
+                        {
+                            if (currentData.GetComponent<CurrentDataScript>().tutorialState == 6)
+                            {
+                                GetComponent<DialogueManager>().StartBattleDialogue(new Dialogue(new Transform[] { companion.transform }, new string[] { "npc_prisonerAdventurer_1" }), false);
+                                companion.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(1).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, companion.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(1).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(2).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, companion.GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetComponent<RawImage>().color = new Color(0.4f, 0.4f, 0.4f, companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<RawImage>().color.a);
+                                companion.GetChild(0).GetChild(0).GetChild(2).GetChild(0).GetChild(0).GetComponent<Text>().color = new Color(0.4f, 0.4f, 0.4f, companion.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().color.a);
+                            }
+                            waitTalk = false;
+                        }
+                        //When the adventurer is talking during the tutorial we display the next sentece pressing X
+                        if (talking && Input.GetKeyDown(KeyCode.X)) GetComponent<DialogueManager>().DisplayNextSentence();
                     }
                     else
                     {
@@ -2598,7 +2657,7 @@ public class BattleController : MonoBehaviour
                                 companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                             }
                             //Item
-                            else if (selectingAction == 1 && Input.GetKeyDown(KeyCode.Space))
+                            else if (selectingAction == 1 && Input.GetKeyDown(KeyCode.Space) && currentData.GetComponent<CurrentDataScript>().tutorialState != 7 && items.Length > 0)
                             {
                                 changePosAction.SetActive(false);
                                 CreateMenu();
@@ -2606,7 +2665,7 @@ public class BattleController : MonoBehaviour
                                 companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                             }
                             //Others
-                            else if (selectingAction == 2 && Input.GetKeyDown(KeyCode.Space))
+                            else if (selectingAction == 2 && Input.GetKeyDown(KeyCode.Space) && currentData.GetComponent<CurrentDataScript>().tutorialState != 7)
                             {
                                 changePosAction.SetActive(false);
                                 CreateMenu();
@@ -2614,7 +2673,7 @@ public class BattleController : MonoBehaviour
                                 companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", true);
                             }
                             //We swap team position pressing Z
-                            if (!playerTurnCompleted && Input.GetKeyDown(KeyCode.Z)) StartChangePosition(2);
+                            if (!playerTurnCompleted && Input.GetKeyDown(KeyCode.Z) && currentData.GetComponent<CurrentDataScript>().tutorialState > 7) StartChangePosition(2);
                         }
                         //When the action is already choosen
                         else
@@ -2877,7 +2936,7 @@ public class BattleController : MonoBehaviour
                             {
                                 if (!changeCompanion)
                                 {
-                                    changePosAction.SetActive(!playerTurnCompleted);
+                                    changePosAction.SetActive(!playerTurnCompleted && currentData.GetComponent<CurrentDataScript>().tutorialState > 7);
                                     actionInstructions.SetActive(false);
                                     companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("MenuOpened", false);
                                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color = new Vector4(companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.r, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.g, companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(7).GetComponent<Image>().color.b, 0.0f);
@@ -5364,6 +5423,8 @@ public class BattleController : MonoBehaviour
     //A function to end players turn. User-->1 player, User-->2 companion
     public void EndPlayerTurn(int user)
     {
+        //If we are in the tutorial we reset the tutorial state to let the player or companion talk
+        if (currentData.GetComponent<CurrentDataScript>().tutorialState < 8) tutorialTurn = false;
         //We confirm that the player and the companion are in the correct position
         player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -2.05f);
         companion.transform.position = new Vector3(companion.transform.position.x, companion.transform.position.y, -2.04f);
@@ -5397,8 +5458,7 @@ public class BattleController : MonoBehaviour
             if (playerTurn && !firstPosPlayer && attackType == 2) player.GetChild(0).transform.position = new Vector3(player.GetChild(0).transform.position.x - 1.4f, player.GetChild(0).transform.position.y, player.GetChild(0).transform.position.z);
             //If both team mates completed their turn 
             if (playerTurnCompleted && companionTurnCompleted)
-            {
-                if(currentData.GetComponent<CurrentDataScript>().tutorialState < 3) tutorialTurn = false;
+            {                
                 //We put the color back to normal
                 player.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, player.GetComponent<SpriteRenderer>().color.a);
                 companion.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, companion.GetComponent<SpriteRenderer>().color.a);
@@ -5579,7 +5639,7 @@ public class BattleController : MonoBehaviour
                 {
 
                     if (currentData.GetComponent<CurrentDataScript>().unlockedCompanions < 1) changePosAction.SetActive(false);
-                    else changePosAction.SetActive(true);
+                    else changePosAction.SetActive(currentData.GetComponent<CurrentDataScript>().tutorialState > 8);
                 }
                 //If they are dead we start the player turn
                 if (companion.GetComponent<PlayerTeamScript>().IsDead())
@@ -6663,6 +6723,21 @@ public class BattleController : MonoBehaviour
             player.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
             currentData.GetComponent<CurrentDataScript>().tutorialState += 1;
             tutorialTurn = true;
+            if (currentData.GetComponent<CurrentDataScript>().tutorialState == 6)
+            {
+                companionLife.GetComponent<RawImage>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                companionLife.transform.GetChild(0).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                companionLife.transform.GetChild(1).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                companionLife.transform.GetChild(2).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                companionLife.transform.GetChild(3).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            }
+            if (currentData.GetComponent<CurrentDataScript>().tutorialState == 8) changePosAction.SetActive(true);
+        }
+        else if (playerTeamTurn && companionTurn && !finalAttack)
+        {
+            companion.GetChild(0).transform.GetChild(0).GetComponent<Animator>().SetBool("Active", true);
+            currentData.GetComponent<CurrentDataScript>().tutorialState += 1;
+            tutorialTurn = true;
         }
     }
 
@@ -7238,6 +7313,11 @@ public class BattleController : MonoBehaviour
         {
             canvas.GetComponent<WorldCanvasScript>().HideUI();
             endBattleImage.GetComponent<Animator>().SetTrigger("end");
+            if (currentData.GetComponent<CurrentDataScript>().tutorialState == 8)
+            {
+                currentData.GetComponent<CurrentDataScript>().tutorialState += 1;
+                currentData.GetComponent<CurrentDataScript>().clearJail = 1;
+            }
         }
         else
         {
@@ -7892,7 +7972,7 @@ public class BattleController : MonoBehaviour
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().sprite = firstSkill;
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(1).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_sword_name");
                     companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).transform.GetChild(2).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_sword_lp");
-                    if (GetGroundEnemies() != null)
+                    if (GetGroundEnemies() != null && currentData.GetComponent<CurrentDataScript>().tutorialState != 7)
                     {
                         menuCanUse[0] = true;
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(1).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -7918,7 +7998,7 @@ public class BattleController : MonoBehaviour
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().sprite = thirdSkill;
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(1).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_swordspin_name");
                         companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(2).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("combat_adventurer_attack_swordspin_lp");
-                        if (!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(3) || GetGroundEnemies() == null)
+                        if ((!lightPointsUI.GetComponent<LightPointsScript>().CanUseHability(3) || GetGroundEnemies() == null) || currentData.GetComponent<CurrentDataScript>().tutorialState == 7)
                         {
                             companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);
                             companion.transform.GetChild(0).transform.GetChild(0).transform.GetChild(6).transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().color = new Vector4(0.55f, 0.55f, 0.55f, 1.0f);

@@ -30490,6 +30490,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054096753}
   m_CullTransparentMesh: 0
+--- !u!1 &1055996292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1055996295}
+  - component: {fileID: 1055996294}
+  - component: {fileID: 1055996293}
+  m_Layer: 0
+  m_Name: FirePlaceTutorial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1055996293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055996292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3284d319503c6e247993d665e76634ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogue:
+    speakers:
+    - {fileID: 1102842443}
+    dialogueChanges: 
+    prevRest: 0
+    shop: 0
+    prevBattle: 0
+    move: 0
+    moveDir: 0
+    movePos: {x: 0, y: 0}
+    sentences:
+    - npc_prisoner1_1
+--- !u!65 &1055996294
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055996292}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 3.2530518, z: 1}
+  m_Center: {x: 0, y: 1.1265259, z: 0}
+--- !u!4 &1055996295
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055996292}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.242, y: 139.087, z: -9.886}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 27
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1064176539
 GameObject:
   m_ObjectHideFlags: 0
@@ -35879,7 +35948,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2215723681896468820, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.14
+      value: -4.12
       objectReference: {fileID: 0}
     - target: {fileID: 2215723681896468820, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
       propertyPath: m_LocalPosition.y
@@ -35887,7 +35956,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2215723681896468820, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.609
+      value: -9.81
       objectReference: {fileID: 0}
     - target: {fileID: 2215723681896468820, guid: b438fb668611fa546a7bfbee09400b38, type: 3}
       propertyPath: m_LocalRotation.x
@@ -39436,9 +39505,9 @@ MonoBehaviour:
   playerCurrentLight: 5
   souls: 1
   playerLvl: 1
-  playerHeartLvl: 1
-  playerLightLvl: 1
-  playerBadgeLvl: 1
+  playerHeartLvl: 0
+  playerLightLvl: 0
+  playerBadgeLvl: 0
   lvlExp: 0
   currentCoins: 0
   spentGP: 0
@@ -39452,28 +39521,28 @@ MonoBehaviour:
   movUp: 0
   movDown: 0
   currentCompanion: 1
-  unlockedCompanions: 0
-  adventurerCurrentHealth: 27
-  wizardCurrentHealth: 28
-  adventurerLvl: 3
-  wizardLvl: 3
-  lightSword: 1
-  multistrikeSword: 1
-  lightShuriken: 1
-  fireShuriken: 1
+  unlockedCompanions: 1
+  adventurerCurrentHealth: 10
+  wizardCurrentHealth: 15
+  adventurerLvl: 1
+  wizardLvl: 1
+  lightSword: 0
+  multistrikeSword: 0
+  lightShuriken: 0
+  fireShuriken: 0
   HPUp: 0
   LPUp: 0
   compHPUp: 0
   lightSwordFound: 0
   multistrikeSwordFound: 0
-  lightShurikenFound: 1
+  lightShurikenFound: 0
   fireShurikenFound: 0
   HPUpFound: 0
   LPUpFound: 0
   compHPUpFound: 0
-  availableGems: 1
-  swordStyles: 3
-  shurikenStyles: 3
+  availableGems: 0
+  swordStyles: 1
+  shurikenStyles: 1
   master: 0
   music: 0
   effects: 0
@@ -39502,8 +39571,8 @@ MonoBehaviour:
   playerStyle: 0
   companionAttack: 0
   companionStyle: 0
-  tutorialState: 3
-  clearJail: 0
+  tutorialState: 10
+  clearJail: 1
   storageItem1: 0
   storageItem2: 0
   cityItem1: 0
@@ -49158,6 +49227,10 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2216296797632137510, guid: 8077726928e712146b10585b9f187d5b, type: 3}
+      propertyPath: m_CastShadows
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2432510197073434861, guid: 8077726928e712146b10585b9f187d5b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 13.398
@@ -52048,6 +52121,10 @@ PrefabInstance:
     - target: {fileID: 2216296797632137510, guid: 8077726928e712146b10585b9f187d5b, type: 3}
       propertyPath: m_FlipX
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2216296797632137510, guid: 8077726928e712146b10585b9f187d5b, type: 3}
+      propertyPath: m_CastShadows
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2432510197073434861, guid: 8077726928e712146b10585b9f187d5b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -61602,6 +61679,10 @@ PrefabInstance:
     - target: {fileID: 2216296797632137510, guid: 8077726928e712146b10585b9f187d5b, type: 3}
       propertyPath: m_FlipX
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2216296797632137510, guid: 8077726928e712146b10585b9f187d5b, type: 3}
+      propertyPath: m_CastShadows
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2432510197073434861, guid: 8077726928e712146b10585b9f187d5b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -73171,6 +73252,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1691045070}
     m_Modifications:
+    - target: {fileID: 1521444777593029966, guid: 1fb22decdb505e344aaaf4075b36128b, type: 3}
+      propertyPath: m_CastShadows
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1924781068328888752, guid: 1fb22decdb505e344aaaf4075b36128b, type: 3}
       propertyPath: dialogue.speakers.Array.size
       value: 3

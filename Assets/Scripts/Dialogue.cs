@@ -37,4 +37,17 @@ public class Dialogue
         dialogueChanges = null;
         sentences = se;
     }
+
+    public Dialogue(Transform[] sp, string[] se, bool m, int md, Vector2 p)
+    {
+        speakers = sp;
+        prevRest = false;
+        shop = false;
+        prevBattle = false;
+        move = m;
+        moveDir = md;
+        movePos = p;
+        dialogueChanges = null;
+        sentences = se;
+    }
 }

@@ -232,6 +232,15 @@ public class WorldCompanionMovementScript : MonoBehaviour
         return grounded;
     }
 
+    //Function to make the companion appear when we unlock the adventurer
+    public void AppearCompanion()
+    {
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<BoxCollider>().enabled = true;
+        GetComponent<SphereCollider>().enabled = true;
+        transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+
     //Function to change the following mode
     public void ChangeFollow(bool f, float z)
     {

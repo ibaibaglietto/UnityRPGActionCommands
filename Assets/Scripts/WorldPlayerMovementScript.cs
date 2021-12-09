@@ -307,9 +307,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
         currentData.GetComponent<CurrentDataScript>().swordStyles = currentData.GetComponent<CurrentDataScript>().lightSword + currentData.GetComponent<CurrentDataScript>().multistrikeSword;
         currentData.GetComponent<CurrentDataScript>().shurikenStyles = currentData.GetComponent<CurrentDataScript>().lightShuriken + currentData.GetComponent<CurrentDataScript>().fireShuriken;
         SpentGP();
-        canvas.GetComponent<Animator>().SetBool("Hide", true);
-        GetComponent<Animator>().SetBool("Die", true);
-        playerDead = true;
         if (currentData.GetComponent<CurrentDataScript>().changingScene == 1)
         {
             if (currentData.GetComponent<CurrentDataScript>().tutorialState != 3)
