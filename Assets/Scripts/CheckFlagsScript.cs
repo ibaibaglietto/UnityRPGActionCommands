@@ -84,6 +84,7 @@ public class CheckFlagsScript : MonoBehaviour
     private GameObject waterCompanion;
     private GameObject waterBattleTrigger1;
     private GameObject waterBattleTrigger2;
+    private GameObject waterMoveBattleTrigger;
     //1-7
     private GameObject bridge1Coin1;
     private GameObject bridge1Coin2;
@@ -400,6 +401,7 @@ public class CheckFlagsScript : MonoBehaviour
             waterCompanion = GameObject.Find("Wizard");
             waterBattleTrigger1 = GameObject.Find("BattleTrigger1");
             waterBattleTrigger1 = GameObject.Find("BattleTrigger2");
+            waterMoveBattleTrigger = GameObject.Find("MoveBattleTrigger");
             if (gameObject.GetComponent<CurrentDataScript>().waterItem1 == 1) Destroy(waterItem1);
             if (gameObject.GetComponent<CurrentDataScript>().waterClear == 1)
             {
@@ -408,6 +410,7 @@ public class CheckFlagsScript : MonoBehaviour
                 Destroy(waterCompanion);
                 Destroy(waterBattleTrigger1);
                 Destroy(waterBattleTrigger2);
+                Destroy(waterMoveBattleTrigger);
             }
         }
         else if (SceneManager.GetActiveScene().name == "1-7")

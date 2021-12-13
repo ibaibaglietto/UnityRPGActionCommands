@@ -461,6 +461,7 @@ public class CurrentDataScript : MonoBehaviour
         else if (flag == "citySideCoin24") citySideCoin24 = 1;
         //1-6
         else if (flag == "waterItem1") waterItem1 = 1;
+        else if (flag == "waterClear") waterClear = 1;
         //1-7
         else if (flag == "bridge1Coin1") bridge1Coin1 = 1;
         else if (flag == "bridge1Coin2") bridge1Coin2 = 1;

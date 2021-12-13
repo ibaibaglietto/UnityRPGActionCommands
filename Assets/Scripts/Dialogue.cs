@@ -22,6 +22,8 @@ public class Dialogue
     public int moveDir;
     //A vector2(x,z) to know the position the player must move (optional)
     public Vector2 movePos;
+    //A bool to know if there must be a partner change after the dialogue
+    public bool partnerChange;
 
     public string[] sentences;
      
@@ -36,6 +38,7 @@ public class Dialogue
         movePos = new Vector2(0, 0);
         dialogueChanges = null;
         sentences = se;
+        partnerChange = false;
     }
 
     public Dialogue(Transform[] sp, string[] se, bool m, int md, Vector2 p)
@@ -49,5 +52,6 @@ public class Dialogue
         movePos = p;
         dialogueChanges = null;
         sentences = se;
+        partnerChange = false;
     }
 }

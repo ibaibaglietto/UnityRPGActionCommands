@@ -258,7 +258,13 @@ public class WorldCompanionMovementScript : MonoBehaviour
         companionLife.GetComponent<PlayerLifeScript>().SetUser(user);
     }
 
-    
+    //Function to change the companion when a new one joins
+    public void ChangeNewCompanion(int comp)
+    {
+        currentData.GetComponent<CurrentDataScript>().currentCompanion = comp;
+        user = comp;
+        companionLife.GetComponent<PlayerLifeScript>().SetUser(user);
+    }
 
     //Function to tp the companion to the player
     private void TpToPlayer()

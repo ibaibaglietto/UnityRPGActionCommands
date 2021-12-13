@@ -51,6 +51,8 @@ public class DialogueManager : MonoBehaviour
     private int actualDialogueNumb;
     //An int to know the number of the actual speaker
     private int actualSpeaker;
+    //A bool to know if there is a partner change after the dialogue
+    private bool partnerChange;
 
     void Start()
     {
@@ -80,8 +82,10 @@ public class DialogueManager : MonoBehaviour
         move = dialogue.move;
         moveDir = dialogue.moveDir;
         movePos = dialogue.movePos;
+        partnerChange = dialogue.partnerChange;
         battle = false;
         player = GameObject.Find("PlayerWorld");
+        if (partnerChange) speakers[0].GetComponent<Animator>().SetBool("Shielded", false);
         //We end the move post dialogue mode when the player enters a dialogue before finishing the movement
         player.GetComponent<WorldPlayerMovementScript>().EndMovePostDialogue();
         //We open the dialogue box
@@ -194,6 +198,14 @@ public class DialogueManager : MonoBehaviour
             player.GetComponent<WorldPlayerMovementScript>().EndDialogue();
             speakers[0].GetComponent<WorldEnemy>().StartBattle(0, 0, 0);
             speakers[0].GetComponent<WorldEnemy>().SetInBattle(true);
+        }
+        else if (partnerChange)
+        {
+            currentData.GetComponent<CurrentDataScript>().unlockedCompanions += 1;
+            currentData.GetComponent<CurrentDataScript>().currentCompanion = 2;
+            speakers[0].GetComponent<Animator>().SetTrigger("changeIdle");
+            speakers[1].GetChild(0).GetComponent<Animator>().SetTrigger("changeIdle");
+            player.GetComponent<WorldPlayerMovementScript>().EndDialogue();
         }
         else
         {            

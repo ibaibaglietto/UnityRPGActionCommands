@@ -58,6 +58,12 @@ public class WorldEnemy : MonoBehaviour
     private bool rolling;
     //A bool to know that the enemy has started talking after the first tutorial
     private bool talking;
+    //A bool to know if there is a dialogue after the combat
+    [SerializeField] private bool isDialogue;
+    //The dialogue after the combat
+    [SerializeField] private Dialogue afterCombatDialogue;
+    //A bool to know if there is a flag that must be raised after the combat
+    [SerializeField] private bool isFlag;
 
     void Start()
     {
@@ -148,29 +154,7 @@ public class WorldEnemy : MonoBehaviour
                 animator.SetFloat("SpeedX", speedX);
                 if (speedX != 0 || speedZ != 0) animator.SetBool("Moving", true);
                 else animator.SetBool("Moving", false);
-            }
-            else
-            {
-                if (currentData.GetComponent<CurrentDataScript>().enemyDied == 1)
-                {
-                    animator.SetTrigger("Die");
-                    died = true;
-                    if (linkedEnemy != null) linkedEnemy.GetComponent<WorldEnemy>().KillEnemy();
-                    if (linkedNPCs.Length != 0)
-                    {
-                        for (int i = 0; i < linkedNPCs.Length; i++) Destroy(linkedNPCs[i].gameObject);
-                    }
-                    inBattle = false;
-                    currentData.GetComponent<CurrentDataScript>().enemyDied = 0;
-                    speedX = 0.0f;
-                    speedZ = 0.0f;
-                }
-                else
-                {
-                    inBattle = false;
-                    if (linkedEnemy != null) linkedEnemy.GetComponent<WorldEnemy>().SetInBattle(false);
-                }
-            }
+            }            
         }
         else if (currentData.GetComponent<CurrentDataScript>().playerCurrentHealth <= 0 && currentData.GetComponent<CurrentDataScript>().tutorialState == 3)
         {
@@ -181,6 +165,25 @@ public class WorldEnemy : MonoBehaviour
             player.GetComponent<WorldPlayerMovementScript>().StartDialogue(new Dialogue(new Transform[] { transform }, new string[] { "npc_prisonerAdventurer_1" }));
             talking = true;
             currentData.GetComponent<CurrentDataScript>().playerCurrentHealth = 10;
+        }
+        if (currentData.GetComponent<CurrentDataScript>().enemyDied == 1 && currentData.GetComponent<CurrentDataScript>().battle != 0)
+        {
+            animator.SetTrigger("Die");
+            died = true;
+            if (linkedEnemy != null) linkedEnemy.GetComponent<WorldEnemy>().KillEnemy();
+            if (linkedNPCs.Length != 0)
+            {
+                for (int i = 0; i < linkedNPCs.Length; i++) Destroy(linkedNPCs[i].gameObject);
+            }
+            inBattle = false;
+            currentData.GetComponent<CurrentDataScript>().enemyDied = 0;
+            speedX = 0.0f;
+            speedZ = 0.0f;
+        }
+        else
+        {
+            inBattle = false;
+            if (linkedEnemy != null) linkedEnemy.GetComponent<WorldEnemy>().SetInBattle(false);
         }
     }
 
@@ -200,6 +203,13 @@ public class WorldEnemy : MonoBehaviour
             StartBattle(0, 0,0);
             inBattle = true;
         }
+    }
+
+    //Function to start the dialogue if there is one
+    public void StartAfterCombatDialogue()
+    {
+        if (isDialogue) player.GetComponent<WorldPlayerMovementScript>().StartDialogue(afterCombatDialogue); 
+        if (isFlag) RaiseFlag();
     }
 
     //Function to set the talking bool

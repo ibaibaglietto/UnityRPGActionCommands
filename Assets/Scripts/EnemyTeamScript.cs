@@ -217,13 +217,14 @@ public class EnemyTeamScript : MonoBehaviour
                 if (transform.position.x < startPos)
                 {
                     transform.position = new Vector3(transform.position.x + 0.15f, transform.position.y, transform.position.z);
-                    if (enemyType == 1 && transform.position.y < 1.0f) transform.position = new Vector3(transform.position.x, transform.position.y + 0.0334f, transform.position.z);
+                    if (enemyType == 1 && transform.position.y < 0.41f) transform.position = new Vector3(transform.position.x, transform.position.y + 0.0334f, transform.position.z);
                     GetComponent<Animator>().SetFloat("Speed", -0.5f);
                 }
                 else
-                {               
+                {
                     //When the enemy returns to the starting pos we ensure that they are in the correct position
-                    transform.position = new Vector3(startPos, transform.position.y, transform.position.z);
+                    if (enemyType == 1) transform.position = new Vector3(startPos, 0.41f, transform.position.z);
+                    else transform.position = new Vector3(startPos, transform.position.y, transform.position.z);
                     GetComponent<Animator>().SetFloat("Speed", 0.0f);
                     returnStartPos = false;
                     transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
@@ -254,11 +255,15 @@ public class EnemyTeamScript : MonoBehaviour
         }
         if(enemyType == 1 && returnHeight)
         {
-            if (transform.position.y < 1.0f)
+            if (transform.position.y < 0.41f)
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y + 0.0334f, transform.position.z);
             }
-            else returnHeight = false;
+            else
+            {
+                transform.position = new Vector3(transform.position.x, 0.41f, transform.position.z);
+                returnHeight = false;
+            }
         }
         //The death animation of the evil wizard
         if (enemyType == 1 && !alive && transform.position.y > -0.66f)

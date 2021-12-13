@@ -137,4 +137,9 @@ public class NPCScript : MonoBehaviour
         destination = dest;
     }
 
+    public void SelfDeastroy()
+    {
+        Destroy(gameObject);
+    }
+
 }
