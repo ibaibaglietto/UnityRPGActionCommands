@@ -14658,19 +14658,19 @@ MonoBehaviour:
   spawnX: 8.14
   spawnY: 139.301
   spawnZ: -2
-  playerCurrentHealth: 10
+  playerCurrentHealth: 15
   playerCurrentLight: 10
-  souls: 6
-  playerLvl: 6
-  playerHeartLvl: 2
-  playerLightLvl: 2
-  playerBadgeLvl: 2
-  lvlExp: 12
-  currentCoins: 600
+  souls: 1
+  playerLvl: 4
+  playerHeartLvl: 1
+  playerLightLvl: 1
+  playerBadgeLvl: 1
+  lvlExp: 0
+  currentCoins: 0
   spentGP: 0
   swordLvl: 1
   shurikenLvl: 1
-  items: 0200000001000000010000000200000003000000010000000100000002000000010000000200000001000000020000000200000001000000010000000200000002000000010000000000000000000000
+  items: 0100000001000000010000000200000002000000020000000300000003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   storedItems: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   changingScene: 0
   movLeft: 0
@@ -14679,10 +14679,10 @@ MonoBehaviour:
   movDown: 0
   currentCompanion: 1
   unlockedCompanions: 2
-  adventurerCurrentHealth: 27
-  wizardCurrentHealth: 28
-  adventurerLvl: 3
-  wizardLvl: 3
+  adventurerCurrentHealth: 10
+  wizardCurrentHealth: 15
+  adventurerLvl: 1
+  wizardLvl: 1
   lightSword: 1
   multistrikeSword: 1
   lightShuriken: 1
@@ -14690,16 +14690,16 @@ MonoBehaviour:
   HPUp: 0
   LPUp: 0
   compHPUp: 0
-  lightSwordFound: 0
-  multistrikeSwordFound: 0
+  lightSwordFound: 1
+  multistrikeSwordFound: 1
   lightShurikenFound: 1
-  fireShurikenFound: 0
-  HPUpFound: 0
-  LPUpFound: 0
-  compHPUpFound: 0
-  availableGems: 1
-  swordStyles: 3
-  shurikenStyles: 3
+  fireShurikenFound: 1
+  HPUpFound: 1
+  LPUpFound: 1
+  compHPUpFound: 1
+  availableGems: 7
+  swordStyles: 2
+  shurikenStyles: 2
   master: 0
   music: 0
   effects: 0
@@ -14728,7 +14728,7 @@ MonoBehaviour:
   playerStyle: 0
   companionAttack: 0
   companionStyle: 0
-  tutorialState: 0
+  tutorialState: 10
   clearJail: 0
   storageItem1: 0
   storageItem2: 0
@@ -14746,6 +14746,7 @@ MonoBehaviour:
   cityCoin10: 0
   cityCoin11: 0
   cityCoin12: 0
+  cityDoorOpen: 0
   brokenBridgeItem1: 0
   brokenBridgeItem2: 0
   brokenBridgeCoin1: 0
@@ -32676,6 +32677,7 @@ MonoBehaviour:
     move: 0
     moveDir: 0
     movePos: {x: 0, y: 0}
+    partnerChange: 0
     sentences:
     - npc_prisoner1_1
     - npc_prisoner1_2
@@ -62790,6 +62792,7 @@ MonoBehaviour:
     move: 0
     moveDir: 0
     movePos: {x: 0, y: 0}
+    partnerChange: 0
     sentences:
     - npc_prisoner1_1
     - npc_prisoner1_2
@@ -62913,6 +62916,7 @@ MonoBehaviour:
     move: 0
     moveDir: 0
     movePos: {x: 0, y: 0}
+    partnerChange: 0
     sentences:
     - npc_prisoner1_1
     - npc_prisoner1_2
@@ -64288,6 +64292,7 @@ MonoBehaviour:
     move: 0
     moveDir: 0
     movePos: {x: 0, y: 0}
+    partnerChange: 0
     sentences:
     - npc_prisoner1_1
     - npc_prisoner1_2

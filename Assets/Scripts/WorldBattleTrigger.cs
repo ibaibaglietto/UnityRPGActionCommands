@@ -8,29 +8,26 @@ public class WorldBattleTrigger : MonoBehaviour
     private Transform user;
     //A boolean to know if the battle already started
     private bool inBattle;
-    // Start is called before the first frame update
+    //The current data
+    private GameObject currentData;
+
     void Awake()
     {
         inBattle = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        currentData = GameObject.Find("CurrentData");
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "Player" && !other.GetComponent<WorldPlayerMovementScript>().IsFleeing() &&!inBattle)
+        if (other.transform.tag == "Player" && !other.GetComponent<WorldPlayerMovementScript>().IsFleeing() &&!inBattle && currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
             inBattle = true;
             other.GetComponent<Animator>().SetTrigger("Damage");
             user.GetComponent<WorldEnemy>().StartBattle(3, 1,0);
             user.GetComponent<WorldEnemy>().SetInBattle(true);
         }
-        else if (other.transform.tag == "Companion" && !other.GetComponent<WorldCompanionMovementScript>().IsFleeing() && !inBattle)
+        else if (other.transform.tag == "Companion" && !other.GetComponent<WorldCompanionMovementScript>().IsFleeing() && !inBattle && currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
             inBattle = true;
             other.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Damage");

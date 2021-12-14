@@ -198,7 +198,7 @@ public class WorldEnemy : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if ((collision.transform.tag == "Player" && !collision.transform.GetComponent<WorldPlayerMovementScript>().IsFleeing()) || (collision.transform.tag == "Companion" && !collision.transform.GetComponent<WorldCompanionMovementScript>().IsFleeing()))
+        if ((collision.transform.tag == "Player" && !collision.transform.GetComponent<WorldPlayerMovementScript>().IsFleeing() && currentData.GetComponent<CurrentDataScript>().battle == 0) || (collision.transform.tag == "Companion" && !collision.transform.GetComponent<WorldCompanionMovementScript>().IsFleeing() && currentData.GetComponent<CurrentDataScript>().battle == 0))
         {
             StartBattle(0, 0,0);
             inBattle = true;
@@ -238,13 +238,14 @@ public class WorldEnemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "Attack")
+        if (other.transform.tag == "Attack" && currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
+            
             animator.SetTrigger("Hurt");
             StartBattle(1, 0,0);
             inBattle = true;
         }
-        if (other.transform.tag == "shuriken")
+        if (other.transform.tag == "shuriken" && currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
             animator.SetTrigger("Hurt");
             StartBattle(1, 0,1);

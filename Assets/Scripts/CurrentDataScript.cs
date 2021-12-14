@@ -107,6 +107,7 @@ public class CurrentDataScript : MonoBehaviour
     public int cityCoin10;
     public int cityCoin11;
     public int cityCoin12;
+    public int cityDoorOpen;
     //1-4
     public int brokenBridgeItem1;
     public int brokenBridgeItem2;
@@ -432,6 +433,7 @@ public class CurrentDataScript : MonoBehaviour
         else if (flag == "brokenBridgeCoin14") brokenBridgeCoin14 = 1;
         else if (flag == "brokenBridgeCoin15") brokenBridgeCoin15 = 1;
         else if (flag == "brokenBridgeCoin16") brokenBridgeCoin16 = 1;
+        else if (flag == "cityDoorOpen") cityDoorOpen = 1;
         //1-5
         else if (flag == "citySideItem1") citySideItem1 = 1;
         else if (flag == "citySideGem1") citySideGem1 = 1;
@@ -667,6 +669,21 @@ public class CurrentDataScript : MonoBehaviour
         clearJail = data.clearJail;
         storageItem1 = data.storageItem1;
         storageItem2 = data.storageItem2;
+        cityItem1 = data.cityItem1;
+        cityGem1 = data.cityGem1;
+        cityCoin1 = data.cityCoin1;
+        cityCoin2 = data.cityCoin2;
+        cityCoin3 = data.cityCoin3;
+        cityCoin4 = data.cityCoin4;
+        cityCoin5 = data.cityCoin5;
+        cityCoin6 = data.cityCoin6;
+        cityCoin7 = data.cityCoin7;
+        cityCoin8 = data.cityCoin8;
+        cityCoin9 = data.cityCoin9;
+        cityCoin10 = data.cityCoin10;
+        cityCoin11 = data.cityCoin11;
+        cityCoin12 = data.cityCoin12;
+        cityDoorOpen = data.cityDoorOpen;
         brokenBridgeItem1 = data.brokenBridgeItem1;
         brokenBridgeItem2 = data.brokenBridgeItem2;
         brokenBridgeCoin1 = data.brokenBridgeCoin1;

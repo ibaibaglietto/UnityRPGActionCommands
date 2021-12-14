@@ -107,6 +107,7 @@ public class GameDataScript
     public int cityCoin10;
     public int cityCoin11;
     public int cityCoin12;
+    public int cityDoorOpen;
     //1-4
     public int brokenBridgeItem1;
     public int brokenBridgeItem2;
@@ -361,6 +362,21 @@ public class GameDataScript
         clearJail = current.clearJail;
         storageItem1 = current.storageItem1;
         storageItem2 = current.storageItem2;
+        cityItem1 = current.cityItem1;
+        cityGem1 = current.cityGem1;
+        cityCoin1 = current.cityCoin1;
+        cityCoin2 = current.cityCoin2;
+        cityCoin3 = current.cityCoin3;
+        cityCoin4 = current.cityCoin4;
+        cityCoin5 = current.cityCoin5;
+        cityCoin6 = current.cityCoin6;
+        cityCoin7 = current.cityCoin7;
+        cityCoin8 = current.cityCoin8;
+        cityCoin9 = current.cityCoin9;
+        cityCoin10 = current.cityCoin10;
+        cityCoin11 = current.cityCoin11;
+        cityCoin12 = current.cityCoin12;
+        cityDoorOpen = current.cityDoorOpen;
         brokenBridgeItem1 = current.brokenBridgeItem1;
         brokenBridgeItem2 = current.brokenBridgeItem2;
         brokenBridgeCoin1 = current.brokenBridgeCoin1;

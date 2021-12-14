@@ -1208,15 +1208,207 @@ public class EnemyTeamScript : MonoBehaviour
             }
             else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 2)
             {
-                battleController.GetComponent<BattleController>().AddXPToCurrent(40);
+                battleController.GetComponent<BattleController>().AddXPToCurrent(45);
             }
             else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 3)
             {
-                battleController.GetComponent<BattleController>().AddXPToCurrent(30);
+                battleController.GetComponent<BattleController>().AddXPToCurrent(40);
             }
             else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 4)
             {
-                battleController.GetComponent<BattleController>().AddXPToCurrent(23);
+                battleController.GetComponent<BattleController>().AddXPToCurrent(36);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 5)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(32);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 6)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(28);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 7)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(24);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 8)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(20);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 9)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(17);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 10)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(14);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 11)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(13);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 12)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(10);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 13)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(8);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 14)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(6);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 15)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(4);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 16)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(2);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 17)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(1);
+            }
+        }
+        else if (enemyType == 3)
+        {
+            if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(20);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 2)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(17);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 3)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(13);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 4)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(10);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 5)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(8);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 6)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(5);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 7)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(3);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 8)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(1);
+            }
+        }
+        else if (enemyType == 4)
+        {
+            if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(25);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 2)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(20);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 3)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(17);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 4)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(15);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 5)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(12);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 6)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(9);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 7)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(6);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 8)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(4);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 9)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(2);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 10)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(1);
+            }
+        }
+        else if (enemyType == 5)
+        {
+            if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(25);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 2)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(20);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 3)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(17);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 4)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(15);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 5)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(12);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 6)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(9);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 7)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(6);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 8)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(4);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 9)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(2);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 10)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(1);
+            }
+        }
+        else if (enemyType == 6)
+        {
+            if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(30);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 2)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(25);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 3)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(22);
+            }
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 4)
+            {
+                battleController.GetComponent<BattleController>().AddXPToCurrent(19);
             }
             else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 5)
             {
@@ -1224,36 +1416,25 @@ public class EnemyTeamScript : MonoBehaviour
             }
             else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 6)
             {
-                battleController.GetComponent<BattleController>().AddXPToCurrent(8);
+                battleController.GetComponent<BattleController>().AddXPToCurrent(13);
             }
             else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 7)
             {
-                battleController.GetComponent<BattleController>().AddXPToCurrent(4);
+                battleController.GetComponent<BattleController>().AddXPToCurrent(10);
             }
             else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 8)
             {
-                battleController.GetComponent<BattleController>().AddXPToCurrent(1);
+                battleController.GetComponent<BattleController>().AddXPToCurrent(7);
             }
-            else
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 9)
             {
-                battleController.GetComponent<BattleController>().AddXPToCurrent(10);
+                battleController.GetComponent<BattleController>().AddXPToCurrent(4);
             }
-        }
-        else if (enemyType == 3)
-        {
-            if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 10)
             {
-                battleController.GetComponent<BattleController>().AddXPToCurrent(10);
+                battleController.GetComponent<BattleController>().AddXPToCurrent(2);
             }
-            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 2)
-            {
-                battleController.GetComponent<BattleController>().AddXPToCurrent(5);
-            }
-            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 3)
-            {
-                battleController.GetComponent<BattleController>().AddXPToCurrent(3);
-            }
-            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 4)
+            else if (currentData.GetComponent<CurrentDataScript>().playerLvl == 11)
             {
                 battleController.GetComponent<BattleController>().AddXPToCurrent(1);
             }

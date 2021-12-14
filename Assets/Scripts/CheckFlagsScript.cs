@@ -31,6 +31,7 @@ public class CheckFlagsScript : MonoBehaviour
     private GameObject cityCoin10;
     private GameObject cityCoin11;
     private GameObject cityCoin12;
+    private GameObject cityDoor;
     //1-4
     private GameObject brokenBridgeItem1;
     private GameObject brokenBridgeItem2;
@@ -284,6 +285,7 @@ public class CheckFlagsScript : MonoBehaviour
             cityCoin10 = GameObject.Find("Coin10");
             cityCoin11 = GameObject.Find("Coin11");
             cityCoin12 = GameObject.Find("Coin12");
+            cityDoor = GameObject.Find("Door");
             if (gameObject.GetComponent<CurrentDataScript>().cityItem1 == 1) Destroy(cityItem1);
             if (gameObject.GetComponent<CurrentDataScript>().cityGem1 == 1) Destroy(cityGem1);
             if (gameObject.GetComponent<CurrentDataScript>().cityCoin1 == 1) Destroy(cityCoin1);
@@ -298,6 +300,7 @@ public class CheckFlagsScript : MonoBehaviour
             if (gameObject.GetComponent<CurrentDataScript>().cityCoin10 == 1) Destroy(cityCoin10);
             if (gameObject.GetComponent<CurrentDataScript>().cityCoin11 == 1) Destroy(cityCoin11);
             if (gameObject.GetComponent<CurrentDataScript>().cityCoin12 == 1) Destroy(cityCoin12);
+            if (gameObject.GetComponent<CurrentDataScript>().cityDoorOpen == 1)  cityDoor.GetComponent<Animator>().SetBool("Opened", true);
         }
         else if (SceneManager.GetActiveScene().name == "1-4")
         {
@@ -398,9 +401,9 @@ public class CheckFlagsScript : MonoBehaviour
             waterItem1 = GameObject.Find("LightPotionItem");
             waterEnemy1 = GameObject.Find("EvilWizardWorld (1)");
             waterEnemy2 = GameObject.Find("EvilWizardWorld");
-            waterCompanion = GameObject.Find("Wizard");
+            waterCompanion = GameObject.Find("NPCWizard");
             waterBattleTrigger1 = GameObject.Find("BattleTrigger1");
-            waterBattleTrigger1 = GameObject.Find("BattleTrigger2");
+            waterBattleTrigger2 = GameObject.Find("BattleTrigger2");
             waterMoveBattleTrigger = GameObject.Find("MoveBattleTrigger");
             if (gameObject.GetComponent<CurrentDataScript>().waterItem1 == 1) Destroy(waterItem1);
             if (gameObject.GetComponent<CurrentDataScript>().waterClear == 1)
