@@ -166,9 +166,11 @@ public class WorldEnemy : MonoBehaviour
             talking = true;
             currentData.GetComponent<CurrentDataScript>().playerCurrentHealth = 10;
         }
-        if (currentData.GetComponent<CurrentDataScript>().enemyDied == 1 && currentData.GetComponent<CurrentDataScript>().battle != 0)
+        if (currentData.GetComponent<CurrentDataScript>().enemyDied == 1 && inBattle)
         {
-            animator.SetTrigger("Die");
+            animator.SetBool("Die", true);
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            passive = false;
             died = true;
             if (linkedEnemy != null) linkedEnemy.GetComponent<WorldEnemy>().KillEnemy();
             if (linkedNPCs.Length != 0)
@@ -180,8 +182,9 @@ public class WorldEnemy : MonoBehaviour
             speedX = 0.0f;
             speedZ = 0.0f;
         }
-        else
+        else if(currentData.GetComponent<CurrentDataScript>().enemyDied == 0 && currentData.GetComponent<CurrentDataScript>().battle == 0)
         {
+            passive = false;
             inBattle = false;
             if (linkedEnemy != null) linkedEnemy.GetComponent<WorldEnemy>().SetInBattle(false);
         }
@@ -304,6 +307,7 @@ public class WorldEnemy : MonoBehaviour
     {
         if (SceneManager.sceneCount < 2)
         {
+            passive = true;
             currentData.GetComponent<CurrentDataScript>().battle = 1;
             currentData.GetComponent<CurrentDataScript>().enemy1 = enemy1;
             currentData.GetComponent<CurrentDataScript>().enemy2 = enemy2;

@@ -856,6 +856,7 @@ MonoBehaviour:
     move: 0
     moveDir: 0
     movePos: {x: 0, y: 0}
+    partnerChange: 0
     sentences:
     - combat_glance_bandit_1
     - combat_glance_bandit_2
@@ -1322,7 +1323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f4daba12478c44dacabc26c3531ed0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
+  maxHealth: 12
 --- !u!1 &6660381685872784070
 GameObject:
   m_ObjectHideFlags: 0
@@ -1582,7 +1583,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 20
+  m_Text: 12
 --- !u!1 &7833548827698344771
 GameObject:
   m_ObjectHideFlags: 0

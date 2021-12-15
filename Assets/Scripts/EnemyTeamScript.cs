@@ -1170,7 +1170,7 @@ public class EnemyTeamScript : MonoBehaviour
     //A function to give XP depending on the enemy and the player level
     public void GiveXP()
     {
-        if(enemyType == 0)
+        if(enemyType == 0 && miniboss == 0)
         {
             if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
             {
@@ -1185,7 +1185,7 @@ public class EnemyTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().AddXPToCurrent(1);
             }
         }
-        else if(enemyType == 1)
+        else if(enemyType == 1 && miniboss == 0)
         {
             if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
             {
@@ -1271,7 +1271,7 @@ public class EnemyTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().AddXPToCurrent(1);
             }
         }
-        else if (enemyType == 3)
+        else if (enemyType == 3 && miniboss == 0)
         {
             if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
             {
@@ -1306,7 +1306,7 @@ public class EnemyTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().AddXPToCurrent(1);
             }
         }
-        else if (enemyType == 4)
+        else if (enemyType == 0 && miniboss == 1)
         {
             if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
             {
@@ -1349,7 +1349,7 @@ public class EnemyTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().AddXPToCurrent(1);
             }
         }
-        else if (enemyType == 5)
+        else if (enemyType == 1 && miniboss == 1)
         {
             if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
             {
@@ -1392,7 +1392,7 @@ public class EnemyTeamScript : MonoBehaviour
                 battleController.GetComponent<BattleController>().AddXPToCurrent(1);
             }
         }
-        else if (enemyType == 6)
+        else if (enemyType == 3 && miniboss == 1)
         {
             if (currentData.GetComponent<CurrentDataScript>().playerLvl == 1)
             {

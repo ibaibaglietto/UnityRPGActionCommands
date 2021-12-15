@@ -7298,6 +7298,7 @@ public class BattleController : MonoBehaviour
         //If not we end the battle
         else
         {
+            Debug.Log("c muere");
             currentData.GetComponent<CurrentDataScript>().enemyDied = 1;
             victoryXP.transform.GetChild(18).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             victoryXP.transform.GetChild(19).gameObject.SetActive(false);
