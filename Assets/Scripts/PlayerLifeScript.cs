@@ -28,6 +28,7 @@ public class PlayerLifeScript : MonoBehaviour
     void Awake()
     {
         currentData = GameObject.Find("CurrentData");
+        SetUser(user);
     }
 
     //A function to get the current health
