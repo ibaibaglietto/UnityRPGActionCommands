@@ -20,7 +20,7 @@ public class LangResolverScript : MonoBehaviour
         Debug.Log(_lang.Values.First());
         Debug.Log(ResolveText(_lang.Keys.First()));
     }
-    private void ReadProperties()
+    public void ReadProperties()
     {
         if(gameObject.GetComponent<CurrentDataScript>().language == 1) _language = SystemLanguage.English;
         else if (gameObject.GetComponent<CurrentDataScript>().language == 2) _language = SystemLanguage.Spanish;
