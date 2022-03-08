@@ -20,12 +20,7 @@ public class WorldCanvasScript : MonoBehaviour
     //The light
     private GameObject teamLight;
     //The souls
-    private GameObject soul1;
-    private GameObject soul2;
-    private GameObject soul3;
-    private GameObject soul4;
-    private GameObject soul5;
-    private GameObject soul6;
+    private GameObject special;
 
     //The current data
     private GameObject currentData;
@@ -51,12 +46,7 @@ public class WorldCanvasScript : MonoBehaviour
         companionLife.GetComponent<PlayerLifeScript>().SetUser(currentData.GetComponent<CurrentDataScript>().currentCompanion);
         //We set the state to open world
         currentData.GetComponent<CurrentDataScript>().battle = 0;
-        soul1 = GameObject.Find("Soul1Fill");
-        soul2 = GameObject.Find("Soul2Fill");
-        soul3 = GameObject.Find("Soul3Fill");
-        soul4 = GameObject.Find("Soul4Fill");
-        soul5 = GameObject.Find("Soul5Fill");
-        soul6 = GameObject.Find("Soul6Fill");
+        special = GameObject.Find("SpecialBckImage");
         if (currentData.GetComponent<CurrentDataScript>().unlockedCompanions < 1)
         {
             companionLife.GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -65,95 +55,19 @@ public class WorldCanvasScript : MonoBehaviour
             companionLife.transform.GetChild(2).GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             companionLife.transform.GetChild(3).GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
         }
-        if (currentData.GetComponent<CurrentDataScript>().souls == 1)
+        for (int i = 1; i <= 6; i++)
         {
-            soul1.GetComponent<Image>().color = new Color(soul1.GetComponent<Image>().color.r, soul1.GetComponent<Image>().color.g, soul1.GetComponent<Image>().color.b, 1.0f);
-            soul1.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul1.transform.parent.gameObject.GetComponent<Image>().color.r, soul1.transform.parent.gameObject.GetComponent<Image>().color.g, soul1.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul2.GetComponent<Image>().color = new Color(soul2.GetComponent<Image>().color.r, soul2.GetComponent<Image>().color.g, soul2.GetComponent<Image>().color.b, 0.0f);
-            soul2.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul2.transform.parent.gameObject.GetComponent<Image>().color.r, soul2.transform.parent.gameObject.GetComponent<Image>().color.g, soul2.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-            soul3.GetComponent<Image>().color = new Color(soul3.GetComponent<Image>().color.r, soul3.GetComponent<Image>().color.g, soul3.GetComponent<Image>().color.b, 0.0f);
-            soul3.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul3.transform.parent.gameObject.GetComponent<Image>().color.r, soul3.transform.parent.gameObject.GetComponent<Image>().color.g, soul3.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-            soul4.GetComponent<Image>().color = new Color(soul4.GetComponent<Image>().color.r, soul4.GetComponent<Image>().color.g, soul4.GetComponent<Image>().color.b, 0.0f);
-            soul4.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul4.transform.parent.gameObject.GetComponent<Image>().color.r, soul4.transform.parent.gameObject.GetComponent<Image>().color.g, soul4.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-            soul5.GetComponent<Image>().color = new Color(soul5.GetComponent<Image>().color.r, soul5.GetComponent<Image>().color.g, soul5.GetComponent<Image>().color.b, 0.0f);
-            soul5.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul5.transform.parent.gameObject.GetComponent<Image>().color.r, soul5.transform.parent.gameObject.GetComponent<Image>().color.g, soul5.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-            soul6.GetComponent<Image>().color = new Color(soul6.GetComponent<Image>().color.r, soul6.GetComponent<Image>().color.g, soul6.GetComponent<Image>().color.b, 0.0f);
-            soul6.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul6.transform.parent.gameObject.GetComponent<Image>().color.r, soul6.transform.parent.gameObject.GetComponent<Image>().color.g, soul6.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-        }
-        else if (currentData.GetComponent<CurrentDataScript>().souls == 2)
-        {
-            soul1.GetComponent<Image>().color = new Color(soul1.GetComponent<Image>().color.r, soul1.GetComponent<Image>().color.g, soul1.GetComponent<Image>().color.b, 1.0f);
-            soul1.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul1.transform.parent.gameObject.GetComponent<Image>().color.r, soul1.transform.parent.gameObject.GetComponent<Image>().color.g, soul1.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul2.GetComponent<Image>().color = new Color(soul2.GetComponent<Image>().color.r, soul2.GetComponent<Image>().color.g, soul2.GetComponent<Image>().color.b, 1.0f);
-            soul2.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul2.transform.parent.gameObject.GetComponent<Image>().color.r, soul2.transform.parent.gameObject.GetComponent<Image>().color.g, soul2.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul3.GetComponent<Image>().color = new Color(soul3.GetComponent<Image>().color.r, soul3.GetComponent<Image>().color.g, soul3.GetComponent<Image>().color.b, 0.0f);
-            soul3.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul3.transform.parent.gameObject.GetComponent<Image>().color.r, soul3.transform.parent.gameObject.GetComponent<Image>().color.g, soul3.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-            soul4.GetComponent<Image>().color = new Color(soul4.GetComponent<Image>().color.r, soul4.GetComponent<Image>().color.g, soul4.GetComponent<Image>().color.b, 0.0f);
-            soul4.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul4.transform.parent.gameObject.GetComponent<Image>().color.r, soul4.transform.parent.gameObject.GetComponent<Image>().color.g, soul4.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-            soul5.GetComponent<Image>().color = new Color(soul5.GetComponent<Image>().color.r, soul5.GetComponent<Image>().color.g, soul5.GetComponent<Image>().color.b, 0.0f);
-            soul5.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul5.transform.parent.gameObject.GetComponent<Image>().color.r, soul5.transform.parent.gameObject.GetComponent<Image>().color.g, soul5.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-            soul6.GetComponent<Image>().color = new Color(soul6.GetComponent<Image>().color.r, soul6.GetComponent<Image>().color.g, soul6.GetComponent<Image>().color.b, 0.0f);
-            soul6.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul6.transform.parent.gameObject.GetComponent<Image>().color.r, soul6.transform.parent.gameObject.GetComponent<Image>().color.g, soul6.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-        }
-        else if (currentData.GetComponent<CurrentDataScript>().souls == 3)
-        {
-            soul1.GetComponent<Image>().color = new Color(soul1.GetComponent<Image>().color.r, soul1.GetComponent<Image>().color.g, soul1.GetComponent<Image>().color.b, 1.0f);
-            soul1.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul1.transform.parent.gameObject.GetComponent<Image>().color.r, soul1.transform.parent.gameObject.GetComponent<Image>().color.g, soul1.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul2.GetComponent<Image>().color = new Color(soul2.GetComponent<Image>().color.r, soul2.GetComponent<Image>().color.g, soul2.GetComponent<Image>().color.b, 1.0f);
-            soul2.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul2.transform.parent.gameObject.GetComponent<Image>().color.r, soul2.transform.parent.gameObject.GetComponent<Image>().color.g, soul2.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul3.GetComponent<Image>().color = new Color(soul3.GetComponent<Image>().color.r, soul3.GetComponent<Image>().color.g, soul3.GetComponent<Image>().color.b, 1.0f);
-            soul3.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul3.transform.parent.gameObject.GetComponent<Image>().color.r, soul3.transform.parent.gameObject.GetComponent<Image>().color.g, soul3.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul4.GetComponent<Image>().color = new Color(soul4.GetComponent<Image>().color.r, soul4.GetComponent<Image>().color.g, soul4.GetComponent<Image>().color.b, 0.0f);
-            soul4.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul4.transform.parent.gameObject.GetComponent<Image>().color.r, soul4.transform.parent.gameObject.GetComponent<Image>().color.g, soul4.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-            soul5.GetComponent<Image>().color = new Color(soul5.GetComponent<Image>().color.r, soul5.GetComponent<Image>().color.g, soul5.GetComponent<Image>().color.b, 0.0f);
-            soul5.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul5.transform.parent.gameObject.GetComponent<Image>().color.r, soul5.transform.parent.gameObject.GetComponent<Image>().color.g, soul5.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-            soul6.GetComponent<Image>().color = new Color(soul6.GetComponent<Image>().color.r, soul6.GetComponent<Image>().color.g, soul6.GetComponent<Image>().color.b, 0.0f);
-            soul6.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul6.transform.parent.gameObject.GetComponent<Image>().color.r, soul6.transform.parent.gameObject.GetComponent<Image>().color.g, soul6.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-        }
-        else if (currentData.GetComponent<CurrentDataScript>().souls == 4)
-        {
-            soul1.GetComponent<Image>().color = new Color(soul1.GetComponent<Image>().color.r, soul1.GetComponent<Image>().color.g, soul1.GetComponent<Image>().color.b, 1.0f);
-            soul1.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul1.transform.parent.gameObject.GetComponent<Image>().color.r, soul1.transform.parent.gameObject.GetComponent<Image>().color.g, soul1.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul2.GetComponent<Image>().color = new Color(soul2.GetComponent<Image>().color.r, soul2.GetComponent<Image>().color.g, soul2.GetComponent<Image>().color.b, 1.0f);
-            soul2.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul2.transform.parent.gameObject.GetComponent<Image>().color.r, soul2.transform.parent.gameObject.GetComponent<Image>().color.g, soul2.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul3.GetComponent<Image>().color = new Color(soul3.GetComponent<Image>().color.r, soul3.GetComponent<Image>().color.g, soul3.GetComponent<Image>().color.b, 1.0f);
-            soul3.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul3.transform.parent.gameObject.GetComponent<Image>().color.r, soul3.transform.parent.gameObject.GetComponent<Image>().color.g, soul3.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul4.GetComponent<Image>().color = new Color(soul4.GetComponent<Image>().color.r, soul4.GetComponent<Image>().color.g, soul4.GetComponent<Image>().color.b, 1.0f);
-            soul4.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul4.transform.parent.gameObject.GetComponent<Image>().color.r, soul4.transform.parent.gameObject.GetComponent<Image>().color.g, soul4.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul5.GetComponent<Image>().color = new Color(soul5.GetComponent<Image>().color.r, soul5.GetComponent<Image>().color.g, soul5.GetComponent<Image>().color.b, 0.0f);
-            soul5.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul5.transform.parent.gameObject.GetComponent<Image>().color.r, soul5.transform.parent.gameObject.GetComponent<Image>().color.g, soul5.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-            soul6.GetComponent<Image>().color = new Color(soul6.GetComponent<Image>().color.r, soul6.GetComponent<Image>().color.g, soul6.GetComponent<Image>().color.b, 0.0f);
-            soul6.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul6.transform.parent.gameObject.GetComponent<Image>().color.r, soul6.transform.parent.gameObject.GetComponent<Image>().color.g, soul6.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-        }
-        else if (currentData.GetComponent<CurrentDataScript>().souls == 5)
-        {
-            soul1.GetComponent<Image>().color = new Color(soul1.GetComponent<Image>().color.r, soul1.GetComponent<Image>().color.g, soul1.GetComponent<Image>().color.b, 1.0f);
-            soul1.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul1.transform.parent.gameObject.GetComponent<Image>().color.r, soul1.transform.parent.gameObject.GetComponent<Image>().color.g, soul1.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul2.GetComponent<Image>().color = new Color(soul2.GetComponent<Image>().color.r, soul2.GetComponent<Image>().color.g, soul2.GetComponent<Image>().color.b, 1.0f);
-            soul2.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul2.transform.parent.gameObject.GetComponent<Image>().color.r, soul2.transform.parent.gameObject.GetComponent<Image>().color.g, soul2.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul3.GetComponent<Image>().color = new Color(soul3.GetComponent<Image>().color.r, soul3.GetComponent<Image>().color.g, soul3.GetComponent<Image>().color.b, 1.0f);
-            soul3.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul3.transform.parent.gameObject.GetComponent<Image>().color.r, soul3.transform.parent.gameObject.GetComponent<Image>().color.g, soul3.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul4.GetComponent<Image>().color = new Color(soul4.GetComponent<Image>().color.r, soul4.GetComponent<Image>().color.g, soul4.GetComponent<Image>().color.b, 1.0f);
-            soul4.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul4.transform.parent.gameObject.GetComponent<Image>().color.r, soul4.transform.parent.gameObject.GetComponent<Image>().color.g, soul4.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul5.GetComponent<Image>().color = new Color(soul5.GetComponent<Image>().color.r, soul5.GetComponent<Image>().color.g, soul5.GetComponent<Image>().color.b, 1.0f);
-            soul5.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul5.transform.parent.gameObject.GetComponent<Image>().color.r, soul5.transform.parent.gameObject.GetComponent<Image>().color.g, soul5.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul6.GetComponent<Image>().color = new Color(soul6.GetComponent<Image>().color.r, soul6.GetComponent<Image>().color.g, soul6.GetComponent<Image>().color.b, 0.0f);
-            soul6.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul6.transform.parent.gameObject.GetComponent<Image>().color.r, soul6.transform.parent.gameObject.GetComponent<Image>().color.g, soul6.transform.parent.gameObject.GetComponent<Image>().color.b, 0.0f);
-        }
-        else if (currentData.GetComponent<CurrentDataScript>().souls == 6)
-        {
-            soul1.GetComponent<Image>().color = new Color(soul1.GetComponent<Image>().color.r, soul1.GetComponent<Image>().color.g, soul1.GetComponent<Image>().color.b, 1.0f);
-            soul1.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul1.transform.parent.gameObject.GetComponent<Image>().color.r, soul1.transform.parent.gameObject.GetComponent<Image>().color.g, soul1.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul2.GetComponent<Image>().color = new Color(soul2.GetComponent<Image>().color.r, soul2.GetComponent<Image>().color.g, soul2.GetComponent<Image>().color.b, 1.0f);
-            soul2.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul2.transform.parent.gameObject.GetComponent<Image>().color.r, soul2.transform.parent.gameObject.GetComponent<Image>().color.g, soul2.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul3.GetComponent<Image>().color = new Color(soul3.GetComponent<Image>().color.r, soul3.GetComponent<Image>().color.g, soul3.GetComponent<Image>().color.b, 1.0f);
-            soul3.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul3.transform.parent.gameObject.GetComponent<Image>().color.r, soul3.transform.parent.gameObject.GetComponent<Image>().color.g, soul3.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul4.GetComponent<Image>().color = new Color(soul4.GetComponent<Image>().color.r, soul4.GetComponent<Image>().color.g, soul4.GetComponent<Image>().color.b, 1.0f);
-            soul4.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul4.transform.parent.gameObject.GetComponent<Image>().color.r, soul4.transform.parent.gameObject.GetComponent<Image>().color.g, soul4.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul5.GetComponent<Image>().color = new Color(soul5.GetComponent<Image>().color.r, soul5.GetComponent<Image>().color.g, soul5.GetComponent<Image>().color.b, 1.0f);
-            soul5.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul5.transform.parent.gameObject.GetComponent<Image>().color.r, soul5.transform.parent.gameObject.GetComponent<Image>().color.g, soul5.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
-            soul6.GetComponent<Image>().color = new Color(soul6.GetComponent<Image>().color.r, soul6.GetComponent<Image>().color.g, soul6.GetComponent<Image>().color.b, 1.0f);
-            soul6.transform.parent.gameObject.GetComponent<Image>().color = new Color(soul6.transform.parent.gameObject.GetComponent<Image>().color.r, soul6.transform.parent.gameObject.GetComponent<Image>().color.g, soul6.transform.parent.gameObject.GetComponent<Image>().color.b, 1.0f);
+            if (i <= currentData.GetComponent<CurrentDataScript>().souls)
+            {
+                //TODO: fill amount
+                special.transform.GetChild(i).GetComponent<Image>().color = new Color(special.transform.GetChild(i).GetComponent<Image>().color.r, special.transform.GetChild(i).GetComponent<Image>().color.g, special.transform.GetChild(i).GetComponent<Image>().color.b, 1.0f);
+                special.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = new Color(special.transform.GetChild(i).GetChild(0).GetComponent<Image>().color.r, special.transform.GetChild(i).GetChild(0).GetComponent<Image>().color.g, special.transform.GetChild(i).GetChild(0).GetComponent<Image>().color.b, 1.0f);
+            }
+            else
+            {
+                special.transform.GetChild(i).GetComponent<Image>().color = new Color(special.transform.GetChild(i).GetComponent<Image>().color.r, special.transform.GetChild(i).GetComponent<Image>().color.g, special.transform.GetChild(i).GetComponent<Image>().color.b, 0.0f);
+                special.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = new Color(special.transform.GetChild(i).GetChild(0).GetComponent<Image>().color.r, special.transform.GetChild(i).GetChild(0).GetComponent<Image>().color.g, special.transform.GetChild(i).GetChild(0).GetComponent<Image>().color.b, 0.0f);
+            }
         }
     }
     //Function to update the actual coins
