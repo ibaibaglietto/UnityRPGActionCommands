@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class PauseGemsScript : MonoBehaviour
 {
@@ -17,6 +18,15 @@ public class PauseGemsScript : MonoBehaviour
     private Text gpCurrent;
     private Text gpMax;
     private Text gpText;
+    //The clips
+    [SerializeField] private VideoClip LightSwordClip;
+    [SerializeField] private VideoClip MultistrikeSwordClip;
+    [SerializeField] private VideoClip LightShurikenClip;
+    [SerializeField] private VideoClip FireShurikenClip;
+    //The video player
+    private VideoPlayer videoPlayer;
+    //The animator of the video
+    private Animator videoAnimator;
 
 
     void Awake()
@@ -27,6 +37,8 @@ public class PauseGemsScript : MonoBehaviour
         gpCurrent = transform.Find("PauseExtraMenuPlayerGemsAvailableGemPointsText").GetComponent<Text>();
         gpMax = transform.Find("PauseExtraMenuPlayerGemsTotalGemPointsText").GetComponent<Text>();
         gpText = transform.Find("PauseExtraMenuPlayerGemsText").GetComponent<Text>();
+        videoPlayer = transform.parent.Find("PauseExtraMenuPlayerImage").Find("Video Player").GetComponent<VideoPlayer>();
+        videoAnimator = transform.parent.Find("PauseExtraMenuPlayerImage").GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -73,12 +85,12 @@ public class PauseGemsScript : MonoBehaviour
     //Function to show an animation of the gem attack
     public void ShowAttack(int id)
     {
-        //gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(id) + gemUIScroll - 1].id;
+        videoAnimator.SetInteger("Id", gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(id) + gemUIScroll - 1].id);
+        if (gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(id) + gemUIScroll - 1].id == 1) videoPlayer.clip = LightSwordClip;
+        else if (gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(id) + gemUIScroll - 1].id == 2) videoPlayer.clip = MultistrikeSwordClip;
+        else if (gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(id) + gemUIScroll - 1].id == 3) videoPlayer.clip = LightShurikenClip;
+        else if (gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(id) + gemUIScroll - 1].id == 4) videoPlayer.clip = FireShurikenClip;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
