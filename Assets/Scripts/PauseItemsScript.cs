@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PauseItemsScript : MonoBehaviour
 {
 
-    private int itemUIScroll = 0;
+    public int itemUIScroll = 0;
     //The current data
     private CurrentDataScript currentData;
     //The images of the items

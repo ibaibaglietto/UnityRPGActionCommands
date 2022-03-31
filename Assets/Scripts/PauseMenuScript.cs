@@ -11,15 +11,17 @@ public class PauseMenuScript : MonoBehaviour
     [SerializeField] private string[] adventurerSkillsLp;
     [SerializeField] private string[] wizardSkillsName;
     [SerializeField] private string[] wizardSkillsLp;
+    private int selectedCompanion;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         currentData = GameObject.Find("CurrentData");
     }
 
-    public void CreateCompanionAttackMenu(int selectedCompanion)
+    public void CreateCompanionAttackMenu(int sC)
     {
+        selectedCompanion = sC;
         Transform pauseCompanionAttacks = transform.Find("PauseExtraMenu").Find("PauseExtraMenuCompanions");
         pauseCompanionAttacks.GetChild(8).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
         pauseCompanionAttacks.GetChild(9).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
@@ -76,9 +78,10 @@ public class PauseMenuScript : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public int GetSelectedCompanion()
     {
-        
+        return selectedCompanion;
     }
+
+
 }

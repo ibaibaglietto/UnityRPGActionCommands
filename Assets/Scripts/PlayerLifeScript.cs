@@ -71,8 +71,8 @@ public class PlayerLifeScript : MonoBehaviour
     public int GetMaxHealth()
     {
         if (user == 0) maxHealth = 10 + (currentData.GetComponent<CurrentDataScript>().playerHeartLvl + currentData.GetComponent<CurrentDataScript>().HPUp) * 5;
-        else if (user == 1) maxHealth = 10 + currentData.GetComponent<CurrentDataScript>().adventurerLvl * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
-        else if (user == 2) maxHealth = 15 + currentData.GetComponent<CurrentDataScript>().wizardLvl * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
+        else if (user == 1) maxHealth = 10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
+        else if (user == 2) maxHealth = 15 + (currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
         maxHealthText.text = maxHealth.ToString();
         return maxHealth;
     }
@@ -87,14 +87,15 @@ public class PlayerLifeScript : MonoBehaviour
         }
         else if (user == 1)
         {
-            maxHealthText.text = (10 + currentData.GetComponent<CurrentDataScript>().adventurerLvl * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5).ToString();
+            maxHealthText.text = (10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5).ToString();
             currentHealth = currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth;
         }
         else if (user == 2)
         {
-            maxHealthText.text = (15 + currentData.GetComponent<CurrentDataScript>().wizardLvl * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5).ToString();
+            maxHealthText.text = (15 + (currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5).ToString();
             currentHealth = currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth;
         }
+        currentHealthText.text = currentHealth.ToString();
     }
 
     //A function to deal damage to the player

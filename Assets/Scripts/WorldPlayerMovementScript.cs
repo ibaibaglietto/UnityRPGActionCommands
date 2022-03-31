@@ -46,6 +46,40 @@ public class WorldPlayerMovementScript : MonoBehaviour
     //A boolean to know if the player has fled a battle
     private bool fled;
     private float fledTime;
+    //A boolean to know if the game is paused
+    private bool paused;
+    //A bool to know if the pause menu is in the main menu
+    private bool pausedMain;
+    //An int to know what is the player selecting in the pause main menu
+    private int pausedMainPos;
+    //A bool to know if the pause menu is in the player menu
+    private bool pausedPlayer;
+    //An int to know what is the player selecting in the pause player menu
+    private int pausedPlayerPos;
+    //A bool to know if the pause menu is in the player stats menu
+    private bool pausedPlayerStats;
+    //A bool to know if the pause menu is in the player gems menu
+    private bool pausedPlayerGems;
+    //An int to know what is the player selecting in the pause player gems menu
+    private int pausedPlayerGemsPos;
+    //A bool to know if the pause menu is in the player items menu
+    private bool pausedPlayerItems;
+    //An int to know what is the player selecting in the pause player items menu
+    private int pausedPlayerItemsPos;
+    //A bool to know if the pause menu is in the player heal items menu
+    private bool pausedPlayerItemsHeal;
+    //An int to know what is the player selecting in the pause player heal items menu
+    private int pausedPlayerItemsHealPos;
+    //A bool to know if the pause menu is in the player light items menu
+    private bool pausedPlayerItemsLight;
+    //A bool to know if the pause menu is in the companion menu
+    private bool pausedCompanion;
+    //An int to know what is the player selecting in the pause companion menu
+    private int pausedCompanionPos;
+    //A bool to know if the pause menu is in the settings menu
+    private bool pausedSettings;
+    //An int to know what is the player selecting in the pause settigns menu
+    private int pausedSettingsPos;
     //A boolean to know if the player can rest
     private bool canRest;
     //A boolean to know if the player is speaking
@@ -102,6 +136,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private GameObject restCompanionUI;
     //The rest instructions
     private GameObject restInstructions;
+    //The pause menu
+    private GameObject pauseUI;
     //The shop UI
     private GameObject shopUI;
     //The rest instructions text
@@ -240,6 +276,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         firstStrikeUI = GameObject.Find("BattleFirstStrike");
         companion = GameObject.Find("CompanionWorld");
         shopUI = GameObject.Find("Shop");
+        pauseUI = GameObject.Find("PauseMenu");
         shurikenArrow = transform.GetChild(8).gameObject;
         restPlayerGemsUI.SetActive(false);
         restPlayerItemsUI.SetActive(false);
@@ -255,6 +292,16 @@ public class WorldPlayerMovementScript : MonoBehaviour
         speedX = 0.0f;
         speedZ = 0.0f;
         fled = false;
+        paused = false;
+        pausedMain = false;
+        pausedPlayer = false;
+        pausedPlayerStats = false;
+        pausedPlayerGems = false;
+        pausedPlayerItems = false;
+        pausedPlayerItemsHeal = false;
+        pausedPlayerItemsLight = false;
+        pausedCompanion = false;
+        pausedSettings = false;
         canRest = false;
         movingToRest = false;
         resting = false;
@@ -282,6 +329,13 @@ public class WorldPlayerMovementScript : MonoBehaviour
         lockedArrow = false;
         cutscene = false;
         playerDead = false;
+        pausedMainPos = 1;
+        pausedPlayerPos = 1;
+        pausedPlayerGemsPos = 1;
+        pausedPlayerItemsPos = 1;
+        pausedPlayerItemsHealPos = 1;
+        pausedCompanionPos = 1;
+        pausedSettingsPos = 1;
         restUIState = 1;
         restUISelecting = 1;
         restPlayerMainUISelecting = 1;
@@ -336,7 +390,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         //Detect the direction we want the player to move and save it
         if (currentData.GetComponent<CurrentDataScript>().battle == 0 && !cutscene && !playerDead)
         {
-            if (!movingToRest && !resting && !changingScene && !speaking && !pickingObject && !shopOpened & !startFly && !spin && !movePostDialogue)
+            if (!paused && !movingToRest && !resting && !changingScene && !speaking && !pickingObject && !shopOpened & !startFly && !spin && !movePostDialogue)
             {
                 if (currentData.GetComponent<CurrentDataScript>().movUp) speedZ = 1.0f;
                 else if (currentData.GetComponent<CurrentDataScript>().movDown) speedZ = -1.0f;
@@ -361,20 +415,27 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 else animator.SetBool("Moving", false);
                 animator.SetFloat("SpeedZ", speedZ);
                 animator.SetFloat("SpeedX", speedX);
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    paused = true;
+                    pausedMain = true;
+                    canvas.GetComponent<Animator>().SetBool("Hide", true);
+                    pauseUI.GetComponent<Animator>().SetBool("Opened", true);
+                }
                 //make the player attack when X is pressed
-                if (Input.GetKeyDown(KeyCode.X) && !attacking && !canRest && !canSpeak && !flying)
+                if (Input.GetKeyDown(KeyCode.X) && !attacking && !canRest && !canSpeak && !flying && !paused)
                 {
                     attacking = true;
                     animator.SetTrigger("Melee");
                 }
                 //Make the player jump when space is pressed
-                if (Input.GetKeyDown(KeyCode.Space) && grounded && gameObject.GetComponent<Rigidbody>().velocity.y > -0.1f && !attacking && !flying)
+                if (Input.GetKeyDown(KeyCode.Space) && grounded && gameObject.GetComponent<Rigidbody>().velocity.y > -0.1f && !attacking && !flying && !paused)
                 {
                     gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 600.0f, 0.0f));
                     animator.SetBool("isJumping", true);
                 }
-                //If the E key is pressed we starts the special ability of the companion
-                if (Input.GetKeyDown(KeyCode.E) && grounded && !attacking && !flying)
+                //If the E key is pressed we start the special ability of the companion
+                if (Input.GetKeyDown(KeyCode.E) && grounded && !attacking && !flying && !paused)
                 {
                     if (currentData.GetComponent<CurrentDataScript>().currentCompanion == 1)
                     {
@@ -403,7 +464,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         startFly = true;
                     }
                 }
-                if (Input.GetKeyDown(KeyCode.Z) && grounded && !attacking && !flying)
+                if (Input.GetKeyDown(KeyCode.Z) && grounded && !attacking && !flying && !paused)
                 {
                     speedX = 0.0f;
                     speedZ = 0.0f;
@@ -427,8 +488,553 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     if (colliders[i].gameObject != gameObject && Mathf.Abs(gameObject.GetComponent<Rigidbody>().velocity.y) < 0.01f)
                     {
                         grounded = true;
-                        if (!wasGrounded)
-                            OnLandEvent.Invoke();
+                        if (!wasGrounded) OnLandEvent.Invoke();
+                    }
+                }
+            }
+            else if (paused)
+            {
+                if (pausedMain)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape))
+                    {
+                        paused = false;
+                        pausedMain = false;
+                        pausedMainPos = 1;
+                        pauseUI.GetComponent<Animator>().SetBool("Opened", false);
+                        canvas.GetComponent<Animator>().SetBool("Hide", false);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                    {
+                        pauseUI.GetComponent<Animator>().SetTrigger("Left");
+                        if (pausedMainPos != 1) pausedMainPos -= 1;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.RightArrow))
+                    {
+                        pauseUI.GetComponent<Animator>().SetTrigger("Right");
+                        if (pausedMainPos != 3) pausedMainPos += 1;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
+                        pausedMain = false;
+                        if (pausedMainPos == 1) pausedPlayer = true;
+                        else if (pausedMainPos == 2) pausedCompanion = true;
+                        else if (pausedMainPos == 3) pausedSettings = true;
+                    }
+                }
+                else if (pausedPlayer)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        pausedMain = true;
+                        pausedPlayer = false;
+                        pausedPlayerPos = 1;
+                        pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                    }
+                    else if (Input.GetKeyDown(KeyCode.UpArrow))
+                    {
+                        pauseUI.GetComponent<Animator>().SetTrigger("Up");
+                        if (pausedPlayerPos != 1) pausedPlayerPos -= 1;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.DownArrow))
+                    {
+                        pauseUI.GetComponent<Animator>().SetTrigger("Down");
+                        if (pausedPlayerPos != 3) pausedPlayerPos += 1;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        if (pausedPlayerPos == 1)
+                        {
+                            pausedPlayerStats = true;
+                            pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
+                            pausedPlayer = false;
+                        }
+                        else if (pausedPlayerPos == 2)
+                        {
+                            pausedPlayerGems = true;
+                            pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
+                            pausedPlayer = false;
+                        }
+                        else if (pausedPlayerPos == 3 && currentData.GetComponent<CurrentDataScript>().itemSize() > 0)
+                        {
+                            pausedPlayerItems = true;
+                            pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
+                            pausedPlayer = false;
+                        }
+                    }
+                }
+                else if (pausedPlayerStats)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        pausedPlayer = true;
+                        pausedPlayerStats = false;
+                        pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                    }
+                }
+                else if (pausedPlayerGems)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        pausedPlayer = true;
+                        pausedPlayerGems = false;
+                        pausedPlayerGemsPos = 1;
+                        pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                        GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<Animator>().SetTrigger("Reset");
+                        GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll = 0;
+
+                    }
+                    if (Input.GetKeyDown(KeyCode.UpArrow) && (pausedPlayerGemsPos > 1 || GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll > 0))
+                    {
+                        if (GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll > 0 && pausedPlayerGemsPos == 1)
+                        {
+                            GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll -= 1;
+                            GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().CreateGemUI();
+                        }
+                        else
+                        {
+                            pausedPlayerGemsPos -= 1;
+                            GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerGemsPos);
+                        }
+
+                    }
+                    else if (Input.GetKeyDown(KeyCode.DownArrow) && ((pausedPlayerGemsPos < 6 && currentData.GetComponent<CurrentDataScript>().availableGems > 6) || GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().availableGems || (pausedPlayerGemsPos < currentData.GetComponent<CurrentDataScript>().availableGems && currentData.GetComponent<CurrentDataScript>().availableGems <= 6)))
+                    {
+                        if (pausedPlayerGemsPos == 6 && GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().availableGems)
+                        {
+                            GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll += 1;
+                            GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().CreateGemUI();
+                        }
+                        else
+                        {
+                            pausedPlayerGemsPos += 1;
+                            GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerGemsPos);
+                        }
+
+                    }
+                    if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.X))
+                    {
+                        if (currentData.GetComponent<CurrentDataScript>().GemUsing(allGems[FindGemInPos(pausedPlayerGemsPos + GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll) - 1], allGems) == 1)
+                        {
+                            currentData.GetComponent<CurrentDataScript>().SetGemUsing(allGems[FindGemInPos(pausedPlayerGemsPos + GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll) - 1], allGems, 0);
+                            currentData.GetComponent<CurrentDataScript>().swordStyles = currentData.GetComponent<CurrentDataScript>().lightSword + currentData.GetComponent<CurrentDataScript>().multistrikeSword;
+                            currentData.GetComponent<CurrentDataScript>().shurikenStyles = currentData.GetComponent<CurrentDataScript>().lightShuriken + currentData.GetComponent<CurrentDataScript>().fireShuriken;
+                            canvas.GetComponent<WorldCanvasScript>().UpdateStats();
+                            SpentGP();
+                            GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().CreateGemUI();
+                        }
+                        else if (gems.gems[FindGemInPos(pausedPlayerGemsPos + GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll) - 1].points <= ((currentData.GetComponent<CurrentDataScript>().playerBadgeLvl * 3 + 3) - currentData.GetComponent<CurrentDataScript>().spentGP))
+                        {
+
+                            currentData.GetComponent<CurrentDataScript>().SetGemUsing(allGems[FindGemInPos(pausedPlayerGemsPos + GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll) - 1], allGems, 1);
+                            currentData.GetComponent<CurrentDataScript>().swordStyles = currentData.GetComponent<CurrentDataScript>().lightSword + currentData.GetComponent<CurrentDataScript>().multistrikeSword;
+                            currentData.GetComponent<CurrentDataScript>().shurikenStyles = currentData.GetComponent<CurrentDataScript>().lightShuriken + currentData.GetComponent<CurrentDataScript>().fireShuriken;
+                            canvas.GetComponent<WorldCanvasScript>().UpdateStats();
+                            SpentGP();
+                            GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().CreateGemUI();
+                        }
+                    }
+                }
+                else if (pausedPlayerItems)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        pausedPlayer = true;
+                        pausedPlayerItems = false;
+                        pausedPlayerItemsPos = 1;
+                        pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                        GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetTrigger("Reset");
+                        GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll = 0;
+                    }
+                    if (Input.GetKeyDown(KeyCode.UpArrow) && (pausedPlayerItemsPos > 1 || GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0))
+                    {
+                        if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0 && pausedPlayerItemsPos == 1)
+                        {
+                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll -= 1;
+                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                        }
+                        else
+                        {
+                            pausedPlayerItemsPos -= 1;
+                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerItemsPos);
+                        }
+
+                    }
+                    else if (Input.GetKeyDown(KeyCode.DownArrow) && (pausedPlayerItemsPos < 6 || GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().itemSize()))
+                    {
+                        if (pausedPlayerItemsPos == 6 && GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().itemSize())
+                        {
+                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll += 1;
+                            CreateItemsUI();
+                        }
+                        else if (pausedPlayerItemsPos < currentData.GetComponent<CurrentDataScript>().itemSize())
+                        {
+                            pausedPlayerItemsPos += 1;
+                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerItemsPos);
+                        }
+
+                    }
+                    if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.X))
+                    {
+                        GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetBool("Selected", true);
+                        if (currentData.GetComponent<CurrentDataScript>().items[pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1] == 1 || currentData.GetComponent<CurrentDataScript>().items[pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1] == 3)
+                        {
+                            pausedPlayerItems = false;
+                            pausedPlayerItemsHeal = true;
+                            GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetBool("Health", true);
+                        }
+                        else
+                        {
+                            pausedPlayerItems = false;
+                            pausedPlayerItemsLight = true;
+                            GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetBool("Health", false);
+                        }
+                    }
+                }
+                else if (pausedPlayerItemsHeal)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        pausedPlayerItems = true;
+                        pausedPlayerItemsHeal = false;
+                        pausedPlayerItemsHealPos = 1;
+                        GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetTrigger("Reset");
+                        GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetBool("Selected", false);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.UpArrow) && pausedPlayerItemsHealPos != 1)
+                    {
+                        pausedPlayerItemsHealPos -= 1;
+                        GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetTrigger("Up");
+                    }
+                    else if (Input.GetKeyDown(KeyCode.DownArrow) && pausedPlayerItemsHealPos != (1 + currentData.GetComponent<CurrentDataScript>().unlockedCompanions))
+                    {
+                        pausedPlayerItemsHealPos += 1;
+                        GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetTrigger("Down");
+                    }
+                    else if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Space))
+                    {
+                        if (currentData.GetComponent<CurrentDataScript>().items[pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1] == 1)
+                        {
+                            if(pausedPlayerItemsHealPos == 1 && (10 + (currentData.GetComponent<CurrentDataScript>().playerHeartLvl + currentData.GetComponent<CurrentDataScript>().HPUp) * 5) > currentData.GetComponent<CurrentDataScript>().playerCurrentHealth && currentData.GetComponent<CurrentDataScript>().playerCurrentHealth > 0)
+                            {
+                                currentData.GetComponent<CurrentDataScript>().playerCurrentHealth += 5;
+                                if (currentData.GetComponent<CurrentDataScript>().playerCurrentHealth > (10 + (currentData.GetComponent<CurrentDataScript>().playerHeartLvl + currentData.GetComponent<CurrentDataScript>().HPUp) * 5)) currentData.GetComponent<CurrentDataScript>().playerCurrentHealth = 10 + (currentData.GetComponent<CurrentDataScript>().playerHeartLvl + currentData.GetComponent<CurrentDataScript>().HPUp) * 5;
+                                GameObject.Find("PauseExtraMenuPlayerItemsPlayerHP").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                GameObject.Find("PlayerLifeBckImage").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
+                                pausedPlayerItems = true;
+                                pausedPlayerItemsHeal = false;
+                                pausedPlayerItemsHealPos = 1;
+                                GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetTrigger("Reset");
+                                GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetBool("Selected", false);
+                                if(GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll + pausedPlayerItemsPos > currentData.GetComponent<CurrentDataScript>().itemSize())
+                                {
+                                    if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
+                                    {
+                                        itemUIScroll -= 1;
+                                    }
+                                    else
+                                    {
+                                        if (currentData.GetComponent<CurrentDataScript>().itemSize() > 0)
+                                        {
+                                            pausedPlayerItemsPos -= 1;
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerItemsPos);
+                                        }
+                                        else
+                                        {
+                                            pausedPlayer = true;
+                                            pausedPlayerItems = false;
+                                            pausedPlayerItemsPos = 1;
+                                            pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetTrigger("Reset");
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll = 0;
+                                        }
+                                    }
+                                }                                
+                                GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                            }
+                            else if (pausedPlayerItemsHealPos == 2 && (10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5) > currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth && currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth > 0)
+                            {
+                                currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth += 5;
+                                if (currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth > (10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5)) currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth = 10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
+                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion1HP").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                GameObject.Find("CompanionLifeBckImage").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
+                                pausedPlayerItems = true;
+                                pausedPlayerItemsHeal = false;
+                                pausedPlayerItemsHealPos = 1;
+                                GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetTrigger("Reset");
+                                GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetBool("Selected", false);
+                                if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll + pausedPlayerItemsPos > currentData.GetComponent<CurrentDataScript>().itemSize())
+                                {
+                                    if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
+                                    {
+                                        itemUIScroll -= 1;
+                                    }
+                                    else
+                                    {
+                                        if (currentData.GetComponent<CurrentDataScript>().itemSize() > 0)
+                                        {
+                                            pausedPlayerItemsPos -= 1;
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerItemsPos);
+                                        }
+                                        else
+                                        {
+                                            pausedPlayer = true;
+                                            pausedPlayerItems = false;
+                                            pausedPlayerItemsPos = 1;
+                                            pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetTrigger("Reset");
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll = 0;
+                                        }
+                                    }
+                                }
+                                GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                            }
+                            else if (pausedPlayerItemsHealPos == 3 && 15 + ((currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5) > currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth && currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth > 0)
+                            {
+                                currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth += 5;
+                                if (currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth > 15 + (currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5) currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth = 15 + (currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
+                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion1HP").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                GameObject.Find("CompanionLifeBckImage").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
+                                pausedPlayerItems = true;
+                                pausedPlayerItemsHeal = false;
+                                pausedPlayerItemsHealPos = 1;
+                                GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetTrigger("Reset");
+                                GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetBool("Selected", false);
+                                if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll + pausedPlayerItemsPos > currentData.GetComponent<CurrentDataScript>().itemSize())
+                                {
+                                    if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
+                                    {
+                                        itemUIScroll -= 1;
+                                    }
+                                    else
+                                    {
+                                        if (currentData.GetComponent<CurrentDataScript>().itemSize() > 0)
+                                        {
+                                            pausedPlayerItemsPos -= 1;
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerItemsPos);
+                                        }
+                                        else
+                                        {
+                                            pausedPlayer = true;
+                                            pausedPlayerItems = false;
+                                            pausedPlayerItemsPos = 1;
+                                            pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetTrigger("Reset");
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll = 0;
+                                        }
+                                    }
+                                }
+                                GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                            }
+                        }
+                        else if (currentData.GetComponent<CurrentDataScript>().items[pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1] == 3)
+                        {
+                            if (pausedPlayerItemsHealPos == 1 && (10 + (currentData.GetComponent<CurrentDataScript>().playerHeartLvl + currentData.GetComponent<CurrentDataScript>().HPUp) * 5) > currentData.GetComponent<CurrentDataScript>().playerCurrentHealth)
+                            {
+                                currentData.GetComponent<CurrentDataScript>().playerCurrentHealth += 10;
+                                if (currentData.GetComponent<CurrentDataScript>().playerCurrentHealth > (10 + (currentData.GetComponent<CurrentDataScript>().playerHeartLvl + currentData.GetComponent<CurrentDataScript>().HPUp) * 5)) currentData.GetComponent<CurrentDataScript>().playerCurrentHealth = 10 + (currentData.GetComponent<CurrentDataScript>().playerHeartLvl + currentData.GetComponent<CurrentDataScript>().HPUp) * 5;
+                                GameObject.Find("PauseExtraMenuPlayerItemsPlayerHP").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                GameObject.Find("PlayerLifeBckImage").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
+                                pausedPlayerItems = true;
+                                pausedPlayerItemsHeal = false;
+                                pausedPlayerItemsHealPos = 1;
+                                GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetTrigger("Reset");
+                                GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetBool("Selected", false);
+                                if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll + pausedPlayerItemsPos > currentData.GetComponent<CurrentDataScript>().itemSize())
+                                {
+                                    if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
+                                    {
+                                        itemUIScroll -= 1;
+                                    }
+                                    else
+                                    {
+                                        if (currentData.GetComponent<CurrentDataScript>().itemSize() > 0)
+                                        {
+                                            pausedPlayerItemsPos -= 1;
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerItemsPos);
+                                        }
+                                        else
+                                        {
+                                            pausedPlayer = true;
+                                            pausedPlayerItems = false;
+                                            pausedPlayerItemsPos = 1;
+                                            pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetTrigger("Reset");
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll = 0;
+                                        }
+                                    }
+                                }
+                                GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                            }
+                            else if (pausedPlayerItemsHealPos == 2 && (10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5) > currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth)
+                            {
+                                currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth += 10;
+                                if (currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth > (10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5)) currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth = 10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
+                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion1HP").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                GameObject.Find("CompanionLifeBckImage").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
+                                pausedPlayerItems = true;
+                                pausedPlayerItemsHeal = false;
+                                pausedPlayerItemsHealPos = 1;
+                                GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetTrigger("Reset");
+                                GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetBool("Selected", false);
+                                if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll + pausedPlayerItemsPos > currentData.GetComponent<CurrentDataScript>().itemSize())
+                                {
+                                    if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
+                                    {
+                                        itemUIScroll -= 1;
+                                    }
+                                    else
+                                    {
+                                        if (currentData.GetComponent<CurrentDataScript>().itemSize() > 0)
+                                        {
+                                            pausedPlayerItemsPos -= 1;
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerItemsPos);
+                                        }
+                                        else
+                                        {
+                                            pausedPlayer = true;
+                                            pausedPlayerItems = false;
+                                            pausedPlayerItemsPos = 1;
+                                            pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetTrigger("Reset");
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll = 0;
+                                        }
+                                    }
+                                }
+                                GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                            }
+                            else if (pausedPlayerItemsHealPos == 3 && 15 + ((currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5) > currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth)
+                            {
+                                currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth += 10;
+                                if (currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth > (15 + ((currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5))) currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth = 15 + ((currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5);
+                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion1HP").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                GameObject.Find("CompanionLifeBckImage").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
+                                pausedPlayerItems = true;
+                                pausedPlayerItemsHeal = false;
+                                pausedPlayerItemsHealPos = 1;
+                                GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetTrigger("Reset");
+                                GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetBool("Selected", false);
+                                if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll + pausedPlayerItemsPos > currentData.GetComponent<CurrentDataScript>().itemSize())
+                                {
+                                    if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
+                                    {
+                                        itemUIScroll -= 1;
+                                    }
+                                    else
+                                    {
+                                        if (currentData.GetComponent<CurrentDataScript>().itemSize() > 0)
+                                        {
+                                            pausedPlayerItemsPos -= 1;
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerItemsPos);
+                                        }
+                                        else
+                                        {
+                                            pausedPlayer = true;
+                                            pausedPlayerItems = false;
+                                            pausedPlayerItemsPos = 1;
+                                            pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetTrigger("Reset");
+                                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll = 0;
+                                        }
+                                    }
+                                }
+                                GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                            }
+                        }
+                    }
+                }
+                else if (pausedPlayerItemsLight)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        pausedPlayerItems = true;
+                        pausedPlayerItemsLight = false;
+                        GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetBool("Selected", false);
+                    }
+                    else if ((Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Space)) && currentData.GetComponent<CurrentDataScript>().playerCurrentLight < (5 + (currentData.GetComponent<CurrentDataScript>().playerLightLvl + currentData.GetComponent<CurrentDataScript>().LPUp) * 5))
+                    {
+                        currentData.GetComponent<CurrentDataScript>().playerCurrentLight += 5;
+                        if (currentData.GetComponent<CurrentDataScript>().playerCurrentLight > (5 + (currentData.GetComponent<CurrentDataScript>().playerLightLvl + currentData.GetComponent<CurrentDataScript>().LPUp) * 5)) currentData.GetComponent<CurrentDataScript>().playerCurrentLight = 5 + (currentData.GetComponent<CurrentDataScript>().playerLightLvl + currentData.GetComponent<CurrentDataScript>().LPUp) * 5;
+                        GameObject.Find("LightBckImage").GetComponent<LightPointsScript>().UpdateLight();
+                        GameObject.Find("PauseExtraMenuPlayerItemsPlayerLP").GetComponent<LightPointsScript>().UpdateLight();
+                        currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
+                        pausedPlayerItems = true;
+                        pausedPlayerItemsHeal = false;
+                        pausedPlayerItemsHealPos = 1;
+                        GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetTrigger("Reset");
+                        GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetBool("Selected", false);
+                        if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll + pausedPlayerItemsPos > currentData.GetComponent<CurrentDataScript>().itemSize())
+                        {
+                            if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
+                            {
+                                itemUIScroll -= 1;
+                            }
+                            else
+                            {
+                                if (currentData.GetComponent<CurrentDataScript>().itemSize() > 0)
+                                {
+                                    pausedPlayerItemsPos -= 1;
+                                    GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerItemsPos);
+                                }
+                                else
+                                {
+                                    pausedPlayer = true;
+                                    pausedPlayerItems = false;
+                                    pausedPlayerItemsPos = 1;
+                                    pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                                    GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetTrigger("Reset");
+                                    GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll = 0;
+                                }
+                            }
+                        }
+                        GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                    }
+                }
+                else if (pausedCompanion)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        pausedMain = true;
+                        pausedCompanion = false;
+                        pausedCompanionPos = 1;
+                        pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                    }
+                    else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+                    {
+                        pauseUI.GetComponent<Animator>().SetTrigger("Up");
+                        if (pausedCompanionPos != 1) pausedPlayerPos -= 1;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+                    {
+                        pauseUI.GetComponent<Animator>().SetTrigger("Down");
+                        if (pausedCompanionPos != 2) pausedPlayerPos += 1;
+                    }
+                }
+                else if (pausedSettings)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        pausedMain = true;
+                        pausedSettings = false;
+                        pausedSettingsPos = 1;
+                        pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                    }
+                    else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+                    {
+                        pauseUI.GetComponent<Animator>().SetTrigger("Up");
+                        if (pausedSettingsPos != 1) pausedPlayerPos -= 1;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+                    {
+                        pauseUI.GetComponent<Animator>().SetTrigger("Down");
+                        if (pausedSettingsPos != 2) pausedPlayerPos += 1;
                     }
                 }
             }

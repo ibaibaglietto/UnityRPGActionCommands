@@ -24,13 +24,14 @@ public class PauseCompanionsScript : MonoBehaviour
 
     void Start()
     {
-        videoPlayer = transform.parent.Find("PauseExtraMenuCompanionsImages").Find("Video Player").GetComponent<VideoPlayer>();
+        videoPlayer = transform.Find("PauseExtraMenuCompanionsImages").Find("Video Player").GetComponent<VideoPlayer>();
     }
 
     //Function to show an animation of the gem attack
     public void ShowAttack(int id)
     {
-        if(isAdventurer)
+        isAdventurer = (transform.parent.parent.GetComponent<PauseMenuScript>().GetSelectedCompanion() == 0);
+        if (isAdventurer)
         {
             if (id == 1) videoPlayer.clip = adventurer1Clip;
             else if (id == 2) videoPlayer.clip = adventurer2Clip;

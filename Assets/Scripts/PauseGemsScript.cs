@@ -6,7 +6,7 @@ using UnityEngine.Video;
 
 public class PauseGemsScript : MonoBehaviour
 {
-    private int gemUIScroll = 0;
+    public int gemUIScroll = 0;
     //The current data
     private CurrentDataScript currentData;
     //An array with all the gems
@@ -81,6 +81,8 @@ public class PauseGemsScript : MonoBehaviour
             }
         }
     }
+
+
 
     //Function to show an animation of the gem attack
     public void ShowAttack(int id)
