@@ -12,11 +12,14 @@ public class PauseMenuScript : MonoBehaviour
     [SerializeField] private string[] wizardSkillsName;
     [SerializeField] private string[] wizardSkillsLp;
     private int selectedCompanion;
+    //The player
+    private WorldPlayerMovementScript player;
 
 
-    void Start()
+    void Awake()
     {
         currentData = GameObject.Find("CurrentData");
+        player = GameObject.Find("PlayerWorld").GetComponent<WorldPlayerMovementScript>();
     }
 
     public void CreateCompanionAttackMenu(int sC)
@@ -76,6 +79,12 @@ public class PauseMenuScript : MonoBehaviour
                 }
             }
         }
+    }
+
+    //function to change the pause state
+    public void ChangePauseState(int s)
+    {
+        player.ChangePauseState(s);
     }
 
     public int GetSelectedCompanion()

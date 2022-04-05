@@ -31,6 +31,7 @@ public class PauseCompanionsScript : MonoBehaviour
     public void ShowAttack(int id)
     {
         isAdventurer = (transform.parent.parent.GetComponent<PauseMenuScript>().GetSelectedCompanion() == 0);
+        videoPlayer.Stop();
         if (isAdventurer)
         {
             if (id == 1) videoPlayer.clip = adventurer1Clip;
@@ -47,5 +48,6 @@ public class PauseCompanionsScript : MonoBehaviour
             else if (id == 4) videoPlayer.clip = wizard4Clip;
             else if (id == 5) videoPlayer.clip = wizard5Clip;
         }
+        videoPlayer.Play();
     }
 }

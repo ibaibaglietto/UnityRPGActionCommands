@@ -76,6 +76,14 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private bool pausedCompanion;
     //An int to know what is the player selecting in the pause companion menu
     private int pausedCompanionPos;
+    //A bool to know if the pause menu is in the companion adventurer menu
+    private bool pausedCompanionAdventurer;
+    //An int to know what is the player selecting in the pause companion adventurer menu
+    private int pausedCompanionAdventurerPos;
+    //A bool to know if the pause menu is in the companion wizard menu
+    private bool pausedCompanionWizard;
+    //An int to know what is the player selecting in the pause wizard adventurer menu
+    private int pausedCompanionWizardPos;
     //A bool to know if the pause menu is in the settings menu
     private bool pausedSettings;
     //An int to know what is the player selecting in the pause settigns menu
@@ -301,6 +309,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
         pausedPlayerItemsHeal = false;
         pausedPlayerItemsLight = false;
         pausedCompanion = false;
+        pausedCompanionAdventurer = false;
+        pausedCompanionWizard = false;
         pausedSettings = false;
         canRest = false;
         movingToRest = false;
@@ -335,6 +345,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
         pausedPlayerItemsPos = 1;
         pausedPlayerItemsHealPos = 1;
         pausedCompanionPos = 1;
+        pausedCompanionAdventurerPos = 1;
+        pausedCompanionWizardPos = 1;
         pausedSettingsPos = 1;
         restUIState = 1;
         restUISelecting = 1;
@@ -418,7 +430,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     paused = true;
-                    pausedMain = true;
                     canvas.GetComponent<Animator>().SetBool("Hide", true);
                     pauseUI.GetComponent<Animator>().SetBool("Opened", true);
                 }
@@ -517,9 +528,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     else if (Input.GetKeyDown(KeyCode.Space))
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
-                        pausedMain = false;
-                        if (pausedMainPos == 1) pausedPlayer = true;
-                        else if (pausedMainPos == 2) pausedCompanion = true;
+                        pausedMain = false;                        
+                        if (pausedMainPos == 2) pausedCompanion = true;
                         else if (pausedMainPos == 3) pausedSettings = true;
                     }
                 }
@@ -527,7 +537,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
-                        pausedMain = true;
                         pausedPlayer = false;
                         pausedPlayerPos = 1;
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
@@ -546,19 +555,16 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     {
                         if (pausedPlayerPos == 1)
                         {
-                            pausedPlayerStats = true;
                             pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
                             pausedPlayer = false;
                         }
                         else if (pausedPlayerPos == 2)
                         {
-                            pausedPlayerGems = true;
                             pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
                             pausedPlayer = false;
                         }
                         else if (pausedPlayerPos == 3 && currentData.GetComponent<CurrentDataScript>().itemSize() > 0)
                         {
-                            pausedPlayerItems = true;
                             pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
                             pausedPlayer = false;
                         }
@@ -568,7 +574,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
-                        pausedPlayer = true;
                         pausedPlayerStats = false;
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
                     }
@@ -577,7 +582,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
-                        pausedPlayer = true;
                         pausedPlayerGems = false;
                         pausedPlayerGemsPos = 1;
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
@@ -640,7 +644,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
-                        pausedPlayer = true;
                         pausedPlayerItems = false;
                         pausedPlayerItemsPos = 1;
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
@@ -666,7 +669,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         if (pausedPlayerItemsPos == 6 && GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().itemSize())
                         {
                             GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll += 1;
-                            CreateItemsUI();
+                            GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
                         }
                         else if (pausedPlayerItemsPos < currentData.GetComponent<CurrentDataScript>().itemSize())
                         {
@@ -732,7 +735,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 {
                                     if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
                                     {
-                                        itemUIScroll -= 1;
+                                        GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll -= 1;
                                     }
                                     else
                                     {
@@ -743,7 +746,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                         }
                                         else
                                         {
-                                            pausedPlayer = true;
                                             pausedPlayerItems = false;
                                             pausedPlayerItemsPos = 1;
                                             pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
@@ -770,7 +772,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 {
                                     if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
                                     {
-                                        itemUIScroll -= 1;
+                                        GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll -= 1;
                                     }
                                     else
                                     {
@@ -781,7 +783,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                         }
                                         else
                                         {
-                                            pausedPlayer = true;
                                             pausedPlayerItems = false;
                                             pausedPlayerItemsPos = 1;
                                             pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
@@ -792,11 +793,11 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 }
                                 GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
                             }
-                            else if (pausedPlayerItemsHealPos == 3 && 15 + ((currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5) > currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth && currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth > 0)
+                            else if (pausedPlayerItemsHealPos == 3 && (15 + ((currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5)) > currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth && currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth > 0)
                             {
                                 currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth += 5;
-                                if (currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth > 15 + (currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5) currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth = 15 + (currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
-                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion1HP").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                if (currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth > (15 + (currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5)) currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth = 15 + (currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
+                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion2HP").GetComponent<PlayerLifeScript>().UpdateHealth();
                                 GameObject.Find("CompanionLifeBckImage").GetComponent<PlayerLifeScript>().UpdateHealth();
                                 currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
                                 pausedPlayerItems = true;
@@ -808,7 +809,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 {
                                     if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
                                     {
-                                        itemUIScroll -= 1;
+                                        GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll -= 1;
                                     }
                                     else
                                     {
@@ -819,7 +820,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                         }
                                         else
                                         {
-                                            pausedPlayer = true;
                                             pausedPlayerItems = false;
                                             pausedPlayerItemsPos = 1;
                                             pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
@@ -849,7 +849,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 {
                                     if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
                                     {
-                                        itemUIScroll -= 1;
+                                        GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll -= 1;
                                     }
                                     else
                                     {
@@ -860,7 +860,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                         }
                                         else
                                         {
-                                            pausedPlayer = true;
                                             pausedPlayerItems = false;
                                             pausedPlayerItemsPos = 1;
                                             pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
@@ -887,7 +886,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 {
                                     if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
                                     {
-                                        itemUIScroll -= 1;
+                                        GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll -= 1;
                                     }
                                     else
                                     {
@@ -898,7 +897,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                         }
                                         else
                                         {
-                                            pausedPlayer = true;
                                             pausedPlayerItems = false;
                                             pausedPlayerItemsPos = 1;
                                             pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
@@ -925,7 +923,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 {
                                     if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
                                     {
-                                        itemUIScroll -= 1;
+                                        GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll -= 1;
                                     }
                                     else
                                     {
@@ -936,7 +934,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                         }
                                         else
                                         {
-                                            pausedPlayer = true;
                                             pausedPlayerItems = false;
                                             pausedPlayerItemsPos = 1;
                                             pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
@@ -974,7 +971,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         {
                             if (GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll > 0)
                             {
-                                itemUIScroll -= 1;
+                                GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll -= 1;
                             }
                             else
                             {
@@ -985,7 +982,6 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                 }
                                 else
                                 {
-                                    pausedPlayer = true;
                                     pausedPlayerItems = false;
                                     pausedPlayerItemsPos = 1;
                                     pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
@@ -1001,27 +997,51 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
-                        pausedMain = true;
                         pausedCompanion = false;
                         pausedCompanionPos = 1;
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
                     }
-                    else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+                    else if (Input.GetKeyDown(KeyCode.UpArrow))
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Up");
                         if (pausedCompanionPos != 1) pausedPlayerPos -= 1;
                     }
-                    else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+                    else if (Input.GetKeyDown(KeyCode.DownArrow))
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Down");
                         if (pausedCompanionPos != 2) pausedPlayerPos += 1;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.X))
+                    {
+                        pausedCompanion = false;
+                        pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
+                        if (pausedCompanionPos == 1) pausedCompanionAdventurer = true;
+                        else if (pausedCompanionPos == 2) pausedCompanionWizard = true;
+                        GameObject.Find("PauseExtraMenuCompanions").GetComponent<Animator>().SetTrigger("Reset");
+                    }
+                }
+                else if (pausedCompanionAdventurer)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        pausedCompanionAdventurer = false;
+                        pausedCompanion = true;
+                        pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                    }
+                }
+                else if (pausedCompanionWizard)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        pausedCompanionWizard = false;
+                        pausedCompanion = true;
+                        pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
                     }
                 }
                 else if (pausedSettings)
                 {
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
-                        pausedMain = true;
                         pausedSettings = false;
                         pausedSettingsPos = 1;
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
@@ -2264,6 +2284,16 @@ public class WorldPlayerMovementScript : MonoBehaviour
             if (!lockedArrow) MoveArrow(Input.GetKey(KeyCode.UpArrow), Input.GetKey(KeyCode.LeftArrow), Input.GetKey(KeyCode.RightArrow), Input.GetKey(KeyCode.DownArrow));
             if (!lockedArrow) MoveArrow(Input.GetKey(KeyCode.UpArrow), Input.GetKey(KeyCode.LeftArrow), Input.GetKey(KeyCode.RightArrow), Input.GetKey(KeyCode.DownArrow));
         }
+    }
+
+    //Function to change the pause menu state
+    public void ChangePauseState(int s)
+    {
+        if (s == 0) pausedMain = true;
+        else if (s == 1) pausedPlayer = true;
+        else if (s == 2) pausedPlayerStats = true;
+        else if (s == 3) pausedPlayerGems = true;
+        else if (s == 4) pausedPlayerItems = true;
     }
 
     public bool IsFleeing()
