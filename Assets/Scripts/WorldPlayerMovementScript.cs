@@ -88,6 +88,11 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private bool pausedSettings;
     //An int to know what is the player selecting in the pause settigns menu
     private int pausedSettingsPos;
+    //A bool to know if the pause menu is in the change settings menu
+    private bool pausedSettingsChange;
+    //Two ints to know the exact position of the pointer in the change settings menu
+    private int pausedSettingsChangeLeftPos;
+    private int pausedSettingsChangeTopPos;
     //A boolean to know if the player can rest
     private bool canRest;
     //A boolean to know if the player is speaking
@@ -312,6 +317,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         pausedCompanionAdventurer = false;
         pausedCompanionWizard = false;
         pausedSettings = false;
+        pausedSettingsChange = false;
         canRest = false;
         movingToRest = false;
         resting = false;
@@ -348,6 +354,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
         pausedCompanionAdventurerPos = 1;
         pausedCompanionWizardPos = 1;
         pausedSettingsPos = 1;
+        pausedSettingsChangeLeftPos = 1;
+        pausedSettingsChangeTopPos = 1;
         restUIState = 1;
         restUISelecting = 1;
         restPlayerMainUISelecting = 1;
@@ -528,8 +536,13 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     else if (Input.GetKeyDown(KeyCode.Space))
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
-                        pausedMain = false;                        
-                        if (pausedMainPos == 2) pausedCompanion = true;
+                        pausedMain = false;
+                        if (pausedMainPos == 2)
+                        {
+                            pauseUI.GetComponent<Animator>().SetInteger("ActualCompanion", currentData.GetComponent<CurrentDataScript>().currentCompanion);
+                            pausedCompanionPos = currentData.GetComponent<CurrentDataScript>().currentCompanion;
+                            pausedCompanion = true;
+                        }
                         else if (pausedMainPos == 3) pausedSettings = true;
                     }
                 }
@@ -997,19 +1010,24 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
+                        if (pausedCompanionPos != currentData.GetComponent<CurrentDataScript>().currentCompanion)
+                        {
+                            currentData.GetComponent<CurrentDataScript>().currentCompanion = pausedCompanionPos;
+                            companion.transform.GetChild(0).GetComponent<Animator>().SetTrigger("changeIdle");
+                        }
                         pausedCompanion = false;
                         pausedCompanionPos = 1;
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
                     }
-                    else if (Input.GetKeyDown(KeyCode.UpArrow))
+                    else if (Input.GetKeyDown(KeyCode.UpArrow) && pausedCompanionPos != 1)
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Up");
-                        if (pausedCompanionPos != 1) pausedPlayerPos -= 1;
+                        pausedCompanionPos -= 1;
                     }
-                    else if (Input.GetKeyDown(KeyCode.DownArrow))
+                    else if (Input.GetKeyDown(KeyCode.DownArrow) && pausedCompanionPos != 2)
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Down");
-                        if (pausedCompanionPos != 2) pausedPlayerPos += 1;
+                        pausedCompanionPos += 1;
                     }
                     else if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.X))
                     {
@@ -1024,18 +1042,40 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
+                        pausedCompanionAdventurerPos = 1;
                         pausedCompanionAdventurer = false;
                         pausedCompanion = true;
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                    }
+                    else if (Input.GetKeyDown(KeyCode.UpArrow) && pausedCompanionAdventurerPos > 1)
+                    {
+                        pausedCompanionAdventurerPos -= 1;
+                        GameObject.Find("PauseExtraMenuCompanions").GetComponent<Animator>().SetInteger("Pos",pausedCompanionAdventurerPos);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.DownArrow) && pausedCompanionAdventurerPos < (2 + currentData.GetComponent<CurrentDataScript>().adventurerLvl))
+                    {
+                        pausedCompanionAdventurerPos += 1;
+                        GameObject.Find("PauseExtraMenuCompanions").GetComponent<Animator>().SetInteger("Pos", pausedCompanionAdventurerPos);
                     }
                 }
                 else if (pausedCompanionWizard)
                 {
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
+                        pausedCompanionWizardPos = 1;
                         pausedCompanionWizard = false;
                         pausedCompanion = true;
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                    }
+                    else if (Input.GetKeyDown(KeyCode.UpArrow) && pausedCompanionWizardPos > 1)
+                    {
+                        pausedCompanionWizardPos -= 1;
+                        GameObject.Find("PauseExtraMenuCompanions").GetComponent<Animator>().SetInteger("Pos", pausedCompanionWizardPos);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.DownArrow) && pausedCompanionWizardPos < (2 + currentData.GetComponent<CurrentDataScript>().adventurerLvl))
+                    {
+                        pausedCompanionWizardPos += 1;
+                        GameObject.Find("PauseExtraMenuCompanions").GetComponent<Animator>().SetInteger("Pos", pausedCompanionWizardPos);
                     }
                 }
                 else if (pausedSettings)
@@ -1046,15 +1086,54 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         pausedSettingsPos = 1;
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
                     }
-                    else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+                    else if (Input.GetKeyDown(KeyCode.UpArrow))
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Up");
-                        if (pausedSettingsPos != 1) pausedPlayerPos -= 1;
+                        if (pausedSettingsPos != 1) pausedSettingsPos -= 1;
                     }
-                    else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+                    else if (Input.GetKeyDown(KeyCode.DownArrow))
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Down");
-                        if (pausedSettingsPos != 2) pausedPlayerPos += 1;
+                        if (pausedSettingsPos != 2) pausedSettingsPos += 1;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.X))
+                    {
+                        if(pausedSettingsPos == 1)
+                        {
+                            pausedSettings = false;
+                            pausedSettingsChange = true;
+                            pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
+                        }
+                    }
+                }
+                else if (pausedSettingsChange)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        pausedSettings = true;
+                        pausedSettingsChange = false;
+                        pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                    }
+                    else if (Input.GetKeyDown(KeyCode.UpArrow) && pausedSettingsChangeTopPos > 1)
+                    {
+                        GameObject.Find("PauseExtraMenuConfiguration").GetComponent<Animator>().SetTrigger("Up");
+                        pausedSettingsChangeTopPos -= 1;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.DownArrow) && pausedSettingsChangeTopPos < 5)
+                    {
+                        GameObject.Find("PauseExtraMenuConfiguration").GetComponent<Animator>().SetTrigger("Down");
+                        pausedSettingsChangeTopPos += 1;
+                        if(pausedSettingsChangeTopPos > 3) pausedSettingsChangeLeftPos = 1;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.LeftArrow) && pausedSettingsChangeLeftPos > 1)
+                    {
+                        GameObject.Find("PauseExtraMenuConfiguration").GetComponent<Animator>().SetTrigger("Left");
+                        pausedSettingsChangeLeftPos -= 1;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.RightArrow) && pausedSettingsChangeLeftPos < 2 && pausedSettingsChangeTopPos < 4)
+                    {
+                        GameObject.Find("PauseExtraMenuConfiguration").GetComponent<Animator>().SetTrigger("Right");
+                        pausedSettingsChangeLeftPos += 1;
                     }
                 }
             }
