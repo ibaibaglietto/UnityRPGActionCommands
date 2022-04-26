@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class WorldPlayerMovementScript : MonoBehaviour
 {
@@ -93,6 +94,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
     //Two ints to know the exact position of the pointer in the change settings menu
     private int pausedSettingsChangeLeftPos;
     private int pausedSettingsChangeTopPos;
+    //A bool to know if the pause menu is in the change settings menu and we are changing a setting
+    private bool pausedSettingsChangeChanging;
     //A boolean to know if the player can rest
     private bool canRest;
     //A boolean to know if the player is speaking
@@ -318,6 +321,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         pausedCompanionWizard = false;
         pausedSettings = false;
         pausedSettingsChange = false;
+        pausedSettingsChangeChanging = false;
         canRest = false;
         movingToRest = false;
         resting = false;
@@ -1104,6 +1108,11 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             pausedSettingsChange = true;
                             pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
                         }
+                        else if (pausedSettingsPos == 2)
+                        {
+                            Debug.Log("Closing game");
+                            Application.Quit();
+                        }
                     }
                 }
                 else if (pausedSettingsChange)
@@ -1112,7 +1121,10 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     {
                         pausedSettings = true;
                         pausedSettingsChange = false;
+                        pausedSettingsChangeTopPos = 1;
+                        pausedSettingsChangeLeftPos = 1;
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                        GameObject.Find("PauseExtraMenuConfiguration").GetComponent<IngameConfigurationScript>().CloseSettings();
                     }
                     else if (Input.GetKeyDown(KeyCode.UpArrow) && pausedSettingsChangeTopPos > 1)
                     {
@@ -1134,6 +1146,73 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     {
                         GameObject.Find("PauseExtraMenuConfiguration").GetComponent<Animator>().SetTrigger("Right");
                         pausedSettingsChangeLeftPos += 1;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.X))
+                    {
+                        if(pausedSettingsChangeLeftPos !=2 || pausedSettingsChangeTopPos == 2)
+                        {
+                            pausedSettingsChange = false;
+                            pausedSettingsChangeChanging = true;
+                            GameObject.Find("PauseExtraMenuConfiguration").GetComponent<Animator>().SetBool("Selected", true);
+                            if (pausedSettingsChangeLeftPos == 2) GameObject.Find("ResolutionDropdown").GetComponent<Dropdown>().Show();
+                            if (pausedSettingsChangeTopPos == 4) GameObject.Find("LanguageDropdown").GetComponent<Dropdown>().Show();
+                        }
+                        else
+                        {
+                            if(pausedSettingsChangeLeftPos == 2)
+                            {
+                                if (pausedSettingsChangeTopPos == 1) GameObject.Find("FullScreenToggle").GetComponent<Toggle>().isOn = !GameObject.Find("FullScreenToggle").GetComponent<Toggle>().isOn;
+                                else if (GameObject.Find("SaveResolution").GetComponent<Button>().interactable && !GameObject.Find("PauseExtraMenuConfiguration").transform.GetChild(14).gameObject.activeSelf) GameObject.Find("PauseExtraMenuConfiguration").GetComponent<IngameConfigurationScript>().SaveResolution();
+                            }
+                        }
+                    }
+                }
+                else if (pausedSettingsChangeChanging)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Space))
+                    {
+                        pausedSettingsChange = true;
+                        pausedSettingsChangeChanging = false;
+                        GameObject.Find("PauseExtraMenuConfiguration").GetComponent<Animator>().SetBool("Selected", false);
+                        if (pausedSettingsChangeLeftPos == 2) GameObject.Find("ResolutionDropdown").GetComponent<Dropdown>().Hide();
+                        if (pausedSettingsChangeTopPos == 4) GameObject.Find("LanguageDropdown").GetComponent<Dropdown>().Hide();
+                        EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(null);
+                    }
+                    if (pausedSettingsChangeTopPos == 1)
+                    {                        
+                        if(Input.GetKeyDown(KeyCode.LeftArrow))
+                        {
+                            GameObject.Find("MainVolumeSlider").GetComponent<Slider>().value -= 0.1f;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.RightArrow))
+                        {
+                            GameObject.Find("MainVolumeSlider").GetComponent<Slider>().value += 0.1f;
+                        }
+                    }
+                    else if(pausedSettingsChangeTopPos == 2)
+                    {
+                        if(pausedSettingsChangeLeftPos == 1)
+                        {
+                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            {
+                                GameObject.Find("MusicVolumeSlider").GetComponent<Slider>().value -= 0.1f;
+                            }
+                            else if (Input.GetKeyDown(KeyCode.RightArrow))
+                            {
+                                GameObject.Find("MusicVolumeSlider").GetComponent<Slider>().value += 0.1f;
+                            }
+                        }
+                    }
+                    else if (pausedSettingsChangeTopPos == 3)
+                    {
+                        if (Input.GetKeyDown(KeyCode.LeftArrow))
+                        {
+                            GameObject.Find("EffectsVolumeSlider").GetComponent<Slider>().value -= 0.1f;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.RightArrow))
+                        {
+                            GameObject.Find("EffectsVolumeSlider").GetComponent<Slider>().value += 0.1f;
+                        }
                     }
                 }
             }

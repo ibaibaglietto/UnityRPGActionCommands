@@ -74,6 +74,8 @@ public class IngameConfigurationScript : MonoBehaviour
         {
             //We change the countdown number
             confirmTimeNumb.text = (5 - (int)(Time.fixedTime - confirmTime)).ToString();
+            //If the player presses the space button we confirm the resolution
+            if (Input.GetKeyDown(KeyCode.Space) && (Time.fixedTime - confirmTime) > 0.05f) ConfirmResolution();
             //If the countdown reaches 0 we restore the previous resolution
             if ((Time.fixedTime - confirmTime) > 5.0f)
             {
