@@ -30,6 +30,8 @@ public class PauseMenuScript : MonoBehaviour
         pauseCompanionAttacks.GetChild(9).GetComponent<Image>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
         if (selectedCompanion == 0)
         {
+            if (currentData.GetComponent<CurrentDataScript>().unlockedCompanions == 1) pauseCompanionAttacks.GetChild(10).GetChild(3).gameObject.SetActive(false);
+            else pauseCompanionAttacks.GetChild(10).GetChild(3).gameObject.SetActive(true);
             int number = currentData.GetComponent<CurrentDataScript>().adventurerLvl;
 
             for(int i = 0; i < 6; i++)

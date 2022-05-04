@@ -40,15 +40,47 @@ public class StatsPlayerLife : MonoBehaviour
         }
         else if (user == 1)
         {
-            transform.GetChild(3).GetComponent<RawImage>().texture = adventurerHealth;
-            maxHealth = 10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
-            currentHealth = currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth;
+            if (currentData.GetComponent<CurrentDataScript>().unlockedCompanions > 0)
+            {
+                transform.GetChild(3).GetComponent<RawImage>().texture = adventurerHealth;
+                maxHealth = 10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
+                currentHealth = currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth;
+                GetComponent<RawImage>().color = new Color(GetComponent<RawImage>().color.r, GetComponent<RawImage>().color.g, GetComponent<RawImage>().color.b, 1.0f);
+                transform.GetChild(0).GetComponent<Text>().color = new Color(transform.GetChild(0).GetComponent<Text>().color.r, transform.GetChild(0).GetComponent<Text>().color.g, transform.GetChild(0).GetComponent<Text>().color.b, 1.0f);
+                transform.GetChild(1).GetComponent<Text>().color = new Color(transform.GetChild(1).GetComponent<Text>().color.r, transform.GetChild(1).GetComponent<Text>().color.g, transform.GetChild(1).GetComponent<Text>().color.b, 1.0f);
+                transform.GetChild(2).GetComponent<Text>().color = new Color(transform.GetChild(2).GetComponent<Text>().color.r, transform.GetChild(2).GetComponent<Text>().color.g, transform.GetChild(2).GetComponent<Text>().color.b, 1.0f);
+                transform.GetChild(3).GetComponent<RawImage>().color = new Color(transform.GetChild(3).GetComponent<RawImage>().color.r, transform.GetChild(3).GetComponent<RawImage>().color.g, transform.GetChild(3).GetComponent<RawImage>().color.b, 1.0f);
+            }
+            else
+            {
+                GetComponent<RawImage>().color = new Color(GetComponent<RawImage>().color.r, GetComponent<RawImage>().color.g, GetComponent<RawImage>().color.b, 0.0f);
+                transform.GetChild(0).GetComponent<Text>().color = new Color(transform.GetChild(0).GetComponent<Text>().color.r, transform.GetChild(0).GetComponent<Text>().color.g, transform.GetChild(0).GetComponent<Text>().color.b, 0.0f);
+                transform.GetChild(1).GetComponent<Text>().color = new Color(transform.GetChild(1).GetComponent<Text>().color.r, transform.GetChild(1).GetComponent<Text>().color.g, transform.GetChild(1).GetComponent<Text>().color.b, 0.0f);
+                transform.GetChild(2).GetComponent<Text>().color = new Color(transform.GetChild(2).GetComponent<Text>().color.r, transform.GetChild(2).GetComponent<Text>().color.g, transform.GetChild(2).GetComponent<Text>().color.b, 0.0f);
+                transform.GetChild(3).GetComponent<RawImage>().color = new Color(transform.GetChild(3).GetComponent<RawImage>().color.r, transform.GetChild(3).GetComponent<RawImage>().color.g, transform.GetChild(3).GetComponent<RawImage>().color.b, 0.0f);
+            }
         }
         else if (user == 2)
         {
-            transform.GetChild(3).GetComponent<RawImage>().texture = wizardHealth;
-            maxHealth = 15 + (currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
-            currentHealth = currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth;
+            if(currentData.GetComponent<CurrentDataScript>().unlockedCompanions > 1)
+            {
+                transform.GetChild(3).GetComponent<RawImage>().texture = wizardHealth;
+                maxHealth = 15 + (currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
+                currentHealth = currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth;
+                GetComponent<RawImage>().color = new Color(GetComponent<RawImage>().color.r, GetComponent<RawImage>().color.g, GetComponent<RawImage>().color.b, 1.0f);
+                transform.GetChild(0).GetComponent<Text>().color = new Color(transform.GetChild(0).GetComponent<Text>().color.r, transform.GetChild(0).GetComponent<Text>().color.g, transform.GetChild(0).GetComponent<Text>().color.b, 1.0f);
+                transform.GetChild(1).GetComponent<Text>().color = new Color(transform.GetChild(1).GetComponent<Text>().color.r, transform.GetChild(1).GetComponent<Text>().color.g, transform.GetChild(1).GetComponent<Text>().color.b, 1.0f);
+                transform.GetChild(2).GetComponent<Text>().color = new Color(transform.GetChild(2).GetComponent<Text>().color.r, transform.GetChild(2).GetComponent<Text>().color.g, transform.GetChild(2).GetComponent<Text>().color.b, 1.0f);
+                transform.GetChild(3).GetComponent<RawImage>().color = new Color(transform.GetChild(3).GetComponent<RawImage>().color.r, transform.GetChild(3).GetComponent<RawImage>().color.g, transform.GetChild(3).GetComponent<RawImage>().color.b, 1.0f);
+            }
+            else
+            {
+                GetComponent<RawImage>().color = new Color(GetComponent<RawImage>().color.r, GetComponent<RawImage>().color.g, GetComponent<RawImage>().color.b, 0.0f);
+                transform.GetChild(0).GetComponent<Text>().color = new Color(transform.GetChild(0).GetComponent<Text>().color.r, transform.GetChild(0).GetComponent<Text>().color.g, transform.GetChild(0).GetComponent<Text>().color.b, 0.0f);
+                transform.GetChild(1).GetComponent<Text>().color = new Color(transform.GetChild(1).GetComponent<Text>().color.r, transform.GetChild(1).GetComponent<Text>().color.g, transform.GetChild(1).GetComponent<Text>().color.b, 0.0f);
+                transform.GetChild(2).GetComponent<Text>().color = new Color(transform.GetChild(2).GetComponent<Text>().color.r, transform.GetChild(2).GetComponent<Text>().color.g, transform.GetChild(2).GetComponent<Text>().color.b, 0.0f);
+                transform.GetChild(3).GetComponent<RawImage>().color = new Color(transform.GetChild(3).GetComponent<RawImage>().color.r, transform.GetChild(3).GetComponent<RawImage>().color.g, transform.GetChild(3).GetComponent<RawImage>().color.b, 0.0f);
+            }
         }
         //We find the current health text and max health text and initialize them
         currentHealthText = transform.GetChild(0).GetComponent<Text>();

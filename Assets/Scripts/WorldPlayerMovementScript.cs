@@ -96,6 +96,10 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private int pausedSettingsChangeTopPos;
     //A bool to know if the pause menu is in the change settings menu and we are changing a setting
     private bool pausedSettingsChangeChanging;
+    //A bool to know if the player is in the exit game menu
+    private bool pausedSettingsExit;
+    //An int to know the pos the player is in the exit game menu
+    private int pausedSettingsExitPos;
     //A boolean to know if the player can rest
     private bool canRest;
     //A boolean to know if the player is speaking
@@ -322,6 +326,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         pausedSettings = false;
         pausedSettingsChange = false;
         pausedSettingsChangeChanging = false;
+        pausedSettingsExit = false;
         canRest = false;
         movingToRest = false;
         resting = false;
@@ -360,6 +365,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         pausedSettingsPos = 1;
         pausedSettingsChangeLeftPos = 1;
         pausedSettingsChangeTopPos = 1;
+        pausedSettingsExitPos = 2;
         restUIState = 1;
         restUISelecting = 1;
         restPlayerMainUISelecting = 1;
@@ -539,15 +545,25 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     }
                     else if (Input.GetKeyDown(KeyCode.Space))
                     {
-                        pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
-                        pausedMain = false;
-                        if (pausedMainPos == 2)
+                        if(pausedMainPos == 1)
+                        {
+                            pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
+                            pausedMain = false;
+                        }
+                        if (pausedMainPos == 2 && currentData.GetComponent<CurrentDataScript>().unlockedCompanions > 0)
                         {
                             pauseUI.GetComponent<Animator>().SetInteger("ActualCompanion", currentData.GetComponent<CurrentDataScript>().currentCompanion);
                             pausedCompanionPos = currentData.GetComponent<CurrentDataScript>().currentCompanion;
                             pausedCompanion = true;
+                            pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
+                            pausedMain = false;
                         }
-                        else if (pausedMainPos == 3) pausedSettings = true;
+                        else if (pausedMainPos == 3)
+                        {
+                            pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
+                            pausedMain = false;
+                            pausedSettings = true;
+                        }
                     }
                 }
                 else if (pausedPlayer)
@@ -575,7 +591,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
                             pausedPlayer = false;
                         }
-                        else if (pausedPlayerPos == 2)
+                        else if (pausedPlayerPos == 2 && currentData.GetComponent<CurrentDataScript>().availableGems > 0)
                         {
                             pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
                             pausedPlayer = false;
@@ -611,6 +627,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         if (GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll > 0 && pausedPlayerGemsPos == 1)
                         {
                             GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll -= 1;
+                            GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().ShowAttack(1);
                             GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().CreateGemUI();
                         }
                         else
@@ -625,6 +642,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         if (pausedPlayerGemsPos == 6 && GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().availableGems)
                         {
                             GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll += 1;
+                            GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().ShowAttack(6);
                             GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().CreateGemUI();
                         }
                         else
@@ -740,7 +758,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             {
                                 currentData.GetComponent<CurrentDataScript>().playerCurrentHealth += 5;
                                 if (currentData.GetComponent<CurrentDataScript>().playerCurrentHealth > (10 + (currentData.GetComponent<CurrentDataScript>().playerHeartLvl + currentData.GetComponent<CurrentDataScript>().HPUp) * 5)) currentData.GetComponent<CurrentDataScript>().playerCurrentHealth = 10 + (currentData.GetComponent<CurrentDataScript>().playerHeartLvl + currentData.GetComponent<CurrentDataScript>().HPUp) * 5;
-                                GameObject.Find("PauseExtraMenuPlayerItemsPlayerHP").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                GameObject.Find("PauseExtraMenuPlayerItemsPlayerHP").GetComponent<StatsPlayerLife>().UpdateStats();
                                 GameObject.Find("PlayerLifeBckImage").GetComponent<PlayerLifeScript>().UpdateHealth();
                                 currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
                                 pausedPlayerItems = true;
@@ -777,7 +795,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             {
                                 currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth += 5;
                                 if (currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth > (10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5)) currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth = 10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
-                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion1HP").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion1HP").GetComponent<StatsPlayerLife>().UpdateStats();
                                 GameObject.Find("CompanionLifeBckImage").GetComponent<PlayerLifeScript>().UpdateHealth();
                                 currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
                                 pausedPlayerItems = true;
@@ -814,7 +832,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             {
                                 currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth += 5;
                                 if (currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth > (15 + (currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5)) currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth = 15 + (currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
-                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion2HP").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion2HP").GetComponent<StatsPlayerLife>().UpdateStats();
                                 GameObject.Find("CompanionLifeBckImage").GetComponent<PlayerLifeScript>().UpdateHealth();
                                 currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
                                 pausedPlayerItems = true;
@@ -854,7 +872,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             {
                                 currentData.GetComponent<CurrentDataScript>().playerCurrentHealth += 10;
                                 if (currentData.GetComponent<CurrentDataScript>().playerCurrentHealth > (10 + (currentData.GetComponent<CurrentDataScript>().playerHeartLvl + currentData.GetComponent<CurrentDataScript>().HPUp) * 5)) currentData.GetComponent<CurrentDataScript>().playerCurrentHealth = 10 + (currentData.GetComponent<CurrentDataScript>().playerHeartLvl + currentData.GetComponent<CurrentDataScript>().HPUp) * 5;
-                                GameObject.Find("PauseExtraMenuPlayerItemsPlayerHP").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                GameObject.Find("PauseExtraMenuPlayerItemsPlayerHP").GetComponent<StatsPlayerLife>().UpdateStats();
                                 GameObject.Find("PlayerLifeBckImage").GetComponent<PlayerLifeScript>().UpdateHealth();
                                 currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
                                 pausedPlayerItems = true;
@@ -891,7 +909,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             {
                                 currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth += 10;
                                 if (currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth > (10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5)) currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth = 10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5;
-                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion1HP").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion1HP").GetComponent<StatsPlayerLife>().UpdateStats();
                                 GameObject.Find("CompanionLifeBckImage").GetComponent<PlayerLifeScript>().UpdateHealth();
                                 currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
                                 pausedPlayerItems = true;
@@ -928,7 +946,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             {
                                 currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth += 10;
                                 if (currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth > (15 + ((currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5))) currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth = 15 + ((currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5);
-                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion1HP").GetComponent<PlayerLifeScript>().UpdateHealth();
+                                GameObject.Find("PauseExtraMenuPlayerItemsCompanion1HP").GetComponent<StatsPlayerLife>().UpdateStats();
                                 GameObject.Find("CompanionLifeBckImage").GetComponent<PlayerLifeScript>().UpdateHealth();
                                 currentData.GetComponent<CurrentDataScript>().DeleteItem(pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1);
                                 pausedPlayerItems = true;
@@ -1028,7 +1046,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         pauseUI.GetComponent<Animator>().SetTrigger("Up");
                         pausedCompanionPos -= 1;
                     }
-                    else if (Input.GetKeyDown(KeyCode.DownArrow) && pausedCompanionPos != 2)
+                    else if (Input.GetKeyDown(KeyCode.DownArrow) && pausedCompanionPos != 2 && currentData.GetComponent<CurrentDataScript>().unlockedCompanions > 1)
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Down");
                         pausedCompanionPos += 1;
@@ -1110,8 +1128,9 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         }
                         else if (pausedSettingsPos == 2)
                         {
-                            Debug.Log("Closing game");
-                            Application.Quit();
+                            pausedSettings = false;
+                            pausedSettingsExit = true;
+                            pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
                         }
                     }
                 }
@@ -1212,6 +1231,40 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         else if (Input.GetKeyDown(KeyCode.RightArrow))
                         {
                             GameObject.Find("EffectsVolumeSlider").GetComponent<Slider>().value += 0.1f;
+                        }
+                    }
+                }
+                else if (pausedSettingsExit)
+                {
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        pausedSettings = true;
+                        pausedSettingsExit = false;
+                        pausedSettingsExitPos = 2;
+                        pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                    }
+                    else if (Input.GetKeyDown(KeyCode.LeftArrow) && pausedSettingsExitPos == 2)
+                    {
+                        pausedSettingsExitPos -= 1;
+                        pauseUI.GetComponent<Animator>().SetTrigger("Left");
+                    }
+                    else if (Input.GetKeyDown(KeyCode.RightArrow) && pausedSettingsExitPos == 1)
+                    {
+                        pausedSettingsExitPos += 1;
+                        pauseUI.GetComponent<Animator>().SetTrigger("Right");
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        if(pausedSettingsExitPos == 1)
+                        {
+                            Debug.Log("Closing game");
+                            Application.Quit();
+                        }
+                        else if(pausedSettingsExitPos == 2)
+                        {
+                            pausedSettings = true;
+                            pausedSettingsExit = false;
+                            pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
                         }
                     }
                 }
