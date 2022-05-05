@@ -15,10 +15,6 @@ public class Gem
     public int id;
     public Texture2D icon;
     [TextArea(3, 10)]
-    public string[] nameEnglish;
-    [TextArea(3, 10)]
-    public string[] nameSpanish;
-    [TextArea(3, 10)]
-    public string[] nameBasque;
+    public string name;
     public int points;
 }

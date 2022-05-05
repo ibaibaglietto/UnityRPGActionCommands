@@ -154,8 +154,11 @@ world_rest_gems_multistrikesword$Allows the player to use the multiattack sword,
 world_rest_gems_lightshuriken$Allows the player to use the light shuriken, allowing the player to throw a shuriken with light power that spends 2 LP.
 world_rest_gems_fireshuriken$Allows the player to use the fire shuriken, allowing the player to damage all the grounded enemies for 3 LP.
 world_rest_gems_hpup$Increases player’s maximum health points by 5.
+world_rest_gems_hpup_name$HP up
 world_rest_gems_lpup$Increases player’s maximum light points by 5.
+world_rest_gems_lpup_name$LP up
 world_rest_gems_comphpup$Increases the health points of every companions by 5.
+world_rest_gems_comphpup_name$Comp HP up
 world_rest_items_apple$An apple that heals 5 health points.
 world_rest_items_lightpotion$A potion that regenerates 5 light points.
 world_rest_items_resurrectpotion$A potion that revives the user healing them 10 health points.
@@ -181,6 +184,32 @@ world_shop_takeout_select$Select the item you want to take out.
 world_shop_takeout_instructions$Take out previously stored items.
 world_shop_takeout_sure$Are you sure you want to take this out?
 world_shop_takeout_noitems$You can’t take out items if you didn’t store any or if you have the inventory full.
+world_pause_arima$
+world_pause_arima_stats$
+world_pause_arima_stats_main$
+world_pause_gems$
+world_pause_items$
+world_pause_companions$
+world_pause_companions_adventurer_sword$
+world_pause_companions_adventurer_glance$
+world_pause_companions_adventurer_swordSpin$
+world_pause_companions_adventurer_dragonSlayerBow$
+world_pause_companions_adventurer_bk-47$
+world_pause_companions_wizard_magicBall$
+world_pause_companions_wizard_barrier$
+world_pause_companions_wizard_pulsingMagic$
+world_pause_companions_wizard_magicSpear$
+world_pause_companions_wizard_energyBomb$
+world_pause_configuration$
+world_pause_configuration_settings$
+world_pause_configuration_settings_mainVolume$
+world_pause_configuration_settings_musicVolume$
+world_pause_configuration_settings_effectsVolume$
+world_pause_configuration_settings_fullScreen$
+world_pause_configuration_settings_resolution$
+world_pause_configuration_settings_saveResolution$
+world_pause_configuration_settings_language$
+world_pause_configuration_exit$
 adventurer_explanation_TestScene2$This is the test zone. It is a bit weird, but it works.
 adventurer_explanation_TestScene2_ShopGirl$She is the shop girl. You can talk to her to buy, sell, store or take out items. Really usefull.
 adventurer_explanation_TestScene2_Sign$It’s a sign. Read it yourself.

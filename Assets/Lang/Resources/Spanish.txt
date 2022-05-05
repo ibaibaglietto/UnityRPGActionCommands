@@ -154,8 +154,11 @@ world_rest_gems_multistrikesword$Permite al jugador usar la espada de multiataqu
 world_rest_gems_lightshuriken$Permite al jugador usar el shuriken de luz, con el que puede lanzar un shuriken con poder de luz que cuesta 2 PL.
 world_rest_gems_fireshuriken$Permite al jugador usar el shuriken de fuego, con el que puede dañar a todos los enemigos que se encuentran en el suelo por 3 PL.
 world_rest_gems_hpup$Aumenta los puntos de vida del jugador en 5.
+world_rest_gems_hpup_name$PV arriba
 world_rest_gems_lpup$Aumenta los puntos de luz del jugador en 5.
+world_rest_gems_lpup_name$PL arriba
 world_rest_gems_comphpup$Aumenta los puntos de vida de los compañeros en 5.
+world_rest_gems_comphpup_name$Comp PV arriba
 world_rest_items_apple$Una manzana que cura 5 puntos de vida.
 world_rest_items_lightpotion$Una poción que regenera 5 puntos de luz.
 world_rest_items_resurrectpotion$Una poción que revive al usuario que la tome curándole 10 puntos de vida.
@@ -181,6 +184,32 @@ world_shop_takeout_select$Decide qué objeto quieres sacar.
 world_shop_takeout_instructions$Saca objetos anteriormente depositados.
 world_shop_takeout_sure$¿Estás seguro de que quieres sacar esto?
 world_shop_takeout_noitems$No puedes sacar objetos si no tienes ninguno guardado o si ya tienes el inventario lleno.
+world_pause_arima$Aquí podrás ver las estadísticas de Arima, gestionar el uso de gemas y usar objetos.
+world_pause_arima_stats$En este menú podrás ver todos los datos de Arima.
+world_pause_arima_stats_main$Aquí puedes ver todas las estadísticas de Arima, desde los puntos de vida hasta las monedas que tienes actualmente.
+world_pause_gems$Gestiona el uso de las gemas y ve una previsualización del efecto que otorgan.
+world_pause_items$Mira que objetos tienes en la bolsa y úsalos si quieres.
+world_pause_companions$Mira los puntos de vida y ataques de tus compañeros y selecciona quién quieres que te acompañe.
+world_pause_companions_adventurer_sword$Ataca dos veces usando su espada.
+world_pause_companions_adventurer_glance$Inspecciona al enemigo y consigue sus puntos débiles y sus PV.
+world_pause_companions_adventurer_swordSpin$Golpea al enemigo sin parar hasta que falle.
+world_pause_companions_adventurer_dragonSlayerBow$Usa el arco mata dragones para dañar a todos los enemigos que estén en el suelo.
+world_pause_companions_adventurer_bk-47$Dispara cinco flechas que impactarán en el primer enemigo que encuentren en su camino.
+world_pause_companions_wizard_magicBall$Crea una bola mágica que golpea a un enemigo.
+world_pause_companions_wizard_barrier$Protege a Arima usando un escudo mágico y redirige todo el daño hacia si mismo.
+world_pause_companions_wizard_pulsingMagic$Golpear a un enemigo varias veces usando su magia.
+world_pause_companions_wizard_magicSpear$Crea una lanza mágica y que dañará gravemente a un enemigo.
+world_pause_companions_wizard_energyBomb$Genera una enorme bola de magia que dañará a todos los enemigos en combate.
+world_pause_configuration$Cambia los ajustes del juego o cierra el juego.
+world_pause_configuration_settings$Aquí podrás cambiar la configuración del juego, desde el idioma hasta la resolución pasando por el sonido.
+world_pause_configuration_settings_mainVolume$Cambia el volumen de todo sonido del juego.
+world_pause_configuration_settings_musicVolume$Cambia el volumen de la música.
+world_pause_configuration_settings_effectsVolume$Cambia el volumen de los efectos.
+world_pause_configuration_settings_fullScreen$Marca la casilla si quieres poner el juego en pantalla completa.
+world_pause_configuration_settings_resolution$Cambia la resolución del juego.
+world_pause_configuration_settings_saveResolution$Guarda los ajustes de resolución y pantalla, tendrás que confirmar los cambios para asegurar que se ve correctamente.
+world_pause_configuration_settings_language$Cambia el idioma y elige entre español, inglés y euskera.
+world_pause_configuration_exit$Cierra el juego, reaparecerás en la última hoguera en la que descansaste.
 adventurer_explanation_TestScene2$Esta es la zona de testeo principal. Es un poco rara, pero sirve para lo que se creó.
 adventurer_explanation_TestScene2_ShopGirl$Esta es la niña de la tienda. Puedes hablar con ella para comprar, vender, guardar o recuperar objetos. Es muy útil.
 adventurer_explanation_TestScene2_Sign$Es un cartel. Léelo tú misma.

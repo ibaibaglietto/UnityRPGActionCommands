@@ -75,11 +75,16 @@ public class PauseItemsScript : MonoBehaviour
                 transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 0.0f);
             }
         }
-    }    
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
+
+    //Function to get the text of the gem
+    public string GetText(int id)
+    {
+        string r = "";
+        if (currentData.items[id + itemUIScroll - 1] == 1) r = "world_rest_items_apple";
+        else if (currentData.items[id + itemUIScroll - 1] == 2) r = "world_rest_items_lightpotion";
+        else if (currentData.items[id + itemUIScroll - 1] == 3) r = "world_rest_items_resurrectpotion";
+        return r;
+    }
+
 }

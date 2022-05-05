@@ -450,6 +450,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     paused = true;
                     canvas.GetComponent<Animator>().SetBool("Hide", true);
                     pauseUI.GetComponent<Animator>().SetBool("Opened", true);
+                    ResolvePauseMenuText();
                 }
                 //make the player attack when X is pressed
                 if (Input.GetKeyDown(KeyCode.X) && !attacking && !canRest && !canSpeak && !flying && !paused)
@@ -537,11 +538,13 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Left");
                         if (pausedMainPos != 1) pausedMainPos -= 1;
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.RightArrow))
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Right");
                         if (pausedMainPos != 3) pausedMainPos += 1;
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.Space))
                     {
@@ -557,12 +560,14 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             pausedCompanion = true;
                             pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
                             pausedMain = false;
+                            ResolvePauseMenuText();
                         }
                         else if (pausedMainPos == 3)
                         {
                             pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
                             pausedMain = false;
                             pausedSettings = true;
+                            ResolvePauseMenuText();
                         }
                     }
                 }
@@ -578,11 +583,13 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Up");
                         if (pausedPlayerPos != 1) pausedPlayerPos -= 1;
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow))
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Down");
                         if (pausedPlayerPos != 3) pausedPlayerPos += 1;
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.Space))
                     {
@@ -635,7 +642,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             pausedPlayerGemsPos -= 1;
                             GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerGemsPos);
                         }
-
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow) && ((pausedPlayerGemsPos < 6 && currentData.GetComponent<CurrentDataScript>().availableGems > 6) || GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().gemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().availableGems || (pausedPlayerGemsPos < currentData.GetComponent<CurrentDataScript>().availableGems && currentData.GetComponent<CurrentDataScript>().availableGems <= 6)))
                     {
@@ -650,7 +657,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             pausedPlayerGemsPos += 1;
                             GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerGemsPos);
                         }
-
+                        ResolvePauseMenuText();
                     }
                     if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.X))
                     {
@@ -697,7 +704,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             pausedPlayerItemsPos -= 1;
                             GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerItemsPos);
                         }
-
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow) && (pausedPlayerItemsPos < 6 || GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll + 6 < currentData.GetComponent<CurrentDataScript>().itemSize()))
                     {
@@ -711,7 +718,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             pausedPlayerItemsPos += 1;
                             GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetInteger("Pos", pausedPlayerItemsPos);
                         }
-
+                        ResolvePauseMenuText();
                     }
                     if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.X))
                     {
@@ -721,12 +728,14 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             pausedPlayerItems = false;
                             pausedPlayerItemsHeal = true;
                             GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetBool("Health", true);
+                            ResolvePauseMenuText();
                         }
                         else
                         {
                             pausedPlayerItems = false;
                             pausedPlayerItemsLight = true;
                             GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetBool("Health", false);
+                            ResolvePauseMenuText();
                         }
                     }
                 }
@@ -739,6 +748,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         pausedPlayerItemsHealPos = 1;
                         GameObject.Find("PauseExtraMenuPlayerItemsSelect").GetComponent<Animator>().SetTrigger("Reset");
                         GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetBool("Selected", false);
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.UpArrow) && pausedPlayerItemsHealPos != 1)
                     {
@@ -790,6 +800,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                     }
                                 }                                
                                 GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                                ResolvePauseMenuText();
                             }
                             else if (pausedPlayerItemsHealPos == 2 && (10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5) > currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth && currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth > 0)
                             {
@@ -827,6 +838,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                     }
                                 }
                                 GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                                ResolvePauseMenuText();
                             }
                             else if (pausedPlayerItemsHealPos == 3 && (15 + ((currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5)) > currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth && currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth > 0)
                             {
@@ -864,6 +876,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                     }
                                 }
                                 GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                                ResolvePauseMenuText();
                             }
                         }
                         else if (currentData.GetComponent<CurrentDataScript>().items[pausedPlayerItemsPos + GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().itemUIScroll - 1] == 3)
@@ -904,6 +917,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                     }
                                 }
                                 GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                                ResolvePauseMenuText();
                             }
                             else if (pausedPlayerItemsHealPos == 2 && (10 + (currentData.GetComponent<CurrentDataScript>().adventurerLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5) > currentData.GetComponent<CurrentDataScript>().adventurerCurrentHealth)
                             {
@@ -941,6 +955,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                     }
                                 }
                                 GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                                ResolvePauseMenuText();
                             }
                             else if (pausedPlayerItemsHealPos == 3 && 15 + ((currentData.GetComponent<CurrentDataScript>().wizardLvl - 1) * 10 + currentData.GetComponent<CurrentDataScript>().compHPUp * 5) > currentData.GetComponent<CurrentDataScript>().wizardCurrentHealth)
                             {
@@ -978,6 +993,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                                     }
                                 }
                                 GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                                ResolvePauseMenuText();
                             }
                         }
                     }
@@ -989,6 +1005,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         pausedPlayerItems = true;
                         pausedPlayerItemsLight = false;
                         GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<Animator>().SetBool("Selected", false);
+                        ResolvePauseMenuText();
                     }
                     else if ((Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Space)) && currentData.GetComponent<CurrentDataScript>().playerCurrentLight < (5 + (currentData.GetComponent<CurrentDataScript>().playerLightLvl + currentData.GetComponent<CurrentDataScript>().LPUp) * 5))
                     {
@@ -1026,6 +1043,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             }
                         }
                         GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().CreateItemsUI();
+                        ResolvePauseMenuText();
                     }
                 }
                 else if (pausedCompanion)
@@ -1045,11 +1063,13 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Up");
                         pausedCompanionPos -= 1;
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow) && pausedCompanionPos != 2 && currentData.GetComponent<CurrentDataScript>().unlockedCompanions > 1)
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Down");
                         pausedCompanionPos += 1;
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.X))
                     {
@@ -1058,6 +1078,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         if (pausedCompanionPos == 1) pausedCompanionAdventurer = true;
                         else if (pausedCompanionPos == 2) pausedCompanionWizard = true;
                         GameObject.Find("PauseExtraMenuCompanions").GetComponent<Animator>().SetTrigger("Reset");
+                        ResolvePauseMenuText();
                     }
                 }
                 else if (pausedCompanionAdventurer)
@@ -1067,17 +1088,21 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         pausedCompanionAdventurerPos = 1;
                         pausedCompanionAdventurer = false;
                         pausedCompanion = true;
+                        GameObject.Find("PauseExtraMenuCompanions").GetComponent<Animator>().SetInteger("Pos", 1);
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.UpArrow) && pausedCompanionAdventurerPos > 1)
                     {
                         pausedCompanionAdventurerPos -= 1;
                         GameObject.Find("PauseExtraMenuCompanions").GetComponent<Animator>().SetInteger("Pos",pausedCompanionAdventurerPos);
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow) && pausedCompanionAdventurerPos < (2 + currentData.GetComponent<CurrentDataScript>().adventurerLvl))
                     {
                         pausedCompanionAdventurerPos += 1;
                         GameObject.Find("PauseExtraMenuCompanions").GetComponent<Animator>().SetInteger("Pos", pausedCompanionAdventurerPos);
+                        ResolvePauseMenuText();
                     }
                 }
                 else if (pausedCompanionWizard)
@@ -1087,17 +1112,21 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         pausedCompanionWizardPos = 1;
                         pausedCompanionWizard = false;
                         pausedCompanion = true;
+                        GameObject.Find("PauseExtraMenuCompanions").GetComponent<Animator>().SetInteger("Pos", 1);
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.UpArrow) && pausedCompanionWizardPos > 1)
                     {
                         pausedCompanionWizardPos -= 1;
                         GameObject.Find("PauseExtraMenuCompanions").GetComponent<Animator>().SetInteger("Pos", pausedCompanionWizardPos);
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow) && pausedCompanionWizardPos < (2 + currentData.GetComponent<CurrentDataScript>().adventurerLvl))
                     {
                         pausedCompanionWizardPos += 1;
                         GameObject.Find("PauseExtraMenuCompanions").GetComponent<Animator>().SetInteger("Pos", pausedCompanionWizardPos);
+                        ResolvePauseMenuText();
                     }
                 }
                 else if (pausedSettings)
@@ -1112,11 +1141,13 @@ public class WorldPlayerMovementScript : MonoBehaviour
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Up");
                         if (pausedSettingsPos != 1) pausedSettingsPos -= 1;
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow))
                     {
                         pauseUI.GetComponent<Animator>().SetTrigger("Down");
                         if (pausedSettingsPos != 2) pausedSettingsPos += 1;
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.X))
                     {
@@ -1125,6 +1156,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             pausedSettings = false;
                             pausedSettingsChange = true;
                             pauseUI.GetComponent<Animator>().SetTrigger("OpenMenu");
+                            ResolvePauseMenuText();
                         }
                         else if (pausedSettingsPos == 2)
                         {
@@ -1144,27 +1176,32 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         pausedSettingsChangeLeftPos = 1;
                         pauseUI.GetComponent<Animator>().SetTrigger("CloseMenu");
                         GameObject.Find("PauseExtraMenuConfiguration").GetComponent<IngameConfigurationScript>().CloseSettings();
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.UpArrow) && pausedSettingsChangeTopPos > 1)
                     {
                         GameObject.Find("PauseExtraMenuConfiguration").GetComponent<Animator>().SetTrigger("Up");
                         pausedSettingsChangeTopPos -= 1;
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow) && pausedSettingsChangeTopPos < 5)
                     {
                         GameObject.Find("PauseExtraMenuConfiguration").GetComponent<Animator>().SetTrigger("Down");
                         pausedSettingsChangeTopPos += 1;
                         if(pausedSettingsChangeTopPos > 3) pausedSettingsChangeLeftPos = 1;
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.LeftArrow) && pausedSettingsChangeLeftPos > 1)
                     {
                         GameObject.Find("PauseExtraMenuConfiguration").GetComponent<Animator>().SetTrigger("Left");
                         pausedSettingsChangeLeftPos -= 1;
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.RightArrow) && pausedSettingsChangeLeftPos < 2 && pausedSettingsChangeTopPos < 4)
                     {
                         GameObject.Find("PauseExtraMenuConfiguration").GetComponent<Animator>().SetTrigger("Right");
                         pausedSettingsChangeLeftPos += 1;
+                        ResolvePauseMenuText();
                     }
                     else if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.X))
                     {
@@ -2497,6 +2534,65 @@ public class WorldPlayerMovementScript : MonoBehaviour
         }
     }
 
+
+    //Function to resolve the pause menu text
+    public void ResolvePauseMenuText()
+    {
+        string result;
+        result = "";
+        if (pausedMain)
+        {
+            if (pausedMainPos == 1) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_arima");
+            else if (pausedMainPos == 2) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_companions");
+            else if (pausedMainPos == 3) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_configuration");
+        }
+        else if (pausedPlayer)
+        {
+            if (pausedPlayerPos == 1) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_arima_stats");
+            else if (pausedPlayerPos == 2) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_gems");
+            else if (pausedPlayerPos == 3) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_items");
+        }
+        else if (pausedPlayerStats) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_arima_stats_main");
+        else if (pausedPlayerGems) result = currentData.GetComponent<LangResolverScript>().ResolveText(GameObject.Find("PauseExtraMenuPlayerGems").GetComponent<PauseGemsScript>().GetText(pausedPlayerGemsPos));
+        else if (pausedPlayerItems) result = currentData.GetComponent<LangResolverScript>().ResolveText(GameObject.Find("PauseExtraMenuPlayerItems").GetComponent<PauseItemsScript>().GetText(pausedPlayerItemsPos));
+        else if (pausedPlayerItemsHeal) 
+        {
+            if (currentData.GetComponent<CurrentDataScript>().items[pausedPlayerItemsPos + itemUIScroll - 1] == 1)  result = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_apple_action");
+            else if (currentData.GetComponent<CurrentDataScript>().items[pausedPlayerItemsPos + itemUIScroll - 1] == 3) result = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_resurrectionpotion_action");
+        }
+        else if (pausedPlayerItemsLight) result = currentData.GetComponent<LangResolverScript>().ResolveText("combat_item_lightpotion_action");
+        else if (pausedCompanion)
+        {
+            if (pausedCompanionPos == 1) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_companions_adventurer");
+            else if (pausedCompanionPos == 2) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_companions_wizard");
+        }
+        else if (pausedCompanionAdventurer) result = currentData.GetComponent<LangResolverScript>().ResolveText(GameObject.Find("PauseExtraMenuCompanions").GetComponent<PauseCompanionsScript>().GetText(pausedCompanionAdventurerPos));
+        else if (pausedCompanionWizard) result = currentData.GetComponent<LangResolverScript>().ResolveText(GameObject.Find("PauseExtraMenuCompanions").GetComponent<PauseCompanionsScript>().GetText(pausedCompanionWizardPos));
+        else if (pausedSettings)
+        {
+            if (pausedSettingsPos == 1) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_configuration_settings");
+            else if (pausedSettingsPos == 2) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_configuration_exit");
+        }
+        else if (pausedSettingsChange)
+        {
+            if (pausedSettingsChangeLeftPos == 1)
+            {
+                if(pausedSettingsChangeTopPos == 1) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_configuration_settings_mainVolume");
+                else if (pausedSettingsChangeTopPos == 2) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_configuration_settings_musicVolume");
+                else if (pausedSettingsChangeTopPos == 3) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_configuration_settings_effectsVolume");
+                else if (pausedSettingsChangeTopPos == 4) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_configuration_settings_language");
+            }
+            else if (pausedSettingsChangeLeftPos == 2)
+            {
+                if (pausedSettingsChangeTopPos == 1) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_configuration_settings_fullScreen");
+                else if (pausedSettingsChangeTopPos == 2) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_configuration_settings_resolution");
+                else if (pausedSettingsChangeTopPos == 3) result = currentData.GetComponent<LangResolverScript>().ResolveText("world_pause_configuration_settings_saveResolution");
+            }
+        }
+        pauseUI.transform.Find("PauseInstructions").GetChild(0).GetComponent<Text>().text = result;
+
+    }
+
     //Function to change the pause menu state
     public void ChangePauseState(int s)
     {
@@ -2505,6 +2601,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         else if (s == 2) pausedPlayerStats = true;
         else if (s == 3) pausedPlayerGems = true;
         else if (s == 4) pausedPlayerItems = true;
+        ResolvePauseMenuText();
     }
 
     public bool IsFleeing()
@@ -2793,7 +2890,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 restPlayerGemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 restPlayerGemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = gems.gems[FindGemInPos(i) + gemUIScroll - 1].nameSpanish[0];
+                restPlayerGemsUI.transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText(gems.gems[FindGemInPos(i) + gemUIScroll - 1].name);
                 restPlayerGemsUI.transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().texture = gems.gems[FindGemInPos(i) + gemUIScroll - 1].icon;
                 restPlayerGemsUI.transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_gems_GP") + " " + gems.gems[FindGemInPos(i) + gemUIScroll - 1].points.ToString();
             }
@@ -2979,9 +3076,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             if (shopGems)
                             {
                                 shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(1).GetComponent<RawImage>().texture = gems.gems[shopItems[i + shopBuyScroll - 1 + pastItems].id - 1].icon;
-                                if (currentData.GetComponent<CurrentDataScript>().language == 1) shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = gems.gems[shopItems[i + shopBuyScroll - 1 + pastItems].id - 1].nameEnglish[0];
-                                else if (currentData.GetComponent<CurrentDataScript>().language == 2) shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = gems.gems[shopItems[i + shopBuyScroll - 1 + pastItems].id - 1].nameSpanish[0];
-                                else shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = gems.gems[shopItems[i + shopBuyScroll - 1 + pastItems].id - 1].nameBasque[0];
+                                shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText(gems.gems[shopItems[i + shopBuyScroll - 1 + pastItems].id - 1].name);
                                 shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(2).GetComponent<Text>().text = shopItems[i + shopBuyScroll - 1 + pastItems].price.ToString();
                                 if (shopItems[i + shopBuyScroll - 1 + pastItems].price > currentData.GetComponent<CurrentDataScript>().currentCoins)
                                 {
@@ -3078,7 +3173,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                         shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                        shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = gems.gems[FindGemInPos(i) + shopSellScroll - 1].nameSpanish[0];
+                        shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText(gems.gems[FindGemInPos(i) + shopSellScroll - 1].name);
                         shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(1).GetComponent<RawImage>().texture = gems.gems[FindGemInPos(i) + shopSellScroll - 1].icon;
                         shopUI.transform.GetChild(0).transform.GetChild(1 + i).GetChild(2).GetComponent<Text>().text = ((int)(currentData.GetComponent<CurrentDataScript>().ItemPrice(gems.gems[FindGemInPos(i) + shopSellScroll - 1].id, true) * 0.7f)+1).ToString();
                     }

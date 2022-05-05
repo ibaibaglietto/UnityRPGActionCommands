@@ -43,7 +43,6 @@ public class PauseGemsScript : MonoBehaviour
 
     private void OnEnable()
     {
-        //TODO: text translation
         CreateGemUI();
     }
 
@@ -68,7 +67,7 @@ public class PauseGemsScript : MonoBehaviour
                 transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
                 transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-                transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(i) + gemUIScroll - 1].nameSpanish[0];
+                transform.GetChild(4 + i).GetChild(0).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText(gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(i) + gemUIScroll - 1].name);
                 transform.GetChild(4 + i).GetChild(1).GetComponent<RawImage>().texture = gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(i) + gemUIScroll - 1].icon;
                 transform.GetChild(4 + i).GetChild(2).GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText("world_rest_gems_GP") + " " + gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(i) + gemUIScroll - 1].points.ToString();
             }
@@ -82,7 +81,19 @@ public class PauseGemsScript : MonoBehaviour
         }
     }
 
-
+    //Function to get the text of the gem
+    public string GetText(int id)
+    {
+        string r = "";
+        if (gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(id) + gemUIScroll - 1].id == 1) r = "world_rest_gems_lightsword";
+        else if (gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(id) + gemUIScroll - 1].id == 2) r = "world_rest_gems_multistrikesword";
+        else if (gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(id) + gemUIScroll - 1].id == 3) r = "world_rest_gems_lightshuriken";
+        else if (gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(id) + gemUIScroll - 1].id == 4) r = "world_rest_gems_fireshuriken";
+        else if (gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(id) + gemUIScroll - 1].id == 5) r = "world_rest_gems_hpup";
+        else if (gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(id) + gemUIScroll - 1].id == 6) r = "world_rest_gems_lpup";
+        else if (gems.gems[player.GetComponent<WorldPlayerMovementScript>().FindGemInPos(id) + gemUIScroll - 1].id == 7) r = "world_rest_gems_comphpup";
+        return r;
+    }
 
     //Function to show an animation of the gem attack
     public void ShowAttack(int id)

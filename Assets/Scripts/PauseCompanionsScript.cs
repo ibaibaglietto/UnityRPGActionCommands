@@ -27,6 +27,30 @@ public class PauseCompanionsScript : MonoBehaviour
         videoPlayer = transform.Find("PauseExtraMenuCompanionsImages").Find("Video Player").GetComponent<VideoPlayer>();
     }
 
+    //Function to get the text of the gem
+    public string GetText(int id)
+    {
+        string r = "";
+        isAdventurer = (transform.parent.parent.GetComponent<PauseMenuScript>().GetSelectedCompanion() == 0);
+        if (isAdventurer)
+        {
+            if (id == 1) r = "world_pause_companions_adventurer_sword";
+            else if (id == 2) r = "world_pause_companions_adventurer_glance";
+            else if (id == 3) r = "world_pause_companions_adventurer_swordSpin";
+            else if (id == 4) r = "world_pause_companions_adventurer_dragonSlayerBow";
+            else if (id == 5) r = "world_pause_companions_adventurer_bk-47";
+        }
+        else
+        {
+            if (id == 1) r = "world_pause_companions_wizard_magicBall";
+            else if (id == 2) r = "world_pause_companions_wizard_barrier";
+            else if (id == 3) r = "world_pause_companions_wizard_pulsingMagic";
+            else if (id == 4) r = "world_pause_companions_wizard_magicSpear";
+            else if (id == 5) r = "world_pause_companions_wizard_energyBomb";
+        }
+        return r;
+    }
+
     //Function to show an animation of the gem attack
     public void ShowAttack(int id)
     {

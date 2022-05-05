@@ -154,8 +154,11 @@ world_rest_gems_multistrikesword$Jokalariak multieraso ezpata erabili ahal du, h
 world_rest_gems_lightshuriken$Jokalariak argizko shurikena erabili ahal du, argizko boteredun shuriken bat jaurtiz, 2 AP erabiliz.
 world_rest_gems_fireshuriken$Jokalariak suzko shurikena erabili ahal du, lurreko etsai guztiak joz, 3AP erabiliz.
 world_rest_gems_hpup$Jokalariaren bizi puntuak 5en igotzen ditu.
+world_rest_gems_hpup_name$BP gora
 world_rest_gems_lpup$Jokalariaren argi puntuak 5en igotzen ditu.
+world_rest_gems_lpup_name$AP gora
 world_rest_gems_comphpup$Taldekide guztien bizi puntuak 5en igotzen ditu.
+world_rest_gems_comphpup_name$Talde BP gora
 world_rest_items_apple$5 bizi puntu sendatzen dituen sagarra.
 world_rest_items_lightpotion$5 argi puntu birsortzen dituen pozioa.
 world_rest_items_resurrectpotion$Erabiltzailea berpizten duen pozioa, 10 bizi puntu sendatuz.
@@ -181,6 +184,32 @@ world_shop_takeout_select$Erabaki ze objektu atera nahi duzun.
 world_shop_takeout_instructions$Atera lehenago gordetako objektuak.
 world_shop_takeout_sure$Ziur zaude hau ateratzea nahi duzula?
 world_shop_takeout_noitems$Ezin duzu objekturik atera ez baduzu bat ere ez gordeta edo inbentarioa betea baduzu.
+world_pause_arima$
+world_pause_arima_stats$
+world_pause_arima_stats_main$
+world_pause_gems$
+world_pause_items$
+world_pause_companions$
+world_pause_companions_adventurer_sword$
+world_pause_companions_adventurer_glance$
+world_pause_companions_adventurer_swordSpin$
+world_pause_companions_adventurer_dragonSlayerBow$
+world_pause_companions_adventurer_bk-47$
+world_pause_companions_wizard_magicBall$
+world_pause_companions_wizard_barrier$
+world_pause_companions_wizard_pulsingMagic$
+world_pause_companions_wizard_magicSpear$
+world_pause_companions_wizard_energyBomb$
+world_pause_configuration$
+world_pause_configuration_settings$
+world_pause_configuration_settings_mainVolume$
+world_pause_configuration_settings_musicVolume$
+world_pause_configuration_settings_effectsVolume$
+world_pause_configuration_settings_fullScreen$
+world_pause_configuration_settings_resolution$
+world_pause_configuration_settings_saveResolution$
+world_pause_configuration_settings_language$
+world_pause_configuration_exit$
 adventurer_explanation_TestScene2$Hau testeoko zona printzipala da. Pixkat arraroa da, baina egin zenerako balio du.
 adventurer_explanation_TestScene2_ShopGirl$Hau dendako neska da. Berarekin hitz egin dezakezu objektuak erosi, saldu, gorde edo berreskuratzeko. Oso erabilgarria da.
 adventurer_explanation_TestScene2_Sign$Kartel bat da. Zuk irakurri.

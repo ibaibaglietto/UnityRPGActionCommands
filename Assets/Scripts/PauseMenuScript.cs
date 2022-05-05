@@ -83,6 +83,7 @@ public class PauseMenuScript : MonoBehaviour
         }
     }
 
+
     //function to change the pause state
     public void ChangePauseState(int s)
     {
