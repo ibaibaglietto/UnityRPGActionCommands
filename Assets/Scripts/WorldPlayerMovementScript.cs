@@ -1184,7 +1184,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                         pausedSettingsChangeTopPos -= 1;
                         ResolvePauseMenuText();
                     }
-                    else if (Input.GetKeyDown(KeyCode.DownArrow) && pausedSettingsChangeTopPos < 5)
+                    else if (Input.GetKeyDown(KeyCode.DownArrow) && pausedSettingsChangeTopPos < 4)
                     {
                         GameObject.Find("PauseExtraMenuConfiguration").GetComponent<Animator>().SetTrigger("Down");
                         pausedSettingsChangeTopPos += 1;
@@ -1218,7 +1218,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
                             if(pausedSettingsChangeLeftPos == 2)
                             {
                                 if (pausedSettingsChangeTopPos == 1) GameObject.Find("FullScreenToggle").GetComponent<Toggle>().isOn = !GameObject.Find("FullScreenToggle").GetComponent<Toggle>().isOn;
-                                else if (GameObject.Find("SaveResolution").GetComponent<Button>().interactable && !GameObject.Find("PauseExtraMenuConfiguration").transform.GetChild(14).gameObject.activeSelf) GameObject.Find("PauseExtraMenuConfiguration").GetComponent<IngameConfigurationScript>().SaveResolution();
+                                else if (GameObject.Find("SaveResolution").GetComponent<Button>().interactable && !GameObject.Find("PauseExtraMenuConfiguration").transform.GetChild(13).gameObject.activeSelf) GameObject.Find("PauseExtraMenuConfiguration").GetComponent<IngameConfigurationScript>().SaveResolution();
                             }
                         }
                     }

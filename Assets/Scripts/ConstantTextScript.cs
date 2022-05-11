@@ -8,10 +8,14 @@ public class ConstantTextScript : MonoBehaviour
     [SerializeField] private string text;
     private GameObject currentData;
 
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
         currentData = GameObject.Find("CurrentData");
+    }
+
+    private void OnEnable()
+    {
         GetComponent<Text>().text = currentData.GetComponent<LangResolverScript>().ResolveText(text);
     }
 

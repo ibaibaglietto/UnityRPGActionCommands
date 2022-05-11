@@ -185,11 +185,19 @@ world_shop_takeout_instructions$Saca objetos anteriormente depositados.
 world_shop_takeout_sure$¿Estás seguro de que quieres sacar esto?
 world_shop_takeout_noitems$No puedes sacar objetos si no tienes ninguno guardado o si ya tienes el inventario lleno.
 world_pause_arima$Aquí podrás ver las estadísticas de Arima, gestionar el uso de gemas y usar objetos.
+world_pause_arima_title$Arima
 world_pause_arima_stats$En este menú podrás ver todos los datos de Arima.
+world_pause_arima_stats_title$Estadísticas
+world_pause_arima_stats_level$Nivel
 world_pause_arima_stats_main$Aquí puedes ver todas las estadísticas de Arima, desde los puntos de vida hasta las monedas que tienes actualmente.
 world_pause_gems$Gestiona el uso de las gemas y ve una previsualización del efecto que otorgan.
+world_pause_gems_title$Gemas
+world_pause_gems_gemPoints$Puntos de gema
 world_pause_items$Mira que objetos tienes en la bolsa y úsalos si quieres.
+world_pause_items_title$Objetos
 world_pause_companions$Mira los puntos de vida y ataques de tus compañeros y selecciona quién quieres que te acompañe.
+world_pause_companions_title$Compañeros
+world_pause_companions_attacks$Ataques
 world_pause_companions_adventurer_sword$Ataca dos veces usando su espada.
 world_pause_companions_adventurer_glance$Inspecciona al enemigo y consigue sus puntos débiles y sus PV.
 world_pause_companions_adventurer_swordSpin$Golpea al enemigo sin parar hasta que falle.
@@ -201,15 +209,28 @@ world_pause_companions_wizard_pulsingMagic$Golpear a un enemigo varias veces usa
 world_pause_companions_wizard_magicSpear$Crea una lanza mágica y que dañará gravemente a un enemigo.
 world_pause_companions_wizard_energyBomb$Genera una enorme bola de magia que dañará a todos los enemigos en combate.
 world_pause_configuration$Cambia los ajustes del juego o cierra el juego.
+world_pause_configuration_title$Configuración
 world_pause_configuration_settings$Aquí podrás cambiar la configuración del juego, desde el idioma hasta la resolución pasando por el sonido.
+world_pause_configuration_settings_title$Ajustes
 world_pause_configuration_settings_mainVolume$Cambia el volumen de todo sonido del juego.
+world_pause_configuration_settings_mainVolume_title$Volumen maestro:
 world_pause_configuration_settings_musicVolume$Cambia el volumen de la música.
+world_pause_configuration_settings_musicVolume_title$Volumen de la música:
 world_pause_configuration_settings_effectsVolume$Cambia el volumen de los efectos.
+world_pause_configuration_settings_effectsVolume_title$Volumen de los efectos:
 world_pause_configuration_settings_fullScreen$Marca la casilla si quieres poner el juego en pantalla completa.
+world_pause_configuration_settings_fullScreen_title$Pantalla completa:
 world_pause_configuration_settings_resolution$Cambia la resolución del juego.
+world_pause_configuration_settings_resolution_title$Resolución:
 world_pause_configuration_settings_saveResolution$Guarda los ajustes de resolución y pantalla, tendrás que confirmar los cambios para asegurar que se ve correctamente.
+world_pause_configuration_settings_saveResolution_title$Guardar resolución
 world_pause_configuration_settings_language$Cambia el idioma y elige entre español, inglés y euskera.
+world_pause_configuration_settings_language_title$Idioma:
+world_pause_configuration_settings_confirmResolution_mainText$Confirma los cambios si ves esta ventana correctamente.
+world_pause_configuration_settings_confirmResolution_timeText$Los cambios se revertirán en
+world_pause_configuration_settings_confirmResolution_confirmText$Presiona la barra espaciadora para confirmar los cambios.
 world_pause_configuration_exit$Cierra el juego, reaparecerás en la última hoguera en la que descansaste.
+world_pause_configuration_exit_title$Salir
 adventurer_explanation_TestScene2$Esta es la zona de testeo principal. Es un poco rara, pero sirve para lo que se creó.
 adventurer_explanation_TestScene2_ShopGirl$Esta es la niña de la tienda. Puedes hablar con ella para comprar, vender, guardar o recuperar objetos. Es muy útil.
 adventurer_explanation_TestScene2_Sign$Es un cartel. Léelo tú misma.
