@@ -280,6 +280,15 @@ public class CurrentDataScript : MonoBehaviour
     public int base4BossDefeated;
     //1-15
     public int base5BossDefeated;
+    //Music
+    [SerializeField] private AudioClip wind;
+    [SerializeField] private AudioClip mainMenuMusic;
+    [SerializeField] private AudioClip jailMusic;
+    [SerializeField] private AudioClip cityMusic;
+    [SerializeField] private AudioClip bridgeMusic;
+    [SerializeField] private AudioClip campMusic;
+    [SerializeField] private AudioClip battleMusic;
+    [SerializeField] private AudioClip bossBattleMusic;
 
 
     private void Awake()
@@ -847,6 +856,32 @@ public class CurrentDataScript : MonoBehaviour
         base5BossDefeated = data.base5BossDefeated;
     }
 
+    //A function to change the music
+    public void ChangeMusic(string oldScene, string newScene)
+    {
+        Debug.Log(oldScene);
+        Debug.Log(newScene);
+        if(newScene == "1-1" && oldScene != "1-2")
+        {
+            GetComponent<AudioSource>().clip = jailMusic;
+            GetComponent<AudioSource>().Play();
+        }
+        else if (newScene == "1-2" && oldScene != "1-1")
+        {
+            GetComponent<AudioSource>().clip = jailMusic;
+            GetComponent<AudioSource>().Play();
+        }
+        else if (newScene == "1-3" && (oldScene != "1-5" && oldScene != "1-6"))
+        {
+            GetComponent<AudioSource>().clip = cityMusic;
+            GetComponent<AudioSource>().Play();
+        }
+        else if (newScene == "1-4" && oldScene != "1-7")
+        {
+            GetComponent<AudioSource>().clip = bridgeMusic;
+            GetComponent<AudioSource>().Play();
+        }
+    }
 
     //A function to know if a gem is already found
     public bool IsGemFound(int id)

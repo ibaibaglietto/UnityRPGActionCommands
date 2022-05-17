@@ -219,6 +219,7 @@ public class IngameConfigurationScript : MonoBehaviour
     //3 functions to set the master, music and effects volumes
     public void SetMasterLevel(float sliderValue)
     {
+        effectsSource.Play();
         mixer.SetFloat("Master", Mathf.Log10(sliderValue) * 20);
         currentData.GetComponent<CurrentDataScript>().master = sliderValue;
     }
@@ -229,6 +230,7 @@ public class IngameConfigurationScript : MonoBehaviour
     }
     public void SetEffectsLevel(float sliderValue)
     {
+        effectsSource.Play();
         mixer.SetFloat("Effects", Mathf.Log10(sliderValue) * 20);
         currentData.GetComponent<CurrentDataScript>().effects = sliderValue;
     }

@@ -47,6 +47,7 @@ public class EnterBattleScript : MonoBehaviour
     private void LoadScene()
     {
         currentData.GetComponent<CurrentDataScript>().changingScene = 1;
+        currentData.GetComponent<CurrentDataScript>().ChangeMusic(SceneManager.GetActiveScene().name, sceneName);
         SceneManager.LoadScene(sceneName);
     }
 

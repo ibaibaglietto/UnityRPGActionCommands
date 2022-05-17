@@ -235,6 +235,7 @@ adventurer_explanation_TestScene2$Esta es la zona de testeo principal. Es un poc
 adventurer_explanation_TestScene2_ShopGirl$Esta es la niña de la tienda. Puedes hablar con ella para comprar, vender, guardar o recuperar objetos. Es muy útil.
 adventurer_explanation_TestScene2_Sign$Es un cartel. Léelo tú misma.
 adventurer_explanation_TestScene2_Sign_Text$Los carteles se pueden leer./De nada por la data.
+adventurer_explanation_1-1$Test del lvl1-1.
 npc_prisoner1_1$Test1
 npc_prisoner1_2$Test2
 npc_prisoner1_3$Test3

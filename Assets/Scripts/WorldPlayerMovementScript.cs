@@ -254,7 +254,12 @@ public class WorldPlayerMovementScript : MonoBehaviour
     private GameObject firstStrikeUI;
     //A bool to know if the player is dead
     private bool playerDead;
-
+    //The source of the audio effects
+    private AudioSource source;
+    //The audios of the player
+    [SerializeField] private AudioClip playerSwordAudio;
+    [SerializeField] private AudioClip playerJumpAudio;
+    [SerializeField] private AudioClip playerShurikenAudio;
 
     //The on land event
     [Header("Events")]
@@ -274,6 +279,7 @@ public class WorldPlayerMovementScript : MonoBehaviour
         if (OnLandEvent == null) OnLandEvent = new UnityEvent();
         interactable = GameObject.Find("Interactable");
         interactable.SetActive(false);
+        source = transform.Find("partyAudio").GetComponent<AudioSource>();
     }
 
     void Start()
@@ -461,6 +467,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
                 //Make the player jump when space is pressed
                 if (Input.GetKeyDown(KeyCode.Space) && grounded && gameObject.GetComponent<Rigidbody>().velocity.y > -0.1f && !attacking && !flying && !paused)
                 {
+                    source.clip = playerJumpAudio;
+                    source.Play();
                     gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.0f, 600.0f, 0.0f));
                     animator.SetBool("isJumping", true);
                 }
@@ -1449,6 +1457,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
             {
                 if (Input.GetKeyUp(KeyCode.Z))
                 {
+                    source.clip = playerShurikenAudio;
+                    source.Play();
                     transform.GetComponent<Animator>().SetTrigger("EndSpin");
                     shuriken = Instantiate(shurikenPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
                     shuriken.GetComponent<WorldShurikenScript>().SetObjective(shurikenArrow.GetComponent<WorldShurikenArrowScript>().GetObjective().transform.position);
@@ -2635,6 +2645,8 @@ public class WorldPlayerMovementScript : MonoBehaviour
 
     public void EndMelee()
     {
+        source.clip = playerSwordAudio;
+        source.Play();
         attacking = false;
         Destroy(melee.gameObject);
     }

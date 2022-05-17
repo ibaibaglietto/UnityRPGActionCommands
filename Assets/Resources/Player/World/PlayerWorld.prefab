@@ -218,53 +218,31 @@ MonoBehaviour:
     gems:
     - id: 1
       icon: {fileID: 2800000, guid: c8c7a5f5e1930be4dae588b05dab6a64, type: 3}
-      nameEnglish: []
-      nameSpanish:
-      - Espada de luz
-      nameBasque: []
+      name: 
       points: 1
     - id: 2
       icon: {fileID: 2800000, guid: 80e3e3e4ba7bcd243bb76e0a20742180, type: 3}
-      nameEnglish: []
-      nameSpanish:
-      - Espada de multiataque
-      nameBasque: []
+      name: 
       points: 2
     - id: 3
       icon: {fileID: 2800000, guid: 660f7129ecc45104498cd20245066e9f, type: 3}
-      nameEnglish: []
-      nameSpanish:
-      - Shuriken de luz
-      nameBasque: []
+      name: 
       points: 1
     - id: 4
       icon: {fileID: 2800000, guid: 96aae68d6dc460e4fa61e37de41b2bdb, type: 3}
-      nameEnglish: []
-      nameSpanish:
-      - Shuriken de fuego
-      nameBasque: []
+      name: 
       points: 2
     - id: 5
       icon: {fileID: 2800000, guid: c3dbfa73c27d5dd45b1da203b1b8b962, type: 3}
-      nameEnglish: []
-      nameSpanish:
-      - PV arriba
-      nameBasque: []
+      name: 
       points: 3
     - id: 6
       icon: {fileID: 2800000, guid: 9465b4deb17da5242ba471c6f5761d4c, type: 3}
-      nameEnglish: []
-      nameSpanish:
-      - PL arriba
-      nameBasque: []
+      name: 
       points: 3
     - id: 7
       icon: {fileID: 2800000, guid: 32b737394f428a641bad9091b0023ad2, type: 3}
-      nameEnglish: []
-      nameSpanish:
-      - Comp PV arriba
-      nameBasque:
-      - 
+      name: 
       points: 6
   apple: {fileID: 2800000, guid: ac557a4efb78d694db0c3a777f381a86, type: 3}
   lightPotion: {fileID: 2800000, guid: 034e73f5171fd16498937cec15feb9aa, type: 3}
@@ -272,6 +250,9 @@ MonoBehaviour:
   appleItem: {fileID: 21300000, guid: f494496d029adb643b04bac4e0f0d1eb, type: 3}
   lightPotionItem: {fileID: 21300000, guid: e14f68a5e2f9c284aacdf7512e9cbdf6, type: 3}
   resurrectPotionItem: {fileID: 21300000, guid: 718bea9c91bf2b5429795b9286a6678f, type: 3}
+  playerSwordAudio: {fileID: 8300000, guid: 46956f5ab9db3e44986b98f373c50645, type: 3}
+  playerJumpAudio: {fileID: 8300000, guid: edfc54d3cab482b44a9f03fa26207c8d, type: 3}
+  playerShurikenAudio: {fileID: 8300000, guid: 2a490e1339aa23345975aa7f1c6ebe30, type: 3}
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:
